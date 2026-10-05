@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Backlog trazable (planning-v1)
+    url: https://github.com/Alexendros/archmaker/blob/main/docs/10-delivery/next-issues.md
+    about: Consulta los próximos issues y su orden de dependencia antes de abrir uno.
+  - name: Reporte privado de vulnerabilidades
+    url: https://github.com/Alexendros/archmaker/security/advisories/new
+    about: No abras issues públicos para vulnerabilidades; usa el reporte privado (ver SECURITY.md).

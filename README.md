@@ -13,6 +13,14 @@ Repositorio documental `planning-v1` para ArchMaker. Este baseline separa produc
 - WASM: adaptador de navegador.
 - Runner privilegiado: v1, proceso separado.
 
+## Documentación
+
+- Índice documental: [`docs/index.md`](docs/index.md).
+- Estado del plan: [`docs/00-governance/plan-status.md`](docs/00-governance/plan-status.md).
+- Resultado Go/No-Go: [`docs/00-governance/go-no-go.md`](docs/00-governance/go-no-go.md).
+- Cobertura de gates: [`docs/10-delivery/gates.md`](docs/10-delivery/gates.md).
+- Próximos issues: [`docs/10-delivery/next-issues.md`](docs/10-delivery/next-issues.md).
+
 ## Lectura
 
 1. `AGENTS.md`
@@ -29,6 +37,18 @@ Repositorio documental `planning-v1` para ArchMaker. Este baseline separa produc
 12. `docs/08-security/privilege-model.md`
 13. `docs/10-delivery/gates.md`
 
+## Estructura
+
+- `docs/00-governance` … `docs/12-research`: documentación por área.
+- `contracts/`: JSON Schema, protocolo, eventos y OpenAPI (Enterprise).
+- `reference/v5.1/`: evidencia heredada inmutable (verificada por SHA-256).
+- `templates/`: plantillas de ADR, requisito e issue.
+- `.github/`: CI de validación documental, plantillas de issue y PR.
+
 ## Regla de reemplazo
 
 Copiar estos archivos por sus rutas canónicas. Antes de reemplazar un documento existente más completo, conservarlo en Git y fusionar requisitos o decisiones aceptadas. Los archivos de `reference/v5.1/` sí deben coincidir byte a byte con este paquete.
+
+## Licencia
+
+Apache-2.0. Ver [`LICENSE`](LICENSE).

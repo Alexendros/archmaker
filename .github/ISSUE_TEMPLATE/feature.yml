@@ -1,5 +1,7 @@
 name: Feature
-about: Funcionalidad trazada
+description: Funcionalidad trazada
+title: "[Feature] "
+labels: ["kind:feature"]
 body:
   - type: input
     id: ids

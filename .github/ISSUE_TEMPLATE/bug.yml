@@ -1,0 +1,50 @@
+name: Bug
+description: Defecto trazado a requisitos, riesgos, amenazas o contratos
+title: "[Bug] "
+labels: ["kind:bug"]
+body:
+  - type: input
+    id: ids
+    attributes:
+      label: IDs afectados
+      description: Requisitos (FR/NFR), riesgo (RSK), amenaza (THR), regla (RULE) o contrato afectado.
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Descripción
+      description: Qué ocurre y qué se esperaba.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Pasos de reproducción
+    validations:
+      required: true
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severidad
+      options:
+        - P0 — bloqueante
+        - P1 — alta
+        - P2 — media
+        - P3 — baja
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidencia
+      description: Comando, salida, captura o enlace.
+    validations:
+      required: false
+  - type: textarea
+    id: security
+    attributes:
+      label: Impacto de seguridad y accesibilidad
+      description: Si afecta a seguridad, usa GitHub PVR en lugar de este issue (ver SECURITY.md).
+    validations:
+      required: false
