@@ -55,7 +55,7 @@ Al finalizar deben existir:
 | Release owner | Packaging, firma, provenance y rollback | Release readiness |
 | Revisor independiente | Revisión sin autoría directa | Conformidad y No-Go/Go recomendado |
 
-NIST SSDF recomienda que el diseño sea revisado por personal cualificado no implicado en él o mediante procesos automatizados adecuados, y que los criterios de seguridad se rastreen durante el SDLC.[^1][^2]
+NIST SSDF recomienda que el diseño sea revisado por personal cualificado no implicado en él o mediante procesos automatizados adecuados, y que los criterios de seguridad se rastreen durante el SDLC (refs. 1–2).
 
 ### Reglas de cambio
 
@@ -225,7 +225,7 @@ criteria:
 
 **Objetivo:** producir una descripción arquitectónica coherente con ISO/IEC/IEEE 42010 y C4.
 
-ISO/IEC/IEEE 42010 define viewpoints como convenciones para crear, interpretar y usar views que encuadran concerns de stakeholders.[^3][^4][^5]
+ISO/IEC/IEEE 42010 define viewpoints como convenciones para crear, interpretar y usar views que encuadran concerns de stakeholders (refs. 3–5).
 
 ### Acciones
 
@@ -416,7 +416,7 @@ El repositorio ya contiene Draft, Catalog, Diagnostic, Manifest y otros schemas 
 
 **Objetivo:** convertir controles declarados en riesgos gobernables y pruebas verificables.
 
-NIST SSDF exige criterios de seguridad rastreables, modelado de riesgos y revisión del diseño contra requisitos y riesgos.[^2][^1]
+NIST SSDF exige criterios de seguridad rastreables, modelado de riesgos y revisión del diseño contra requisitos y riesgos (refs. 1–2).
 
 ### Acciones generales
 
