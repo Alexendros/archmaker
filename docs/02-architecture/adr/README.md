@@ -19,7 +19,7 @@ Propietario, Requisitos) y las secciones de `templates/adr.md`. Estados posibles
 | [ADR-0004](ADR-0004-runner-separado-transporte-y-elevacion.md) | Runner separado: transporte y elevación | accepted | 2026-10-05 |
 | [ADR-0005](ADR-0005-json-schema-2020-12-additionalProperties-false.md) | JSON Schema 2020-12 con `additionalProperties:false` | accepted | 2026-10-05 |
 | [ADR-0006](ADR-0006-ejes-versionado-independientes.md) | Ejes de versionado independientes | accepted | 2026-10-05 |
-| [ADR-0007](ADR-0007-canonicalizacion-y-hashing.md) | Canonicalización y hashing | accepted | 2026-10-05 |
+| [ADR-0007](ADR-0007-canonicalizacion-y-hashing.md) | Canonicalización y hashing | proposed | 2026-10-05 |
 | [ADR-0008](ADR-0008-catalogos-firmados-y-procedencia.md) | Catálogos firmados y procedencia | accepted | 2026-10-05 |
 | [ADR-0009](ADR-0009-actualizacion-firmada-mvp.md) | Actualización firmada en MVP | accepted | 2026-10-05 |
 
@@ -33,6 +33,7 @@ Propietario, Requisitos) y las secciones de `templates/adr.md`. Estados posibles
 
 ## Decisiones aún propuestas
 
-No hay ADR en estado `proposed` a 2026-10-05. Las decisiones P1 abiertas (DEC-009 fuentes, DEC-010
-telemetría) se rigen por `docs/00-governance/decision-register.md` y no requieren ADR hasta su
-implementación.
+ADR-0007 (canonicalización y hashing) está en estado `proposed`: RFC 8785 sigue siendo candidata y
+su conformidad exacta permanece «no verificada — fuente primaria pendiente», por lo que no puede
+figurar como `accepted`. Las decisiones P1 abiertas (DEC-009 fuentes, DEC-010 telemetría) se rigen
+por `docs/00-governance/decision-register.md` y no requieren ADR hasta su implementación.

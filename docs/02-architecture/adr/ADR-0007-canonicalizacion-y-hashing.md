@@ -1,6 +1,6 @@
 # ADR-0007: Canonicalización y hashing
 
-- Estado: accepted
+- Estado: proposed
 - Fecha: 2026-10-05
 - Propietario: Arquitectura
 - Requisitos: FR-MANIFEST-001, FR-RESOLVE-001, FR-EXPORT-001, NFR-DET-001
@@ -25,6 +25,8 @@ Documentos de apoyo: `docs/03-data/canonicalization.md`, `docs/03-data/domain-mo
 3. **Formato binario propietario**: cerrado, difícil de auditar.
 
 ## Decisión propuesta
+
+> Estado propuesto hasta verificar RFC 8785 contra fuente primaria.
 
 1. La **serialización canónica JSON** sigue un algoritmo canónico; **RFC 8785 (JCS) es la candidata** a confirmar contra fuente primaria antes de implementarlo (hoy **no verificado — fuente primaria pendiente**).
 2. El **digest es SHA-256**, con etiqueta de dominio: `archmaker:manifest:v1\0<payload>`. La etiqueta desambigua el contexto y versiona el esquema de hash.

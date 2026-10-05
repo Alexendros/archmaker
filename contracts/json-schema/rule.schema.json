@@ -279,7 +279,7 @@
       }
     },
     "requiredExpr": {
-      "description": "True when the reference has cardinality at least one.",
+      "description": "Stable operator (ratified 2026-10-05): true when the reference has cardinality at least one.",
       "type": "object",
       "additionalProperties": false,
       "required": [
@@ -305,7 +305,7 @@
       }
     },
     "countGtExpr": {
-      "description": "Legacy operator (CON-002): true when the reference count is greater than the integer literal. count_gt(ValueRef, integer).",
+      "description": "Legacy operator, retained only to migrate v5.1 documents: the v5.1 migration rewrites count_gt(ValueRef, integer) to count with a threshold. It is NOT executed by the new runtime.",
       "type": "object",
       "additionalProperties": false,
       "required": [
@@ -342,7 +342,7 @@
       }
     },
     "targetIsExpr": {
-      "description": "True when the active target matches the identifier.",
+      "description": "Proposed operator, deferred to v1: true when the active target matches the identifier. Not used in the MVP.",
       "type": "object",
       "additionalProperties": false,
       "required": [

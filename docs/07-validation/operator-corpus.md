@@ -25,12 +25,12 @@
 | `eq` | `(T,T)` | bool | required | el de la regla contenedora |
 | `ne` | `(T,T)` | bool | required | el de la regla contenedora |
 | `in` | `(T,List<T>)` | bool | required | el de la regla contenedora |
-| `required` | `ValueRef` | bool | proposed | `AM-RULE-004` / `AM-RULE-005` |
+| `required` | `ValueRef` | bool | required | `AM-RULE-004` / `AM-RULE-005` |
 | `selected` | `Id` | bool | proposed | `AM-RULE-006` |
 | `count` | `ValueRef` | integer | proposed | `AM-RULE-001` |
 | `provides` | `Capability` | bool | proposed | `AM-RULE-007` |
-| `count_gt` | `(ValueRef,integer)` | bool | **legacy-pending (CON-002)** | `AM-RULE-001` |
-| `target_is` | `TargetId` | bool | proposed | `AM-RULE-003` |
+| `count_gt` | `(ValueRef,integer)` | bool | **legacy (solo migración)** | `AM-RULE-001` |
+| `target_is` | `TargetId` | bool | proposed (diferido a v1) | `AM-RULE-003` |
 | *(desconocido)* | — | — | no soportado | `AM-RULE-009` |
 
 ---
@@ -103,7 +103,7 @@
 
 ## required
 
-- **Descripción formal:** `required(ValueRef) → bool` (proposed); verdadero si la cardinalidad de la referencia es **≥ 1**. Declarado en `operator-spec.md` como `proposed`; se usa en las reglas de cardinalidad mínima (RULE-KERNEL-001, RULE-BROWSER-001). Su promoción a operador estable queda pendiente de ratificación.
+- **Descripción formal:** `required(ValueRef) → bool` (required); verdadero si la cardinalidad de la referencia es **≥ 1**. Declarado en `operator-spec.md` como `required` (ratificado 2026-10-05); se usa en las reglas de cardinalidad mínima (RULE-KERNEL-001, RULE-BROWSER-001).
 - **Ejemplo ilustrativo (equivalente a RULE-KERNEL-001):**
   ```json
   { "when": { "not": { "required": "kernel" } } }
@@ -147,21 +147,21 @@
 
 ## count_gt
 
-- **Estado:** **`legacy-pending` (CON-002).** Operador heredado no definido en el schema original; se conserva solo por compatibilidad con v5.1.
+- **Estado:** **legacy (solo migración).** Operador heredado no definido en el schema original, conservado únicamente para migrar documentos heredados v5.1. La migración v5.1 lo **reescribe a `count` con umbral**; **no se ejecuta en el runtime nuevo**.
 - **Descripción formal:** `count_gt(ValueRef, integer) → bool`; equivalente a `gt(count(ValueRef), Literal(integer))`.
-- **Ejemplo ilustrativo (RULE-COMP-001):**
+- **Ejemplo ilustrativo (RULE-COMP-001, forma heredada v5.1):**
   ```json
   { "when": { "count_gt": ["compositor", 1] } }
   ```
 - **Satisface (regla dispara):** `count(compositor) = 2` → `2 > 1`.
 - **Viola (no dispara):** `count(compositor) = 1`.
-- **Diagnóstico esperado:** `AM-RULE-001`, `error` (bloqueante). Requiere definir AST y tipos antes de implementarlo (CON-002).
+- **Diagnóstico esperado:** `AM-RULE-001`, `error` (bloqueante). Tras la reescritura a `count` con umbral, el runtime nuevo evalúa la forma normalizada y nunca ejecuta `count_gt` directamente.
 
 ## target_is
 
-- **Estado:** **proposed.** No usado por ninguna regla v5.1.
+- **Estado:** **proposed, diferido a v1.** No usado por ninguna regla v5.1 y **fuera del MVP**.
 - **Descripción formal:** `target_is(TargetId) → bool`; verdadero si el target de exportación/ejecución coincide con el indicado.
-- **Ejemplo ilustrativo:**
+- **Ejemplo ilustrativo (v1):**
   ```json
   { "when": { "target_is": "archinstall" } }
   ```
