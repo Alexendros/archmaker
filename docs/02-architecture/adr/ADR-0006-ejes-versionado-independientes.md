@@ -1,6 +1,6 @@
 # ADR-0006: Ejes de versionado independientes
 
-- Estado: proposed
+- Estado: accepted
 - Fecha: 2026-10-05
 - Propietario: Arquitectura
 - Requisitos: FR-CAT-001, FR-MANIFEST-001, FR-EXPORT-001, FR-RUN-001, NFR-DET-001, NFR-MIG-001

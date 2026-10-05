@@ -1,6 +1,6 @@
 # ADR-0005: Contratos en JSON Schema Draft 2020-12 con `additionalProperties: false`
 
-- Estado: proposed
+- Estado: accepted
 - Fecha: 2026-10-05
 - Propietario: Arquitectura
 - Requisitos: FR-DRAFT-001, FR-IMPORT-001, FR-MANIFEST-001, NFR-MIG-001, NFR-DET-001

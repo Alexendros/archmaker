@@ -36,7 +36,7 @@
 | `c4/README.md` | DOC-ARCH-C4-001 | draft |
 | `module-map.md` (15 crates) | DOC-ARCH-MOD-001 | draft |
 | `dependency-rules.md` | DOC-ARCH-DEP-001 | draft |
-| `adr/ADR-0001..ADR-0008` | ADR-0001..0008 | proposed |
+| `adr/ADR-0001..ADR-0009` | ADR-0001..0009 | accepted |
 
 ## 03 — Datos
 

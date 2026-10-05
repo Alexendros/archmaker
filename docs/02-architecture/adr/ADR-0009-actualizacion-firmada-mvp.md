@@ -1,6 +1,6 @@
 # ADR-0009: Actualización firmada en el MVP (Tauri updater)
 
-- Estado: proposed
+- Estado: accepted
 - Fecha: 2026-10-05
 - Propietario: Release
 - Requisitos: NFR-SEC-001, NFR-OFF-001, NFR-OBS-001

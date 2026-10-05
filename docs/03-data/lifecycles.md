@@ -460,8 +460,8 @@ Toda transición de fallo usa `CoreError`/`Diagnostic` tipados (nunca string lib
 ## Fuentes primarias pendientes
 
 - Conformidad exacta con **RFC 8785 (JCS)**: candidata a algoritmo canónico; **no verificado — fuente primaria pendiente** (`ADR-0007`).
-- Conformidad con **`SRC-008`** (NIST SSDF/SLSA/Sigstore) y firma offline de catálogos: **no verificado — fuente primaria pendiente** (`ADR-0008`, **DEC-006**).
-- Transporte y modelo de elevación del runner: **DECISION-REQUIRED** (**DEC-004**); la opción no se considera verificada hasta su resolución (`ADR-0004`).
+- Conformidad con **`SRC-008`** (NIST SSDF/SLSA/Sigstore) y firma offline de catálogos: **no verificado — fuente primaria pendiente** (`ADR-0008`); la política ya está fijada por **DEC-006** (aceptada 2026-10-05).
+- Transporte y modelo de elevación del runner: **DEC-004 aceptada** (Unix socket + auth de sesión, 2026-10-05); la implementación no se considera verificada hasta su prueba (`ADR-0004`).
 - Estados de `DM-CATALOG`, `DM-PRESET`, `DM-ARTIFACT` y `DM-POLICY`: **derivados** en este documento; requieren revisión del propietario.
 - Eventos `manifest.*` y `policy.*`: **gap** respecto de `errors-events.md`.
 - `expired` en `DM-SESSION`: **derivado** de la regla de expiración de `runner-protocol.md`.
@@ -469,5 +469,5 @@ Toda transición de fallo usa `CoreError`/`Diagnostic` tipados (nunca string lib
 ## Decisiones humanas pendientes
 
 - Aprobar o corregir los estados derivados de `DM-CATALOG`, `DM-PRESET`, `DM-ARTIFACT` y `DM-POLICY`.
-- Resolver **DEC-006** (política de firma de catálogo) y **DEC-004** (transporte/elevación del runner) antes de elevar este documento a `in-review`.
+- **DEC-006** y **DEC-004** quedaron resueltas el 2026-10-05; falta la verificación de implementación antes de elevar este documento a `in-review`.
 - Decidir si se añaden eventos `manifest.*`/`policy.*` al catálogo de `errors-events.md`.

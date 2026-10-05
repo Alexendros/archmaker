@@ -1,6 +1,6 @@
 # ADR-0001: Rust es autoridad semántica
 
-- Estado: proposed
+- Estado: accepted
 - Fecha: 2026-10-05
 
 ## Decisión

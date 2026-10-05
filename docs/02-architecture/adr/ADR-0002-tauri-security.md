@@ -1,6 +1,6 @@
 # ADR-0002: Tauri deny-by-default
 
-- Estado: proposed
+- Estado: accepted
 - Fecha: 2026-10-05
 
 ## Decisión

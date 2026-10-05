@@ -1,6 +1,6 @@
 # ADR-0003: Modelo canónico separado del target de instalación
 
-- Estado: proposed
+- Estado: accepted
 - Fecha: 2026-10-05
 - Propietario: Arquitectura
 - Requisitos: FR-CAT-001, FR-MANIFEST-001, FR-EXPORT-001, NFR-PORT-001, NFR-DET-001

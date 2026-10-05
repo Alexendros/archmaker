@@ -1,6 +1,6 @@
 # ADR-0007: Canonicalización y hashing
 
-- Estado: proposed
+- Estado: accepted
 - Fecha: 2026-10-05
 - Propietario: Arquitectura
 - Requisitos: FR-MANIFEST-001, FR-RESOLVE-001, FR-EXPORT-001, NFR-DET-001

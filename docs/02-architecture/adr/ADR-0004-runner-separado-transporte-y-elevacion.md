@@ -1,6 +1,6 @@
 # ADR-0004: Runner como proceso separado; transporte y elevación fuera del WebView
 
-- Estado: proposed
+- Estado: accepted
 - Fecha: 2026-10-05
 - Propietario: Seguridad
 - Requisitos: FR-RUN-001, NFR-SEC-001, NFR-OBS-001
