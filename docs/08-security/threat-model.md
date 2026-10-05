@@ -13,3 +13,9 @@
 | THR-UPD-001 | Update comprometida. | Release/client | **En alcance MVP (DEC-007).** Canal firmado (DEC-006), HTTPS, pin de canal, verificación de firma, rollback y fail-open offline; ver ADR-0009. Cerrable antes de MVP-0. |
 | THR-SUP-001 | Dependencia comprometida. | Build | Lock, audit, SBOM y provenance. |
 | THR-TEN-001 | Cruce de tenant. | Enterprise | Tenant from claims, RLS/tests y audit. |
+
+## Notas (2026-10-05)
+
+- Los controles de THR-RUN-001, THR-RUN-002 y THR-FS-001 quedan ligados a DEC-004 (proceso separado, transporte Unix socket + autenticación de sesión y elevación fuera del WebView; ver `privilege-model.md` y ADR-0004).
+- THR-UPD-001 queda ligado a ADR-0009 (canal firmado, fail-open offline) y a DEC-006/DEC-007.
+- THR-CAT-001 y THR-SUP-001 quedan ligados a DEC-006 (firma/procedencia) y ADR-0008.

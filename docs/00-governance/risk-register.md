@@ -12,3 +12,10 @@
 | RSK-008 | Elevación insegura del runner. | M | C | P0 | Proceso separado y ADR de autenticación/elevación. | Seguridad | G8 |
 | RSK-009 | Design system se degrada al modularizar. | M | M | P1 | Visual regression y tokens canónicos. | Diseño | G6/G9 |
 | RSK-010 | Enterprise contamina el MVP. | M | H | P1 | Puertos opcionales y módulos separados. | Arquitectura | G3 |
+
+## Estado de tratamiento (2026-10-05)
+
+- RSK-001 (borrado de disco equivocado): control decidido y documentado (DEC-004; `privilege-model.md`; ADR-0004). Mitigado por diseño; verificación de implementación pendiente. No cerrado hasta evidencia.
+- RSK-002 (ejecución arbitraria desde catálogo/UI): control decidido y documentado (DEC-003 adapter versionado; catálogo sin comandos; operaciones enum; ADR-0004). Mitigado por diseño; verificación pendiente.
+- RSK-008 (elevación insegura del runner): control decidido y documentado (DEC-004, transporte Unix socket + autenticación de sesión y elevación fuera del WebView; `privilege-model.md`). Mitigado por diseño; verificación pendiente.
+- Resto de riesgos (RSK-003..RSK-007, RSK-009, RSK-010): sin cambio de estado en esta revisión.
