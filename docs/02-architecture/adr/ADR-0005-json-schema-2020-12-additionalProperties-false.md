@@ -1,3 +1,18 @@
+---
+id: ADR-0005
+phase: MVP
+priority: P0
+documentStatus: accepted
+approvalStatus: approved
+implementationStatus: not-started
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - architecture
+reviewers:
+  - independent-reviewer
+---
+
 # ADR-0005: Contratos en JSON Schema Draft 2020-12 con `additionalProperties: false`
 
 - Estado: accepted

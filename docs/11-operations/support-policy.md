@@ -1,3 +1,18 @@
+---
+id: DOC-OPS-SUP-001
+phase: MVP
+priority: P1
+documentStatus: in-review
+approvalStatus: pending
+implementationStatus: complete
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - release
+reviewers:
+  - independent-reviewer
+---
+
 # Política de soporte
 
 ## Propuesta

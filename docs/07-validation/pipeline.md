@@ -1,3 +1,18 @@
+---
+id: DOC-VAL-PIPE-001
+phase: MVP
+priority: P0
+documentStatus: in-review
+approvalStatus: pending
+implementationStatus: complete
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - quality
+reviewers:
+  - independent-reviewer
+---
+
 # Pipeline de validación
 
 1. Límite de bytes, nesting, collections y strings.

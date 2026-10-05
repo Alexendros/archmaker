@@ -1,3 +1,18 @@
+---
+id: DOC-GOV-DEC-001
+phase: planning
+priority: P0
+documentStatus: in-review
+approvalStatus: pending
+implementationStatus: partial
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - governance
+reviewers:
+  - independent-reviewer
+---
+
 # Registro de decisiones
 
 - ID: DOC-GOV-DEC-001

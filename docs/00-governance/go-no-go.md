@@ -1,3 +1,18 @@
+---
+id: DOC-GOV-GNG-001
+phase: planning
+priority: P0
+documentStatus: draft
+approvalStatus: pending
+implementationStatus: partial
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - architecture
+reviewers:
+  - independent-reviewer
+---
+
 # Resultado Go/No-Go — planning-v1
 
 - Documento: DOC-GOV-GNG-001 · Estado: draft · Propietario: Arquitectura · Fecha: 2026-10-05

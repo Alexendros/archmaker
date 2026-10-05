@@ -1,3 +1,18 @@
+---
+id: ADR-0007
+phase: MVP
+priority: P0
+documentStatus: in-review
+approvalStatus: pending
+implementationStatus: not-started
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - architecture
+reviewers:
+  - independent-reviewer
+---
+
 # ADR-0007: Canonicalización y hashing
 
 - Estado: proposed

@@ -1,3 +1,18 @@
+---
+id: DOC-IF-RUN-001
+phase: v1
+priority: P0
+documentStatus: in-review
+approvalStatus: pending
+implementationStatus: complete
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - architecture
+reviewers:
+  - independent-reviewer
+---
+
 # Runner protocol v1
 
 ## Envelope

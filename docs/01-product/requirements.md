@@ -1,3 +1,18 @@
+---
+id: DOC-PROD-REQ-001
+phase: MVP
+priority: P0
+documentStatus: accepted
+approvalStatus: approved
+implementationStatus: not-started
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - product
+reviewers:
+  - independent-reviewer
+---
+
 # Requisitos
 
 - ID: DOC-PROD-REQ-001

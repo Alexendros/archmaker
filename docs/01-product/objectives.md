@@ -1,3 +1,18 @@
+---
+id: DOC-PROD-OBJ-001
+phase: MVP
+priority: P0
+documentStatus: accepted
+approvalStatus: approved
+implementationStatus: complete
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - product
+reviewers:
+  - independent-reviewer
+---
+
 # Objetivos de producto
 
 - ID: DOC-PROD-OBJ-001

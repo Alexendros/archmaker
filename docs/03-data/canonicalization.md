@@ -1,3 +1,18 @@
+---
+id: DOC-DATA-CANON-001
+phase: MVP
+priority: P0
+documentStatus: in-review
+approvalStatus: pending
+implementationStatus: complete
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - data
+reviewers:
+  - independent-reviewer
+---
+
 # Canonicalización y hashing
 
 ## Objetivo

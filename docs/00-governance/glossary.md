@@ -1,3 +1,18 @@
+---
+id: DOC-GOV-001
+phase: planning
+priority: P1
+documentStatus: draft
+approvalStatus: pending
+implementationStatus: partial
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - architecture
+reviewers:
+  - independent-reviewer
+---
+
 # Glosario normativo
 
 - ID: DOC-GOV-001

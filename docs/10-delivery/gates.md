@@ -1,3 +1,22 @@
+---
+id: DOC-DEL-GATES-001
+phase: planning
+priority: P0
+documentStatus: in-review
+approvalStatus: pending
+implementationStatus: partial
+verificationStatus: partial
+releaseStatus: ineligible
+owners:
+  - release
+reviewers:
+  - independent-reviewer
+dependsOn:
+  - id: ADR-0007
+    expectedDocumentStatus: accepted
+    expectedApprovalStatus: approved
+---
+
 # Gates G0–G10
 
 Evaluación: 2026-10-05 (Etapa E; tras aceptación de producto/arquitectura/datos).

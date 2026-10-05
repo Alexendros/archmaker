@@ -1,3 +1,18 @@
+---
+id: ADR-0008
+phase: MVP
+priority: P0
+documentStatus: accepted
+approvalStatus: approved
+implementationStatus: not-started
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - security
+reviewers:
+  - independent-reviewer
+---
+
 # ADR-0008: Catálogos firmados y procedencia
 
 - Estado: accepted

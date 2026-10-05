@@ -1,3 +1,18 @@
+---
+id: DOC-ARCH-C4-001
+phase: MVP
+priority: P0
+documentStatus: accepted
+approvalStatus: approved
+implementationStatus: complete
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - architecture
+reviewers:
+  - independent-reviewer
+---
+
 # C4
 
 - ID: DOC-ARCH-C4-001

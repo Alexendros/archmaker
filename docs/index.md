@@ -1,3 +1,18 @@
+---
+id: DOC-GOV-IDX-001
+phase: planning
+priority: P0
+documentStatus: in-review
+approvalStatus: pending
+implementationStatus: complete
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - governance
+reviewers:
+  - independent-reviewer
+---
+
 # ArchMaker — Índice documental (planning-v1)
 
 - Estado del plan: in-review · Gate global: **No-Go** · Baseline: planning-v1 · Corte: 2026-10-05

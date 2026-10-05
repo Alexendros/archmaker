@@ -1,3 +1,18 @@
+---
+id: DOC-VAL-CORPUS-001
+phase: MVP
+priority: P0
+documentStatus: draft
+approvalStatus: pending
+implementationStatus: partial
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - quality
+reviewers:
+  - independent-reviewer
+---
+
 # Corpus de operadores
 
 - ID: DOC-VAL-CORPUS-001

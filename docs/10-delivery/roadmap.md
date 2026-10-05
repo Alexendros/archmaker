@@ -1,3 +1,18 @@
+---
+id: DOC-DEL-RMAP-001
+phase: planning
+priority: P0
+documentStatus: in-review
+approvalStatus: pending
+implementationStatus: complete
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - release
+reviewers:
+  - independent-reviewer
+---
+
 # Roadmap
 
 ## Predesarrollo

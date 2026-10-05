@@ -1,3 +1,18 @@
+---
+id: DOC-ARCH-ADR-001
+phase: MVP
+priority: P0
+documentStatus: in-review
+approvalStatus: pending
+implementationStatus: complete
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - architecture
+reviewers:
+  - independent-reviewer
+---
+
 # Registro de decisiones de arquitectura (ADR)
 
 - Estado: in-review

@@ -1,3 +1,18 @@
+---
+id: DOC-GOV-SRC-001
+phase: planning
+priority: P0
+documentStatus: in-review
+approvalStatus: pending
+implementationStatus: partial
+verificationStatus: partial
+releaseStatus: ineligible
+owners:
+  - governance
+reviewers:
+  - independent-reviewer
+---
+
 # Registro de fuentes
 
 ID `DOC-GOV-SRC-001` · Estado `in-review` · Propietario Gobierno · Última revisión 2026-10-05.

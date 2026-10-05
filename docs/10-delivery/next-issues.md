@@ -1,3 +1,18 @@
+---
+id: DOC-DEL-ISS-001
+phase: planning
+priority: P0
+documentStatus: draft
+approvalStatus: pending
+implementationStatus: partial
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - release
+reviewers:
+  - independent-reviewer
+---
+
 # Próximos issues (orden por dependencia)
 
 - Documento: DOC-DEL-ISS-001 · Estado: draft · Propietario: Delivery · Fecha: 2026-10-05

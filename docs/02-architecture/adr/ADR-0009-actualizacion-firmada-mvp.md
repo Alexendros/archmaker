@@ -1,3 +1,18 @@
+---
+id: ADR-0009
+phase: MVP
+priority: P1
+documentStatus: accepted
+approvalStatus: approved
+implementationStatus: not-started
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - release
+reviewers:
+  - independent-reviewer
+---
+
 # ADR-0009: Actualización firmada en el MVP (Tauri updater)
 
 - Estado: accepted

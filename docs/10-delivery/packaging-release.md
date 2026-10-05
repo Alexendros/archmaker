@@ -1,3 +1,18 @@
+---
+id: DOC-DEL-PKG-001
+phase: MVP
+priority: P1
+documentStatus: draft
+approvalStatus: pending
+implementationStatus: partial
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - release
+reviewers:
+  - independent-reviewer
+---
+
 # Packaging y release
 
 - Estado: draft

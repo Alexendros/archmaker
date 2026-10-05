@@ -1,3 +1,18 @@
+---
+id: DOC-GOV-TRC-001
+phase: planning
+priority: P0
+documentStatus: in-review
+approvalStatus: pending
+implementationStatus: partial
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - governance
+reviewers:
+  - independent-reviewer
+---
+
 # Matriz de trazabilidad
 
 | Objetivo | Journey/UC | Requisito | Arquitectura/datos | UX/API | Validación/amenaza | Prueba | Release |

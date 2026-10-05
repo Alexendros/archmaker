@@ -1,3 +1,18 @@
+---
+id: DOC-PROD-PER-001
+phase: MVP
+priority: P1
+documentStatus: accepted
+approvalStatus: approved
+implementationStatus: complete
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - product
+reviewers:
+  - independent-reviewer
+---
+
 # Personas
 
 - ID: DOC-PROD-PER-001

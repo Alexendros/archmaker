@@ -1,3 +1,18 @@
+---
+id: DOC-PROD-JNY-001
+phase: MVP
+priority: P0
+documentStatus: accepted
+approvalStatus: approved
+implementationStatus: complete
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - product
+reviewers:
+  - independent-reviewer
+---
+
 # Journeys
 
 - ID: DOC-PROD-JNY-001

@@ -1,3 +1,19 @@
+---
+id: DOC-IF-TAURI-001
+phase: MVP
+priority: P0
+documentStatus: draft
+approvalStatus: pending
+implementationStatus: partial
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - architecture
+  - security
+reviewers:
+  - independent-reviewer
+---
+
 # Comandos Tauri del MVP
 
 - ID: DOC-IF-TAURI-001

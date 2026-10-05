@@ -1,3 +1,18 @@
+---
+id: DOC-GOV-RSK-001
+phase: planning
+priority: P0
+documentStatus: in-review
+approvalStatus: pending
+implementationStatus: partial
+verificationStatus: partial
+releaseStatus: ineligible
+owners:
+  - security
+reviewers:
+  - independent-reviewer
+---
+
 # Registro de riesgos
 
 | ID | Riesgo | Prob. | Impacto | Nivel | Control | Propietario | Gate |

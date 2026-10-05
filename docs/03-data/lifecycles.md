@@ -1,3 +1,18 @@
+---
+id: DOC-DATA-LIFE-001
+phase: MVP
+priority: P0
+documentStatus: accepted
+approvalStatus: approved
+implementationStatus: complete
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - data
+reviewers:
+  - independent-reviewer
+---
+
 # Ciclos de vida de agregados
 
 - ID: DOC-DATA-LIFE-001

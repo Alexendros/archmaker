@@ -1,3 +1,18 @@
+---
+id: DOC-UX-COMP-001
+phase: MVP
+priority: P1
+documentStatus: in-review
+approvalStatus: pending
+implementationStatus: complete
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - ux
+reviewers:
+  - independent-reviewer
+---
+
 # Contratos de componentes
 
 Cada componente interactivo debe documentar: propósito, props, slots, variantes, estados, teclado, ARIA, focus, tokens, responsive behavior, reduced motion, empty/loading/error y tests.

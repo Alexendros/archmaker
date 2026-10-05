@@ -1,3 +1,18 @@
+---
+id: DOC-RES-EVID-001
+phase: planning
+priority: P1
+documentStatus: in-review
+approvalStatus: pending
+implementationStatus: partial
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - governance
+reviewers:
+  - independent-reviewer
+---
+
 # Plan de evidencia
 
 ## Prioridad P0

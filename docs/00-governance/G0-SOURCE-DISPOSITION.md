@@ -1,3 +1,22 @@
+---
+id: DOC-GOV-G0-SRC-002
+phase: planning
+priority: P0
+documentStatus: accepted
+approvalStatus: approved
+implementationStatus: complete
+verificationStatus: passed
+releaseStatus: ineligible
+owners:
+  - governance
+reviewers:
+  - independent-reviewer
+evidence:
+  - "sha256sum --check reference/v5.1/SHA256SUMS (11/11 OK)"
+  - "cmp reference/v5.1/forge_v4_final.html reference/v5.1/aliases/neubat_forge_v4_final.html"
+  - "validación JSON de ALIASES.json, UNAVAILABLE-SOURCES.json y PROVENANCE.json"
+---
+
 # Disposición G0 de fuentes v5.1
 
 ID `DOC-GOV-G0-SRC-002` · Estado `accepted` · Propietario Gobierno · Fecha 2026-10-06.

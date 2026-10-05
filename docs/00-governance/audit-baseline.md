@@ -1,3 +1,21 @@
+---
+id: DOC-GOV-AUD-001
+phase: planning
+priority: P0
+documentStatus: accepted
+approvalStatus: approved
+implementationStatus: complete
+verificationStatus: partial
+releaseStatus: ineligible
+owners:
+  - governance
+reviewers:
+  - independent-reviewer
+evidence:
+  - "git tag planning-v1-audit-baseline"
+  - "commit cf2fa70"
+---
+
 # Baseline de auditoría — planning-v1
 
 ID `DOC-GOV-AUD-001` · Estado `accepted` · Propietario Gobierno · Fecha 2026-10-06.

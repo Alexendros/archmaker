@@ -1,3 +1,18 @@
+---
+id: DOC-ARCH-MOD-001
+phase: MVP
+priority: P0
+documentStatus: accepted
+approvalStatus: approved
+implementationStatus: complete
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - architecture
+reviewers:
+  - independent-reviewer
+---
+
 # Mapa de módulos
 
 - ID: DOC-ARCH-MOD-001

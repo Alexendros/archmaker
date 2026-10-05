@@ -1,3 +1,18 @@
+---
+id: DOC-CON-JSONSCHEMA-001
+phase: MVP
+priority: P0
+documentStatus: draft
+approvalStatus: pending
+implementationStatus: partial
+verificationStatus: partial
+releaseStatus: ineligible
+owners:
+  - data
+reviewers:
+  - independent-reviewer
+---
+
 # Contratos JSON Schema
 
 Contratos del modelo canónico en **JSON Schema Draft 2020-12**. Todos los documentos están en estado **`draft`** (no `accepted`). No contienen campos ejecutables (`cmd`, hooks, shell, `pacstrap`): la ejecución es un plan tipado v1 y nunca un script.

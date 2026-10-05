@@ -1,3 +1,18 @@
+---
+id: DOC-VAL-RULES-001
+phase: MVP
+priority: P0
+documentStatus: draft
+approvalStatus: pending
+implementationStatus: partial
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - quality
+reviewers:
+  - independent-reviewer
+---
+
 # Inventario de reglas
 
 - ID: DOC-VAL-RULES-001

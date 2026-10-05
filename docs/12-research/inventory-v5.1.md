@@ -1,3 +1,18 @@
+---
+id: DOC-RES-INV-001
+phase: planning
+priority: P1
+documentStatus: draft
+approvalStatus: pending
+implementationStatus: partial
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - data
+reviewers:
+  - independent-reviewer
+---
+
 # Inventario consolidado v5.1
 
 | Campo | Valor |

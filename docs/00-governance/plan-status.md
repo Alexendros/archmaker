@@ -1,3 +1,18 @@
+---
+id: DOC-GOV-STA-001
+phase: planning
+priority: P0
+documentStatus: in-review
+approvalStatus: pending
+implementationStatus: complete
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - governance
+reviewers:
+  - independent-reviewer
+---
+
 # Estado de planificación
 
 - Estado: in-review

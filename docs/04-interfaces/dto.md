@@ -1,3 +1,18 @@
+---
+id: DOC-IF-DTO-001
+phase: MVP
+priority: P0
+documentStatus: draft
+approvalStatus: pending
+implementationStatus: partial
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - architecture
+reviewers:
+  - independent-reviewer
+---
+
 # DTO de CorePort
 
 - ID: DOC-IF-DTO-001
