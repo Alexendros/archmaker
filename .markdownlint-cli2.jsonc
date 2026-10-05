@@ -5,7 +5,8 @@
   //   MD012 blancos múltiples (corpus heredado)
   //   MD013 longitud de línea (tablas y URLs de evidencia)
   //   MD024 encabezados repetidos, salvo entre hermanos
-  //   MD031 blancos alrededor de fences (pendiente: normalizar operator-corpus.md)
+  //   MD031 blancos alrededor de fences: los ejemplos JSON de operator-corpus.md viven dentro de
+  //         ítems de lista; se permite sin blancos por decisión de formato del corpus (documentado).
   //   MD033 HTML embebido (tablas comparativas y detalles)
   //   MD060 estilo de columna de tabla (marcado por versiones recientes)
   "config": {

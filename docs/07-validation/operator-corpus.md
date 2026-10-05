@@ -7,7 +7,7 @@
 - Requisitos relacionados: FR-VALIDATE-001, FR-RESOLVE-001, FR-CAT-001
 - Sustituye/sustituido por: —
 
-> Documento `draft`. Los ejemplos JSON son **ilustrativos y no constituyen schema definitivo**. La gramática de referencia es `docs/07-validation/operator-spec.md`. Códigos `AM-*` coherentes con las familias de `docs/04-interfaces/errors-events.md` y con `rule-inventory.md`.
+> Documento `draft`. Los ejemplos JSON son **ilustrativos y no constituyen schema definitivo**. La gramática de referencia es `docs/07-validation/operator-spec.md`. Los códigos `AM-*` provienen del **catálogo canónico** de `docs/04-interfaces/errors-events.md` → «Catálogo canónico de códigos (fuente única)»; este documento no los redefine.
 
 ## Convención
 
@@ -25,7 +25,7 @@
 | `eq` | `(T,T)` | bool | required | el de la regla contenedora |
 | `ne` | `(T,T)` | bool | required | el de la regla contenedora |
 | `in` | `(T,List<T>)` | bool | required | el de la regla contenedora |
-| `required` | `ValueRef` | bool | **propuesto-provisional (no figura en operator-spec)** | `AM-RULE-004` / `AM-RULE-005` |
+| `required` | `ValueRef` | bool | proposed | `AM-RULE-004` / `AM-RULE-005` |
 | `selected` | `Id` | bool | proposed | `AM-RULE-006` |
 | `count` | `ValueRef` | integer | proposed | `AM-RULE-001` |
 | `provides` | `Capability` | bool | proposed | `AM-RULE-007` |
@@ -103,7 +103,7 @@
 
 ## required
 
-- **Descripción formal:** `required(ValueRef) → bool`; verdadero si la cardinalidad de la referencia es **≥ 1**. No figura en la tabla de `operator-spec.md`: se documenta como **propuesto-provisional** para las reglas de cardinalidad mínima (RULE-KERNEL-001, RULE-BROWSER-001) y queda **pendiente de formalizar en `operator-spec`** (decisión humana).
+- **Descripción formal:** `required(ValueRef) → bool` (proposed); verdadero si la cardinalidad de la referencia es **≥ 1**. Declarado en `operator-spec.md` como `proposed`; se usa en las reglas de cardinalidad mínima (RULE-KERNEL-001, RULE-BROWSER-001). Su promoción a operador estable queda pendiente de ratificación.
 - **Ejemplo ilustrativo (equivalente a RULE-KERNEL-001):**
   ```json
   { "when": { "not": { "required": "kernel" } } }

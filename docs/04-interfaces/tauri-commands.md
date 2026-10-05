@@ -38,12 +38,24 @@ fuera. Nomenclatura de comando propuesta en `snake_case`.
 
 **Red**: todos `No`. El MVP debe ser usable sin red (`NFR-OFF-001`, `DEC-009`, `privilege-model.md`).
 
-### Cobertura de `CorePort` pendiente de ratificación
+### Cobertura de `CorePort` (resolución propuesta)
 
-Métodos sin comando propio en la tabla anterior: `capabilities`, `loadCatalog`, `applyPreset`,
-`compareDrafts`, `planMigration`, `applyMigration`, `listExportTargets`. Deben resolverse como
-grupo (invocación interna, agrupación por pantalla o comando adicional). La selección exacta de
-**8** comandos y su agrupación es una **decisión humana** (ver Decisiones pendientes).
+Métodos sin comando propio: `capabilities`, `loadCatalog`, `applyPreset`, `compareDrafts`,
+`planMigration`, `applyMigration`, `listExportTargets`. **Resolución propuesta** (sujeta a
+ratificación humana; no es contrato `accepted`):
+
+| Método `CorePort` | Resolución propuesta | Motivo |
+|---|---|---|
+| `capabilities` | Expuesto en `product_info` | Metadatos de capacidades del core junto a versión. |
+| `loadCatalog` | Llamada interna de `create_draft` / `resolve_draft` | El catálogo embebido se carga antes de resolver; no requiere comando de ventana propio en MVP. |
+| `applyPreset` | Llamada interna de `resolve_draft` | Aplicar un preset es precondición de resolución, no comando de ventana. |
+| `compareDrafts` | Llamada interna de `import_draft` y del revisor | Se usa para mostrar el ChangeSet; no cruza la frontera como comando propio en MVP. |
+| `planMigration` | Llamada interna de `import_draft` | La UI de importación muestra el plan antes de aplicar. |
+| `applyMigration` | Llamada interna de `import_draft` | La migración se aplica dentro del flujo de importación. |
+| `listExportTargets` | Expuesto en `export_artifact` (paso previo) | La lista de targets se obtiene al abrir el exportador; sin comando separado. |
+
+Con esta agrupación el MVP expone **8 comandos** y cubre los 15 métodos `CorePort` (7 como llamadas
+internas). La alternativa «un comando por método» queda registrada como opción no elegida.
 
 ## Capabilities por ventana
 
@@ -121,8 +133,9 @@ en la fila `Tauri/WASM` de `test-matrix.md` (unit, property, golden, contract, E
 
 ## Decisiones pendientes (humanas)
 
-1. Ratificar el conjunto exacto de 8 comandos MVP y la cobertura de `loadCatalog`, `applyPreset`,
-   `compareDrafts`, `planMigration`, `applyMigration` y `listExportTargets`.
+1. Ratificar (o modificar) la **resolución propuesta** de cobertura `CorePort` de la sección
+   anterior (`capabilities`, `loadCatalog`, `applyPreset`, `compareDrafts`, `planMigration`,
+   `applyMigration`, `listExportTargets`).
 2. Ratificar el esquema de identificadores de permiso y el mapeo a permissions Tauri tras capturar
    `SRC-004`.
 3. Ratificar los ámbitos de scope y la lista de rutas sensibles denegadas.

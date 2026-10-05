@@ -12,6 +12,7 @@
 | `eq` | `(T,T)` | bool | required |
 | `ne` | `(T,T)` | bool | required |
 | `in` | `(T,List<T>)` | bool | required |
+| `required` | `ValueRef` | bool | proposed |
 | `selected` | `Id` | bool | proposed |
 | `count` | `ValueRef` | integer | proposed |
 | `count_gt` | `(ValueRef,integer)` | bool | legacy-pending |

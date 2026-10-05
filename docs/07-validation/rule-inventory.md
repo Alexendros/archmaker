@@ -15,7 +15,7 @@
 |---|---|---|---|---|---|
 | RULE-COMP-001 | `validation-rules.json` | `count_gt(compositor,1)` | block | Formalizar cardinalidad en dominio; conservar diagnóstico | 0,1,2 selecciones |
 | RULE-DM-001 | v5.1 | compositor=gnome | change dm=gdm | Derivación explicable/reversible según policy | GNOME/no GNOME/manual conflict |
-| RULE-GPU-001 | v5.1 | gpu=nvidia AND compositor=sway | change sin target | Incompleta; evidence-required | NVIDIA/Sway permutations |
+| RULE-GPU-001 | v5.1 | gpu=nvidia AND compositor=sway | change sin target | **No implementable** (evidencia pendiente SRC-002/SRC-003) | NVIDIA/Sway permutations |
 | RULE-KERNEL-001 | App.tsx | ningún kernel | block | Requisito de cardinalidad | none/one/multiple |
 | RULE-BROWSER-001 | App.tsx | ningún browser | suggest | No bloqueante | none/one |
 | RULE-PKG-001 | pendiente (SRC-002/SRC-003) | `selected(pkg)` sin `provides` | — (nueva) | No verificado — fuente primaria pendiente | disponibilidad/no disponibilidad |
@@ -24,19 +24,9 @@
 
 ## Convención de códigos de diagnóstico
 
-Todas las fichas emiten `Diagnostic` dentro de las familias declaradas en `docs/04-interfaces/errors-events.md`. Para esta documentación `draft` se reservan códigos de la familia `AM-RULE` (evaluación de reglas, etapa 8 de `pipeline.md`); un conflicto detectado por una regla y resuelto en la etapa 9 puede reportarse con la familia `AM-RES`. La asignación numérica exacta queda pendiente de catálogo y **no** es un contrato aceptado.
+Todas las fichas emiten `Diagnostic` dentro de las familias declaradas en `docs/04-interfaces/errors-events.md`. La **asignación numérica canónica** de los códigos `AM-RULE-00x` usados por este inventario vive en `docs/04-interfaces/errors-events.md` → «Catálogo canónico de códigos (fuente única)»; este documento **no** redefine códigos. Para esta documentación `draft` se reservan códigos de la familia `AM-RULE` (evaluación de reglas, etapa 8 de `pipeline.md`); un conflicto detectado por una regla y resuelto en la etapa 9 puede reportarse con la familia `AM-RES`. La asignación **no** es un contrato `accepted`.
 
-| Código | Mensaje | Severidad | Bloqueante |
-|---|---|---|---|
-| `AM-RULE-001` | cardinalidad de compositor excedida | error | sí |
-| `AM-RULE-002` | derivación de `dm` aplicada | info | no |
-| `AM-RULE-003` | conflicto GPU/compositor sin resolución | error | sí (provisional) |
-| `AM-RULE-004` | cardinalidad de kernel inválida | error | sí |
-| `AM-RULE-005` | ausencia de navegador | warning | no |
-| `AM-RULE-006` | disponibilidad de paquete no verificada | warning | no |
-| `AM-RULE-007` | conflicto kernel/filesystem | error | sí |
-| `AM-RULE-008` | identidad de paquete duplicada | error | sí |
-| `AM-RULE-009` | operador de regla no soportado | error | sí |
+Códigos referenciados por las fichas de este inventario: `AM-RULE-001` … `AM-RULE-009` (ver catálogo canónico en `errors-events.md`).
 
 ## Ficha obligatoria
 
@@ -94,9 +84,10 @@ Cada regla futura declara ID, fuente, tipos, condición, prioridad, efecto, seve
 | Efecto | `change` heredado **sin `target`** (incompleto) |
 | Diagnóstico | `AM-RULE-003` |
 | Severidad | error |
-| Bloqueante | sí (provisional) |
+| Bloqueante | n/a — no implementable |
+| Estado de implementación | **No implementable** hasta disponer de evidencia primaria (SRC-002/SRC-003) que defina el `target` del cambio o el conflicto explícito. |
 | Remedio / sugerencia | `evidence-required`: definir el cambio efectivo o el conflicto explícito. **No verificado — fuente primaria pendiente (SRC-002/SRC-003)**. |
-| Fase | MVP |
+| Fase | deferred (evidencia pendiente SRC-002/SRC-003) |
 | Interacciones | RULE-COMP-001; resolución de capabilities (etapa 9). |
 | Prueba positiva | `gpu = nvidia` y `compositor = sway` con cambio definido → diagnóstico trazable. |
 | Prueba negativa | `gpu = nvidia` y `compositor = sway` sin `target` ni conflicto → regla incompleta, no evaluable. |
