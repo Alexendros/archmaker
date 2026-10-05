@@ -7,7 +7,7 @@
 
 ## Contexto
 
-La instalación (v1) implica privilegio elevado y operaciones destructivas. El WebView no puede controlar root: `THR-RUN-001` describe ese riesgo y `RSK-008` la elevación insegura. El modelo de privilegios exige que la elevación ocurra fuera del contenido WebView, que el runner autentique peer y sesión, que las confirmaciones destructivas expiren y se liguen a hashes y que los cambios de inventario invaliden el plan. El protocolo v1 ya define un envelope tipado, una máquina de estados y comandos allowlisted. La decisión DEC-004 fija las opciones de transporte, aún abiertas.
+La instalación (v1) implica privilegio elevado y operaciones destructivas. El WebView no puede controlar root: `THR-RUN-001` describe ese riesgo y `RSK-008` la elevación insegura. El modelo de privilegios exige que la elevación ocurra fuera del contenido WebView, que el runner autentique peer y sesión, que las confirmaciones destructivas expiren y se liguen a hashes y que los cambios de inventario invaliden el plan. El protocolo v1 ya define un envelope tipado, una máquina de estados y comandos allowlisted. La decisión DEC-004 fijó el transporte el 2026-10-05: **Unix socket con autenticación de sesión**, con elevación fuera del WebView.
 
 Documentos de apoyo: `docs/04-interfaces/runner-protocol.md`, `docs/08-security/privilege-model.md`, `docs/08-security/threat-model.md`, `docs/03-data/domain-model.md` (`DM-PLAN`, `DM-SESSION`).
 
@@ -30,7 +30,7 @@ Documentos de apoyo: `docs/04-interfaces/runner-protocol.md`, `docs/08-security/
 
 1. El **runner es un proceso separado** que recibe un `InstallationPlan` inmutable, confirmado por **hash de plan y de manifest**, y ejecuta únicamente **operaciones allowlisted** (`enum`). Nunca interpreta scripts, catálogo ni HTML.
 2. El **transporte y la elevación quedan fuera del WebView**. La elevación se realiza por un componente dedicado fuera del contenido web, conforme al modelo de privilegios.
-3. El **transporte definitivo queda marcado como `DECISION-REQUIRED` (DEC-004)**. Candidata recomendada: **Unix socket + autenticación de sesión**; alternativas stdio sidecar y D-Bus permanecen abiertas hasta la decisión humana.
+3. El **transporte es Unix socket con autenticación de sesión** (DEC-004 aceptada el 2026-10-05). Las alternativas stdio sidecar y D-Bus quedan descartadas para v1.
 4. La confirmación destructiva expira y se liga a los hashes; un cambio de inventario invalida el plan.
 
 Este ADR es referenciado por `docs/00-governance/traceability-matrix.md` (OBJ-005 / `DM-PLAN`).
@@ -40,7 +40,7 @@ Este ADR es referenciado por `docs/00-governance/traceability-matrix.md` (OBJ-00
 - El runner es auditable y sustituible sin exponer privilegios al WebView.
 - El protocolo tipado (`runner-protocol.md`) es la única frontera de ejecución.
 - Se asume coste de empaquetado/distribución del proceso y de su ciclo de vida (arranque, sesión, expiración).
-- La elección de transporte afecta empaquetado, sandbox y pruebas; permanece pendiente.
+- La elección de transporte (Unix socket + autenticación de sesión) afecta empaquetado, sandbox y pruebas; fijada por DEC-004.
 
 ## Riesgos
 
@@ -54,7 +54,7 @@ Este ADR es referenciado por `docs/00-governance/traceability-matrix.md` (OBJ-00
 - `TST-RUN-001` y `VAL-PLAN`: la confirmación ligada a hash es inválida si cambia el plan o el inventario.
 - Journal append-only redactado y cancelación solo en safe points.
 - Compatibilidad de protocolo negociada antes de aceptar el manifest (`protocolVersion`).
-- La opción de transporte no se considera verificada hasta que DEC-004 se resuelva y exista fuente primaria.
+- El transporte (Unix socket + autenticación de sesión) queda verificado por DEC-004 (2026-10-05); su implementación concreta se valida en `TST-RUN-001`.
 
 ## Sustituye
 
@@ -66,4 +66,4 @@ Este ADR es referenciado por `docs/00-governance/traceability-matrix.md` (OBJ-00
 
 ## Requisitos relacionados
 
-FR-RUN-001, NFR-SEC-001, NFR-OBS-001. Depende de DEC-004. Relaciona `DM-PLAN`, `DM-SESSION`, `THR-RUN-001`, `THR-RUN-002`, `RSK-008`.
+FR-RUN-001, NFR-SEC-001, NFR-OBS-001. Resuelve DEC-004 (transporte Unix socket + autenticación de sesión). Relaciona `DM-PLAN`, `DM-SESSION`, `THR-RUN-001`, `THR-RUN-002`, `RSK-008`.

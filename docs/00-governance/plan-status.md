@@ -7,14 +7,17 @@
 
 ## Bloqueos P0
 
-- DEC-001: alcance exacto de exportación del MVP.
-- DEC-002: IDs globales o scoped.
-- DEC-003: target de instalación de v1.
-- DEC-004: transporte y elevación del runner.
-- DEC-005: licencia del repositorio y recursos visuales.
-- DEC-006: política de catálogo firmado.
-- DEC-007: estrategia de actualización de la aplicación.
-- DEC-008: targets Linux oficialmente soportados.
+Sin bloqueos P0 activos. DEC-001..DEC-008 quedaron **resueltas y aceptadas** el 2026-10-05 (ver `docs/00-governance/decision-register.md`).
+
+Consecuencias que pasan a ser obligaciones de MVP (no bloqueos de planificación):
+
+- DEC-007 (Tauri updater en MVP): `THR-UPD-001` debe cerrarse antes de MVP-0; el canal de actualización debe estar firmado (arrastra DEC-006) y ser fail-open offline (`NFR-OFF-001`).
+- DEC-008 (solo Arch x86_64): aarch64 sale del alcance; matriz de soporte y pruebas reducidas a x86_64.
+
+## Decisiones aún abiertas (P1, no bloqueantes)
+
+- DEC-009: fuentes sin CDN runtime.
+- DEC-010: telemetría (ninguna en MVP).
 
 ## Regla de avance
 
