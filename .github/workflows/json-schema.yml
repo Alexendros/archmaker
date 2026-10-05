@@ -1,0 +1,80 @@
+# json-schema — Meta-validación de contratos JSON Schema (Draft 2020-12).
+#
+# Gate cubierto:
+#   G4  Datos    -> meta-validación de schemas
+#   G5  Interfaces -> base de contratos CorePort/protocol (cuando existan)
+#
+# Fuente: contracts/json-schema/README.md, ADR-0005, docs/09-quality/ci-cd.md
+# Estado: draft. PENDIENTE:
+#   - No crear schemas antes de aceptar DEC-002 y el modelo de dominio (guard).
+#   - Fijar TODAS las acciones por SHA (supply-chain); `@<PENDIENTE-SHA>` es un
+#     placeholder explícito, NO un hash real.
+#   - La validación de fixtures válidos/inválidos se añade cuando existan schemas.
+
+name: json-schema
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: json-schema-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  meta-validate:
+    name: Meta-validación JSON Schema (G4/G5)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@<PENDIENTE-SHA> # TODO no verificado — fijar por SHA
+      - name: Setup Python
+        uses: actions/setup-python@<PENDIENTE-SHA> # TODO no verificado — fijar por SHA
+        with:
+          python-version: "3.x"
+      - name: Meta-validar schemas
+        run: |
+          # TODO no verificado: fijar versión de jsonschema (supply-chain).
+          python3 -m pip install --no-input --disable-pip-version-check "jsonschema>=4"
+          python3 - <<'PY'
+          import glob
+          import json
+          import os
+          import sys
+
+          from jsonschema import Draft202012Validator
+
+          base = "contracts/json-schema"
+          schemas = []
+          for f in glob.glob(os.path.join(base, "**", "*.json"), recursive=True):
+              parts = f.split(os.sep)
+              if "fixtures" in parts:
+                  continue
+              schemas.append(f)
+
+          if not schemas:
+              print(f"PENDIENTE: no hay schemas en {base}/. Nada que meta-validar (guard).")
+              print("Crear tras aceptar DEC-002 y el modelo de dominio.")
+              sys.exit(0)
+
+          bad = 0
+          for f in sorted(schemas):
+              try:
+                  schema = json.load(open(f, encoding="utf-8"))
+                  Draft202012Validator.check_schema(schema)
+                  print(f"OK {f}")
+              except Exception as e:
+                  bad += 1
+                  print(f"FAIL {f}: {e}")
+
+          if bad:
+              print(f"{bad} schemas inválidos contra el meta-schema Draft 2020-12")
+              sys.exit(1)
+          print(f"{len(schemas)} schemas meta-válidos (Draft 2020-12)")
+          PY

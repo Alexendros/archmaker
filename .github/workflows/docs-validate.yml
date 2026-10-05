@@ -1,0 +1,305 @@
+# docs-validate — Validación documental (sin build de producto).
+#
+# Gates cubiertos:
+#   G0  Fuentes controladas  -> integridad de reference/v5.1 por SHA-256
+#   G4  Datos/contratos      -> parseo JSON/YAML y unicidad de IDs
+#   G5  Interfaces           -> prohibición de cmd/hooks/shell en contratos runtime
+#   G7  Validación           -> parseo/render de bloques Mermaid
+#   G9  Calidad              -> Markdown lint, enlaces internos y política CDN
+#
+# Fuente de reglas: docs/09-quality/documentation-validation.md
+# Estrategia CI:    docs/09-quality/ci-cd.md
+#
+# Estado: draft. PENDIENTE:
+#   - Fijar TODAS las acciones por SHA (supply-chain). `@<PENDIENTE-SHA>` es un
+#     placeholder explícito; NO es un hash real.
+#   - La semántica de unicidad de IDs depende de DEC-002 (global vs scoped).
+#   - La prohibición de CDN en docs de producción depende de DEC-009.
+#   - La verificación de firmas de catálogo/artefactos depende de DEC-005/DEC-006.
+
+name: docs-validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: docs-validate-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  markdown:
+    name: Markdown lint (G9)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@<PENDIENTE-SHA> # TODO no verificado — fijar por SHA
+      - name: markdownlint-cli2
+        uses: DavidAnson/markdownlint-cli2-action@<PENDIENTE-SHA> # TODO no verificado — fijar por SHA
+        with:
+          globs: |
+            docs/**/*.md
+            *.md
+        # La configuración del gate vive en .markdownlint-cli2.jsonc (auto-descubierta).
+
+  links-mermaid:
+    name: Enlaces internos y Mermaid (G7/G9)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@<PENDIENTE-SHA> # TODO no verificado — fijar por SHA
+
+      - name: Enlaces internos
+        run: |
+          python3 - <<'PY'
+          import os
+          import re
+          import sys
+          import glob
+
+          bad = 0
+          md_link = re.compile(r"\[[^\]]*\]\(([^)]+)\)")
+          bt_path = re.compile(r"`((?:docs|contracts|reference|templates)/[A-Za-z0-9_./-]+\.(?:md|json|ya?ml))`")
+
+          for f in glob.glob("docs/**/*.md", recursive=True) + glob.glob("*.md"):
+              base = os.path.dirname(f)
+              for i, line in enumerate(open(f, encoding="utf-8"), 1):
+                  for target in md_link.findall(line):
+                      t = target.strip().split("#", 1)[0]
+                      if not t or "://" in t or t.startswith("mailto:"):
+                          continue
+                      p = os.path.normpath(os.path.join(base, t))
+                      if not os.path.exists(p):
+                          bad += 1
+                          print(f"BROKEN LINK {f}:{i} -> {target}")
+                  for p in bt_path.findall(line):
+                      if not os.path.exists(p):
+                          bad += 1
+                          print(f"BROKEN REF {f}:{i} -> {p}")
+
+          if bad:
+              print(f"{bad} enlaces/referencias internas rotas")
+              sys.exit(1)
+          print("Enlaces internos OK")
+          PY
+
+      - name: Mermaid parse
+        run: |
+          set -euo pipefail
+          work="${RUNNER_TEMP}/mermaid"
+          mkdir -p "$work"
+          python3 - <<'PY'
+          import glob
+          import os
+          import pathlib
+          import re
+
+          out = pathlib.Path(os.environ["RUNNER_TEMP"]) / "mermaid"
+          n = 0
+          for f in glob.glob("docs/**/*.md", recursive=True):
+              txt = open(f, encoding="utf-8").read()
+              for m in re.finditer(r"```mermaid\s*\n(.*?)```", txt, re.S):
+                  n += 1
+                  (out / f"block-{n:03d}.mmd").write_text(m.group(1), encoding="utf-8")
+          print(f"{n} bloques Mermaid extraídos")
+          PY
+
+          count=$(find "$work" -name '*.mmd' | wc -l)
+          if [ "$count" -eq 0 ]; then
+            echo "Sin bloques Mermaid; nada que parsear (guard)."
+            exit 0
+          fi
+
+          # TODO no verificado: versión tomada del registro npm (2026-10-05); fijar y revisar CHANGELOG.
+          npm install --global @mermaid-js/mermaid-cli@12.0.0
+          cat > "${RUNNER_TEMP}/puppeteer.json" <<'JSON'
+          { "args": ["--no-sandbox"] }
+          JSON
+          for f in "$work"/*.mmd; do
+            mmdc --puppeteerConfigFile "${RUNNER_TEMP}/puppeteer.json" -i "$f" -o "$f.svg"
+          done
+          echo "Mermaid OK"
+
+  parse-json-yaml:
+    name: Parseo JSON/YAML (G4)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@<PENDIENTE-SHA> # TODO no verificado — fijar por SHA
+      - name: Setup Python
+        uses: actions/setup-python@<PENDIENTE-SHA> # TODO no verificado — fijar por SHA
+        with:
+          python-version: "3.x"
+      - name: Parseo
+        run: |
+          # TODO no verificado: fijar versión de PyYAML (supply-chain).
+          python3 -m pip install --no-input --disable-pip-version-check pyyaml
+          python3 - <<'PY'
+          import glob
+          import json
+          import os
+          import sys
+
+          import yaml
+
+          skip = {"node_modules", ".git", "target", "dist", "coverage"}
+          bad = 0
+
+          def included(p):
+              return not any(part in skip for part in p.split(os.sep))
+
+          for f in glob.glob("**/*.json", recursive=True):
+              if not included(f):
+                  continue
+              try:
+                  json.load(open(f, encoding="utf-8"))
+              except Exception as e:
+                  bad += 1
+                  print(f"FAIL JSON {f}: {e}")
+
+          for f in glob.glob("**/*.yml", recursive=True) + glob.glob("**/*.yaml", recursive=True):
+              if not included(f):
+                  continue
+              try:
+                  yaml.safe_load(open(f, encoding="utf-8"))
+              except Exception as e:
+                  bad += 1
+                  print(f"FAIL YAML {f}: {e}")
+
+          if bad:
+              print(f"{bad} errores de parseo")
+              sys.exit(1)
+          print("JSON/YAML OK")
+          PY
+
+  ids:
+    name: Unicidad de IDs (G4)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@<PENDIENTE-SHA> # TODO no verificado — fijar por SHA
+      - name: Unicidad de IDs de requisitos y ADR
+        run: |
+          # PENDIENTE (DEC-002): el ámbito de IDs (global vs scoped) no está resuelto.
+          python3 - <<'PY'
+          import collections
+          import glob
+          import os
+          import re
+          import sys
+
+          bad = 0
+
+          # ADRs: unicidad por número de archivo.
+          adr = collections.defaultdict(list)
+          for f in glob.glob("docs/**/ADR-*.md", recursive=True):
+              m = re.search(r"ADR-(\d{4})", os.path.basename(f))
+              if m:
+                  adr[m.group(1)].append(f)
+          for k in sorted(adr):
+              if len(adr[k]) > 1:
+                  bad += 1
+                  print(f"DUP ADR-{k}: {adr[k]}")
+
+          # Definiciones por encabezado: un ID = una definición.
+          pat = re.compile(r"^#{1,6}\s+((?:FR|NFR|UC|JNY|VAL|TST|THR|RSK|DM|OBJ|PER)-[A-Z0-9-]+)\b")
+          seen = collections.defaultdict(list)
+          for f in glob.glob("docs/**/*.md", recursive=True):
+              for i, line in enumerate(open(f, encoding="utf-8"), 1):
+                  m = pat.match(line)
+                  if m:
+                      seen[m.group(1)].append(f"{f}:{i}")
+          for k in sorted(seen):
+              if len(seen[k]) > 1:
+                  bad += 1
+                  print(f"DUP {k}: {seen[k]}")
+
+          if bad:
+              print(f"{bad} IDs duplicados")
+              sys.exit(1)
+          print(f"IDs OK ({len(seen)} definiciones, {len(adr)} ADR)")
+          PY
+
+  reference-integrity:
+    name: Integridad reference/v5.1 (G0)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@<PENDIENTE-SHA> # TODO no verificado — fijar por SHA
+      - name: Verificar SHA256SUMS
+        working-directory: reference/v5.1
+        run: sha256sum --check --strict SHA256SUMS
+
+  policy:
+    name: Políticas de contrato (G5/G9)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@<PENDIENTE-SHA> # TODO no verificado — fijar por SHA
+
+      - name: Prohibición de URLs CDN en docs de producción
+        run: |
+          # PENDIENTE (DEC-009): confirmar "empaquetadas/system, sin CDN runtime".
+          # Excluye docs/12-research/ (puede citar fuentes) y reference/ (evidencia inmutable).
+          python3 - <<'PY'
+          import glob
+          import re
+          import sys
+
+          cdn = re.compile(
+              r"https?://[^\s)\]\"'>]*(?:cdn\.|unpkg\.com|jsdelivr\.net|cdnjs\.cloudflare\.com|"
+              r"fonts\.googleapis\.com|fonts\.gstatic\.com|esm\.sh|skypack\.dev|use\.typekit\.net)",
+              re.I,
+          )
+          bad = 0
+          for f in glob.glob("docs/**/*.md", recursive=True):
+              if f.startswith("docs/12-research/"):
+                  continue
+              for i, line in enumerate(open(f, encoding="utf-8"), 1):
+                  if cdn.search(line):
+                      bad += 1
+                      print(f"CDN {f}:{i}: {line.strip()}")
+          if bad:
+              print(f"{bad} URLs CDN prohibidas")
+              sys.exit(1)
+          print("Sin URLs CDN en docs de producción")
+          PY
+
+      - name: Prohibición de cmd/hooks/shell en contratos runtime
+        run: |
+          # Escanea contratos no-Markdown (runtime). Los README son documentación, no contrato.
+          python3 - <<'PY'
+          import glob
+          import os
+          import re
+          import sys
+
+          pat = re.compile(
+              r"\b(pacstrap|pactree|bash\s+-c|sh\s+-c|/bin/(?:ba)?sh|&&\s*rm\s+-rf|"
+              r"\"?(?:cmd|shell|hooks|exec)\"?\s*:)",
+              re.I,
+          )
+          bad = 0
+          for f in glob.glob("contracts/**/*", recursive=True):
+              if not os.path.isfile(f) or f.endswith(".md"):
+                  continue
+              for i, line in enumerate(open(f, encoding="utf-8", errors="replace"), 1):
+                  if pat.search(line):
+                      bad += 1
+                      print(f"SHELL {f}:{i}: {line.strip()}")
+          if bad:
+              print(f"{bad} construcciones shell/hooks/cmd prohibidas")
+              sys.exit(1)
+          print("Contratos runtime sin cmd/hooks/shell")
+          PY

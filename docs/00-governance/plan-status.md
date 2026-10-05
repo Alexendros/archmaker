@@ -19,3 +19,10 @@
 ## Regla de avance
 
 Solo se autoriza MVP-0 cuando G0–G10 tengan evidencia, no existan riesgos P0 sin tratamiento y todos los contratos P0 posean fixtures válidos e inválidos.
+
+## Referencias
+
+- Resultado motivado: `docs/00-governance/go-no-go.md` (DOC-GOV-GNG-001) → **No-Go: planificación en curso**.
+- Cobertura de gates: `docs/10-delivery/gates.md`.
+- Próximos pasos ordenados: `docs/10-delivery/next-issues.md` (ISSUE-001..010).
+- Índice documental: `docs/index.md`.
