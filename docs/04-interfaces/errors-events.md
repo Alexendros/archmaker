@@ -30,6 +30,21 @@
 }
 ```
 
+## Severidad de diagnóstico
+
+Lista canónica de `severity` (la fija este documento como fuente única):
+
+| Valor | Uso | MVP |
+|---|---|---|
+| `error` | fallo que impide continuar | sí |
+| `warning` | problema no bloqueante | sí |
+| `info` | informativo / cambio aplicado | sí |
+| `fatal` | fallo irrecuperable de proceso | reservado |
+| `debug` | traza de desarrollo | reservado |
+
+`fatal` y `debug` quedan **reservados** (no los emite el MVP). `diagnostic.schema.json` y
+`operator-corpus.md` usan `error | warning | info`.
+
 ## Eventos
 
 `core.operation.started`, `core.operation.progress`, `core.operation.completed`, `catalog.loaded`, `draft.changed`, `resolution.changed`, `validation.completed`, `artifact.created`; v1 añade `runner.preflight.*`, `plan.*`, `execution.*`, `journal.*`.
@@ -57,5 +72,16 @@ Convención `AM-<FAMILIA>-<NNN>`. La asignación numérica es estable y aditiva:
 | `AM-RULE-007` | AM-RULE | conflicto kernel/filesystem | error | sí | RULE-KERNEL-002 |
 | `AM-RULE-008` | AM-RULE | identidad de paquete duplicada | error | sí | RULE-DUP-001 |
 | `AM-RULE-009` | AM-RULE | operador de regla no soportado | error | sí | operator-corpus |
+| `AM-DOC-001` | AM-DOC | documento excede límites o formato no soportado | error | sí | pipeline (límites/parseo) |
+| `AM-SCHEMA-001` | AM-SCHEMA | documento no cumple el schema | error | sí | pipeline (schema) |
+| `AM-MIG-001` | AM-MIG | migración requiere transformación no soportada | error | sí | pipeline (migración) |
+| `AM-TGT-001` | AM-TGT | target de instalación no soportado | error | sí | pipeline (target) |
+| `AM-IO-001` | AM-IO | error de lectura/escritura | error | sí | pipeline (I/O) |
+| `AM-PROTO-001` | AM-PROTO | mensaje de protocolo inválido | error | sí | pipeline (runner) |
+| `AM-RUN-001` | AM-RUN | preflight o ejecución rechazada | error | sí | v1 runner |
+| `AM-POL-001` | AM-POL | violación de política | error | sí | Enterprise |
+| `AM-AUTH-001` | AM-AUTH | autenticación o autorización fallida | error | sí | Enterprise/runner |
 
-Las familias sin códigos asignados (`AM-DOC`, `AM-SCHEMA`, `AM-MIG`, `AM-TGT`, `AM-IO`, `AM-PROTO`, `AM-RUN`, `AM-POL`, `AM-AUTH`) se poblarán al implementar cada etapa de `pipeline.md`; hasta entonces, cualquier código de esas familias es `reserved`.
+Los códigos de cada familia son estables y aditivos. Los anteriores son la primera asignación por
+familia (estado `draft`) y se ampliarán al implementar cada etapa de `pipeline.md`; ninguna familia
+queda ya sin al menos un código asignado.

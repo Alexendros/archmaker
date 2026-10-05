@@ -5,7 +5,7 @@
 - Última revisión: 2026-10-05
 - Requisitos relacionados: FR-EXPORT-001, NFR-OBS-001, NFR-SEC-001, NFR-PORT-001
 - Sustituye / sustituido por: —
-- Sujeto a: DEC-001, DEC-005, DEC-006, DEC-007, DEC-009
+- Decisiones aplicables: DEC-001, DEC-005, DEC-006, DEC-007 (aceptadas 2026-10-05); DEC-009 (propuesta)
 
 ## MVP Linux
 
@@ -25,7 +25,7 @@ Cada release publica, como mínimo:
 |---|---|---|
 | Binarios/paquetes | AppImage, `.deb`, `.rpm` y bundle web (ver MVP Linux). | draft |
 | Checksums | `SHA256SUMS` por release; verificación `sha256sum --check`. | draft |
-| Firmas | Firma de artefactos y de `SHA256SUMS`. Mecanismo PENDIENTE (DEC-006). | PENDIENTE DEC-006 |
+| Firmas | Firma de artefactos y de `SHA256SUMS` con Sigstore (+ offline evaluada). | Resuelto por DEC-006 |
 | SBOM | CycloneDX y/o SPDX con el inventario de dependencias. | draft |
 | Provenance | Atestación SLSA v1.2/in-toto ligada a commit y workflow. | draft |
 | Source tarball | Código fuente reproducible del commit taggeado. | draft |
@@ -36,12 +36,12 @@ Cada release publica, como mínimo:
 - **Firmas**: la firma se aplica una vez; la verificación es requisito de instalación del updater.
 - **SBOM y provenance**: se generan en el mismo job de build/attest (ver `docs/09-quality/ci-cd.md`).
 - **Source tarball**: garantiza reproducibilidad y auditoría independiente del binario.
-- **Compatibilidad**: matriz mínima x86_64 (oficial) y aarch64 (experimental), sujeta a DEC-008.
-- PENDIENTE: el pipeline de build/attest/SBOM y los términos de licencia dependen de DEC-005 y DEC-006.
+- **Compatibilidad**: matriz mínima Arch Linux **x86_64 únicamente** (DEC-008, aceptada 2026-10-05); aarch64 fuera de alcance.
+- Pendiente de implementación: el pipeline de build/attest/SBOM y la firma real (DEC-005 y DEC-006 aceptadas; falta la Etapa C).
 
 ## Canales
 
-`nightly`, `beta`, `stable`; promoción, no rebuild. Rollback documentado. El updater de Tauri no se habilita hasta aceptar DEC-007 y verificar firmas/permisos.
+`nightly`, `beta`, `stable`; promoción, no rebuild. Rollback documentado. El updater de Tauri se habilita en MVP (DEC-007): canal firmado, verificación de firma y fail-open offline (ADR-0009).
 
 | Canal | Origen | Estabilidad | Promoción |
 |---|---|---|---|
@@ -52,5 +52,6 @@ Cada release publica, como mínimo:
 - **Promoción sin rebuild**: el mismo artefacto (mismos digests y atestación) se etiqueta de canal;
   recompilar invalida provenance y firma.
 - **Rollback**: revertir a la release anterior por digest, documentando el canal afectado.
-- **Updater**: **supeditado a DEC-007**. No se habilita hasta aceptar DEC-007 y verificar
-  firmas/permisos contra la política vigente (ver `docs/09-quality/ci-cd.md`).
+- **Updater**: **en alcance MVP por DEC-007**. Canal firmado (DEC-006), endpoint por allowlist
+  con TLS, verificación de firma, rollback y **fail-open offline** (la app funciona sin red).
+  Ver `ADR-0009-actualizacion-firmada-mvp.md` y `docs/09-quality/ci-cd.md`.

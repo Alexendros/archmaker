@@ -84,6 +84,17 @@ El corpus heredado v5.1 usa IDs cortos (p. ej. `compositor`); el migrador los re
 global mediante la tabla de aliases del catálogo destino (`versioning-migrations.md`). Una
 `ValueRef` que no resuelva produce un diagnóstico `AM-RES` bloqueante.
 
+Ejemplo de tabla de aliases (v5.1 → global) que aplican el migrador y el resolutor:
+
+| Alias v5.1 | ValueRef global (ejemplo) |
+|---|---|
+| `compositor` | `archmaker.kind.compositor` |
+| `kernel` | `archmaker.kind.kernel` |
+| `filesystem` | `archmaker.kind.filesystem` |
+
+La tabla es un artefacto de migración versionado (ADR-0006). Un alias ausente no se inventa: se
+reporta como `AM-RES` bloqueante.
+
 ### `CoreError` y `Diagnostic`
 
 Se definen en `errors-events.md` y se referencian, no se redefinen aquí:

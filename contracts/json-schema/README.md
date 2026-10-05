@@ -30,6 +30,11 @@ Todos los schemas nacen con **`additionalProperties: false`** en la raíz y en c
 | `content` | `artifact.schema.json` | Payload definido por el adapter del target (ADR-0003), versionado por `targetRef.version`. |
 | `payload` | `runner-envelope.schema.json` | Payload por mensaje del protocolo runner v1; solo operaciones tipadas. |
 
+Estos mapas se mantienen **abiertos y documentados** de forma deliberada y su cierre se **difiere a v1**:
+cerrar `artifact.content` por `oneOf` exige fijar el profile `archinstall`, hoy no verificado
+(SRC-003). No aceptan comandos, scripts ni shell (ver `artifact.schema.json` y
+`runner-envelope.schema.json`).
+
 ## Corpus
 
 `examples/` contiene, por schema, un ejemplo `NN-nombre.valid.json` y uno `NN-nombre.invalid.json`. El inválido viola una restricción concreta:

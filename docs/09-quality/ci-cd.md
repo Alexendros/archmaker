@@ -5,7 +5,7 @@
 - Última revisión: 2026-10-05
 - Requisitos relacionados: NFR-DET-001, NFR-OBS-001, NFR-SEC-001, NFR-PORT-001
 - Sustituye / sustituido por: —
-- Sujeto a: DEC-005 (licencia), DEC-006 (firma), DEC-007 (actualización), DEC-009 (fuentes)
+- Decisiones aplicables: DEC-005 (licencia, aceptada), DEC-006 (firma, aceptada), DEC-007 (actualización, aceptada), DEC-009 (fuentes, propuesta)
 
 ## Alcance
 
@@ -30,16 +30,19 @@ documentación y contratos**; no se construye producto. La validación documenta
 - **Release**: promoción sin rebuild (ver más abajo); los artefactos firmados y atestados del
   nightly promovido son los que se publican.
 
-PENDIENTE (G9): el workflow de build/attest no existe aún; se crea tras aceptar DEC-005 y DEC-006.
+Estado (G9): DEC-005 y DEC-006 aceptadas el 2026-10-05. El workflow de build/attest/SBOM aún no
+existe; se implementará en la Etapa C del plan de cierre.
 
 ## Supply chain
 
 ### Acciones fijadas por SHA
 
 Toda acción de terceros se referencia por **commit SHA** (no por tag flotante) para que el
-contenido ejecutado sea inmutable. En los workflows actuales los SHA aún no están fijados: se
-marcan como `@<PENDIENTE-SHA> # TODO no verificado — fijar por SHA`. No deben introducirse hashes
-no verificados contra la fuente.
+contenido ejecutado sea inmutable. Los SHA ya están fijados en los workflows (Paso 6):
+`actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2`,
+`actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0` y
+`DavidAnson/markdownlint-cli2-action@992badcdf24e3b8eb7e87ff9287fe931bcb00c6e # v20.0.0`.
+No deben introducirse hashes no verificados contra la fuente.
 
 - Acciones oficiales (p. ej. `actions/checkout`, `actions/setup-python`, `actions/*-attest`).
 - Acciones de terceros reputadas (p. ej. `DavidAnson/markdownlint-cli2-action`).
@@ -59,21 +62,22 @@ no verificados contra la fuente.
 
 ## Artefactos: attestation, SBOM y firma
 
-PENDIENTE (DEC-005/DEC-006): la política de firma y licencia no está aceptada; lo siguiente es
-propuesta `draft` sujeta a esas decisiones.
+DEC-005 (licencia) y DEC-006 (firma) aceptadas el 2026-10-05. La política de firma queda fijada
+(Sigstore para releases + firma offline evaluada); el pipeline de build/attest sigue siendo
+propuesta `draft` hasta implementarse.
 
 | Elemento | Mecanismo | Estándar | Estado |
 |---|---|---|---|
 | Provenance | GitHub Artifact Attestations (`actions/attest-build-provenance`) | SLSA v1.2 / in-toto | Propuesto |
 | SBOM | Generación CycloneDX y/o SPDX; `actions/attest-sbom` | CycloneDX / SPDX | Propuesto |
-| Firma de artefactos | Sigstore (keyless, ligada a OIDC) o firma offline | Sigstore / Minisign | PENDIENTE DEC-006 |
+| Firma de artefactos | Sigstore (keyless, ligada a OIDC) + firma offline evaluada | Sigstore | Resuelto por DEC-006 |
 | Checksums | `SHA256SUMS` + verificación `sha256sum --check` | SHA-256 | Propuesto |
 
 - **Provenance**: se atesta cada artefacto de build para ligar binario, commit y workflow. La
   fuente institucional (NIST SSDF/SLSA/Sigstore) está registrada como `SRC-008`, con captura
   pendiente; no se declara conformidad verificada hasta capturarla.
 - **SBOM**: se publica CycloneDX y/o SPDX junto al release para inventario de dependencias.
-- **Firma**: Sigstore para releases y firma offline evaluada; el detalle depende de DEC-006.
+- **Firma**: Sigstore para releases y firma offline evaluada (DEC-006, aceptada 2026-10-05).
 - Toda atestación requiere `id-token: write` y `attestations: write` en el job correspondiente.
 
 ## Promoción sin rebuild
@@ -83,14 +87,15 @@ recompilar. La promoción reutiliza el binario ya firmado y atestado; cambia la 
 no el contenido. Cualquier rebuild invalida la atestación y exige re-firmar. Detalle de canales y
 rollback en [packaging-release.md](../10-delivery/packaging-release.md).
 
-## Pendientes y dependencias de decisión
+## Decisiones aplicadas y pendientes
 
-- **DEC-002** (ámbito de IDs): semántica del chequeo de unicidad de IDs en `docs-validate.yml`.
-- **DEC-005** (licencia): términos de artefactos y SBOM; bloquea la política de release.
-- **DEC-006** (firma de catálogos): mecanismo de firma (Sigstore/Minisign/ambos).
-- **DEC-007** (actualización): habilitación del updater de Tauri; ver `packaging-release.md`.
-- **DEC-009** (fuentes): confirma la prohibición de CDN en docs de producción.
-- **G9**: flujo de build/attest/SBOM aún no implementado (solo existe validación documental).
+**Aceptadas el 2026-10-05** (ver `decision-register.md`): DEC-002 (IDs globales `vendor.kind.id`),
+DEC-005 (licencia Apache-2.0 o dual MIT/Apache), DEC-006 (firma Sigstore + offline evaluada) y
+DEC-007 (updater Tauri en MVP, firmado y fail-open offline).
+
+- **Pendiente de implementación (G9)**: el pipeline de build/attest/SBOM y la firma real aún no
+  existen; solo existe validación documental.
+- **DEC-009** (fuentes, propuesta): confirma la prohibición de CDN en docs de producción.
 
 ## Referencias
 
