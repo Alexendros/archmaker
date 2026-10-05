@@ -1,5 +1,5 @@
 {
-  "manifestVersion": "1.0.0",
+  "manifestVersion": "1.1.0",
   "collection": "archmaker-v5.1",
   "source": "user attachments",
   "files": [
@@ -85,5 +85,27 @@
     "archmaker-v10.4-p3.yaml",
     "i18n.es.json",
     "neubat_forge_v4_final.html"
-  ]
+  ],
+  "disposition": {
+    "reference": "docs/00-governance/G0-SOURCE-DISPOSITION.md",
+    "aliasesManifest": "reference/v5.1/ALIASES.json",
+    "unavailableManifest": "reference/v5.1/UNAVAILABLE-SOURCES.json",
+    "shaReceivedOriginals": "reference/v5.1/SHA256SUMS",
+    "shaDerivedArtifacts": "reference/v5.1/DERIVED-SHA256SUMS",
+    "aliasBytes": [
+      {
+        "declaredPath": "neubat_forge_v4_final.html",
+        "canonicalReceivedPath": "forge_v4_final.html",
+        "materializedAliasPath": "aliases/neubat_forge_v4_final.html",
+        "sha256": "02e37d4be7dbb894c7751cc0a2da5f946b755a41a1e58b74363f854661bb1426",
+        "relationship": "byte-identical-copy",
+        "identityStatus": "probable-rename-not-proven"
+      }
+    ],
+    "unavailable": [
+      { "declaredPath": "archmaker-v10.4-p3.yaml", "status": "unavailable-declared-only" },
+      { "declaredPath": "i18n.es.json", "status": "unavailable-declared-only" }
+    ],
+    "src001Status": "controlled-incomplete"
+  }
 }

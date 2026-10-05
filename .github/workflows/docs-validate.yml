@@ -233,9 +233,35 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - name: Verificar SHA256SUMS
+      - name: Verificar SHA256SUMS (originales)
         working-directory: reference/v5.1
         run: sha256sum --check --strict SHA256SUMS
+      - name: Alias byte a byte (G0)
+        working-directory: reference/v5.1
+        run: |
+          cmp --silent forge_v4_final.html aliases/neubat_forge_v4_final.html \
+            && echo "Alias NEUBAT byte-identico OK"
+      - name: Manifiestos de disposicion validos (G0)
+        working-directory: reference/v5.1
+        run: |
+          python3 -m json.tool ALIASES.json >/dev/null
+          python3 -m json.tool UNAVAILABLE-SOURCES.json >/dev/null
+          python3 -m json.tool PROVENANCE.json >/dev/null
+          echo "Manifiestos de disposicion validos"
+      - name: Fuentes ausentes no clasificadas como recibidas (G0)
+        run: |
+          python3 - <<'PY'
+          import json
+          prov = json.load(open("reference/v5.1/PROVENANCE.json", encoding="utf-8"))
+          una = json.load(open("reference/v5.1/UNAVAILABLE-SOURCES.json", encoding="utf-8"))
+          received = {f["path"] for f in prov["files"]}
+          unavailable = {s["declaredPath"] for s in una["sources"]}
+          bad = received & unavailable
+          if bad:
+              print(f"FUENTES AUSENTES MARCADAS COMO RECIBIDAS: {sorted(bad)}")
+              raise SystemExit(1)
+          print("Disposicion coherente: ausentes != recibidas")
+          PY
 
   policy:
     name: Políticas de contrato (G5/G9)
