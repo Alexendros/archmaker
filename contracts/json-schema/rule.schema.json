@@ -1,0 +1,358 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://archmaker.dev/schemas/rule.schema.json",
+  "title": "ArchMaker Rule (RULE-*)",
+  "description": "Typed declarative AST evaluating condition to effect (block / suggest / derive / change / lock). Operators follow docs/07-validation/operator-spec.md. Unknown operators must produce a blocking diagnostic and are rejected by this closed union. Contract state: draft.",
+  "type": "object",
+  "required": [
+    "id",
+    "documentVersion",
+    "schemaVersion",
+    "when",
+    "action"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "description": "Rule identifier.",
+      "type": "string",
+      "pattern": "^RULE-[A-Z0-9]+(-[A-Z0-9]+)+$"
+    },
+    "documentVersion": {
+      "description": "Domain document contract version (axis documentVersion).",
+      "type": "string",
+      "minLength": 1
+    },
+    "schemaVersion": {
+      "description": "JSON Schema contract version (axis schemaVersion).",
+      "type": "string",
+      "minLength": 1
+    },
+    "severity": {
+      "description": "Diagnostic severity emitted by the rule.",
+      "enum": [
+        "error",
+        "warning",
+        "info"
+      ]
+    },
+    "blocking": {
+      "description": "Whether the emitted diagnostic blocks manifest construction.",
+      "type": "boolean"
+    },
+    "when": {
+      "description": "Boolean condition evaluated over the domain.",
+      "$ref": "#/$defs/condition"
+    },
+    "action": {
+      "description": "Effect applied when the condition holds.",
+      "enum": [
+        "block",
+        "suggest",
+        "derive",
+        "change",
+        "lock"
+      ]
+    },
+    "target": {
+      "description": "Target step affected by change or derive effects.",
+      "$ref": "#/$defs/entityId"
+    },
+    "allowed": {
+      "description": "Options the effect may select on the target.",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/entityId"
+      }
+    },
+    "diagnosticCode": {
+      "description": "AM-* code emitted by the rule.",
+      "type": "string",
+      "pattern": "^AM-[A-Z]+-[0-9]{3}$"
+    },
+    "note": {
+      "type": "string"
+    }
+  },
+  "$defs": {
+    "entityId": {
+      "description": "Global entity identifier with the DEC-002 vendor.kind.id shape.",
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]*\\.[a-z0-9][a-z0-9._-]*\\.[a-z0-9][a-z0-9._-]*$"
+    },
+    "capabilityId": {
+      "description": "Capability identifier such as fs.btrfs, gpu.nvidia or boot.uefi.",
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]*\\.[a-z0-9][a-z0-9._-]*$"
+    },
+    "targetId": {
+      "description": "Export or execution target identifier.",
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]*$"
+    },
+    "countExpr": {
+      "description": "Integer expression returning the number of effective selections of a reference.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "count"
+      ],
+      "properties": {
+        "count": {
+          "$ref": "#/$defs/entityId"
+        }
+      }
+    },
+    "operand": {
+      "description": "A comparison operand: an entity reference, a boolean, an integer or a count expression.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/entityId"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "integer"
+        },
+        {
+          "$ref": "#/$defs/countExpr"
+        }
+      ]
+    },
+    "condition": {
+      "description": "Closed boolean expression union over the supported operators.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/allExpr"
+        },
+        {
+          "$ref": "#/$defs/anyExpr"
+        },
+        {
+          "$ref": "#/$defs/notExpr"
+        },
+        {
+          "$ref": "#/$defs/eqExpr"
+        },
+        {
+          "$ref": "#/$defs/neExpr"
+        },
+        {
+          "$ref": "#/$defs/inExpr"
+        },
+        {
+          "$ref": "#/$defs/requiredExpr"
+        },
+        {
+          "$ref": "#/$defs/selectedExpr"
+        },
+        {
+          "$ref": "#/$defs/countGtExpr"
+        },
+        {
+          "$ref": "#/$defs/providesExpr"
+        },
+        {
+          "$ref": "#/$defs/targetIsExpr"
+        }
+      ]
+    },
+    "allExpr": {
+      "description": "True when all listed expressions are true.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "all"
+      ],
+      "properties": {
+        "all": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/condition"
+          }
+        }
+      }
+    },
+    "anyExpr": {
+      "description": "True when at least one listed expression is true.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "any"
+      ],
+      "properties": {
+        "any": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/condition"
+          }
+        }
+      }
+    },
+    "notExpr": {
+      "description": "Logical negation of an expression.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "not"
+      ],
+      "properties": {
+        "not": {
+          "$ref": "#/$defs/condition"
+        }
+      }
+    },
+    "eqExpr": {
+      "description": "Equality of two operands of the same type: eq(T, T).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "eq"
+      ],
+      "properties": {
+        "eq": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "$ref": "#/$defs/operand"
+            },
+            {
+              "$ref": "#/$defs/operand"
+            }
+          ],
+          "minItems": 2,
+          "items": false
+        }
+      }
+    },
+    "neExpr": {
+      "description": "Inequality of two operands of the same type: ne(T, T).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ne"
+      ],
+      "properties": {
+        "ne": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "$ref": "#/$defs/operand"
+            },
+            {
+              "$ref": "#/$defs/operand"
+            }
+          ],
+          "minItems": 2,
+          "items": false
+        }
+      }
+    },
+    "inExpr": {
+      "description": "Membership test: in(T, List<T>).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "in"
+      ],
+      "properties": {
+        "in": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "$ref": "#/$defs/operand"
+            },
+            {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "$ref": "#/$defs/operand"
+              }
+            }
+          ],
+          "minItems": 2,
+          "items": false
+        }
+      }
+    },
+    "requiredExpr": {
+      "description": "True when the reference has cardinality at least one.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "required"
+      ],
+      "properties": {
+        "required": {
+          "$ref": "#/$defs/entityId"
+        }
+      }
+    },
+    "selectedExpr": {
+      "description": "True when the option is selected in the draft.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "selected"
+      ],
+      "properties": {
+        "selected": {
+          "$ref": "#/$defs/entityId"
+        }
+      }
+    },
+    "countGtExpr": {
+      "description": "Legacy operator (CON-002): true when the reference count is greater than the integer literal. count_gt(ValueRef, integer).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "count_gt"
+      ],
+      "properties": {
+        "count_gt": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "$ref": "#/$defs/entityId"
+            },
+            {
+              "type": "integer",
+              "minimum": 0
+            }
+          ],
+          "minItems": 2,
+          "items": false
+        }
+      }
+    },
+    "providesExpr": {
+      "description": "True when resolution provides the capability.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "provides"
+      ],
+      "properties": {
+        "provides": {
+          "$ref": "#/$defs/capabilityId"
+        }
+      }
+    },
+    "targetIsExpr": {
+      "description": "True when the active target matches the identifier.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "target_is"
+      ],
+      "properties": {
+        "target_is": {
+          "$ref": "#/$defs/targetId"
+        }
+      }
+    }
+  }
+}

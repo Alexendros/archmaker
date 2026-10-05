@@ -1,0 +1,37 @@
+{
+  "documentVersion": "vNext",
+  "schemaVersion": "1",
+  "protocolVersion": "v1",
+  "planId": "55555555-5555-4555-8555-555555555555",
+  "planHash": {
+    "algorithm": "sha256",
+    "value": "5555555555555555555555555555555555555555555555555555555555555555"
+  },
+  "manifestHash": {
+    "algorithm": "sha256",
+    "value": "3333333333333333333333333333333333333333333333333333333333333333"
+  },
+  "catalogRef": {
+    "namespace": "archmaker.core",
+    "id": "desktop",
+    "version": "1.0.0",
+    "digest": {
+      "algorithm": "sha256",
+      "value": "1111111111111111111111111111111111111111111111111111111111111111"
+    }
+  },
+  "targetRef": {
+    "id": "arch-x86_64",
+    "version": "2026.10"
+  },
+  "producer": {
+    "id": "archmaker-plan",
+    "version": "0.1.0"
+  },
+  "operations": [
+    {
+      "order": 0,
+      "kind": "shell.run"
+    }
+  ]
+}

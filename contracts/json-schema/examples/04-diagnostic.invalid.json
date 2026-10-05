@@ -1,0 +1,9 @@
+{
+  "schemaVersion": "1",
+  "code": "AM-BROKEN",
+  "severity": "error",
+  "blocking": true,
+  "path": "/selections/4",
+  "messageKey": "diagnostic.compositorCardinalityExceeded",
+  "source": "archmaker-rules"
+}

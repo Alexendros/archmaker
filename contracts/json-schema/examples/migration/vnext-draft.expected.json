@@ -1,0 +1,93 @@
+{
+  "id": "99999999-9999-4999-8999-999999999999",
+  "documentVersion": "vNext",
+  "schemaVersion": "1",
+  "catalogRef": {
+    "namespace": "archmaker.core",
+    "id": "desktop",
+    "version": "1.0.0",
+    "digest": {
+      "algorithm": "sha256",
+      "value": "1111111111111111111111111111111111111111111111111111111111111111"
+    }
+  },
+  "targetRef": {
+    "id": "arch-x86_64",
+    "version": "2026.10"
+  },
+  "selections": [
+    {
+      "stepId": "archmaker.base.kernel",
+      "optionId": "archmaker.kernel.linux",
+      "value": {
+        "kind": "single",
+        "optionId": "archmaker.kernel.linux"
+      }
+    },
+    {
+      "stepId": "archmaker.base.filesystem",
+      "optionId": "archmaker.filesystem.btrfs",
+      "value": {
+        "kind": "single",
+        "optionId": "archmaker.filesystem.btrfs"
+      }
+    },
+    {
+      "stepId": "archmaker.base.boot",
+      "optionId": "archmaker.boot.systemd-boot",
+      "value": {
+        "kind": "single",
+        "optionId": "archmaker.boot.systemd-boot"
+      }
+    },
+    {
+      "stepId": "archmaker.base.base-devel",
+      "optionId": "archmaker.pkg.base-devel",
+      "value": {
+        "kind": "single",
+        "optionId": "archmaker.pkg.base-devel"
+      }
+    },
+    {
+      "stepId": "archmaker.environment.compositor",
+      "optionId": "archmaker.compositor.gnome",
+      "value": {
+        "kind": "single",
+        "optionId": "archmaker.compositor.gnome"
+      }
+    },
+    {
+      "stepId": "archmaker.environment.dm",
+      "optionId": "archmaker.dm.gdm",
+      "value": {
+        "kind": "single",
+        "optionId": "archmaker.dm.gdm"
+      }
+    },
+    {
+      "stepId": "archmaker.apps.browser",
+      "optionId": "archmaker.browser.firefox",
+      "value": {
+        "kind": "single",
+        "optionId": "archmaker.browser.firefox"
+      }
+    },
+    {
+      "stepId": "archmaker.apps.apps-core",
+      "value": {
+        "kind": "multiple",
+        "optionIds": [
+          "archmaker.app.steam",
+          "archmaker.app.vlc"
+        ]
+      }
+    }
+  ],
+  "presetRefs": [
+    {
+      "namespace": "archmaker.presets",
+      "id": "desktop",
+      "version": "1.0.0"
+    }
+  ]
+}

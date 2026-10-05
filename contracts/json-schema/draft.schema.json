@@ -1,0 +1,313 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://archmaker.dev/schemas/draft.schema.json",
+  "title": "ArchMaker Draft (DM-DRAFT)",
+  "description": "Editable user intent: references to catalog definitions plus SelectionValue entries. Contains manual intent and references only, never derived state. Contract state: draft.",
+  "type": "object",
+  "required": [
+    "id",
+    "documentVersion",
+    "schemaVersion",
+    "catalogRef",
+    "targetRef",
+    "selections"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "description": "Draft identity (UUID).",
+      "$ref": "#/$defs/uuid"
+    },
+    "documentVersion": {
+      "description": "Domain document contract version (axis documentVersion).",
+      "type": "string",
+      "minLength": 1
+    },
+    "schemaVersion": {
+      "description": "JSON Schema contract version (axis schemaVersion).",
+      "type": "string",
+      "minLength": 1
+    },
+    "catalogRef": {
+      "description": "Catalog the draft is resolved against.",
+      "$ref": "#/$defs/catalogRef"
+    },
+    "targetRef": {
+      "description": "Export target the draft is intended for.",
+      "$ref": "#/$defs/targetRef"
+    },
+    "selections": {
+      "description": "Manual intent selections. Derived selections are not stored here.",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/selection"
+      }
+    },
+    "presetRefs": {
+      "description": "Presets applied to this draft. Derived selections are recomputed by the resolver.",
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/presetRef"
+      }
+    },
+    "createdAt": {
+      "description": "Ephemeral creation timestamp; excluded from the canonical hash payload.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedAt": {
+      "description": "Ephemeral last-update timestamp; excluded from the canonical hash payload.",
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "$defs": {
+    "entityId": {
+      "description": "Global entity identifier with the DEC-002 vendor.kind.id shape.",
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]*\\.[a-z0-9][a-z0-9._-]*\\.[a-z0-9][a-z0-9._-]*$"
+    },
+    "namespace": {
+      "description": "Global namespace with the DEC-002 vendor.kind shape.",
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]*\\.[a-z0-9][a-z0-9._-]*$"
+    },
+    "shortId": {
+      "description": "Single-segment identifier used together with a namespace.",
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]*$"
+    },
+    "uuid": {
+      "description": "Canonical UUID string.",
+      "type": "string",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    },
+    "digest": {
+      "description": "Content digest (SHA-256 with domain label in the canonical payload, ADR-0007).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "algorithm",
+        "value"
+      ],
+      "properties": {
+        "algorithm": {
+          "description": "Digest algorithm; only sha256 is defined.",
+          "const": "sha256"
+        },
+        "value": {
+          "description": "Lowercase hexadecimal SHA-256 digest.",
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "catalogRef": {
+      "description": "Reference to an immutable catalog version.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "namespace",
+        "id",
+        "version",
+        "digest"
+      ],
+      "properties": {
+        "namespace": {
+          "$ref": "#/$defs/namespace"
+        },
+        "id": {
+          "$ref": "#/$defs/shortId"
+        },
+        "version": {
+          "description": "Catalog version (axis catalogRef.version).",
+          "type": "string",
+          "minLength": 1
+        },
+        "digest": {
+          "$ref": "#/$defs/digest"
+        }
+      }
+    },
+    "targetRef": {
+      "description": "Reference to a versioned export adapter.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version"
+      ],
+      "properties": {
+        "id": {
+          "description": "Target identifier.",
+          "$ref": "#/$defs/shortId"
+        },
+        "version": {
+          "description": "Target adapter version (axis targetRef.version).",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "presetRef": {
+      "description": "Reference to an immutable preset patch.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "namespace",
+        "id",
+        "version"
+      ],
+      "properties": {
+        "namespace": {
+          "$ref": "#/$defs/namespace"
+        },
+        "id": {
+          "$ref": "#/$defs/shortId"
+        },
+        "version": {
+          "description": "Preset version.",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "selectionValue": {
+      "description": "Discriminated union SelectionValue (single, multiple, boolean, number, text, secretRef). secretRef never carries the secret.",
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "optionId"
+          ],
+          "properties": {
+            "kind": {
+              "const": "single"
+            },
+            "optionId": {
+              "$ref": "#/$defs/entityId"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "optionIds"
+          ],
+          "properties": {
+            "kind": {
+              "const": "multiple"
+            },
+            "optionIds": {
+              "description": "Selected option identifiers; ordered by ID before canonicalization.",
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "$ref": "#/$defs/entityId"
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "value"
+          ],
+          "properties": {
+            "kind": {
+              "const": "boolean"
+            },
+            "value": {
+              "type": "boolean"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "value"
+          ],
+          "properties": {
+            "kind": {
+              "const": "number"
+            },
+            "value": {
+              "type": "number"
+            },
+            "unit": {
+              "description": "Optional unit for the numeric value.",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "value"
+          ],
+          "properties": {
+            "kind": {
+              "const": "text"
+            },
+            "value": {
+              "type": "string",
+              "maxLength": 4096
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "ref"
+          ],
+          "properties": {
+            "kind": {
+              "const": "secretRef"
+            },
+            "ref": {
+              "description": "Opaque reference to a secret; the secret value is never serialized.",
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      ]
+    },
+    "selection": {
+      "description": "A single manual intent entry.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "stepId",
+        "value"
+      ],
+      "properties": {
+        "stepId": {
+          "description": "Catalog step the selection belongs to.",
+          "$ref": "#/$defs/entityId"
+        },
+        "optionId": {
+          "description": "Selected option identifier when the step yields a single option.",
+          "$ref": "#/$defs/entityId"
+        },
+        "value": {
+          "$ref": "#/$defs/selectionValue"
+        }
+      }
+    }
+  }
+}

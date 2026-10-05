@@ -1,0 +1,326 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://archmaker.dev/schemas/catalog.schema.json",
+  "title": "ArchMaker Catalog (DM-CATALOG)",
+  "description": "Versioned, immutable set of definitions (steps, options, libpacks, capabilities, rule references) plus provenance metadata. Declares what can be chosen and with which consequences; never contains commands, hooks or shell. Contract state: draft.",
+  "type": "object",
+  "required": [
+    "namespace",
+    "id",
+    "version",
+    "documentVersion",
+    "schemaVersion",
+    "steps"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "namespace": {
+      "description": "Global namespace with the DEC-002 vendor.kind shape.",
+      "$ref": "#/$defs/namespace"
+    },
+    "id": {
+      "description": "Catalog identifier within the namespace.",
+      "$ref": "#/$defs/shortId"
+    },
+    "version": {
+      "description": "Catalog version (axis catalogRef.version).",
+      "type": "string",
+      "minLength": 1
+    },
+    "documentVersion": {
+      "description": "Domain document contract version (axis documentVersion).",
+      "type": "string",
+      "minLength": 1
+    },
+    "schemaVersion": {
+      "description": "JSON Schema contract version (axis schemaVersion).",
+      "type": "string",
+      "minLength": 1
+    },
+    "digest": {
+      "description": "Content digest of the catalog payload, when computed externally.",
+      "$ref": "#/$defs/digest"
+    },
+    "metadata": {
+      "description": "Open catalog metadata map (free-form string values, e.g. owner, locale). Documented open map required by the domain; keys are not fixed by this contract.",
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "steps": {
+      "description": "Ordered catalog steps.",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/step"
+      }
+    },
+    "libpacks": {
+      "description": "Library packs grouping essential and recommended options.",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/libpack"
+      }
+    },
+    "capabilities": {
+      "description": "Technical capabilities referenced by options and rules.",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/capability"
+      }
+    },
+    "rules": {
+      "description": "References to rule definitions that constrain this catalog.",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/ruleRef"
+      }
+    }
+  },
+  "$defs": {
+    "namespace": {
+      "description": "Global namespace with the DEC-002 vendor.kind shape.",
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]*\\.[a-z0-9][a-z0-9._-]*$"
+    },
+    "shortId": {
+      "description": "Single-segment identifier used together with a namespace.",
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]*$"
+    },
+    "entityId": {
+      "description": "Global entity identifier with the DEC-002 vendor.kind.id shape.",
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]*\\.[a-z0-9][a-z0-9._-]*\\.[a-z0-9][a-z0-9._-]*$"
+    },
+    "capabilityId": {
+      "description": "Capability identifier such as fs.btrfs, gpu.nvidia or boot.uefi.",
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]*\\.[a-z0-9][a-z0-9._-]*$"
+    },
+    "digest": {
+      "description": "Content digest (SHA-256 with domain label in the canonical payload, ADR-0007).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "algorithm",
+        "value"
+      ],
+      "properties": {
+        "algorithm": {
+          "const": "sha256"
+        },
+        "value": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "step": {
+      "description": "A catalog step: a decision point with one or more sections.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "mode",
+        "sections"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/entityId"
+        },
+        "title": {
+          "description": "Human-readable step title.",
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "description": "Optional step explanation.",
+          "type": "string"
+        },
+        "mode": {
+          "description": "Presentation mode of the step (grouped, flat or single).",
+          "enum": [
+            "grouped",
+            "flat",
+            "single"
+          ]
+        },
+        "sections": {
+          "description": "Sections contained in the step.",
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/section"
+          }
+        }
+      }
+    },
+    "section": {
+      "description": "A group of mutually related options within a step.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "cardinality",
+        "options"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/entityId"
+        },
+        "title": {
+          "description": "Human-readable section title.",
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string"
+        },
+        "cardinality": {
+          "description": "Maximum number of selectable options: one or many.",
+          "enum": [
+            "one",
+            "many"
+          ]
+        },
+        "options": {
+          "description": "Selectable options in the section.",
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/option"
+          }
+        }
+      }
+    },
+    "option": {
+      "description": "A selectable option with intent and metadata only. No installable facts (packages or versions) are declared here.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/entityId"
+        },
+        "title": {
+          "description": "Human-readable option title.",
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string"
+        },
+        "fixed": {
+          "description": "Whether the option is essential and cannot be deselected.",
+          "type": "boolean"
+        },
+        "essentialReason": {
+          "description": "Reason why the option is essential.",
+          "type": "string"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "provides": {
+          "description": "Capabilities this option provides.",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/capabilityId"
+          }
+        },
+        "requires": {
+          "description": "Capabilities this option requires.",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/capabilityId"
+          }
+        }
+      }
+    },
+    "libpack": {
+      "description": "A named pack of essential and recommended options.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "essential",
+        "recommended"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/entityId"
+        },
+        "title": {
+          "description": "Human-readable pack title.",
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string"
+        },
+        "essential": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/option"
+          }
+        },
+        "recommended": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/option"
+          }
+        }
+      }
+    },
+    "capability": {
+      "description": "A technical capability declaration.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/capabilityId"
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "ruleRef": {
+      "description": "Reference to a rule definition that constrains selections.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "description": "Rule identifier.",
+          "type": "string",
+          "pattern": "^RULE-[A-Z0-9]+(-[A-Z0-9]+)+$"
+        },
+        "digest": {
+          "$ref": "#/$defs/digest"
+        }
+      }
+    }
+  }
+}

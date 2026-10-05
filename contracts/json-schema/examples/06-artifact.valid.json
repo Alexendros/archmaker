@@ -1,0 +1,35 @@
+{
+  "documentVersion": "vNext",
+  "schemaVersion": "1",
+  "artifactRef": {
+    "digest": {
+      "algorithm": "sha256",
+      "value": "4444444444444444444444444444444444444444444444444444444444444444"
+    },
+    "mediaType": "application/json"
+  },
+  "targetRef": {
+    "id": "archmaker-profile",
+    "version": "0.1.0"
+  },
+  "producer": {
+    "id": "archmaker-export",
+    "version": "0.1.0"
+  },
+  "mediaType": "application/json",
+  "digest": {
+    "algorithm": "sha256",
+    "value": "4444444444444444444444444444444444444444444444444444444444444444"
+  },
+  "manifestRef": {
+    "digest": {
+      "algorithm": "sha256",
+      "value": "3333333333333333333333333333333333333333333333333333333333333333"
+    }
+  },
+  "experimental": false,
+  "content": {
+    "profile": "archmaker",
+    "target": "arch-x86_64"
+  }
+}

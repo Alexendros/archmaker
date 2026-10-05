@@ -1,0 +1,96 @@
+{
+  "namespace": "archmaker.core",
+  "id": "desktop",
+  "version": "1.0.0",
+  "documentVersion": "vNext",
+  "schemaVersion": "1",
+  "digest": {
+    "algorithm": "sha256",
+    "value": "1111111111111111111111111111111111111111111111111111111111111111"
+  },
+  "metadata": {
+    "owner": "archmaker-core",
+    "locale": "en"
+  },
+  "steps": [
+    {
+      "id": "archmaker.sys.base",
+      "title": "Base system",
+      "mode": "grouped",
+      "sections": [
+        {
+          "id": "archmaker.sys.kernel",
+          "title": "Kernel",
+          "cardinality": "one",
+          "options": [
+            {
+              "id": "archmaker.kernel.linux",
+              "title": "Linux",
+              "fixed": true,
+              "essentialReason": "Bootable base system.",
+              "provides": [
+                "boot.kernel"
+              ]
+            },
+            {
+              "id": "archmaker.kernel.zen",
+              "title": "Linux Zen",
+              "tags": [
+                "low-latency"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "archmaker.sys.boot",
+          "title": "Bootloader",
+          "cardinality": "one",
+          "options": [
+            {
+              "id": "archmaker.boot.systemd-boot",
+              "title": "systemd-boot",
+              "provides": [
+                "boot.uefi"
+              ]
+            },
+            {
+              "id": "archmaker.boot.grub",
+              "title": "GRUB"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "libpacks": [
+    {
+      "id": "archmaker.pack.office",
+      "title": "Office",
+      "essential": [
+        {
+          "id": "archmaker.office.libreoffice",
+          "title": "LibreOffice",
+          "fixed": true,
+          "essentialReason": "Base office suite."
+        }
+      ],
+      "recommended": [
+        {
+          "id": "archmaker.office.pdfarranger",
+          "title": "PDF Arranger"
+        }
+      ]
+    }
+  ],
+  "capabilities": [
+    {
+      "id": "fs.btrfs",
+      "title": "Btrfs"
+    }
+  ],
+  "rules": [
+    {
+      "id": "RULE-COMP-001"
+    }
+  ]
+}

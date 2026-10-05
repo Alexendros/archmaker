@@ -1,0 +1,242 @@
+{
+  "archmaker": {
+    "name": "ArchMaker",
+    "version": "5.1.0",
+    "date": "2026-10-05",
+    "arch": [
+      "x86_64"
+    ],
+    "deploy": "local",
+    "iso": {
+      "name": "archmaker-forge-v5.1"
+    }
+  },
+  "configurator": {
+    "type": "multi",
+    "steps": [
+      {
+        "id": "base",
+        "name": "Sistema Base",
+        "mode": "grouped",
+        "sections": [
+          {
+            "id": "kernel",
+            "name": "Kernel",
+            "single": true,
+            "options": [
+              {
+                "id": "linux",
+                "name": "Linux",
+                "pkg": "linux",
+                "description": "stable kernel"
+              },
+              {
+                "id": "linux-zen",
+                "name": "Linux Zen",
+                "pkg": "linux-zen"
+              }
+            ]
+          },
+          {
+            "id": "filesystem",
+            "name": "Sistema de Archivos",
+            "options": [
+              {
+                "id": "btrfs-progs",
+                "name": "Btrfs",
+                "pkg": "btrfs-progs",
+                "fixed": true
+              },
+              {
+                "id": "e2fsprogs",
+                "name": "Ext4",
+                "pkg": "e2fsprogs"
+              }
+            ]
+          },
+          {
+            "id": "base-devel",
+            "name": "Base Devel",
+            "options": [
+              {
+                "id": "base-devel",
+                "name": "base-devel",
+                "pkg": "base-devel",
+                "fixed": true,
+                "description": "gcc, make, patch - AUR essential"
+              }
+            ]
+          },
+          {
+            "id": "boot",
+            "name": "Bootloader",
+            "single": true,
+            "options": [
+              {
+                "id": "systemd-boot",
+                "name": "systemd-boot",
+                "pkg": "systemd-boot"
+              },
+              {
+                "id": "grub",
+                "name": "GRUB",
+                "pkg": "grub"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "environment",
+        "name": "Entorno Gráfico",
+        "mode": "single",
+        "sections": [
+          {
+            "id": "compositor",
+            "name": "Compositor / DE",
+            "single": true,
+            "options": [
+              {
+                "id": "hyprland",
+                "name": "Hyprland",
+                "pkg": "hyprland"
+              },
+              {
+                "id": "gnome",
+                "name": "GNOME",
+                "pkg": "gnome",
+                "auto_dm": "gdm"
+              },
+              {
+                "id": "sway",
+                "name": "Sway",
+                "pkg": "sway"
+              }
+            ]
+          },
+          {
+            "id": "dm",
+            "name": "Display Manager",
+            "single": true,
+            "options": [
+              {
+                "id": "gdm",
+                "name": "GDM",
+                "pkg": "gdm"
+              },
+              {
+                "id": "sddm",
+                "name": "SDDM",
+                "pkg": "sddm"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "apps",
+        "name": "Aplicaciones",
+        "sections": [
+          {
+            "id": "browser",
+            "name": "Navegaci\u00f3n",
+            "options": [
+              {
+                "id": "firefox",
+                "name": "Firefox",
+                "pkg": "firefox"
+              },
+              {
+                "id": "vivaldi",
+                "name": "Vivaldi",
+                "pkg": "vivaldi"
+              }
+            ]
+          },
+          {
+            "id": "apps-core",
+            "name": "Aplicaciones Fundamentales",
+            "options": [
+              {
+                "id": "steam",
+                "name": "Steam",
+                "pkg": "steam"
+              },
+              {
+                "id": "vlc",
+                "name": "VLC",
+                "pkg": "vlc"
+              },
+              {
+                "id": "gimp",
+                "name": "GIMP",
+                "pkg": "gimp"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "validation": {
+    "engine": "live",
+    "blocking": true,
+    "rules": [
+      {
+        "id": "single-compositor",
+        "type": "error",
+        "blocking": true,
+        "when": {
+          "count_gt": [
+            "compositor",
+            1
+          ]
+        },
+        "action": "block",
+        "note": "Only one compositor allowed - v5.1 logic"
+      },
+      {
+        "id": "gdm-gnome",
+        "type": "info",
+        "when": {
+          "eq": [
+            "compositor",
+            "gnome"
+          ]
+        },
+        "action": "change",
+        "target": "dm",
+        "allowed": [
+          "gdm"
+        ],
+        "note": "GNOME selects and locks GDM"
+      }
+    ]
+  },
+  "presets": [
+    {
+      "id": "minimal",
+      "name": "M\u00ednimo",
+      "selections": {
+        "kernel": "linux",
+        "filesystem": "btrfs-progs",
+        "boot": "systemd-boot",
+        "compositor": "hyprland"
+      }
+    },
+    {
+      "id": "desktop",
+      "name": "Escritorio",
+      "parent": "minimal",
+      "selections": {
+        "compositor": "gnome",
+        "dm": "gdm",
+        "browser": "firefox",
+        "apps": [
+          "steam",
+          "vlc"
+        ]
+      }
+    }
+  ]
+}

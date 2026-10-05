@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://archmaker.dev/schemas/diagnostic.schema.json",
+  "title": "ArchMaker Diagnostic",
+  "description": "Typed, localized result of a validation stage. Codes come from the canonical AM-* catalog in docs/04-interfaces/errors-events.md. Contract state: draft.",
+  "type": "object",
+  "required": [
+    "code",
+    "severity",
+    "blocking",
+    "messageKey",
+    "source"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "description": "JSON Schema contract version (axis schemaVersion).",
+      "type": "string",
+      "minLength": 1
+    },
+    "code": {
+      "description": "Canonical AM-<FAMILY>-<NNN> code.",
+      "type": "string",
+      "pattern": "^AM-[A-Z]+-[0-9]{3}$"
+    },
+    "severity": {
+      "description": "Diagnostic severity.",
+      "enum": [
+        "error",
+        "warning",
+        "info"
+      ]
+    },
+    "blocking": {
+      "description": "Whether the diagnostic blocks manifest construction.",
+      "type": "boolean"
+    },
+    "path": {
+      "description": "JSON Pointer to the offending location; empty string means the document root.",
+      "type": "string",
+      "pattern": "^(?:/[^/]*)*$"
+    },
+    "messageKey": {
+      "description": "Localization message key such as diagnostic.capabilityMissing or error.catalog.signatureInvalid.",
+      "type": "string",
+      "pattern": "^[a-z][a-zA-Z0-9]*(\\.[a-zA-Z0-9]+)*$"
+    },
+    "params": {
+      "description": "Open parameter map for message interpolation. Documented open map required by the domain; values are scalars only.",
+      "type": "object",
+      "additionalProperties": {
+        "type": [
+          "string",
+          "number",
+          "boolean"
+        ]
+      }
+    },
+    "source": {
+      "description": "Component that emitted the diagnostic, e.g. archmaker-resolver.",
+      "type": "string",
+      "minLength": 1
+    },
+    "ruleId": {
+      "description": "Rule that produced the diagnostic, when applicable.",
+      "type": "string"
+    },
+    "suggestions": {
+      "description": "Ordered remediation suggestions.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "correlationId": {
+      "description": "Correlation identifier for observability (NFR-OBS-001).",
+      "type": "string",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    }
+  }
+}

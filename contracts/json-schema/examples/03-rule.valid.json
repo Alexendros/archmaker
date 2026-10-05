@@ -1,0 +1,16 @@
+{
+  "id": "RULE-COMP-001",
+  "documentVersion": "vNext",
+  "schemaVersion": "1",
+  "severity": "error",
+  "blocking": true,
+  "when": {
+    "count_gt": [
+      "archmaker.environment.compositor",
+      1
+    ]
+  },
+  "action": "block",
+  "diagnosticCode": "AM-RULE-001",
+  "note": "Only one compositor is allowed."
+}

@@ -1,0 +1,20 @@
+{
+  "id": "0d5e6b1a-1111-4a2b-9c3d-111111111111",
+  "documentVersion": "vNext",
+  "schemaVersion": "1",
+  "catalogRef": {
+    "namespace": "archmaker.core",
+    "id": "desktop",
+    "version": "1.0.0",
+    "digest": {
+      "algorithm": "sha256",
+      "value": "1111111111111111111111111111111111111111111111111111111111111111"
+    }
+  },
+  "targetRef": {
+    "id": "arch-x86_64",
+    "version": "2026.10"
+  },
+  "selections": [],
+  "derivedSelections": []
+}

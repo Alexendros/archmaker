@@ -1,0 +1,76 @@
+{
+  "id": "0d5e6b1a-1111-4a2b-9c3d-111111111111",
+  "documentVersion": "vNext",
+  "schemaVersion": "1",
+  "catalogRef": {
+    "namespace": "archmaker.core",
+    "id": "desktop",
+    "version": "1.0.0",
+    "digest": {
+      "algorithm": "sha256",
+      "value": "1111111111111111111111111111111111111111111111111111111111111111"
+    }
+  },
+  "targetRef": {
+    "id": "arch-x86_64",
+    "version": "2026.10"
+  },
+  "selections": [
+    {
+      "stepId": "archmaker.base.kernel",
+      "optionId": "archmaker.kernel.linux",
+      "value": {
+        "kind": "single",
+        "optionId": "archmaker.kernel.linux"
+      }
+    },
+    {
+      "stepId": "archmaker.apps.apps-core",
+      "value": {
+        "kind": "multiple",
+        "optionIds": [
+          "archmaker.app.steam",
+          "archmaker.app.vlc"
+        ]
+      }
+    },
+    {
+      "stepId": "archmaker.config.secure-boot",
+      "value": {
+        "kind": "boolean",
+        "value": true
+      }
+    },
+    {
+      "stepId": "archmaker.config.swap",
+      "value": {
+        "kind": "number",
+        "value": 8,
+        "unit": "GiB"
+      }
+    },
+    {
+      "stepId": "archmaker.config.hostname",
+      "value": {
+        "kind": "text",
+        "value": "archmaker-host"
+      }
+    },
+    {
+      "stepId": "archmaker.config.registry-token",
+      "value": {
+        "kind": "secretRef",
+        "ref": "secret://user/registry-token"
+      }
+    }
+  ],
+  "presetRefs": [
+    {
+      "namespace": "archmaker.presets",
+      "id": "desktop",
+      "version": "1.0.0"
+    }
+  ],
+  "createdAt": "2026-10-05T10:00:00Z",
+  "updatedAt": "2026-10-05T10:05:00Z"
+}

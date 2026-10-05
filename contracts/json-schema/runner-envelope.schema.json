@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://archmaker.dev/schemas/runner-envelope.schema.json",
+  "title": "ArchMaker Runner Envelope (v1 protocol)",
+  "description": "Typed envelope of the runner protocol v1 over a Unix socket with session authentication (DEC-004, ADR-0004). The runner only accepts typed operations and never arbitrary scripts. Contract state: draft.",
+  "type": "object",
+  "required": [
+    "protocolVersion",
+    "messageId",
+    "correlationId",
+    "kind",
+    "name",
+    "payload"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "protocolVersion": {
+      "description": "Runner protocol version (axis protocolVersion), negotiated before accepting a manifest.",
+      "type": "string",
+      "pattern": "^v[0-9]+(?:\\.[0-9]+)*$"
+    },
+    "schemaVersion": {
+      "description": "JSON Schema contract version of the envelope (axis schemaVersion).",
+      "type": "string",
+      "minLength": 1
+    },
+    "messageId": {
+      "description": "Unique message identifier (UUID).",
+      "$ref": "#/$defs/uuid"
+    },
+    "correlationId": {
+      "description": "Correlation identifier across a session (UUID).",
+      "$ref": "#/$defs/uuid"
+    },
+    "sessionId": {
+      "description": "Runner session identifier (UUID); absent only before the session is created.",
+      "$ref": "#/$defs/uuid"
+    },
+    "kind": {
+      "description": "Message category.",
+      "enum": [
+        "command",
+        "response",
+        "event",
+        "error"
+      ]
+    },
+    "name": {
+      "description": "Message name. Known commands: runner.hello, session.create, manifest.submit, preflight.start, inventory.read, plan.build, plan.validate, dryRun.start, confirmation.submit, execution.start, execution.cancel, journal.export, session.close. Events follow runner.preflight.*, plan.*, execution.* and journal.*.",
+      "type": "string",
+      "pattern": "^[a-zA-Z][a-zA-Z0-9]*(?:\\.[a-zA-Z][a-zA-Z0-9]*)+$"
+    },
+    "payload": {
+      "description": "Message-specific payload. Documented open map: its shape is fixed per message name by the runner protocol; it carries typed operations only and never scripts or shell.",
+      "type": "object"
+    },
+    "sentAt": {
+      "description": "Ephemeral send timestamp; excluded from the canonical hash payload.",
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "$defs": {
+    "uuid": {
+      "description": "Canonical UUID string.",
+      "type": "string",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    }
+  }
+}

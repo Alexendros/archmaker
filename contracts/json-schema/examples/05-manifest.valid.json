@@ -1,0 +1,63 @@
+{
+  "documentVersion": "vNext",
+  "schemaVersion": "1",
+  "domainLabel": "archmaker:manifest:v1",
+  "catalogRef": {
+    "namespace": "archmaker.core",
+    "id": "desktop",
+    "version": "1.0.0",
+    "digest": {
+      "algorithm": "sha256",
+      "value": "1111111111111111111111111111111111111111111111111111111111111111"
+    }
+  },
+  "targetRef": {
+    "id": "archmaker-profile",
+    "version": "0.1.0"
+  },
+  "producer": {
+    "id": "archmaker-export",
+    "version": "0.1.0"
+  },
+  "resolutionDigest": {
+    "algorithm": "sha256",
+    "value": "2222222222222222222222222222222222222222222222222222222222222222"
+  },
+  "effectiveSelections": [
+    {
+      "stepId": "archmaker.environment.compositor",
+      "optionId": "archmaker.compositor.hyprland",
+      "value": {
+        "kind": "single",
+        "optionId": "archmaker.compositor.hyprland"
+      },
+      "origin": "manual",
+      "locked": false
+    },
+    {
+      "stepId": "archmaker.base.filesystem",
+      "optionId": "archmaker.filesystem.btrfs",
+      "value": {
+        "kind": "single",
+        "optionId": "archmaker.filesystem.btrfs"
+      },
+      "origin": "derived",
+      "locked": true
+    }
+  ],
+  "providedCapabilities": [
+    {
+      "id": "fs.btrfs"
+    }
+  ],
+  "requiredCapabilities": [
+    {
+      "id": "boot.uefi"
+    }
+  ],
+  "conflicts": [],
+  "manifestDigest": {
+    "algorithm": "sha256",
+    "value": "3333333333333333333333333333333333333333333333333333333333333333"
+  }
+}

@@ -1,0 +1,270 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://archmaker.dev/schemas/installation-plan.schema.json",
+  "title": "ArchMaker InstallationPlan (DM-PLAN, v1)",
+  "description": "Immutable ordered sequence of typed allowlisted operations derived from a sealed manifest. Never a script and never contains shell (ADR-0004). Contract state: draft.",
+  "type": "object",
+  "required": [
+    "documentVersion",
+    "schemaVersion",
+    "planId",
+    "planHash",
+    "manifestHash",
+    "catalogRef",
+    "targetRef",
+    "producer",
+    "operations"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "documentVersion": {
+      "description": "Domain document contract version (axis documentVersion).",
+      "type": "string",
+      "minLength": 1
+    },
+    "schemaVersion": {
+      "description": "JSON Schema contract version (axis schemaVersion).",
+      "type": "string",
+      "minLength": 1
+    },
+    "protocolVersion": {
+      "description": "Negotiated runner protocol version (axis protocolVersion).",
+      "type": "string",
+      "minLength": 1
+    },
+    "planId": {
+      "description": "Plan identity (UUID).",
+      "$ref": "#/$defs/uuid"
+    },
+    "planHash": {
+      "description": "Hash of the plan payload; bound to confirmation together with manifestHash (ADR-0004).",
+      "$ref": "#/$defs/digest"
+    },
+    "manifestHash": {
+      "description": "Hash of the sealed manifest the plan derives from.",
+      "$ref": "#/$defs/digest"
+    },
+    "catalogRef": {
+      "description": "Exact catalog version consumed.",
+      "$ref": "#/$defs/catalogRef"
+    },
+    "targetRef": {
+      "description": "Target the plan is derived for.",
+      "$ref": "#/$defs/targetRef"
+    },
+    "producer": {
+      "description": "Producer identity and version (axis producer.version).",
+      "$ref": "#/$defs/producer"
+    },
+    "operations": {
+      "description": "Ordered allowlisted operations. Order is semantic and preserved; the plan is immutable.",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/operation"
+      }
+    }
+  },
+  "$defs": {
+    "entityId": {
+      "description": "Global entity identifier with the DEC-002 vendor.kind.id shape.",
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]*\\.[a-z0-9][a-z0-9._-]*\\.[a-z0-9][a-z0-9._-]*$"
+    },
+    "namespace": {
+      "description": "Global namespace with the DEC-002 vendor.kind shape.",
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]*\\.[a-z0-9][a-z0-9._-]*$"
+    },
+    "shortId": {
+      "description": "Single-segment identifier used together with a namespace.",
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]*$"
+    },
+    "capabilityId": {
+      "description": "Capability identifier such as fs.btrfs, gpu.nvidia or boot.uefi.",
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]*\\.[a-z0-9][a-z0-9._-]*$"
+    },
+    "uuid": {
+      "description": "Canonical UUID string.",
+      "type": "string",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    },
+    "digest": {
+      "description": "Content digest (SHA-256 with domain label in the canonical payload, ADR-0007).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "algorithm",
+        "value"
+      ],
+      "properties": {
+        "algorithm": {
+          "const": "sha256"
+        },
+        "value": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "catalogRef": {
+      "description": "Reference to an immutable catalog version.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "namespace",
+        "id",
+        "version",
+        "digest"
+      ],
+      "properties": {
+        "namespace": {
+          "$ref": "#/$defs/namespace"
+        },
+        "id": {
+          "$ref": "#/$defs/shortId"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "digest": {
+          "$ref": "#/$defs/digest"
+        }
+      }
+    },
+    "targetRef": {
+      "description": "Reference to a versioned target adapter.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/shortId"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "producer": {
+      "description": "Producer of the plan.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/shortId"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "operation": {
+      "description": "A typed, allowlisted plan operation. Parameters are a closed set of declarative values; no command or script is representable.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "order",
+        "kind"
+      ],
+      "properties": {
+        "order": {
+          "description": "Zero-based position of the operation in the plan.",
+          "type": "integer",
+          "minimum": 0
+        },
+        "kind": {
+          "description": "Allowlisted operation kind.",
+          "enum": [
+            "preflight.check",
+            "disk.partition",
+            "filesystem.create",
+            "filesystem.mount",
+            "package.install",
+            "bootloader.install",
+            "user.create",
+            "locale.configure",
+            "service.enable",
+            "snapshot.create",
+            "verification.checksum"
+          ]
+        },
+        "description": {
+          "type": "string"
+        },
+        "preconditions": {
+          "description": "Capabilities that must hold before executing the operation.",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/capabilityId"
+          }
+        },
+        "parameters": {
+          "description": "Declarative operation parameters. Closed set; every value is data, never a command.",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "deviceRef": {
+              "description": "Opaque handle to a block device resolved by preflight.",
+              "type": "string"
+            },
+            "mountPoint": {
+              "description": "Absolute mount point path.",
+              "type": "string",
+              "pattern": "^/"
+            },
+            "filesystem": {
+              "$ref": "#/$defs/capabilityId"
+            },
+            "packageIds": {
+              "description": "Package entity identifiers to install.",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/entityId"
+              }
+            },
+            "packageGroupIds": {
+              "description": "Package group entity identifiers to install.",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/entityId"
+              }
+            },
+            "userRef": {
+              "description": "Opaque reference to a user definition.",
+              "type": "string"
+            },
+            "locale": {
+              "type": "string"
+            },
+            "keymap": {
+              "type": "string"
+            },
+            "timezone": {
+              "type": "string"
+            },
+            "serviceUnit": {
+              "type": "string"
+            },
+            "checksum": {
+              "$ref": "#/$defs/digest"
+            }
+          }
+        }
+      }
+    }
+  }
+}

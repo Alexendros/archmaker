@@ -1,0 +1,14 @@
+{
+  "id": "RULE-COMP-002",
+  "documentVersion": "vNext",
+  "schemaVersion": "1",
+  "severity": "error",
+  "blocking": true,
+  "when": {
+    "count_gte": [
+      "archmaker.environment.compositor",
+      1
+    ]
+  },
+  "action": "block"
+}

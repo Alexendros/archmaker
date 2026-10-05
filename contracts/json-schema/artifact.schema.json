@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://archmaker.dev/schemas/artifact.schema.json",
+  "title": "ArchMaker Artifact (DM-ARTIFACT)",
+  "description": "Material output of an exporter: ArchMaker profile, experimental archinstall profile or review report. Declares target, producer, versions, mediaType and digests (DEC-001, ADR-0003). Contract state: draft.",
+  "type": "object",
+  "required": [
+    "documentVersion",
+    "schemaVersion",
+    "artifactRef",
+    "targetRef",
+    "producer",
+    "mediaType",
+    "digest",
+    "manifestRef"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "documentVersion": {
+      "description": "Domain document contract version (axis documentVersion).",
+      "type": "string",
+      "minLength": 1
+    },
+    "schemaVersion": {
+      "description": "JSON Schema contract version (axis schemaVersion).",
+      "type": "string",
+      "minLength": 1
+    },
+    "artifactRef": {
+      "description": "Identity of the artifact: digest and media type.",
+      "$ref": "#/$defs/artifactRef"
+    },
+    "targetRef": {
+      "description": "Target that produced the artifact (DEC-001, DEC-008).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version"
+      ],
+      "properties": {
+        "id": {
+          "description": "Export target identifier.",
+          "enum": [
+            "archmaker-profile",
+            "archinstall-profile",
+            "report"
+          ]
+        },
+        "version": {
+          "description": "Target adapter version (axis targetRef.version).",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "producer": {
+      "description": "Producer identity and version (axis producer.version).",
+      "$ref": "#/$defs/producer"
+    },
+    "mediaType": {
+      "description": "IANA media type of the exported artifact.",
+      "type": "string",
+      "minLength": 1
+    },
+    "digest": {
+      "description": "Digest of the exported artifact bytes.",
+      "$ref": "#/$defs/digest"
+    },
+    "manifestRef": {
+      "description": "Digest of the source manifest.",
+      "$ref": "#/$defs/manifestRef"
+    },
+    "experimental": {
+      "description": "True for experimental targets such as archinstall-profile (DEC-001).",
+      "type": "boolean"
+    },
+    "content": {
+      "description": "Adapter-defined exported payload, versioned by targetRef.version (ADR-0003). Documented open payload: its shape is fixed by the target adapter, never by this contract. It must not contain executable fields, commands, hooks or shell.",
+      "type": [
+        "object",
+        "array",
+        "string"
+      ]
+    }
+  },
+  "$defs": {
+    "shortId": {
+      "description": "Single-segment identifier used together with a namespace.",
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]*$"
+    },
+    "digest": {
+      "description": "Content digest (SHA-256 with domain label in the canonical payload, ADR-0007).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "algorithm",
+        "value"
+      ],
+      "properties": {
+        "algorithm": {
+          "const": "sha256"
+        },
+        "value": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "artifactRef": {
+      "description": "Artifact identity: digest and media type.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "digest",
+        "mediaType"
+      ],
+      "properties": {
+        "digest": {
+          "$ref": "#/$defs/digest"
+        },
+        "mediaType": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "manifestRef": {
+      "description": "Reference to the sealed source manifest.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "digest"
+      ],
+      "properties": {
+        "digest": {
+          "$ref": "#/$defs/digest"
+        }
+      }
+    },
+    "producer": {
+      "description": "Producer of the artifact.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/shortId"
+        },
+        "version": {
+          "description": "Producer version (axis producer.version).",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}
