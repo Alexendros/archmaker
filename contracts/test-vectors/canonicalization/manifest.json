@@ -1,0 +1,44 @@
+{
+  "profileId": "archmaker-canonicalization-profile@v1",
+  "profileVersion": "1",
+  "serialization": "RFC 8785 (JCS) — implementación de referencia del perfil archmaker",
+  "jcsPrimarySource": "no-verificado (fuente primaria pendiente)",
+  "algorithm": "sha256",
+  "digestEncoding": "lowercase-hex",
+  "digestFraming": "utf8(domain) || 0x00 || utf8(canonical)",
+  "defaultDomain": "archmaker:manifest:v1",
+  "created": "2026-10-06",
+  "files": [
+    {
+      "file": "unicode.vectors.json",
+      "category": "unicode"
+    },
+    {
+      "file": "numbers.vectors.json",
+      "category": "numbers"
+    },
+    {
+      "file": "maps.vectors.json",
+      "category": "maps"
+    },
+    {
+      "file": "arrays.vectors.json",
+      "category": "arrays"
+    },
+    {
+      "file": "timestamps.vectors.json",
+      "category": "timestamps"
+    },
+    {
+      "file": "domain.vectors.json",
+      "category": "domain"
+    },
+    {
+      "file": "errors.vectors.json",
+      "category": "errors"
+    }
+  ],
+  "vectorCount": 34,
+  "validCount": 25,
+  "rejectCount": 9
+}

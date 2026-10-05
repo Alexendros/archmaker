@@ -59,7 +59,8 @@ reviewers:
 |---|---|---|
 | `domain-model.md` (DM-*) | DOC-DATA-DM-001 | draft |
 | `lifecycles.md` | DOC-DATA-LIFE-001 | draft |
-| `canonicalization.md` | DOC-DATA-CANON-001 | draft |
+| `canonicalization.md` (superseded) | DOC-DATA-CANON-000 | superseded |
+| `canonicalization-profile-v1.md` (perfil inmutable v1) | DOC-DATA-CANON-001 | accepted |
 | `versioning-migrations.md` | DOC-DATA-VER-001 | draft |
 
 ## 04 — Interfaces

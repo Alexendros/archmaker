@@ -34,3 +34,4 @@ reviewers:
 - Los controles de THR-RUN-001, THR-RUN-002 y THR-FS-001 quedan ligados a DEC-004 (proceso separado, transporte Unix socket + autenticación de sesión y elevación fuera del WebView; ver `privilege-model.md` y ADR-0004).
 - THR-UPD-001 queda ligado a ADR-0009 (canal firmado, fail-open offline) y a DEC-006/DEC-007.
 - THR-CAT-001 y THR-SUP-001 quedan ligados a DEC-006 (firma/procedencia) y ADR-0008.
+- R9 (2026-10-06): `THR-UPD-001` se desarrolla en `docs/08-security/updater-threat-model.md` (`DOC-SEC-UPD-001`); `THR-IPC-001`/`THR-FS-001`/`THR-IMP-001` en `docs/08-security/mvp-negative-tests.md` (`DOC-SEC-NEG-001`); `THR-RUN-001`/`THR-RUN-002` en `docs/08-security/runner-hazard-analysis.md` (`DOC-SEC-RUN-001`). El riesgo residual se rige por `docs/08-security/residual-risk-model.md` (`DOC-SEC-RISK-001`). El Runner v1 sigue bloqueado hasta los gates de v1.

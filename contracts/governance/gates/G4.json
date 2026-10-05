@@ -1,0 +1,51 @@
+{
+  "id": "G4",
+  "title": "Datos y contratos",
+  "remediationPhases": ["R5", "R6"],
+  "status": "in-progress",
+  "phases": {
+    "document-complete": "in-progress",
+    "design-ready": "in-progress",
+    "implementation-ready": "pending",
+    "verified": "pending",
+    "release-ready": "not-applicable"
+  },
+  "dependsOn": [
+    {
+      "id": "ADR-0007",
+      "expectedDocumentStatus": "accepted",
+      "expectedApprovalStatus": "approved",
+      "note": "AUD-F-01: la canonicalización debe estar aceptada antes de depender de digests. R5 acepta ADR-0007."
+    }
+  ],
+  "criteria": [
+    {
+      "id": "G4-C01",
+      "description": "ADR-0007 aceptado con las doce decisiones normativas de canonicalización (R5).",
+      "kind": "decision",
+      "status": "complete",
+      "evidence": [
+        { "type": "document", "ref": "docs/02-architecture/adr/ADR-0007-canonicalizacion-y-hashing.md", "note": "documentStatus accepted / approvalStatus approved (R5)" },
+        { "type": "document", "ref": "docs/03-data/canonicalization-profile-v1.md", "note": "perfil inmutable v1 (R5)" }
+      ]
+    },
+    {
+      "id": "G4-C02",
+      "description": "Schemas MVP v0 (draft, catalog, diagnostic, manifest) aceptados (R6).",
+      "kind": "artifact",
+      "status": "in-progress"
+    },
+    {
+      "id": "G4-C03",
+      "description": "Schemas comunes common.schema.json, core-error.schema.json y changeset.schema.json (AUD-011/014/015).",
+      "kind": "artifact",
+      "status": "pending"
+    },
+    {
+      "id": "G4-C04",
+      "description": "Vectores golden de canonicalización y corpus válido/inválido en verde en CI (R5/R11).",
+      "kind": "metric-verified",
+      "status": "pending"
+    }
+  ]
+}

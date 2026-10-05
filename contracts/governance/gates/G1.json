@@ -1,0 +1,40 @@
+{
+  "id": "G1",
+  "title": "Problema y usuarios",
+  "remediationPhases": ["R1", "R3"],
+  "status": "in-progress",
+  "phases": {
+    "document-complete": "complete",
+    "design-ready": "not-applicable",
+    "implementation-ready": "not-applicable",
+    "verified": "pending",
+    "release-ready": "not-applicable"
+  },
+  "criteria": [
+    {
+      "id": "G1-C01",
+      "description": "Documentos de personas y objetivos aprobados.",
+      "kind": "document-approved",
+      "status": "complete",
+      "evidence": [
+        { "type": "document", "ref": "docs/01-product/personas.md" },
+        { "type": "document", "ref": "docs/01-product/objectives.md" }
+      ]
+    },
+    {
+      "id": "G1-C02",
+      "description": "Product brief aprobado dentro de requirements.md.",
+      "kind": "document-approved",
+      "status": "complete",
+      "evidence": [
+        { "type": "document", "ref": "docs/01-product/requirements.md" }
+      ]
+    },
+    {
+      "id": "G1-C03",
+      "description": "Métricas cuantitativas de usuarios y objetivos verificadas con evidencia (documento aprobado no equivale a métrica verificada).",
+      "kind": "metric-verified",
+      "status": "pending"
+    }
+  ]
+}

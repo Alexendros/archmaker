@@ -1,0 +1,84 @@
+{
+  "id": "G0",
+  "title": "Fuentes controladas",
+  "remediationPhases": ["R0", "R3"],
+  "status": "complete",
+  "phases": {
+    "document-complete": "complete",
+    "design-ready": "not-applicable",
+    "implementation-ready": "complete",
+    "verified": "complete",
+    "release-ready": "not-applicable"
+  },
+  "criteria": [
+    {
+      "id": "G0-C01",
+      "description": "Disposición G0 de fuentes aceptada: SRC-001 controlled-incomplete y ausentes declared-only.",
+      "kind": "document-approved",
+      "status": "complete",
+      "evidence": [
+        {
+          "type": "document",
+          "ref": "docs/00-governance/G0-SOURCE-DISPOSITION.md",
+          "note": "DOC-GOV-G0-SRC-002 accepted"
+        }
+      ]
+    },
+    {
+      "id": "G0-C02",
+      "description": "Integridad de los once originales v5.1 verificada por SHA-256 (11/11 OK).",
+      "kind": "metric-verified",
+      "status": "complete",
+      "evidence": [
+        { "type": "command", "ref": "sha256sum --check --strict reference/v5.1/SHA256SUMS" },
+        { "type": "commit", "ref": "congelación de baseline y disposición G0", "commit": "611e1e7" }
+      ]
+    },
+    {
+      "id": "G0-C03",
+      "description": "Alias NEUBAT byte a byte verificado (cmp idéntico).",
+      "kind": "metric-verified",
+      "status": "complete",
+      "evidence": [
+        {
+          "type": "command",
+          "ref": "cmp reference/v5.1/forge_v4_final.html reference/v5.1/aliases/neubat_forge_v4_final.html"
+        }
+      ]
+    },
+    {
+      "id": "G0-C04",
+      "description": "Manifiestos de disposición JSON válidos (ALIASES, UNAVAILABLE-SOURCES, PROVENANCE).",
+      "kind": "metric-verified",
+      "status": "complete",
+      "evidence": [
+        { "type": "command", "ref": "python3 -m json.tool reference/v5.1/PROVENANCE.json" },
+        { "type": "command", "ref": "python3 -m json.tool reference/v5.1/UNAVAILABLE-SOURCES.json" }
+      ]
+    },
+    {
+      "id": "G0-C05",
+      "description": "Baseline de auditoría congelada (tag, rama y hito).",
+      "kind": "document-approved",
+      "status": "complete",
+      "evidence": [
+        { "type": "document", "ref": "docs/00-governance/audit-baseline.md", "note": "DOC-GOV-AUD-001" },
+        { "type": "commit", "ref": "congelación de baseline", "commit": "611e1e7" }
+      ]
+    },
+    {
+      "id": "G0-C06",
+      "description": "Evaluación de gates reproducible: manifiestos, tabla derivada y validador de trazabilidad.",
+      "kind": "artifact",
+      "status": "complete",
+      "evidence": [
+        { "type": "command", "ref": "python3 tools/gates.py" },
+        { "type": "command", "ref": "python3 tools/validate_traceability.py" }
+      ]
+    }
+  ],
+  "evidence": [
+    { "type": "command", "ref": "python3 tools/gates.py", "note": "R3: manifiestos y tabla derivada" },
+    { "type": "commit", "ref": "R0/R3: baseline congelada y disposición G0", "commit": "611e1e7" }
+  ]
+}

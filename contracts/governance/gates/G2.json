@@ -1,0 +1,50 @@
+{
+  "id": "G2",
+  "title": "Alcance y requisitos",
+  "remediationPhases": ["R1", "R2"],
+  "status": "in-progress",
+  "phases": {
+    "document-complete": "complete",
+    "design-ready": "not-applicable",
+    "implementation-ready": "not-applicable",
+    "verified": "pending",
+    "release-ready": "not-applicable"
+  },
+  "criteria": [
+    {
+      "id": "G2-C01",
+      "description": "Requisitos FR/NFR con Given/When/Then aprobados.",
+      "kind": "document-approved",
+      "status": "complete",
+      "evidence": [
+        { "type": "document", "ref": "docs/01-product/requirements.md" }
+      ]
+    },
+    {
+      "id": "G2-C02",
+      "description": "Casos de uso y journeys aprobados.",
+      "kind": "document-approved",
+      "status": "complete",
+      "evidence": [
+        { "type": "document", "ref": "docs/01-product/use-cases.md" },
+        { "type": "document", "ref": "docs/01-product/journeys.md" }
+      ]
+    },
+    {
+      "id": "G2-C03",
+      "description": "Decisiones DEC-001..DEC-010 resueltas en la autoridad única del registro.",
+      "kind": "decision",
+      "status": "complete",
+      "evidence": [
+        { "type": "document", "ref": "docs/00-governance/decision-register.md", "note": "DOC-GOV-DEC-001" },
+        { "type": "commit", "ref": "R2: registro de decisiones autoritativo", "commit": "0a0e98c" }
+      ]
+    },
+    {
+      "id": "G2-C04",
+      "description": "Cobertura de trazabilidad FR/NFR → prueba materializada (sin referencias TST/VAL sin definir).",
+      "kind": "metric-verified",
+      "status": "pending"
+    }
+  ]
+}

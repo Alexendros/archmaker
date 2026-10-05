@@ -1,0 +1,53 @@
+{
+  "profileId": "archmaker-canonicalization-profile@v1",
+  "profileVersion": "1",
+  "category": "maps",
+  "vectors": [
+    {
+      "id": "m-key-order",
+      "description": "Claves ordenadas por unidades UTF-16, no por orden de inserción.",
+      "input": {
+        "b": 1,
+        "a": 2,
+        "c": 3,
+        "za": 0
+      },
+      "canonical": "{\"a\":2,\"b\":1,\"c\":3,\"za\":0}",
+      "digest": "61b081617b80016523dbd29447d9ba50736076c81c34283f0c2b3ee4bdbf4fa2"
+    },
+    {
+      "id": "m-utf16-order",
+      "description": "Orden UTF-16: z (007A) < U+1F600 (D83D DE00) < U+E000.",
+      "input": {
+        "z": 1,
+        "": 2,
+        "😀": 3
+      },
+      "canonical": "{\"z\":1,\"😀\":3,\"\":2}",
+      "digest": "1976acdeb1c8dca6bd892271a0116f4561051c8cc67dd89da12e898ca000954f"
+    },
+    {
+      "id": "m-empty",
+      "description": "Objeto vacío.",
+      "input": {},
+      "canonical": "{}",
+      "digest": "050be2987a65e15b491cd859fcb21bde2e5731439b596eaf576091a6bad6e2d6"
+    },
+    {
+      "id": "m-nested",
+      "description": "Orden canónico aplicado recursivamente.",
+      "input": {
+        "b": {
+          "z": 1,
+          "a": 2
+        },
+        "a": [],
+        "c": {
+          "k": {}
+        }
+      },
+      "canonical": "{\"a\":[],\"b\":{\"a\":2,\"z\":1},\"c\":{\"k\":{}}}",
+      "digest": "7e8deb6680445edb414f4d9e84bf24fb269f6e280b1d5b54b876215306bfa91a"
+    }
+  ]
+}

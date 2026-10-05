@@ -1,0 +1,40 @@
+{
+  "id": "G7",
+  "title": "Validación y corpus",
+  "remediationPhases": ["R8"],
+  "status": "in-progress",
+  "phases": {
+    "document-complete": "in-progress",
+    "design-ready": "not-applicable",
+    "implementation-ready": "in-progress",
+    "verified": "pending",
+    "release-ready": "not-applicable"
+  },
+  "criteria": [
+    {
+      "id": "G7-C01",
+      "description": "Operadores normalizados y corpus por operador (R8).",
+      "kind": "artifact",
+      "status": "in-progress",
+      "evidence": [
+        { "type": "document", "ref": "docs/07-validation/operator-spec.md" },
+        { "type": "document", "ref": "docs/07-validation/operator-corpus.md" }
+      ]
+    },
+    {
+      "id": "G7-C02",
+      "description": "Operadores required ratificados y target_is diferido a v1 (decisión R8).",
+      "kind": "decision",
+      "status": "complete",
+      "evidence": [
+        { "type": "commit", "ref": "R8: operadores required y target_is diferido", "commit": "3625889" }
+      ]
+    },
+    {
+      "id": "G7-C03",
+      "description": "Corpus positivo y negativo ejecutable en CI con diagnósticos reproducibles.",
+      "kind": "metric-verified",
+      "status": "pending"
+    }
+  ]
+}

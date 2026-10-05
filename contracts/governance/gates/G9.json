@@ -1,0 +1,37 @@
+{
+  "id": "G9",
+  "title": "Calidad y CI",
+  "remediationPhases": ["R11"],
+  "status": "in-progress",
+  "phases": {
+    "document-complete": "in-progress",
+    "design-ready": "not-applicable",
+    "implementation-ready": "in-progress",
+    "verified": "pending",
+    "release-ready": "not-applicable"
+  },
+  "criteria": [
+    {
+      "id": "G9-C01",
+      "description": "CI documental y de contratos con acciones fijadas por SHA y versiones pip fijadas.",
+      "kind": "artifact",
+      "status": "in-progress",
+      "evidence": [
+        { "type": "commit", "ref": "pins por SHA", "commit": "88388ba" },
+        { "type": "commit", "ref": "job corpus-validate", "commit": "fbe2226" }
+      ]
+    },
+    {
+      "id": "G9-C02",
+      "description": "Ejecución verde sobre commit protegido con evidencia conservada (AUD-022).",
+      "kind": "metric-verified",
+      "status": "pending"
+    },
+    {
+      "id": "G9-C03",
+      "description": "SBOM, firmas reales y provenance de artefactos (DEC-006).",
+      "kind": "artifact",
+      "status": "pending"
+    }
+  ]
+}

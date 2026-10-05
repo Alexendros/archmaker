@@ -1,0 +1,38 @@
+{
+  "id": "G10",
+  "title": "Delivery y walking skeleton",
+  "remediationPhases": ["R12", "R13"],
+  "status": "in-progress",
+  "phases": {
+    "document-complete": "in-progress",
+    "design-ready": "not-applicable",
+    "implementation-ready": "pending",
+    "verified": "pending",
+    "release-ready": "pending"
+  },
+  "criteria": [
+    {
+      "id": "G10-C01",
+      "description": "Roadmap, backlog y next-issues con alcance del walking skeleton (R12).",
+      "kind": "document-approved",
+      "status": "in-progress",
+      "evidence": [
+        { "type": "document", "ref": "docs/10-delivery/roadmap.md" },
+        { "type": "document", "ref": "docs/10-delivery/backlog.md" },
+        { "type": "document", "ref": "docs/10-delivery/next-issues.md" }
+      ]
+    },
+    {
+      "id": "G10-C02",
+      "description": "Owners y dependencias del backlog asignados.",
+      "kind": "metric-verified",
+      "status": "pending"
+    },
+    {
+      "id": "G10-C03",
+      "description": "Revisión independiente y publicación del baseline planning-v1.1 (AUD-024/025).",
+      "kind": "review",
+      "status": "pending"
+    }
+  ]
+}

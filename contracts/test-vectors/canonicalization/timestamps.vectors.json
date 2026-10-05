@@ -1,0 +1,50 @@
+{
+  "profileId": "archmaker-canonicalization-profile@v1",
+  "profileVersion": "1",
+  "category": "timestamps",
+  "vectors": [
+    {
+      "id": "t-ephemeral-a",
+      "description": "createdAt/loadedAt/localPath excluidos del payload.",
+      "input": {
+        "id": "x",
+        "createdAt": "2026-01-01T00:00:00Z",
+        "loadedAt": "2026-01-01T00:00:01Z",
+        "localPath": "/tmp/a"
+      },
+      "canonical": "{\"id\":\"x\"}",
+      "digest": "b7596a5c13d95bd3661c91e8946326dd7ba718f57482c99afadc926e6658a37a"
+    },
+    {
+      "id": "t-ephemeral-b",
+      "description": "Distintos efímeros: mismos bytes y digest que t-ephemeral-a.",
+      "input": {
+        "id": "x",
+        "createdAt": "2030-12-31T23:59:59Z",
+        "loadedAt": "2031-01-01T00:00:00Z",
+        "localPath": "/srv/b",
+        "updatedAt": "2032-01-01T00:00:00Z"
+      },
+      "canonical": "{\"id\":\"x\"}",
+      "digest": "b7596a5c13d95bd3661c91e8946326dd7ba718f57482c99afadc926e6658a37a"
+    },
+    {
+      "id": "t-utc-preserved",
+      "description": "Timestamp de intención (UTC Z): cadena opaca preservada.",
+      "input": {
+        "publishedAt": "2026-10-06T12:00:00Z"
+      },
+      "canonical": "{\"publishedAt\":\"2026-10-06T12:00:00Z\"}",
+      "digest": "9e192d454989013acd10b5920d7fe09d7b8665abef3120c04141a725ad7d826e"
+    },
+    {
+      "id": "t-offset-opaque",
+      "description": "El mismo instante con offset NO se normaliza: digest distinto (la validación exige Z).",
+      "input": {
+        "publishedAt": "2026-10-06T14:00:00+02:00"
+      },
+      "canonical": "{\"publishedAt\":\"2026-10-06T14:00:00+02:00\"}",
+      "digest": "c1eeff8112289b9cf8aea4db2e0ace399f53e069e4bc1eed5ac4f116234ffa74"
+    }
+  ]
+}

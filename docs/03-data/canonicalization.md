@@ -1,9 +1,9 @@
 ---
-id: DOC-DATA-CANON-001
+id: DOC-DATA-CANON-000
 phase: MVP
 priority: P0
-documentStatus: in-review
-approvalStatus: pending
+documentStatus: superseded
+approvalStatus: approved
 implementationStatus: complete
 verificationStatus: not-verified
 releaseStatus: ineligible
@@ -14,6 +14,11 @@ reviewers:
 ---
 
 # Canonicalización y hashing
+
+> **Superseded.** Este documento (`DOC-DATA-CANON-000`) queda sustituido por
+> `docs/03-data/canonicalization-profile-v1.md` (`DOC-DATA-CANON-001`), que fija las doce
+> decisiones normativas y adopta RFC 8785 (JCS) de forma definitiva (`ADR-0007`, aceptado en la
+> fase R5). Se conserva como histórico; su contenido no es normativo.
 
 ## Objetivo
 

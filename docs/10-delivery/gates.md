@@ -19,32 +19,101 @@ dependsOn:
 
 # Gates G0–G10
 
-Evaluación: 2026-10-05 (Etapa E; tras aceptación de producto/arquitectura/datos).
+Tabla **generada** desde `contracts/governance/gates/G*.json` por `tools/gates.py`.
+No editar a mano: `python3 tools/gates.py` falla si esta tabla contradice los manifiestos.
+La semántica de los estados se lee en `docs/00-governance/status-model.md` (DOC-GOV-STATUS-001).
 
-| Gate | Criterio | Evidencia mínima | Estado | Falta para `complete` |
+| Gate | Título | Fases (doc/diseño/impl/verif/release) | Estado | Criterios pendientes |
 |---|---|---|---|---|
-| G0 | Fuentes controladas | `reference/v5.1/` originales íntegros (sha256 OK) + disposición `G0-SOURCE-DISPOSITION.md` + `ALIASES.json`/`UNAVAILABLE-SOURCES.json` + `source-register.md` (SRC-001 `controlled-incomplete`; SRC-002..008 verificadas) + `inventory-v5.1.md` | complete | — (SRC-001 `controlled-incomplete`; sin dependencia P0 de las fuentes ausentes) |
-| G1 | Problema/usuarios | `personas.md`, `objectives.md` (OBJ-*), `product-brief` en `requirements.md` | complete | — (docs `accepted` 2026-10-05; métricas cuantitativas aún no verificadas) |
-| G2 | Alcance/requisitos | `requirements.md` (FR/NFR con Given/When/Then), `use-cases.md`, `journeys.md` | complete | — (docs `accepted` 2026-10-05; DEC-001/DEC-008 resueltas) |
-| G3 | Arquitectura | `c4/README.md`, `module-map.md`, `dependency-rules.md`, `adr/ADR-0001..0009` (accepted) | complete | — (docs `accepted` 2026-10-05; ADR-0001..0009 accepted, ADR-0007 proposed) |
-| G4 | Datos | `domain-model.md`, `lifecycles.md`, `canonicalization.md`, `versioning-migrations.md`, `contracts/json-schema/` (8 schemas + corpus + job CI de corpus) | partial | CI en verde (meta-validación + corpus); canonicalización ADR-0007 en `proposed` |
-| G5 | Interfaces | `core-port.md`, `dto.md`, `errors-events.md`, `tauri-commands.md`, `tauri-wasm.md`, `runner-protocol.md` | partial | aprobar CorePort/DTO; ratificar cobertura CorePort (C4) |
-| G6 | UX/diseño | `interaction-matrix.md`, `component-contracts.md`, `design-system.md` | partial | validación de accesibilidad; aprobar tokens preservados |
-| G7 | Validación | `operator-spec.md`, `operator-corpus.md`, `pipeline.md`, `rule-inventory.md` | partial | corpus ejecutable en CI; RULE-GPU-001 no implementable (SRC-002/003); `target_is` diferido a v1 |
-| G8 | Seguridad | `threat-model.md`, `privilege-model.md`, `tauri-policy.md` | partial | sign-off aprobado formalmente 2026-10-05; falta verificación de implementación (pruebas negativas de capabilities/elevación) y cierre de RSK-001/002/008 |
-| G9 | Calidad | `test-matrix.md`, `documentation-validation.md`, `ci-cd.md`, `.github/workflows/` (pins por SHA), `packaging-release.md` | partial | CI en verde; SBOM/firmas reales |
-| G10 | Delivery | `roadmap.md`, `backlog.md`, `next-issues.md`, `gates.md`, `packaging-release.md` | partial | owners en backlog; releases |
+| G0 | Fuentes controladas | complete/n/a/complete/complete/n/a | complete | — |
+| G1 | Problema y usuarios | complete/n/a/n/a/pending/n/a | in-progress | G1-C03 |
+| G2 | Alcance y requisitos | complete/n/a/n/a/pending/n/a | in-progress | G2-C04 |
+| G3 | Arquitectura | complete/complete/n/a/pending/n/a | in-progress | G3-C04 |
+| G4 | Datos y contratos | in-progress/in-progress/pending/pending/n/a | in-progress | G4-C02, G4-C03, G4-C04 |
+| G5 | Interfaces y CorePort | in-progress/pending/pending/pending/n/a | in-progress | G5-C01, G5-C02, G5-C03 |
+| G6 | UX y design system | in-progress/in-progress/pending/pending/n/a | in-progress | G6-C01, G6-C03 |
+| G7 | Validación y corpus | in-progress/n/a/in-progress/pending/n/a | in-progress | G7-C01, G7-C03 |
+| G8 | Seguridad | in-progress/in-progress/pending/pending/n/a | in-progress | G8-C01, G8-C04 |
+| G9 | Calidad y CI | in-progress/n/a/in-progress/pending/n/a | in-progress | G9-C01, G9-C02, G9-C03 |
+| G10 | Delivery y walking skeleton | in-progress/n/a/pending/pending/pending | in-progress | G10-C01, G10-C02, G10-C03 |
 
-`complete` exige documentos `accepted`, ausencia de P0 abiertos asociados y, en los gates con artefacto ejecutable (G4, G9), evidencia ejecutable (CI en verde). En gates documentales (G0–G3, G5–G8, G10), `complete` = documentos `accepted` + sin P0 asociados.
+## Criterios por gate
 
-## Progreso (Pasos 0–7 + Etapas A–F)
+### G0 — Fuentes controladas (`complete`)
 
-- DEC-001..DEC-008 **accepted** (2026-10-05); DEC-009/DEC-010 en `proposed` (no bloquean).
-- ADR-0001..ADR-0009 **accepted**.
-- 8 JSON Schema Draft 2020-12 cerrados (`additionalProperties:false`) + corpus válido/inválido + fixture de migración v5.1.
-- **Fuentes**: once originales SRC-001 recibidos íntegros y controlados; `archmaker-v10.4-p3.yaml` e `i18n.es.json` `unavailable-declared-only`; `neubat_forge_v4_final.html` como alias byte a byte (`probable-rename-not-proven`). SRC-002..SRC-008 verificadas (SRC-002/003/006 en Paso 2; SRC-005/007/008 en Etapa B). SRC-001 pasa a `controlled-incomplete` (`G0-SOURCE-DISPOSITION.md`).
-- **Etapa A (A1-A6)**: marcadores obsoletos resueltos, índice ADR, plantilla de issue, severidad canónica, catálogo AM-* completo, aliases ValueRef, mapas abiertos documentados.
-- **Etapa C**: job de CI `corpus-validate` (válido/inválido) + meta-validación acotada a `*.schema.json`.
-- **Etapa D**: sign-off de Seguridad registrado 2026-10-05; RSK-001/002/008 con control definido (verificación de implementación pendiente).
-- **Etapa E**: aceptados FR/NFR, modelo de dominio, C4/módulos, personas, objetivos, journeys y casos de uso (2026-10-05); ADR-0007 rebajado a `proposed`; operadores `required` ratificado y `target_is` diferido a v1; sign-off de Seguridad aprobado formalmente.
-- Gate global `planning-v1`: sigue **No-Go** (ver `go-no-go.md`).
+- `G0-C01` · document-approved · complete — Disposición G0 de fuentes aceptada: SRC-001 controlled-incomplete y ausentes declared-only. · 1 evidencia(s)
+- `G0-C02` · metric-verified · complete — Integridad de los once originales v5.1 verificada por SHA-256 (11/11 OK). · 2 evidencia(s)
+- `G0-C03` · metric-verified · complete — Alias NEUBAT byte a byte verificado (cmp idéntico). · 1 evidencia(s)
+- `G0-C04` · metric-verified · complete — Manifiestos de disposición JSON válidos (ALIASES, UNAVAILABLE-SOURCES, PROVENANCE). · 2 evidencia(s)
+- `G0-C05` · document-approved · complete — Baseline de auditoría congelada (tag, rama y hito). · 2 evidencia(s)
+- `G0-C06` · artifact · complete — Evaluación de gates reproducible: manifiestos, tabla derivada y validador de trazabilidad. · 2 evidencia(s)
+
+### G1 — Problema y usuarios (`in-progress`)
+
+- `G1-C01` · document-approved · complete — Documentos de personas y objetivos aprobados. · 2 evidencia(s)
+- `G1-C02` · document-approved · complete — Product brief aprobado dentro de requirements.md. · 1 evidencia(s)
+- `G1-C03` · metric-verified · pending — Métricas cuantitativas de usuarios y objetivos verificadas con evidencia (documento aprobado no equivale a métrica verificada).
+
+### G2 — Alcance y requisitos (`in-progress`)
+
+- `G2-C01` · document-approved · complete — Requisitos FR/NFR con Given/When/Then aprobados. · 1 evidencia(s)
+- `G2-C02` · document-approved · complete — Casos de uso y journeys aprobados. · 2 evidencia(s)
+- `G2-C03` · decision · complete — Decisiones DEC-001..DEC-010 resueltas en la autoridad única del registro. · 2 evidencia(s)
+- `G2-C04` · metric-verified · pending — Cobertura de trazabilidad FR/NFR → prueba materializada (sin referencias TST/VAL sin definir).
+
+### G3 — Arquitectura (`in-progress`)
+
+- `G3-C01` · document-approved · complete — C4 corregido (Rust Core como componente interno) y viewpoints ISO/IEC/IEEE 42010. · 3 evidencia(s)
+- `G3-C02` · document-approved · complete — Mapa de módulos y reglas de dependencia aprobados. · 2 evidencia(s)
+- `G3-C03` · decision · complete — ADR-0007 aceptado con las decisiones normativas de canonicalización (R5). · 1 evidencia(s)
+- `G3-C04` · review · pending — Revisión arquitectónica independiente (R13, AUD-024).
+
+### G4 — Datos y contratos (`in-progress`)
+
+- `G4-C01` · decision · complete — ADR-0007 aceptado con las doce decisiones normativas de canonicalización (R5). · 2 evidencia(s)
+- `G4-C02` · artifact · in-progress — Schemas MVP v0 (draft, catalog, diagnostic, manifest) aceptados (R6).
+- `G4-C03` · artifact · pending — Schemas comunes common.schema.json, core-error.schema.json y changeset.schema.json (AUD-011/014/015).
+- `G4-C04` · metric-verified · pending — Vectores golden de canonicalización y corpus válido/inválido en verde en CI (R5/R11).
+
+### G5 — Interfaces y CorePort (`in-progress`)
+
+- `G5-C01` · document-approved · in-progress — CorePort v0 congelado con precondiciones, postcondiciones y errores tipados (R7). · 1 evidencia(s)
+- `G5-C02` · artifact · pending — DTO y catálogo de errores v0 aceptados.
+- `G5-C03` · review · pending — Contract tests definidos con paridad Tauri/WASM sin semántica divergente.
+
+### G6 — UX y design system (`in-progress`)
+
+- `G6-C01` · document-approved · in-progress — Design system, matriz de interacción y contratos de componente (R10). · 2 evidencia(s)
+- `G6-C02` · artifact · complete — Baseline visual aprobado (golden screenshots y tokens heredados preservados). · 2 evidencia(s)
+- `G6-C03` · metric-verified · pending — Matriz WCAG 2.2 AA con evidencia automatizada y manual separada (AUD-021).
+
+### G7 — Validación y corpus (`in-progress`)
+
+- `G7-C01` · artifact · in-progress — Operadores normalizados y corpus por operador (R8). · 2 evidencia(s)
+- `G7-C02` · decision · complete — Operadores required ratificados y target_is diferido a v1 (decisión R8). · 1 evidencia(s)
+- `G7-C03` · metric-verified · pending — Corpus positivo y negativo ejecutable en CI con diagnósticos reproducibles.
+
+### G8 — Seguridad (`in-progress`)
+
+- `G8-C01` · document-approved · in-progress — Threat model, privilege model y política Tauri deny-by-default (R9). · 3 evidencia(s)
+- `G8-C02` · decision · complete — DEC-004: transporte por Unix socket con autenticación de sesión y elevación fuera del WebView. · 2 evidencia(s)
+- `G8-C03` · review · complete — Sign-off formal de Seguridad registrado. · 1 evidencia(s)
+- `G8-C04` · metric-verified · pending — Pruebas negativas de capabilities/elevación y cierre de RSK-001/002/008 con evidencia de implementación.
+
+### G9 — Calidad y CI (`in-progress`)
+
+- `G9-C01` · artifact · in-progress — CI documental y de contratos con acciones fijadas por SHA y versiones pip fijadas. · 2 evidencia(s)
+- `G9-C02` · metric-verified · pending — Ejecución verde sobre commit protegido con evidencia conservada (AUD-022).
+- `G9-C03` · artifact · pending — SBOM, firmas reales y provenance de artefactos (DEC-006).
+
+### G10 — Delivery y walking skeleton (`in-progress`)
+
+- `G10-C01` · document-approved · in-progress — Roadmap, backlog y next-issues con alcance del walking skeleton (R12). · 3 evidencia(s)
+- `G10-C02` · metric-verified · pending — Owners y dependencias del backlog asignados.
+- `G10-C03` · review · pending — Revisión independiente y publicación del baseline planning-v1.1 (AUD-024/025).
+
+## Derivación
+
+- Resultado global derivado: **No-Go** — no todos los gates están `complete` (faltan G1, G2, G3, G4, G5, G6, G7, G8, G9, G10).
+- `docs/00-governance/go-no-go.md` reproduce esta cobertura desde los mismos manifiestos.
+

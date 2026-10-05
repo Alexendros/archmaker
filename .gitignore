@@ -18,3 +18,7 @@ target/
 .env
 .env.*
 !.env.example
+
+# Python (validadores de gobierno)
+__pycache__/
+*.pyc

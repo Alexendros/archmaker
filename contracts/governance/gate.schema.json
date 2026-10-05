@@ -1,0 +1,174 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://archmaker.dev/schemas/governance/gate.schema.json",
+  "title": "Manifiesto de gate",
+  "description": "Manifiesto reproducible de un gate G0–G10 (fase R3, issues AUD-005/AUD-006). Modela las cinco fases independientes (documento completo, diseño listo, implementación lista, verificado y liberación lista), los criterios con su estado y evidencia, y los campos de evidencia enlazada (commit, workflowRun, artifact, reviewer, reviewDate). Permite distinguir «documento aprobado» (kind=document-approved) de «métrica verificada» (kind=metric-verified). Autoridad semántica de estados: docs/00-governance/status-model.md. La tabla de docs/10-delivery/gates.md se genera desde estos manifiestos con tools/gates.py.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "title",
+    "remediationPhases",
+    "status",
+    "phases",
+    "criteria"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Identificador del gate.",
+      "pattern": "^G(?:[0-9]|10)$"
+    },
+    "title": {
+      "type": "string",
+      "description": "Título corto del gate.",
+      "minLength": 1
+    },
+    "remediationPhases": {
+      "type": "array",
+      "description": "Fases de la remediación planning-v1.1 que cierran este gate.",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^R(?:[0-9]|1[0-3])$"
+      }
+    },
+    "status": {
+      "type": "string",
+      "description": "Estado agregado del gate. Debe ser coherente con phases y criteria (lo verifica tools/gates.py).",
+      "enum": ["pending", "in-progress", "complete", "failed"]
+    },
+    "phases": {
+      "type": "object",
+      "description": "Las cinco fases independientes del gate.",
+      "additionalProperties": false,
+      "required": [
+        "document-complete",
+        "design-ready",
+        "implementation-ready",
+        "verified",
+        "release-ready"
+      ],
+      "properties": {
+        "document-complete": { "$ref": "#/$defs/phaseState" },
+        "design-ready": { "$ref": "#/$defs/phaseState" },
+        "implementation-ready": { "$ref": "#/$defs/phaseState" },
+        "verified": { "$ref": "#/$defs/phaseState" },
+        "release-ready": { "$ref": "#/$defs/phaseState" }
+      }
+    },
+    "criteria": {
+      "type": "array",
+      "description": "Criterios del gate. Cada uno declara descripción, tipo, estado y evidencia.",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/criterion" }
+    },
+    "dependsOn": {
+      "type": "array",
+      "description": "Dependencias del gate con el estado esperado del referenciado (p. ej. un ADR). Un gate complete no puede depender de un ítem incompleto (R4 de status-model.md).",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$"
+          },
+          "expectedDocumentStatus": {
+            "type": "string",
+            "enum": ["draft", "in-review", "accepted", "superseded"]
+          },
+          "expectedApprovalStatus": {
+            "type": "string",
+            "enum": ["pending", "approved", "rejected"]
+          },
+          "expectedVerificationStatus": {
+            "type": "string",
+            "enum": ["not-verified", "partial", "passed", "failed"]
+          },
+          "note": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "description": "Evidencia agregada a nivel de gate (fases y evaluación reproducible).",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/evidence" }
+    }
+  },
+  "$defs": {
+    "phaseState": {
+      "type": "string",
+      "description": "Estado de una fase independiente. not-applicable para ejes que no aplican al gate.",
+      "enum": ["pending", "in-progress", "complete", "failed", "not-applicable"]
+    },
+    "criterion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "description", "kind", "status"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^G(?:[0-9]|10)-C[0-9]{2}$"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "type": "string",
+          "description": "document-approved = documento aprobado; metric-verified = métrica/artefacto verificado con evidencia; decision = decisión aceptada; artifact = artefacto materializado; review = revisión independiente.",
+          "enum": ["document-approved", "metric-verified", "decision", "artifact", "review"]
+        },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "in-progress", "complete", "failed"]
+        },
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/evidence" }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "status": { "const": "complete" } },
+            "required": ["status"]
+          },
+          "then": { "required": ["evidence"] }
+        }
+      ]
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "ref"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Naturaleza de la evidencia enlazada.",
+          "enum": ["commit", "workflowRun", "artifact", "review", "document", "command"]
+        },
+        "ref": {
+          "type": "string",
+          "description": "Referencia legible (ruta, comando, etiqueta o identificador).",
+          "minLength": 1
+        },
+        "commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{7,40}$"
+        },
+        "workflowRun": { "type": "string", "minLength": 1 },
+        "artifact": { "type": "string", "minLength": 1 },
+        "reviewer": { "type": "string", "minLength": 1 },
+        "reviewDate": { "type": "string", "format": "date" },
+        "note": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

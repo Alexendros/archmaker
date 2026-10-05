@@ -1,0 +1,71 @@
+{
+  "profileId": "archmaker-canonicalization-profile@v1",
+  "profileVersion": "1",
+  "category": "errors",
+  "vectors": [
+    {
+      "id": "e-bom",
+      "description": "BOM inicial UTF-8 rechazado.",
+      "expect": "reject",
+      "reason": "leading-bom",
+      "inputBytesB64": "77u/e30="
+    },
+    {
+      "id": "e-invalid-utf8",
+      "description": "Bytes UTF-8 inválidos rechazados.",
+      "expect": "reject",
+      "reason": "invalid-utf8",
+      "inputBytesB64": "eyJhIjoi/yJ9"
+    },
+    {
+      "id": "e-nan",
+      "description": "Literal NaN rechazado (no finito).",
+      "expect": "reject",
+      "reason": "non-finite-number",
+      "inputBytesB64": "eyJ2IjpOYU59"
+    },
+    {
+      "id": "e-infinity",
+      "description": "Literal Infinity rechazado (no finito).",
+      "expect": "reject",
+      "reason": "non-finite-number",
+      "inputBytesB64": "eyJ2IjpJbmZpbml0eX0="
+    },
+    {
+      "id": "e-num-overflow",
+      "description": "Número fuera del rango binary64 rechazado.",
+      "expect": "reject",
+      "reason": "numeric-overflow",
+      "inputBytesB64": "eyJ2IjoxZTQwMH0="
+    },
+    {
+      "id": "e-huge-int",
+      "description": "Literal entero fuera del rango binary64 rechazado.",
+      "expect": "reject",
+      "reason": "numeric-overflow",
+      "inputBytesB64": "eyJ2Ijo5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5fQ=="
+    },
+    {
+      "id": "e-duplicate-keys",
+      "description": "Claves duplicadas rechazadas.",
+      "expect": "reject",
+      "reason": "duplicate-key",
+      "inputBytesB64": "eyJhIjoxLCJhIjoyfQ==",
+      "crossCheckJs": false
+    },
+    {
+      "id": "e-unpaired-surrogate",
+      "description": "Surrogate UTF-16 sin pareja rechazado.",
+      "expect": "reject",
+      "reason": "unpaired-surrogate",
+      "inputBytesB64": "eyJhIjoiXHVkODAwIn0="
+    },
+    {
+      "id": "e-trailing-data",
+      "description": "Datos tras el valor JSON rechazados.",
+      "expect": "reject",
+      "reason": "trailing-data",
+      "inputBytesB64": "e30ge30="
+    }
+  ]
+}
