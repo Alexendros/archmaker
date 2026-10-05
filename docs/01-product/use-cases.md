@@ -1,5 +1,12 @@
 # Casos de uso
 
+- ID: DOC-PROD-UC-001
+- Estado: accepted
+- Propietario: Producto
+- Última revisión: 2026-10-05
+- Requisitos relacionados: DOC-PROD-UC-001
+- Sustituye / sustituido por: —
+
 | ID | Actor | Precondición | Flujo principal | Postcondición | Fase |
 |---|---|---|---|---|---|
 | UC-001 | PER-001/2 | Catálogo cargado | Crear draft y seleccionar objetivo | Draft versionado | MVP |

@@ -1,5 +1,12 @@
 # C4
 
+- ID: DOC-ARCH-C4-001
+- Estado: accepted
+- Propietario: Arquitectura
+- Última revisión: 2026-10-05
+- Requisitos relacionados: NFR-PORT-001, NFR-DET-001
+- Sustituye / sustituido por: —
+
 ## Contexto
 
 ```mermaid

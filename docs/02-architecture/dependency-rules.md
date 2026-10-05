@@ -1,5 +1,12 @@
 # Reglas de dependencia
 
+- ID: DOC-ARCH-DEP-001
+- Estado: accepted
+- Propietario: Arquitectura
+- Última revisión: 2026-10-05
+- Requisitos relacionados: NFR-PORT-001, NFR-DET-001
+- Sustituye / sustituido por: —
+
 - El grafo debe ser acíclico.
 - Dominio no conoce serialización externa salvo value types necesarios.
 - Los DTO públicos no exponen tipos de infraestructura.

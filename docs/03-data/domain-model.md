@@ -1,5 +1,12 @@
 # Modelo de dominio
 
+- ID: DOC-DATA-DM-001
+- Estado: accepted
+- Propietario: Arquitectura de datos
+- Última revisión: 2026-10-05
+- Requisitos relacionados: NFR-DET-001, NFR-MIG-001
+- Sustituye / sustituido por: —
+
 | ID | Agregado | Identidad | Mutabilidad | Invariantes |
 |---|---|---|---|---|
 | DM-CATALOG | Catalog | namespace/id/version/digest | Inmutable | Referencias únicas, procedencia. |

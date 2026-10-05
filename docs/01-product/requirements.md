@@ -1,5 +1,12 @@
 # Requisitos
 
+- ID: DOC-PROD-REQ-001
+- Estado: accepted
+- Propietario: Producto
+- Última revisión: 2026-10-05
+- Requisitos relacionados: FR-DRAFT-001, FR-IMPORT-001, FR-CAT-001, FR-PRESET-001, FR-RESOLVE-001, FR-VALIDATE-001, FR-MANIFEST-001, FR-EXPORT-001, FR-RUN-001, FR-ENT-001, NFR-SEC-001, NFR-DET-001, NFR-ACC-001, NFR-OFF-001, NFR-MIG-001, NFR-PORT-001, NFR-OBS-001
+- Sustituye / sustituido por: —
+
 ## Funcionales P0
 
 | ID | Requisito | Aceptación | Fase |
@@ -35,7 +42,7 @@ Estructura según `templates/requirement.md`. Estado de todos los apartados: `dr
 
 - Prioridad: P0
 - Fase: MVP
-- Estado: draft
+- Estado: accepted
 - Journey/UC: JNY-001 / UC-001
 
 #### Enunciado
@@ -73,7 +80,7 @@ No resuelve capacidades (FR-RESOLVE-001); no persiste `Resolution`; no define fo
 
 - Prioridad: P0
 - Fase: MVP
-- Estado: draft
+- Estado: accepted
 - Journey/UC: JNY-002 / UC-002
 
 #### Enunciado
@@ -111,7 +118,7 @@ No instala; no interpreta scripts; no migra versiones distintas de v5.1 mientras
 
 - Prioridad: P0
 - Fase: MVP
-- Estado: draft
+- Estado: accepted
 - Journey/UC: JNY-001 / UC-001, UC-003
 
 #### Enunciado
@@ -149,7 +156,7 @@ No publica catálogos (autoría de PER-003 fuera del alcance de la app); entrega
 
 - Prioridad: P0
 - Fase: MVP
-- Estado: draft
+- Estado: accepted
 - Journey/UC: JNY-001 / UC-001, UC-004
 
 #### Enunciado
@@ -187,7 +194,7 @@ No cubre la autoría de presets (PER-003); un draft guardado no es un preset (an
 
 - Prioridad: P0
 - Fase: MVP
-- Estado: draft
+- Estado: accepted
 - Journey/UC: JNY-001 / UC-003
 
 #### Enunciado
@@ -225,7 +232,7 @@ No valida el target final (FR-VALIDATE-001); no exporta.
 
 - Prioridad: P0
 - Fase: MVP
-- Estado: draft
+- Estado: accepted
 - Journey/UC: JNY-001 / UC-003, UC-004
 
 #### Enunciado
@@ -263,7 +270,7 @@ No persuade ni guía al usuario (UX); no repara automáticamente el draft.
 
 - Prioridad: P0
 - Fase: MVP
-- Estado: draft
+- Estado: accepted
 - Journey/UC: JNY-001 / UC-005
 
 #### Enunciado
@@ -301,7 +308,7 @@ No exporta (FR-EXPORT-001); no genera el plan de v1 (FR-RUN-001).
 
 - Prioridad: P0
 - Fase: MVP
-- Estado: draft
+- Estado: accepted
 - Journey/UC: JNY-001 / UC-005
 
 #### Enunciado
@@ -339,7 +346,7 @@ No instala; no publica; no firma releases (DEC-006).
 
 - Prioridad: P0
 - Fase: v1
-- Estado: draft
+- Estado: accepted
 - Journey/UC: JNY-003 / UC-006
 
 #### Enunciado
@@ -377,7 +384,7 @@ El MVP no usa root, discos, shell ni instalación real; requisito fuera del MVP.
 
 - Prioridad: P0
 - Fase: Enterprise
-- Estado: draft
+- Estado: accepted
 - Journey/UC: JNY-004 / UC-007
 
 #### Enunciado
@@ -417,7 +424,7 @@ Enterprise queda fuera de MVP y v1; el control plane no forma parte del producto
 
 - Prioridad: P0
 - Fase: MVP
-- Estado: draft
+- Estado: accepted
 - Journey/UC: JNY-001, JNY-003, JNY-004 / UC-001, UC-006, UC-007
 
 #### Enunciado
@@ -455,7 +462,7 @@ No cubre la seguridad del sistema operativo anfitrión.
 
 - Prioridad: P0
 - Fase: MVP
-- Estado: draft
+- Estado: accepted
 - Journey/UC: JNY-001 / UC-003, UC-005
 
 #### Enunciado
@@ -493,7 +500,7 @@ No exige mismo rendimiento ni misma presentación de UI.
 
 - Prioridad: P0
 - Fase: MVP
-- Estado: draft
+- Estado: accepted
 - Journey/UC: JNY-001 / UC-001..UC-005
 
 #### Enunciado
@@ -531,7 +538,7 @@ No define diseño visual nuevo; cualquier cambio estético exige decisión traza
 
 - Prioridad: P0
 - Fase: MVP
-- Estado: draft
+- Estado: accepted
 - Journey/UC: JNY-001, JNY-002 / UC-001..UC-005
 
 #### Enunciado
@@ -569,7 +576,7 @@ No aplica a Enterprise, que dispone de servicio.
 
 - Prioridad: P0
 - Fase: MVP
-- Estado: draft
+- Estado: accepted
 - Journey/UC: JNY-002 / UC-002
 
 #### Enunciado
@@ -607,7 +614,7 @@ No migra formatos desconocidos ni versiones distintas de v5.1 mientras no haya d
 
 - Prioridad: P0
 - Fase: MVP
-- Estado: draft
+- Estado: accepted
 - Journey/UC: JNY-001 / UC-001..UC-005
 
 #### Enunciado
@@ -645,7 +652,7 @@ No prohíbe que existan adaptadores fuera del dominio.
 
 - Prioridad: P0
 - Fase: MVP
-- Estado: draft
+- Estado: accepted
 - Journey/UC: JNY-001, JNY-003, JNY-004 / UC-001, UC-006, UC-007
 
 #### Enunciado

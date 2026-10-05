@@ -1,7 +1,7 @@
 # Journeys
 
 - ID: DOC-PROD-JNY-001
-- Estado: draft
+- Estado: accepted
 - Propietario: Producto
 - Última revisión: 2026-10-05
 - Requisitos relacionados: JNY-001..JNY-004; FR-DRAFT-001, FR-CAT-001, FR-PRESET-001, FR-RESOLVE-001, FR-VALIDATE-001, FR-MANIFEST-001, FR-EXPORT-001, FR-IMPORT-001, FR-RUN-001, FR-ENT-001

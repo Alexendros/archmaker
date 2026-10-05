@@ -1,5 +1,12 @@
 # Mapa de módulos
 
+- ID: DOC-ARCH-MOD-001
+- Estado: accepted
+- Propietario: Arquitectura
+- Última revisión: 2026-10-05
+- Requisitos relacionados: NFR-PORT-001, NFR-DET-001
+- Sustituye / sustituido por: —
+
 | Crate/paquete | Responsabilidad | No puede depender de |
 |---|---|---|
 | `archmaker-domain` | Entidades, value objects e invariantes. | UI, Tauri, WASM, FS, red. |

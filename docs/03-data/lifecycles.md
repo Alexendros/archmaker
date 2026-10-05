@@ -1,7 +1,7 @@
 # Ciclos de vida de agregados
 
 - ID: DOC-DATA-LIFE-001
-- Estado: draft
+- Estado: accepted
 - Propietario: Arquitectura de datos
 - Última revisión: 2026-10-05
 - Requisitos relacionados: FR-DRAFT-001, FR-VALIDATE-001, FR-MANIFEST-001, FR-RUN-001, NFR-DET-001, NFR-MIG-001

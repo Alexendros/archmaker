@@ -1,5 +1,12 @@
 # Personas
 
+- ID: DOC-PROD-PER-001
+- Estado: accepted
+- Propietario: Producto
+- Última revisión: 2026-10-05
+- Requisitos relacionados: DOC-PROD-PER-001
+- Sustituye / sustituido por: —
+
 ## PER-001 — Usuario guiado
 
 - Objetivo: obtener una configuración segura sin aprender comandos.
