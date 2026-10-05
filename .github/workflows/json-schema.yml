@@ -1,13 +1,13 @@
 # json-schema — Meta-validación de contratos JSON Schema (Draft 2020-12) y corpus.
 #
 # Gate cubierto:
-#   G4  Datos    -> meta-validación de schemas + corpus válido/inválido
+#   G4  Datos    -> meta-validación de schemas + corpus válido/inválido/adversarial
 #   G5  Interfaces -> base de contratos CorePort/protocol (cuando existan)
 #
-# Fuente: contracts/json-schema/README.md, ADR-0005, docs/09-quality/ci-cd.md
-# Estado: draft. DEC-002 aceptada y modelo de dominio fijado: los 8 schemas y su
-# corpus válido/inválido existen. Acciones fijadas por SHA y dependencias pip
-# fijadas. Dos jobs: meta-validación de schemas y validación del corpus.
+# Fuente: contracts/json-schema/README.md, ADR-0005, ADR-0007, docs/09-quality/ci-cd.md
+# Estado: v0 (fase R6). Los contratos v0 añaden common/core-error/changeset y extraen
+# los $defs compartidos a common.schema.json, referenciado por $id. Tres jobs:
+# meta-validación de schemas, validación del corpus (con registro de $ref) y límites.
 
 name: json-schema
 
@@ -93,12 +93,17 @@ jobs:
           import sys
 
           from jsonschema import Draft202012Validator
+          from referencing import Registry, Resource
+          from referencing.jsonschema import DRAFT202012
 
           base = "contracts/json-schema"
           examples = os.path.join(base, "examples")
 
-          # Mapeo nombre -> schema (los 8 contratos P0).
-          names = [
+          # Contratos v0. common aporta $defs compartidos; core-error y changeset son nuevos.
+          schema_names = [
+              "common",
+              "core-error",
+              "changeset",
               "draft",
               "catalog",
               "rule",
@@ -109,54 +114,183 @@ jobs:
               "runner-envelope",
           ]
 
-          def load_schema(name):
+          # Casos que se validan contra un subschema de common o un $defs concreto.
+          pointer_schemas = {
+              "common-quantity": ("common", "/$defs/quantity"),
+              "common-contentdigest": ("common", "/$defs/contentDigest"),
+              "common-secretref": ("common", "/$defs/secretRef"),
+              "common-limits": ("common", "/$defs/limits"),
+              "draft-savedraft": ("draft", "/$defs/saveDraftRequest"),
+          }
+
+          schemas_by_id = {}
+          for f in sorted(glob.glob(os.path.join(base, "**", "*.schema.json"), recursive=True)):
+              schema = json.load(open(f, encoding="utf-8"))
+              schemas_by_id[schema["$id"]] = schema
+
+          registry = Registry().with_resources(
+              (sid, Resource.from_contents(s, default_specification=DRAFT202012))
+              for sid, s in schemas_by_id.items()
+          )
+
+          def resolve(token):
+              if token in pointer_schemas:
+                  return pointer_schemas[token]
+              for name in sorted(schema_names, key=len, reverse=True):
+                  if token == name or token.startswith(name + "-") or token.startswith(name + "."):
+                      return name, None
+              return token, None
+
+          def make_validator(name, pointer):
               path = os.path.join(base, f"{name}.schema.json")
               if not os.path.exists(path):
-                  print(f"FALTA schema {path}")
+                  print(f"FALTA schema {path} (token {name})")
                   sys.exit(1)
-              return Draft202012Validator(json.load(open(path, encoding="utf-8")))
+              root = json.load(open(path, encoding="utf-8"))
+              if pointer:
+                  ref = {"$schema": "https://json-schema.org/draft/2020-12/schema",
+                         "$ref": root["$id"] + "#" + pointer}
+                  return Draft202012Validator(ref, registry=registry)
+              return Draft202012Validator(root, registry=registry)
 
-          # Guard: si aún no hay corpus, no fallar.
+          def token_of(path, suffix):
+              stem = os.path.basename(path)[: -len(suffix)]
+              if "-" in stem:
+                  head, rest = stem.split("-", 1)
+                  if head.isdigit():
+                      return rest
+              return stem
+
           valid_files = sorted(glob.glob(os.path.join(examples, "*.valid.json")))
           invalid_files = sorted(glob.glob(os.path.join(examples, "*.invalid.json")))
           if not valid_files and not invalid_files:
               print(f"PENDIENTE: no hay corpus en {examples}/ (guard).")
               sys.exit(0)
 
-          def example_name(path, suffix):
-              stem = os.path.basename(path)[: -len(suffix)]
-              if "-" in stem:
-                  stem = stem.split("-", 1)[1]
-              return stem
-
           errors = 0
 
           for f in valid_files:
-              name = example_name(f, ".valid.json")
-              validator = load_schema(name)
+              name, pointer = resolve(token_of(f, ".valid.json"))
+              validator = make_validator(name, pointer)
               instance = json.load(open(f, encoding="utf-8"))
               errs = sorted(validator.iter_errors(instance), key=lambda e: e.path)
               if errs:
                   errors += 1
-                  print(f"FAIL {f} debería ser válido contra {name}.schema.json")
+                  print(f"FAIL {f} debería ser válido contra {name}.schema.json{pointer or ''}")
                   for e in errs[:3]:
                       print(f"    - {list(e.path)}: {e.message}")
               else:
-                  print(f"OK   {f} válido contra {name}.schema.json")
+                  print(f"OK   {f} válido contra {name}.schema.json{pointer or ''}")
 
           for f in invalid_files:
-              name = example_name(f, ".invalid.json")
-              validator = load_schema(name)
+              name, pointer = resolve(token_of(f, ".invalid.json"))
+              validator = make_validator(name, pointer)
               instance = json.load(open(f, encoding="utf-8"))
               errs = list(validator.iter_errors(instance))
               if errs:
-                  print(f"OK   {f} rechazado por {name}.schema.json")
+                  print(f"OK   {f} rechazado por {name}.schema.json{pointer or ''}")
               else:
                   errors += 1
-                  print(f"FAIL {f} debería ser inválido pero {name}.schema.json lo aceptó")
+                  print(f"FAIL {f} debería ser inválido pero {name}.schema.json{pointer or ''} lo aceptó")
+
+          # Fixtures de migración v5.1: el destino esperado valida; el sample heredado NO.
+          migration = os.path.join(examples, "migration")
+          expected = os.path.join(migration, "vnext-draft.expected.json")
+          sample = os.path.join(migration, "v5.1-instance.sample.json")
+          draft_validator = make_validator("draft", None)
+          if os.path.exists(expected):
+              errs = list(draft_validator.iter_errors(json.load(open(expected, encoding="utf-8"))))
+              if errs:
+                  errors += 1
+                  print(f"FAIL {expected} debería validar contra draft.schema.json")
+                  for e in errs[:3]:
+                      print(f"    - {list(e.path)}: {e.message}")
+              else:
+                  print(f"OK   {expected} válido contra draft.schema.json (migración v5.1)")
+          if os.path.exists(sample):
+              if list(draft_validator.iter_errors(json.load(open(sample, encoding="utf-8")))):
+                  print(f"OK   {sample} NO valida como draft vNext (documento heredado)")
+              else:
+                  errors += 1
+                  print(f"FAIL {sample} no debería validar como draft vNext")
 
           if errors:
               print(f"{errors} discrepancias en el corpus")
               sys.exit(1)
-          print(f"Corpus OK: {len(valid_files)} válidos + {len(invalid_files)} inválidos")
+          print(f"Corpus OK: {len(valid_files)} válidos + {len(invalid_files)} inválidos + fixtures de migración")
+          PY
+
+  limits-validate:
+    name: Límites de corpus (profundidad/tamaño) (G4)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Setup Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: "3.x"
+      - name: Comprobar límites de los fixtures normativos
+        run: |
+          python3 - <<'PY'
+          import glob
+          import json
+          import os
+          import sys
+
+          # Límites declarados por los contratos v0 (common.schema.json#/$defs/limits).
+          MAX_BYTES = 262144
+          MAX_DEPTH = 32
+          MAX_ARRAY_ITEMS = 4096
+          MAX_STRING_LENGTH = 65536
+
+          examples = "contracts/json-schema/examples"
+
+          def depth(value):
+              if isinstance(value, dict):
+                  return 1 + (max((depth(v) for v in value.values()), default=0))
+              if isinstance(value, list):
+                  return 1 + (max((depth(v) for v in value), default=0))
+              return 1
+
+          def max_array(value):
+              best = 0
+              if isinstance(value, list):
+                  best = len(value)
+                  best = max(best, max((max_array(v) for v in value), default=0))
+              elif isinstance(value, dict):
+                  best = max((max_array(v) for v in value.values()), default=0)
+              return best
+
+          def max_string(value):
+              best = 0
+              if isinstance(value, str):
+                  best = len(value)
+              elif isinstance(value, list):
+                  best = max((max_string(v) for v in value), default=0)
+              elif isinstance(value, dict):
+                  best = max((max_string(v) for v in value.values()), default=0)
+              return best
+
+          # Corpus normativo: excluye non-normative/ (ilustrativo).
+          files = [f for f in sorted(glob.glob(os.path.join(examples, "**", "*.json"), recursive=True))
+                   if os.sep + "non-normative" + os.sep not in f]
+
+          errors = 0
+          for f in files:
+              size = os.path.getsize(f)
+              instance = json.load(open(f, encoding="utf-8"))
+              d = depth(instance)
+              a = max_array(instance)
+              s = max_string(instance)
+              ok = size <= MAX_BYTES and d <= MAX_DEPTH and a <= MAX_ARRAY_ITEMS and s <= MAX_STRING_LENGTH
+              if not ok:
+                  errors += 1
+              print(f"{'OK  ' if ok else 'FAIL'} {f}: bytes={size} depth={d} maxArray={a} maxString={s}")
+
+          if errors:
+              print(f"{errors} fixtures exceden los límites declarados")
+              sys.exit(1)
+          print(f"Límites OK en {len(files)} fixtures (bytes<={MAX_BYTES}, depth<={MAX_DEPTH}, array<={MAX_ARRAY_ITEMS}, string<={MAX_STRING_LENGTH})")
           PY

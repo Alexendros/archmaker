@@ -2,6 +2,7 @@
   "id": "99999999-9999-4999-8999-999999999999",
   "documentVersion": "vNext",
   "schemaVersion": "1",
+  "revision": 0,
   "catalogRef": {
     "namespace": "archmaker.core",
     "id": "desktop",
@@ -18,7 +19,6 @@
   "selections": [
     {
       "stepId": "archmaker.base.kernel",
-      "optionId": "archmaker.kernel.linux",
       "value": {
         "kind": "single",
         "optionId": "archmaker.kernel.linux"
@@ -26,7 +26,6 @@
     },
     {
       "stepId": "archmaker.base.filesystem",
-      "optionId": "archmaker.filesystem.btrfs",
       "value": {
         "kind": "single",
         "optionId": "archmaker.filesystem.btrfs"
@@ -34,7 +33,6 @@
     },
     {
       "stepId": "archmaker.base.boot",
-      "optionId": "archmaker.boot.systemd-boot",
       "value": {
         "kind": "single",
         "optionId": "archmaker.boot.systemd-boot"
@@ -42,7 +40,6 @@
     },
     {
       "stepId": "archmaker.base.base-devel",
-      "optionId": "archmaker.pkg.base-devel",
       "value": {
         "kind": "single",
         "optionId": "archmaker.pkg.base-devel"
@@ -50,7 +47,6 @@
     },
     {
       "stepId": "archmaker.environment.compositor",
-      "optionId": "archmaker.compositor.gnome",
       "value": {
         "kind": "single",
         "optionId": "archmaker.compositor.gnome"
@@ -58,7 +54,6 @@
     },
     {
       "stepId": "archmaker.environment.dm",
-      "optionId": "archmaker.dm.gdm",
       "value": {
         "kind": "single",
         "optionId": "archmaker.dm.gdm"
@@ -66,7 +61,6 @@
     },
     {
       "stepId": "archmaker.apps.browser",
-      "optionId": "archmaker.browser.firefox",
       "value": {
         "kind": "single",
         "optionId": "archmaker.browser.firefox"

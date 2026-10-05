@@ -1,0 +1,32 @@
+{
+  "namespace": "archmaker.core",
+  "id": "desktop",
+  "version": "1.0.0",
+  "revision": 2,
+  "documentVersion": "vNext",
+  "schemaVersion": "1",
+  "contentDigest": {
+    "algorithm": "sha256",
+    "value": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+  },
+  "steps": [
+    {
+      "id": "archmaker.sys.base",
+      "title": "Base system",
+      "mode": "single",
+      "sections": [
+        {
+          "id": "archmaker.sys.kernel",
+          "title": "Kernel",
+          "cardinality": "one",
+          "options": [
+            {
+              "id": "archmaker.kernel.linux",
+              "title": "Linux"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

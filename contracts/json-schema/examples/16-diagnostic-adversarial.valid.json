@@ -1,0 +1,9 @@
+{
+  "schemaVersion": "1",
+  "code": "AM-RULE-005",
+  "severity": "warning",
+  "blocking": false,
+  "path": "/selections/2",
+  "messageKey": "diagnostic.browserMissing",
+  "source": "archmaker-rules"
+}

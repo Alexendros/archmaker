@@ -1,0 +1,8 @@
+{
+  "code": "AM-IO-001",
+  "family": "AM-IO",
+  "category": "io",
+  "severity": "fatal",
+  "messageKey": "error.io.readFailed",
+  "source": "archmaker-core"
+}

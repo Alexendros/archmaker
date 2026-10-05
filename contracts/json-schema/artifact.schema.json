@@ -1,9 +1,11 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://archmaker.dev/schemas/artifact.schema.json",
-  "title": "ArchMaker Artifact (DM-ARTIFACT)",
-  "description": "Material output of an exporter: ArchMaker profile, experimental archinstall profile or review report. Declares target, producer, versions, mediaType and digests (DEC-001, ADR-0003). Contract state: draft.",
+  "title": "ArchMaker Artifact (DM-ARTIFACT, v0)",
+  "description": "Material output of an exporter: ArchMaker profile, experimental archinstall profile or review report. Declares target, producer, versions, mediaType and digests (DEC-001, ADR-0003). Digests follow the canonicalization profile: binaryDigest is the SHA-256 of the exact artifact bytes; manifestRef carries the semantic contentDigest of the source manifest. Contract state: v0.",
+  "$comment": "Contract v0 (phase R6, AUD-011/AUD-015). digest fields renamed to binaryDigest/contentDigest; shared $defs live in common.schema.json.",
   "type": "object",
+  "additionalProperties": false,
   "required": [
     "documentVersion",
     "schemaVersion",
@@ -11,23 +13,18 @@
     "targetRef",
     "producer",
     "mediaType",
-    "digest",
+    "binaryDigest",
     "manifestRef"
   ],
-  "additionalProperties": false,
   "properties": {
     "documentVersion": {
-      "description": "Domain document contract version (axis documentVersion).",
-      "type": "string",
-      "minLength": 1
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/documentVersion"
     },
     "schemaVersion": {
-      "description": "JSON Schema contract version (axis schemaVersion).",
-      "type": "string",
-      "minLength": 1
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/schemaVersion"
     },
     "artifactRef": {
-      "description": "Identity of the artifact: digest and media type.",
+      "description": "Identity of the artifact: binary digest and media type.",
       "$ref": "#/$defs/artifactRef"
     },
     "targetRef": {
@@ -49,26 +46,26 @@
         },
         "version": {
           "description": "Target adapter version (axis targetRef.version).",
-          "type": "string",
-          "minLength": 1
+          "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/version"
         }
       }
     },
     "producer": {
       "description": "Producer identity and version (axis producer.version).",
-      "$ref": "#/$defs/producer"
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/producer"
     },
     "mediaType": {
       "description": "IANA media type of the exported artifact.",
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "maxLength": 255
     },
-    "digest": {
-      "description": "Digest of the exported artifact bytes.",
-      "$ref": "#/$defs/digest"
+    "binaryDigest": {
+      "description": "Binary digest of the exported artifact bytes (ADR-0007 decision 11).",
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/binaryDigest"
     },
     "manifestRef": {
-      "description": "Digest of the source manifest.",
+      "description": "Semantic digest of the source manifest.",
       "$ref": "#/$defs/manifestRef"
     },
     "experimental": {
@@ -85,44 +82,22 @@
     }
   },
   "$defs": {
-    "shortId": {
-      "description": "Single-segment identifier used together with a namespace.",
-      "type": "string",
-      "pattern": "^[a-z0-9][a-z0-9._-]*$"
-    },
-    "digest": {
-      "description": "Content digest (SHA-256 with domain label in the canonical payload, ADR-0007).",
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "algorithm",
-        "value"
-      ],
-      "properties": {
-        "algorithm": {
-          "const": "sha256"
-        },
-        "value": {
-          "type": "string",
-          "pattern": "^[a-f0-9]{64}$"
-        }
-      }
-    },
     "artifactRef": {
-      "description": "Artifact identity: digest and media type.",
+      "description": "Artifact identity: binary digest and media type.",
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "digest",
+        "binaryDigest",
         "mediaType"
       ],
       "properties": {
-        "digest": {
-          "$ref": "#/$defs/digest"
+        "binaryDigest": {
+          "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/binaryDigest"
         },
         "mediaType": {
           "type": "string",
-          "minLength": 1
+          "minLength": 1,
+          "maxLength": 255
         }
       }
     },
@@ -131,30 +106,11 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "digest"
+        "contentDigest"
       ],
       "properties": {
-        "digest": {
-          "$ref": "#/$defs/digest"
-        }
-      }
-    },
-    "producer": {
-      "description": "Producer of the artifact.",
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "id",
-        "version"
-      ],
-      "properties": {
-        "id": {
-          "$ref": "#/$defs/shortId"
-        },
-        "version": {
-          "description": "Producer version (axis producer.version).",
-          "type": "string",
-          "minLength": 1
+        "contentDigest": {
+          "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/contentDigest"
         }
       }
     }

@@ -33,31 +33,14 @@
       },
       "origin": "manual",
       "locked": false
-    },
-    {
-      "stepId": "archmaker.base.filesystem",
-      "optionId": "archmaker.filesystem.btrfs",
-      "value": {
-        "kind": "single",
-        "optionId": "archmaker.filesystem.btrfs"
-      },
-      "origin": "derived",
-      "locked": true
     }
   ],
-  "providedCapabilities": [
-    {
-      "id": "fs.btrfs"
-    }
-  ],
-  "requiredCapabilities": [
-    {
-      "id": "boot.uefi"
-    }
-  ],
+  "providedCapabilities": [],
+  "requiredCapabilities": [],
   "conflicts": [],
   "contentDigest": {
     "algorithm": "sha256",
-    "value": "3333333333333333333333333333333333333333333333333333333333333333"
+    "value": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+    "kind": "content"
   }
 }

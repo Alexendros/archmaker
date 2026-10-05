@@ -2,7 +2,7 @@
   "documentVersion": "vNext",
   "schemaVersion": "1",
   "artifactRef": {
-    "digest": {
+    "binaryDigest": {
       "algorithm": "sha256",
       "value": "4444444444444444444444444444444444444444444444444444444444444444"
     },
@@ -17,12 +17,12 @@
     "version": "0.1.0"
   },
   "mediaType": "application/json",
-  "digest": {
+  "binaryDigest": {
     "algorithm": "sha256",
     "value": "4444444444444444444444444444444444444444444444444444444444444444"
   },
   "manifestRef": {
-    "digest": {
+    "contentDigest": {
       "algorithm": "sha256",
       "value": "3333333333333333333333333333333333333333333333333333333333333333"
     }

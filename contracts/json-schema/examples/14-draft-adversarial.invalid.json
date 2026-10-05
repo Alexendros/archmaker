@@ -1,0 +1,29 @@
+{
+  "id": "14aa14aa-14aa-4aaa-8aaa-14aa14aa14aa",
+  "documentVersion": "vNext",
+  "schemaVersion": "1",
+  "revision": 0,
+  "catalogRef": {
+    "namespace": "archmaker.core",
+    "id": "desktop",
+    "version": "1.0.0",
+    "digest": {
+      "algorithm": "sha256",
+      "value": "1111111111111111111111111111111111111111111111111111111111111111"
+    }
+  },
+  "targetRef": {
+    "id": "arch-x86_64",
+    "version": "2026.10"
+  },
+  "selections": [
+    {
+      "stepId": "archmaker.config.swap",
+      "value": {
+        "kind": "number",
+        "value": 1e400,
+        "unit": "count"
+      }
+    }
+  ]
+}

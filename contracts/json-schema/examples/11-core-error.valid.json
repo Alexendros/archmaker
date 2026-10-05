@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "1",
+  "code": "AM-SCHEMA-001",
+  "family": "AM-SCHEMA",
+  "category": "validation",
+  "severity": "error",
+  "retryable": false,
+  "messageKey": "error.schema.invalid",
+  "params": {
+    "pointer": "/selections"
+  },
+  "detail": {
+    "path": "/selections",
+    "expected": "array",
+    "actual": "object"
+  },
+  "source": "archmaker-core",
+  "correlationId": "11111111-2222-4333-8444-555555555555"
+}

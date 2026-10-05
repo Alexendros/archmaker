@@ -2,8 +2,10 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://archmaker.dev/schemas/installation-plan.schema.json",
   "title": "ArchMaker InstallationPlan (DM-PLAN, v1)",
-  "description": "Immutable ordered sequence of typed allowlisted operations derived from a sealed manifest. Never a script and never contains shell (ADR-0004). Contract state: draft.",
+  "description": "Immutable ordered sequence of typed allowlisted operations derived from a sealed manifest. Never a script and never contains shell (ADR-0004). planHash and manifestHash are semantic content digests (ADR-0007). Contract state: v0.",
+  "$comment": "Contract v0 (phase R6). Shared $defs live in common.schema.json; planHash/manifestHash are content digests. Unknown fields rejected.",
   "type": "object",
+  "additionalProperties": false,
   "required": [
     "documentVersion",
     "schemaVersion",
@@ -15,162 +17,52 @@
     "producer",
     "operations"
   ],
-  "additionalProperties": false,
   "properties": {
     "documentVersion": {
-      "description": "Domain document contract version (axis documentVersion).",
-      "type": "string",
-      "minLength": 1
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/documentVersion"
     },
     "schemaVersion": {
-      "description": "JSON Schema contract version (axis schemaVersion).",
-      "type": "string",
-      "minLength": 1
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/schemaVersion"
     },
     "protocolVersion": {
       "description": "Negotiated runner protocol version (axis protocolVersion).",
-      "type": "string",
-      "minLength": 1
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/protocolVersion"
     },
     "planId": {
       "description": "Plan identity (UUID).",
-      "$ref": "#/$defs/uuid"
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/uuid"
     },
     "planHash": {
-      "description": "Hash of the plan payload; bound to confirmation together with manifestHash (ADR-0004).",
-      "$ref": "#/$defs/digest"
+      "description": "Semantic content digest of the plan payload; bound to confirmation together with manifestHash (ADR-0004).",
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/contentDigest"
     },
     "manifestHash": {
-      "description": "Hash of the sealed manifest the plan derives from.",
-      "$ref": "#/$defs/digest"
+      "description": "Semantic content digest of the sealed manifest the plan derives from.",
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/contentDigest"
     },
     "catalogRef": {
       "description": "Exact catalog version consumed.",
-      "$ref": "#/$defs/catalogRef"
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/catalogRef"
     },
     "targetRef": {
       "description": "Target the plan is derived for.",
-      "$ref": "#/$defs/targetRef"
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/targetRef"
     },
     "producer": {
       "description": "Producer identity and version (axis producer.version).",
-      "$ref": "#/$defs/producer"
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/producer"
     },
     "operations": {
       "description": "Ordered allowlisted operations. Order is semantic and preserved; the plan is immutable.",
       "type": "array",
       "minItems": 1,
+      "maxItems": 4096,
       "items": {
         "$ref": "#/$defs/operation"
       }
     }
   },
   "$defs": {
-    "entityId": {
-      "description": "Global entity identifier with the DEC-002 vendor.kind.id shape.",
-      "type": "string",
-      "pattern": "^[a-z0-9][a-z0-9._-]*\\.[a-z0-9][a-z0-9._-]*\\.[a-z0-9][a-z0-9._-]*$"
-    },
-    "namespace": {
-      "description": "Global namespace with the DEC-002 vendor.kind shape.",
-      "type": "string",
-      "pattern": "^[a-z0-9][a-z0-9._-]*\\.[a-z0-9][a-z0-9._-]*$"
-    },
-    "shortId": {
-      "description": "Single-segment identifier used together with a namespace.",
-      "type": "string",
-      "pattern": "^[a-z0-9][a-z0-9._-]*$"
-    },
-    "capabilityId": {
-      "description": "Capability identifier such as fs.btrfs, gpu.nvidia or boot.uefi.",
-      "type": "string",
-      "pattern": "^[a-z0-9][a-z0-9._-]*\\.[a-z0-9][a-z0-9._-]*$"
-    },
-    "uuid": {
-      "description": "Canonical UUID string.",
-      "type": "string",
-      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
-    },
-    "digest": {
-      "description": "Content digest (SHA-256 with domain label in the canonical payload, ADR-0007).",
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "algorithm",
-        "value"
-      ],
-      "properties": {
-        "algorithm": {
-          "const": "sha256"
-        },
-        "value": {
-          "type": "string",
-          "pattern": "^[a-f0-9]{64}$"
-        }
-      }
-    },
-    "catalogRef": {
-      "description": "Reference to an immutable catalog version.",
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "namespace",
-        "id",
-        "version",
-        "digest"
-      ],
-      "properties": {
-        "namespace": {
-          "$ref": "#/$defs/namespace"
-        },
-        "id": {
-          "$ref": "#/$defs/shortId"
-        },
-        "version": {
-          "type": "string",
-          "minLength": 1
-        },
-        "digest": {
-          "$ref": "#/$defs/digest"
-        }
-      }
-    },
-    "targetRef": {
-      "description": "Reference to a versioned target adapter.",
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "id",
-        "version"
-      ],
-      "properties": {
-        "id": {
-          "$ref": "#/$defs/shortId"
-        },
-        "version": {
-          "type": "string",
-          "minLength": 1
-        }
-      }
-    },
-    "producer": {
-      "description": "Producer of the plan.",
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "id",
-        "version"
-      ],
-      "properties": {
-        "id": {
-          "$ref": "#/$defs/shortId"
-        },
-        "version": {
-          "type": "string",
-          "minLength": 1
-        }
-      }
-    },
     "operation": {
       "description": "A typed, allowlisted plan operation. Parameters are a closed set of declarative values; no command or script is representable.",
       "type": "object",
@@ -202,14 +94,16 @@
           ]
         },
         "description": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 1024
         },
         "preconditions": {
           "description": "Capabilities that must hold before executing the operation.",
           "type": "array",
+          "maxItems": 128,
           "uniqueItems": true,
           "items": {
-            "$ref": "#/$defs/capabilityId"
+            "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/capabilityId"
           }
         },
         "parameters": {
@@ -219,48 +113,58 @@
           "properties": {
             "deviceRef": {
               "description": "Opaque handle to a block device resolved by preflight.",
-              "type": "string"
+              "type": "string",
+              "maxLength": 256
             },
             "mountPoint": {
               "description": "Absolute mount point path.",
               "type": "string",
-              "pattern": "^/"
+              "pattern": "^/",
+              "maxLength": 4096
             },
             "filesystem": {
-              "$ref": "#/$defs/capabilityId"
+              "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/capabilityId"
             },
             "packageIds": {
               "description": "Package entity identifiers to install.",
               "type": "array",
+              "maxItems": 4096,
               "items": {
-                "$ref": "#/$defs/entityId"
+                "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/entityId"
               }
             },
             "packageGroupIds": {
               "description": "Package group entity identifiers to install.",
               "type": "array",
+              "maxItems": 4096,
               "items": {
-                "$ref": "#/$defs/entityId"
+                "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/entityId"
               }
             },
             "userRef": {
               "description": "Opaque reference to a user definition.",
-              "type": "string"
+              "type": "string",
+              "maxLength": 256
             },
             "locale": {
-              "type": "string"
+              "type": "string",
+              "maxLength": 64
             },
             "keymap": {
-              "type": "string"
+              "type": "string",
+              "maxLength": 64
             },
             "timezone": {
-              "type": "string"
+              "type": "string",
+              "maxLength": 128
             },
             "serviceUnit": {
-              "type": "string"
+              "type": "string",
+              "maxLength": 256
             },
             "checksum": {
-              "$ref": "#/$defs/digest"
+              "description": "Binary digest of the bytes being verified.",
+              "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/binaryDigest"
             }
           }
         }

@@ -1,9 +1,11 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://archmaker.dev/schemas/diagnostic.schema.json",
-  "title": "ArchMaker Diagnostic",
-  "description": "Typed, localized result of a validation stage. Codes come from the canonical AM-* catalog in docs/04-interfaces/errors-events.md. Contract state: draft.",
+  "title": "ArchMaker Diagnostic (v0)",
+  "description": "Typed, localized result of a validation stage. Codes come from the canonical AM-* catalog in docs/04-interfaces/errors-events.md. Severity and blocking are canonical and consistent: error is always blocking, warning/info never are. Diagnostic lists have a stable order. Contract state: v0.",
+  "$comment": "Contract v0 (phase R6, AUD-014). Shared $defs live in common.schema.json. Unknown fields rejected except the documented params map.",
   "type": "object",
+  "additionalProperties": false,
   "required": [
     "code",
     "severity",
@@ -11,12 +13,9 @@
     "messageKey",
     "source"
   ],
-  "additionalProperties": false,
   "properties": {
     "schemaVersion": {
-      "description": "JSON Schema contract version (axis schemaVersion).",
-      "type": "string",
-      "minLength": 1
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/schemaVersion"
     },
     "code": {
       "description": "Canonical AM-<FAMILY>-<NNN> code.",
@@ -24,30 +23,22 @@
       "pattern": "^AM-[A-Z]+-[0-9]{3}$"
     },
     "severity": {
-      "description": "Diagnostic severity.",
-      "enum": [
-        "error",
-        "warning",
-        "info"
-      ]
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/severity"
     },
     "blocking": {
-      "description": "Whether the diagnostic blocks manifest construction.",
+      "description": "Whether the diagnostic blocks manifest construction. Canonical: error => true; warning/info => false.",
       "type": "boolean"
     },
     "path": {
-      "description": "JSON Pointer to the offending location; empty string means the document root.",
-      "type": "string",
-      "pattern": "^(?:/[^/]*)*$"
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/jsonPointer"
     },
     "messageKey": {
-      "description": "Localization message key such as diagnostic.capabilityMissing or error.catalog.signatureInvalid.",
-      "type": "string",
-      "pattern": "^[a-z][a-zA-Z0-9]*(\\.[a-zA-Z0-9]+)*$"
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/messageKey"
     },
     "params": {
       "description": "Open parameter map for message interpolation. Documented open map required by the domain; values are scalars only.",
       "type": "object",
+      "maxProperties": 64,
       "additionalProperties": {
         "type": [
           "string",
@@ -59,23 +50,98 @@
     "source": {
       "description": "Component that emitted the diagnostic, e.g. archmaker-resolver.",
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[a-z0-9][a-z0-9._-]*$"
     },
     "ruleId": {
       "description": "Rule that produced the diagnostic, when applicable.",
-      "type": "string"
+      "type": "string",
+      "pattern": "^RULE-[A-Z0-9]+(-[A-Z0-9]+)+$"
     },
     "suggestions": {
-      "description": "Ordered remediation suggestions.",
+      "description": "Ordered remediation suggestions (human-readable, bounded).",
       "type": "array",
+      "maxItems": 64,
       "items": {
-        "type": "string"
+        "type": "string",
+        "maxLength": 1024
       }
     },
     "correlationId": {
       "description": "Correlation identifier for observability (NFR-OBS-001).",
-      "type": "string",
-      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/uuid"
+    },
+    "emittedAt": {
+      "description": "Ephemeral emission timestamp; excluded from the canonical hash payload.",
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/utcTimestamp"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "severity": {
+            "const": "error"
+          }
+        },
+        "required": [
+          "severity"
+        ]
+      },
+      "then": {
+        "properties": {
+          "blocking": {
+            "const": true
+          }
+        },
+        "required": [
+          "blocking"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "severity": {
+            "enum": [
+              "warning",
+              "info"
+            ]
+          }
+        },
+        "required": [
+          "severity"
+        ]
+      },
+      "then": {
+        "properties": {
+          "blocking": {
+            "const": false
+          }
+        },
+        "required": [
+          "blocking"
+        ]
+      }
+    }
+  ],
+  "$defs": {
+    "diagnosticSortKey": {
+      "description": "Stable sort keys for diagnostic collections, applied in order: path, then code, then source (UTF-16 comparison).",
+      "enum": [
+        "path",
+        "code",
+        "source"
+      ]
+    },
+    "diagnosticList": {
+      "description": "Ordered diagnostic collection. Producers MUST emit it sorted by (path, code, source) so the same input yields byte-identical output (NFR-DET-001).",
+      "type": "array",
+      "maxItems": 4096,
+      "items": {
+        "$ref": "#"
+      }
     }
   }
 }

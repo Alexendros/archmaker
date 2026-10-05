@@ -26,9 +26,15 @@ reviewers:
 
 Este documento enumera los DTO que cruzan `CorePort` (ver `core-port.md`), los tipos de valor
 compartidos y las reglas de paridad entre Rust, TypeScript y WASM. La **forma canónica** de los
-contratos persistidos está fijada en los 8 JSON Schema 2020-12 de `contracts/json-schema/`
-(ADR-0005); este documento describe su semántica y los DTO de operación que no tienen schema
-propio. Los ejemplos JSON de más abajo son ilustrativos.
+contratos persistidos está fijada en los JSON Schema 2020-12 **v0** de `contracts/json-schema/`
+(ADR-0005): `common`, `draft`, `catalog`, `diagnostic`, `core-error`, `changeset`, `manifest`,
+`artifact`, `installation-plan`, `runner-envelope` y `rule`. Este documento describe su semántica y
+los DTO de operación que no tienen schema propio; las reglas no se duplican aquí: se referencian
+(`SRC-006`). Los ejemplos JSON de más abajo son ilustrativos.
+
+> Verificación: cada DTO con schema canónico se contrasta contra el corpus
+> `contracts/json-schema/examples/` (válido/inválido/adversarial) y el gate `json-schema`. TypeScript
+> **no** implementa reglas: la autoridad semántica es Rust (`ADR-0001`, `DOC-GOV-001` regla 5).
 
 Cada contrato se versiona con `schemaVersion`, independiente de `documentVersion`,
 `catalogRef.version`, `targetRef.version`, `producer.version` y `protocolVersion`
@@ -71,22 +77,24 @@ contenido sea un secreto: `secretRef` **nunca** serializa el secreto (`THR-SEC-0
 | `single` | `optionId` | string | Sí | Cardinalidad uno. |
 | `multiple` | `optionIds` | array<string> | Sí | El orden se fija por ID al canonicalizar. |
 | `boolean` | `value` | boolean | Sí | — |
-| `number` | `value` | number | Sí | `unit` opcional; schema restringe uso de floats. |
-| `number` | `unit` | string | No | — |
+| `number` | `value` | number | Sí | Binary64 finito acotado (`common#/$defs/binary64`); `1e400` se rechaza. |
+| `number` | `unit` | string | No | Código del vocabulario cerrado `unitCode` (`common#/$defs/unitCode`), sensible a mayúsculas. |
 | `text` | `value` | string | Sí | Con límite de longitud por schema. |
-| `secretRef` | `ref` | string | Sí | Referencia opaca; sin secreto en claro. |
+| `secretRef` | `ref` | string | Sí | Referencia opaca URI (`secret://…`); el valor del secreto no es representable (`THR-SEC-001`). |
 
 ### Referencias e identificadores
 
 | Tipo | Campos | Oblig. | Notas |
 |---|---|---|---|
-| `CatalogRef` | `namespace`, `id`, `version`, `digest` | Sí / Sí / Sí / Sí | `namespace` depende de **DEC-002**. `digest` tipo `Digest`. |
+| `CatalogRef` | `namespace`, `id`, `version`, `digest` | Sí / Sí / Sí / Sí | `namespace` depende de **DEC-002**. `version` semver; `digest` es un `ContentDigest`. |
 | `TargetRef` | `id`, `version` | Sí / Sí | Conjunto exacto depende de **DEC-008**. |
-| `DraftRef` | `id` (uuid), `documentVersion`, `digest` | Sí / No / No | `digest` solo si está guardado. |
+| `DraftRef` | `id` (uuid), `documentVersion`, `contentDigest` | Sí / No / No | `contentDigest` solo si está guardado. |
 | `PresetRef` | `namespace`, `id`, `version` | Sí | Patch inmutable (`DM-PRESET`). |
-| `ManifestRef` | `digest` | Sí | Materialización cerrada (`DM-MANIFEST`). |
-| `ArtifactRef` | `digest`, `mediaType` | Sí | `DM-ARTIFACT`. |
+| `ManifestRef` | `contentDigest` | Sí | Materialización cerrada (`DM-MANIFEST`); digest semántico. |
+| `ArtifactRef` | `binaryDigest`, `mediaType` | Sí | `DM-ARTIFACT`; digest de los bytes exactos. |
 | `Digest` | `algorithm` (`sha256`), `value` | Sí | Etiqueta de dominio en el payload canónico (`canonicalization.md`). |
+| `ContentDigest` | `algorithm`, `value`, `kind?` | Sí | Digest **semántico** del payload canónico (ADR-0007 decisión 11). |
+| `BinaryDigest` | `algorithm`, `value`, `kind?` | Sí | Digest de **bytes** (`artifact`/`binary`); nunca comparable con `contentDigest`. |
 | `RequestId` | uuid | Sí | Correlación de operaciones largas. |
 | `CorrelationId` | uuid | Sí | Correlación de errores/eventos. |
 
@@ -112,13 +120,19 @@ reporta como `AM-RES` bloqueante.
 
 ### `CoreError` y `Diagnostic`
 
-Se definen en `errors-events.md` y se referencian, no se redefinen aquí:
+Se definen en `errors-events.md` y tienen schema canónico en `core-error.schema.json` y
+`diagnostic.schema.json`; se referencian, no se redefinen aquí:
 
-- `CoreError`: `code`, `category`, `messageKey`, `params`, `retryable`, `correlationId`, `causeCode`.
-- `Diagnostic`: `code`, `severity`, `blocking`, `path`, `messageKey`, `params`, `source`, `ruleId`, `suggestions`.
+- `CoreError`: `code`, `family`, `category`, `severity`, `messageKey`, `params`, `retryable`,
+  `detail`, `cause` (cadena recursiva), `causeCode`, `remedy`, `source`, `correlationId`.
+- `Diagnostic`: `code`, `severity`, `blocking`, `path`, `messageKey`, `params`, `source`, `ruleId`,
+  `suggestions`.
 
 `severity` usa `error | warning | info`; la lista canónica y los códigos `AM-*` los fija
 `errors-events.md` (catálogo único). `fatal` y `debug` quedan **reservados**, no usados por el MVP.
+`blocking` es **canónico**: `error` ⇒ `true`; `warning`/`info` ⇒ `false`. Las colecciones de
+diagnósticos se emiten ordenadas por `(path, code, source)` para determinismo (`NFR-DET-001`).
+`CoreError` no admite strings libres como contrato público (R7): `messageKey` y `code` son estables.
 
 ## Correspondencia con JSON Schema
 
@@ -128,14 +142,18 @@ propio salvo los indicados; su forma se deriva de las firmas de `core-port.md`.
 
 | DTO | Schema | Estado |
 |---|---|---|
-| `Draft` | `draft.schema.json` | canónico |
-| `CatalogView` | `catalog.schema.json` | canónico |
-| `Diagnostic` | `diagnostic.schema.json` | canónico |
-| `ManifestResult` | `manifest.schema.json` | canónico |
-| `ExportResult` | `artifact.schema.json` | canónico |
-| InstallationPlan (v1) | `installation-plan.schema.json` | canónico (v1) |
-| RunnerEnvelope (v1) | `runner-envelope.schema.json` | canónico (v1) |
-| `Rule` | `rule.schema.json` | canónico |
+| `Draft` | `draft.schema.json` | canónico v0 |
+| `SaveDraftInput` | `draft.schema.json#/$defs/saveDraftRequest` | canónico v0 |
+| `CatalogView` | `catalog.schema.json` | canónico v0 |
+| `Diagnostic` | `diagnostic.schema.json` | canónico v0 |
+| `CoreError` | `core-error.schema.json` | canónico v0 |
+| `ChangeSet` | `changeset.schema.json` | canónico v0 |
+| `ManifestResult` | `manifest.schema.json` | canónico v0 |
+| `ExportResult` | `artifact.schema.json` | canónico v0 |
+| InstallationPlan (v1) | `installation-plan.schema.json` | canónico v0 |
+| RunnerEnvelope (v1) | `runner-envelope.schema.json` | canónico v0 |
+| `Rule` | `rule.schema.json` | canónico (AUD-017) |
+| Tipos compartidos | `common.schema.json` | canónico v0 |
 
 El corpus positivo/negativo vive en `contracts/json-schema/examples/` y la migración v5.1 en
 `contracts/json-schema/examples/migration/`. La paridad TS/Rust/WASM se verifica contra ese corpus
@@ -153,6 +171,7 @@ compartido.
 |---|---|---|---|
 | `LoadCatalogInput` | Cargar un catálogo versionado y acotar su lectura. | `loadCatalog` | `schemaVersion 1` (propuesta) |
 | `CreateDraftInput` | Crear un Draft vacío ligado a catálogo y target. | `createDraft` | ídem |
+| `SaveDraftInput` | Persistir un Draft con precondición de revisión (ETag). | `saveDraft` | ídem |
 | `ImportDraftInput` | Importar un documento local y acotar el parseo. | `importDraft` | ídem |
 | `PlanMigrationInput` | Planificar la migración detectada sin aplicarla. | `planMigration` | ídem |
 | `ApplyMigrationInput` | Aplicar el plan con las decisiones del usuario. | `applyMigration` | ídem |
@@ -170,8 +189,8 @@ compartido.
 |---|---|---|---|
 | `catalogRef` | CatalogRef | Cond. | Requerido si `source = registry`; omitido para catálogo embebido. |
 | `source` | enum(`embedded`, `file`, `registry`) | Sí | MVP: `embedded` o `file` (picker). `registry` no verificado en MVP. |
-| `expectedDigest` | Digest | No | Verificación de integridad/anti-manipulación (`THR-CAT-001`). |
-| `limits` | `{ maxBytes, maxDepth }` | No | Límites antes y durante parse (`THR-IMP-001`). |
+| `expectedDigest` | ContentDigest | No | Verificación de integridad/anti-manipulación (`THR-CAT-001`). |
+| `limits` | `{ maxBytes, maxDepth, maxStringLength, maxArrayItems }` | No | Límites antes y durante parse (`THR-IMP-001`). |
 
 ### `CreateDraftInput`
 
@@ -181,6 +200,18 @@ compartido.
 | `targetRef` | TargetRef | Sí | UC-001: seleccionar objetivo. |
 | `presetRef` | PresetRef | No | Preset inicial opcional. |
 | `name` | string | No | Etiqueta local de UI (`FR-DRAFT-001`). |
+
+### `SaveDraftInput`
+
+Schema: `draft.schema.json#/$defs/saveDraftRequest`. Persistencia con concurrencia optimista: si la
+revisión almacenada difiere de `expectedRevision`, la operación falla con un `CoreError` de conflicto
+(no sobrescribe en silencio).
+
+| Campo | Tipo | Oblig. | Notas |
+|---|---|---|---|
+| `draft` | Draft | Sí | Draft a persistir; su `revision` es la nueva revisión. |
+| `expectedRevision` | int ≥ 0 | Sí | Revisión observada por el llamante. |
+| `requestId` | RequestId | No | Correlación de operación. |
 
 ### `ImportDraftInput`
 
@@ -245,7 +276,7 @@ compartido.
 | `draft` | Draft | Sí | — |
 | `catalogRef` | CatalogRef | Sí | — |
 | `targetRef` | TargetRef | Sí | — |
-| `expectedResolutionDigest` | Digest | No | Evita construir desde una Resolution distinta. |
+| `expectedResolutionDigest` | ContentDigest | No | Evita construir desde una Resolution distinta. |
 | `requestId` | RequestId | No | — |
 
 ### `CompareDraftsInput`
@@ -319,7 +350,7 @@ compartido.
 
 | Campo | Tipo | Oblig. | Notas |
 |---|---|---|---|
-| `catalogRef` | CatalogRef | Sí | Incluye `digest`. |
+| `catalogRef` | CatalogRef | Sí | Incluye `contentDigest`. |
 | `steps` | array<`StepView`> | Sí | — |
 | `capabilities` | array<Capability> | No | Términos `CAP-*` del catálogo. |
 | `metadata` | map<string,string> | No | — |
@@ -335,6 +366,8 @@ compartido.
 | `id` | uuid | Sí | Identidad `DM-DRAFT`. |
 | `documentVersion` | string | Sí | Versión del documento. |
 | `schemaVersion` | string | Sí | Versión del schema. |
+| `revision` | int ≥ 0 | Sí | Token monotónico de concurrencia (ETag). |
+| `contentDigest` | Digest | No | Digest semántico del payload canónico; ausente hasta el primer guardado. |
 | `catalogRef` | CatalogRef | Sí | — |
 | `targetRef` | TargetRef | Sí | — |
 | `selections` | array<`Selection`> | Sí | Solo intención manual y refs. |
@@ -342,8 +375,9 @@ compartido.
 | `createdAt` | timestamp | No | Efímero; excluido del hash. |
 | `updatedAt` | timestamp | No | Efímero; excluido del hash. |
 
-`Selection`: `{ stepId: string, optionId?: string, value: SelectionValue }`. Las selecciones
-derivadas **no** se almacenan en el Draft: las produce el resolver a partir de `presetRefs`.
+`Selection`: `{ stepId: string, value: SelectionValue }`. El valor vive solo en `value` (sin
+`optionId` duplicado). Las selecciones derivadas **no** se almacenan en el Draft: las produce el
+resolver a partir de `presetRefs`.
 
 ### `ImportResult`
 
@@ -351,7 +385,7 @@ derivadas **no** se almacenan en el Draft: las produce el resolver a partir de `
 |---|---|---|---|
 | `draft` | Draft | Sí | Nuevo documento; el original se conserva. |
 | `report` | `MigrationReport` | Sí | `preserved` / `transformed` / `dropped` / `rejected`. |
-| `sourceDigest` | Digest | Sí | Digest del documento original. |
+| `sourceDigest` | ContentDigest | Sí | Digest del documento original. |
 | `diagnostics` | array<Diagnostic> | No | Pérdidas explícitas. |
 
 ### `MigrationPlan`
@@ -380,7 +414,7 @@ derivadas **no** se almacenan en el Draft: las produce el resolver a partir de `
 
 | Campo | Tipo | Oblig. | Notas |
 |---|---|---|---|
-| `resolutionDigest` | Digest | Sí | Digest del input; recalculable. |
+| `resolutionDigest` | ContentDigest | Sí | Digest del input; recalculable. |
 | `effectiveSelections` | array<`ResolvedSelection`> | Sí | Manual + derivado. |
 | `providedCapabilities` | array<Capability> | Sí | Cierre computado. |
 | `requiredCapabilities` | array<Capability> | Sí | — |
@@ -408,9 +442,9 @@ No persistible: tratar una Resolution como persistible está prohibido por el gl
 |---|---|---|---|
 | `manifest` | `Manifest` | Sí | Documento canónico, cerrado y ordenado. |
 | `manifestRef` | ManifestRef | Sí | — |
-| `manifestDigest` | Digest | Sí | Digest canónico. |
+| `contentDigest` | Digest | Sí | Digest semántico canónico (`archmaker:manifest:v1`). |
 | `producer` | `{ id, version }` | Sí | `archmaker-export`/productor. |
-| `resolutionDigest` | Digest | Sí | Trazabilidad hacia la Resolution. |
+| `resolutionDigest` | ContentDigest | Sí | Trazabilidad hacia la Resolution. |
 | `diagnostics` | array<Diagnostic> | No | — |
 
 ### `DraftDiff`
@@ -449,7 +483,7 @@ No persistible: tratar una Resolution como persistible está prohibido por el gl
 | `artifactRef` | ArtifactRef | Sí | — |
 | `targetRef` | TargetRef | Sí | — |
 | `mediaType` | string | Sí | — |
-| `digest` | Digest | Sí | — |
+| `binaryDigest` | BinaryDigest | Sí | Digest de los bytes exactos. |
 | `producer` | `{ id, version }` | Sí | — |
 | `destinationHandle` | string | No | Mango opaco; sin ruta absoluta. |
 | `report` | `MigrationReport` | No | Solo para `target.id = report`. |
@@ -569,5 +603,5 @@ Asociación indicativa (las familias están definidas en `errors-events.md`):
 - Decisiones aplicables: **DEC-001** (`ExportTarget`: perfil ArchMaker + reporte, archinstall
   experimental), **DEC-002** (`CatalogRef.namespace`: global `vendor.kind.id`), **DEC-008**
   (`TargetRef`: solo Arch x86_64).
-- Schemas canónicos: `contracts/json-schema/` (8 schemas Draft 2020-12, ADR-0005); **SRC-006**
-  capturado el 2026-10-05.
+- Schemas canónicos: `contracts/json-schema/` (11 schemas Draft 2020-12 **v0**, ADR-0005); **SRC-006**
+  capturado el 2026-10-05. Changelog por versión: `contracts/json-schema/CHANGELOG.md`.

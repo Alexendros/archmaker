@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "1",
+  "baseRevision": 1,
+  "origin": "manual",
+  "operations": [
+    {
+      "opId": "op-replace-kernel",
+      "op": "replace",
+      "path": "/selections/0/value",
+      "before": {
+        "kind": "single",
+        "optionId": "archmaker.kernel.linux"
+      },
+      "after": {
+        "kind": "single",
+        "optionId": "archmaker.kernel.zen"
+      }
+    }
+  ]
+}

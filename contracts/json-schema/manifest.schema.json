@@ -1,9 +1,11 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://archmaker.dev/schemas/manifest.schema.json",
-  "title": "ArchMaker Manifest (DM-MANIFEST)",
-  "description": "Canonical, closed, ordered and hashed materialization of a Resolution without blockers. Input of exporters and of the v1 plan. Contract state: draft.",
+  "title": "ArchMaker Manifest (DM-MANIFEST, v0)",
+  "description": "Canonical, closed, ordered and hashed materialization of a Resolution without blockers. Input of exporters and of the v1 plan. The contentDigest follows the canonicalization profile v1 (ADR-0007): SHA-256 over the canonical payload prefixed by the domain label archmaker:manifest:v1. Contract state: v0.",
+  "$comment": "Contract v0 (phase R6, AUD-015, supported by the AUD-010 canonicalization vectors). contentDigest replaces manifestDigest; unknown fields rejected.",
   "type": "object",
+  "additionalProperties": false,
   "required": [
     "documentVersion",
     "schemaVersion",
@@ -16,19 +18,14 @@
     "providedCapabilities",
     "requiredCapabilities",
     "conflicts",
-    "manifestDigest"
+    "contentDigest"
   ],
-  "additionalProperties": false,
   "properties": {
     "documentVersion": {
-      "description": "Domain document contract version (axis documentVersion).",
-      "type": "string",
-      "minLength": 1
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/documentVersion"
     },
     "schemaVersion": {
-      "description": "JSON Schema contract version (axis schemaVersion).",
-      "type": "string",
-      "minLength": 1
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/schemaVersion"
     },
     "domainLabel": {
       "description": "Domain separation label used for the canonical hash (ADR-0007).",
@@ -36,354 +33,56 @@
     },
     "catalogRef": {
       "description": "Exact catalog version consumed.",
-      "$ref": "#/$defs/catalogRef"
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/catalogRef"
     },
     "targetRef": {
       "description": "Export target the manifest is materialized for.",
-      "$ref": "#/$defs/targetRef"
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/targetRef"
     },
     "producer": {
       "description": "Producer identity and version (axis producer.version).",
-      "$ref": "#/$defs/producer"
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/producer"
     },
     "resolutionDigest": {
-      "description": "Digest of the Resolution that fed the manifest; traceability back to the ephemeral resolution.",
-      "$ref": "#/$defs/digest"
+      "description": "Semantic content digest of the Resolution that fed the manifest; traceability back to the ephemeral resolution.",
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/contentDigest"
     },
     "effectiveSelections": {
       "description": "Frozen effective selections: manual plus derived, ordered by step ID.",
       "type": "array",
       "minItems": 1,
+      "maxItems": 4096,
       "items": {
-        "$ref": "#/$defs/resolvedSelection"
+        "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/resolvedSelection"
       }
     },
     "providedCapabilities": {
       "description": "Computed closure of provided capabilities.",
       "type": "array",
+      "maxItems": 4096,
       "items": {
-        "$ref": "#/$defs/capabilityRef"
+        "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/capabilityRef"
       }
     },
     "requiredCapabilities": {
       "description": "Capabilities required by the effective selections.",
       "type": "array",
+      "maxItems": 4096,
       "items": {
-        "$ref": "#/$defs/capabilityRef"
+        "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/capabilityRef"
       }
     },
     "conflicts": {
       "description": "Remaining conflicts; empty for a sealed manifest.",
       "type": "array",
+      "maxItems": 4096,
       "items": {
-        "$ref": "#/$defs/conflict"
+        "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/conflict"
       }
     },
-    "manifestDigest": {
-      "description": "Canonical digest of this manifest payload (ADR-0007).",
-      "$ref": "#/$defs/digest"
-    }
-  },
-  "$defs": {
-    "entityId": {
-      "description": "Global entity identifier with the DEC-002 vendor.kind.id shape.",
-      "type": "string",
-      "pattern": "^[a-z0-9][a-z0-9._-]*\\.[a-z0-9][a-z0-9._-]*\\.[a-z0-9][a-z0-9._-]*$"
-    },
-    "namespace": {
-      "description": "Global namespace with the DEC-002 vendor.kind shape.",
-      "type": "string",
-      "pattern": "^[a-z0-9][a-z0-9._-]*\\.[a-z0-9][a-z0-9._-]*$"
-    },
-    "shortId": {
-      "description": "Single-segment identifier used together with a namespace.",
-      "type": "string",
-      "pattern": "^[a-z0-9][a-z0-9._-]*$"
-    },
-    "capabilityId": {
-      "description": "Capability identifier such as fs.btrfs, gpu.nvidia or boot.uefi.",
-      "type": "string",
-      "pattern": "^[a-z0-9][a-z0-9._-]*\\.[a-z0-9][a-z0-9._-]*$"
-    },
-    "digest": {
-      "description": "Content digest (SHA-256 with domain label in the canonical payload, ADR-0007).",
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "algorithm",
-        "value"
-      ],
-      "properties": {
-        "algorithm": {
-          "const": "sha256"
-        },
-        "value": {
-          "type": "string",
-          "pattern": "^[a-f0-9]{64}$"
-        }
-      }
-    },
-    "catalogRef": {
-      "description": "Reference to an immutable catalog version.",
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "namespace",
-        "id",
-        "version",
-        "digest"
-      ],
-      "properties": {
-        "namespace": {
-          "$ref": "#/$defs/namespace"
-        },
-        "id": {
-          "$ref": "#/$defs/shortId"
-        },
-        "version": {
-          "description": "Catalog version (axis catalogRef.version).",
-          "type": "string",
-          "minLength": 1
-        },
-        "digest": {
-          "$ref": "#/$defs/digest"
-        }
-      }
-    },
-    "targetRef": {
-      "description": "Reference to a versioned export adapter.",
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "id",
-        "version"
-      ],
-      "properties": {
-        "id": {
-          "$ref": "#/$defs/shortId"
-        },
-        "version": {
-          "description": "Target adapter version (axis targetRef.version).",
-          "type": "string",
-          "minLength": 1
-        }
-      }
-    },
-    "producer": {
-      "description": "Producer of the manifest or artifact.",
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "id",
-        "version"
-      ],
-      "properties": {
-        "id": {
-          "$ref": "#/$defs/shortId"
-        },
-        "version": {
-          "description": "Producer version (axis producer.version).",
-          "type": "string",
-          "minLength": 1
-        }
-      }
-    },
-    "selectionValue": {
-      "description": "Discriminated union SelectionValue (single, multiple, boolean, number, text, secretRef). secretRef never carries the secret.",
-      "oneOf": [
-        {
-          "type": "object",
-          "additionalProperties": false,
-          "required": [
-            "kind",
-            "optionId"
-          ],
-          "properties": {
-            "kind": {
-              "const": "single"
-            },
-            "optionId": {
-              "$ref": "#/$defs/entityId"
-            }
-          }
-        },
-        {
-          "type": "object",
-          "additionalProperties": false,
-          "required": [
-            "kind",
-            "optionIds"
-          ],
-          "properties": {
-            "kind": {
-              "const": "multiple"
-            },
-            "optionIds": {
-              "type": "array",
-              "minItems": 1,
-              "uniqueItems": true,
-              "items": {
-                "$ref": "#/$defs/entityId"
-              }
-            }
-          }
-        },
-        {
-          "type": "object",
-          "additionalProperties": false,
-          "required": [
-            "kind",
-            "value"
-          ],
-          "properties": {
-            "kind": {
-              "const": "boolean"
-            },
-            "value": {
-              "type": "boolean"
-            }
-          }
-        },
-        {
-          "type": "object",
-          "additionalProperties": false,
-          "required": [
-            "kind",
-            "value"
-          ],
-          "properties": {
-            "kind": {
-              "const": "number"
-            },
-            "value": {
-              "type": "number"
-            },
-            "unit": {
-              "type": "string"
-            }
-          }
-        },
-        {
-          "type": "object",
-          "additionalProperties": false,
-          "required": [
-            "kind",
-            "value"
-          ],
-          "properties": {
-            "kind": {
-              "const": "text"
-            },
-            "value": {
-              "type": "string",
-              "maxLength": 4096
-            }
-          }
-        },
-        {
-          "type": "object",
-          "additionalProperties": false,
-          "required": [
-            "kind",
-            "ref"
-          ],
-          "properties": {
-            "kind": {
-              "const": "secretRef"
-            },
-            "ref": {
-              "description": "Opaque reference to a secret; the secret value is never serialized.",
-              "type": "string",
-              "minLength": 1
-            }
-          }
-        }
-      ]
-    },
-    "resolvedSelection": {
-      "description": "A frozen selection with its origin and lock state.",
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "stepId",
-        "optionId",
-        "value",
-        "origin",
-        "locked"
-      ],
-      "properties": {
-        "stepId": {
-          "$ref": "#/$defs/entityId"
-        },
-        "optionId": {
-          "$ref": "#/$defs/entityId"
-        },
-        "value": {
-          "$ref": "#/$defs/selectionValue"
-        },
-        "origin": {
-          "description": "Whether the selection was manual or derived.",
-          "enum": [
-            "manual",
-            "derived"
-          ]
-        },
-        "locked": {
-          "description": "Whether the selection is locked by a rule or policy.",
-          "type": "boolean"
-        }
-      }
-    },
-    "capabilityRef": {
-      "description": "Reference to a capability contributed or required.",
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "id"
-      ],
-      "properties": {
-        "id": {
-          "$ref": "#/$defs/capabilityId"
-        },
-        "title": {
-          "type": "string"
-        }
-      }
-    },
-    "conflict": {
-      "description": "A capability or selection conflict.",
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "severity",
-        "path",
-        "messageKey",
-        "suggestions"
-      ],
-      "properties": {
-        "severity": {
-          "enum": [
-            "error",
-            "warning",
-            "info"
-          ]
-        },
-        "capabilityId": {
-          "$ref": "#/$defs/capabilityId"
-        },
-        "path": {
-          "type": "string"
-        },
-        "messageKey": {
-          "type": "string"
-        },
-        "suggestions": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
+    "contentDigest": {
+      "description": "Canonical semantic digest of this manifest payload (ADR-0007, domain tag archmaker:manifest:v1). Distinct from any binary/artifact digest.",
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/contentDigest"
     }
   }
 }
