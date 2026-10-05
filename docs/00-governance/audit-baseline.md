@@ -62,4 +62,4 @@ Aplicada la actualización `archmaker-g0-reference-update`: `SRC-001` pasa de `r
 
 ## Fuera de alcance de esta remediación
 
-El tablero P1 detecta carencias de estándar de repositorio (p. ej. `CHANGELOG.md`, `.github/workflows/ci.yml`, `.github/renovate.json`, `Makefile`, `docs/README.md`, meta-sección «Propósito de este documento», dependabot→Renovate). Quedan registradas como observaciones de estándar de repositorio; su corrección es independiente de los gates G0–G10 de esta remediación.
+El tablero P1 detecta carencias de estándar de repositorio (p. ej. `CHANGELOG.md`, `.github/workflows/ci.yml`, `.github/renovate.json`, `Makefile`, un README dentro de `docs/`, meta-sección «Propósito de este documento», dependabot→Renovate). Quedan registradas como observaciones de estándar de repositorio; su corrección es independiente de los gates G0–G10 de esta remediación.

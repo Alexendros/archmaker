@@ -765,7 +765,7 @@ Runner, privilegios, discos, shell y Enterprise permanecen bloqueados.
 
 2. [3. - Mapping SSDF to DevSecOps Notional Reference Model](https://pages.nist.gov/nccoe-devsecops/mapping-ssdf.html)
 
-3. [INTERNATIONAL ISO/ STANDARD IEC/IEEE 42010](https://cdn.standards.iteh.ai/samples/74393/fc7b7f103d8446a4b87a3261e31370d3/ISO-IEC-IEEE-42010-2022.pdf)
+3. [INTERNATIONAL ISO/ STANDARD IEC/IEEE 42010](https://www.iso.org/standard/74393.html)
 
 4. [ISO/IEC/IEEE 42010: Conceptual Model](http://www.iso-architecture.org/ieee-1471/cm/) - ISO/IEC/IEEE 42010 is based upon a conceptual model – or “meta model” – of the terms and concepts pe...
 
