@@ -6,13 +6,21 @@
 
 ## Motivo (resumen)
 
-La planificación documental está trazada de extremo a extremo, pero **no puede autorizarse el desarrollo** porque:
+La planificación avanzó (ver «Progreso»), pero **no puede autorizarse el desarrollo** porque:
 
-1. Hay **8 decisiones P0 sin resolver** (DEC-001..DEC-008) que fijan alcance, identidad de datos, target de instalación, privilegios/transporte del runner, licencia y soporte.
-2. Ningún ADR está `accepted` (los 8 están `proposed`): las decisiones estructurales no han sido aprobadas por la persona propietaria.
-3. Los **contratos P0** (JSON Schema, protocolo del runner) no existen como artefactos con fixtures válidos e inválidos; están correctamente bloqueados por dependencias.
-4. Persisten **riesgos P0** (RSK-001/002/003/004/007/008) sin tratamiento cerrado.
-5. Las fuentes primarias de datos mutables (ArchWiki, archinstall, Tauri, JSON Schema, WCAG) están `pending-capture`.
+1. Los documentos de producto, arquitectura y datos siguen en `draft`/`in-review`: falta la **aprobación humana** (`accepted`) de FR/NFR, modelo de dominio y C4/módulos.
+2. Persisten **riesgos P0** (RSK-001/002/003/004/007/008) sin tratamiento cerrado.
+3. Las fuentes mutables **SRC-005 (Rust/RustSec)** y **SRC-008 (SSDF/Sigstore)** están `pending-capture`, y **SRC-007 (ARIA APG)** parcial; imprescindibles para G8/G9.
+4. Los **contratos P0** existen con corpus válido/inválido, pero el **job de CI de corpus** está pendiente y la CI no se ha ejecutado en verde.
+5. La **aprobación formal de Seguridad** (sign-off del privilege model) está pendiente antes de G8.
+
+## Progreso desde la evaluación anterior
+
+- **DEC-001..DEC-008 accepted** (2026-10-05): alcance de exportación, IDs globales `vendor.kind.id`, adapter archinstall, transporte del runner (Unix socket + auth), licencia (Apache-2.0/dual), firma (Sigstore + offline), **updater firmado en MVP** (desviación), **solo Arch x86_64** (desviación).
+- **ADR-0001..ADR-0009 accepted**.
+- **8 JSON Schema Draft 2020-12** cerrados (`additionalProperties:false`) + corpus válido/inválido + fixture de migración v5.1.
+- **Fuentes SRC-002/003/006 capturadas**; SRC-007/008 partial; SRC-005 pendiente.
+- **CI documental** con acciones fijadas por SHA; `sha256sum --check` en verde.
 
 ## Cobertura de gates
 
@@ -20,23 +28,24 @@ La planificación documental está trazada de extremo a extremo, pero **no puede
 |---|---|---|
 | G0 Fuentes | complete | — (evidencia v5.1 íntegra; capturas primarias pendientes como tareas) |
 | G1 Problema/usuarios | partial | aprobar objetivos/personas; métricas no verificadas |
-| G2 Alcance/requisitos | partial | resolver DEC-001/008; aprobar FR/NFR (hoy draft) |
-| G3 Arquitectura | partial | aceptar ADR-0001/0002; aprobar C4/módulos |
-| G4 Datos | partial | resolver DEC-002; aceptar modelo e identidad; schemas |
-| G5 Interfaces | partial | aceptar CorePort/DTO; schemas de errores/eventos |
+| G2 Alcance/requisitos | partial | aprobar FR/NFR (hoy draft) |
+| G3 Arquitectura | partial | aprobar C4/módulos (hoy draft) |
+| G4 Datos | partial | meta-validación CI en verde; aprobar modelo e identidad |
+| G5 Interfaces | partial | aprobar CorePort/DTO; ratificar cobertura CorePort |
 | G6 UX/diseño | partial | validación de accesibilidad; aprobar tokens preservados |
-| G7 Validación | partial | fijar AST/operadores; corpus ejecutable |
-| G8 Seguridad | partial | resolver DEC-004; cerrar RRSK-001/002/008 |
-| G9 Calidad | partial | CI en verde; SBOM/firmas tras DEC-005/006 |
-| G10 Delivery | partial | backlog priorizado y con owners; releases |
+| G7 Validación | partial | corpus ejecutable; ratificar `required`; RULE-GPU-001 no implementable |
+| G8 Seguridad | partial | aprobación formal de Seguridad; cerrar RSK-001/002/008 |
+| G9 Calidad | partial | CI en verde; capturar SRC-005/SRC-008; SBOM/firmas reales |
+| G10 Delivery | partial | owners en backlog; releases |
 
 ## Criterios de salida (para pasar a Go)
 
 - G0–G10 en `complete` con evidencia ejecutable y sin P0 abiertos asociados.
-- DEC-001..DEC-008 resueltas y registradas en `decision-register.md`.
-- ADR-0001..0008 con estado `accepted` (por el propietario humano).
-- Contratos P0 con JSON Schema Draft 2020-12, `additionalProperties:false`, fixtures válidos **y** inválidos en CI.
+- FR/NFR, modelo de dominio y C4 aprobados (`accepted`).
+- Contratos P0 con corpus válido **e** inválido validado en CI (job de corpus activo).
+- CI en verde (documental + meta-validación + corpus).
 - `sha256sum --check reference/v5.1/SHA256SUMS` en verde y sin regresiones de trazabilidad.
+- Aprobación formal de Seguridad (G8).
 
 ## Consecuencia inmediata
 
