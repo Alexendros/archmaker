@@ -1,0 +1,592 @@
+{
+  "corpusVersion": "1",
+  "description": "Corpus ejecutable del vocabulario de operadores de reglas (fase R8, AUD-017). Cada caso declara el operador que ejercita, su clase (positive/negative/edge/adversarial), el resultado esperado ('valid' acepta, 'invalid' rechaza) y una Rule completa 'instance'. El gate .github/workflows/json-schema.yml (job rule-corpus-validate) valida cada instance contra contracts/json-schema/rule.schema.json y exige el resultado. Autoridad semántica: docs/07-validation/operator-spec.md y docs/07-validation/operator-corpus.md.",
+  "operatorField": "operator",
+  "cases": [
+    {
+      "id": "CORPUS-ALL-POS",
+      "operator": "all",
+      "kind": "positive",
+      "expect": "valid",
+      "instance": {
+        "id": "RULE-CORPUS-ALL",
+        "documentVersion": "vNext",
+        "schemaVersion": "1",
+        "severity": "error",
+        "blocking": true,
+        "when": {
+          "all": [
+            { "eq": ["archmaker.environment.gpu", "archmaker.environment.nvidia"] },
+            { "eq": ["archmaker.environment.compositor", "archmaker.environment.sway"] }
+          ]
+        },
+        "action": "block",
+        "diagnosticCode": "AM-RULE-003"
+      }
+    },
+    {
+      "id": "CORPUS-ALL-EDGE",
+      "operator": "all",
+      "kind": "edge",
+      "expect": "valid",
+      "instance": {
+        "id": "RULE-CORPUS-ALL-EDGE",
+        "documentVersion": "vNext",
+        "schemaVersion": "1",
+        "when": { "all": [{ "required": "archmaker.environment.kernel" }] },
+        "action": "block"
+      }
+    },
+    {
+      "id": "CORPUS-ALL-NEG",
+      "operator": "all",
+      "kind": "negative",
+      "expect": "invalid",
+      "instance": {
+        "id": "RULE-CORPUS-ALL-NEG",
+        "documentVersion": "vNext",
+        "schemaVersion": "1",
+        "when": { "all": [] },
+        "action": "block"
+      }
+    },
+    {
+      "id": "CORPUS-ALL-ADV",
+      "operator": "all",
+      "kind": "adversarial",
+      "expect": "invalid",
+      "instance": {
+        "id": "RULE-CORPUS-ALL-ADV",
+        "documentVersion": "vNext",
+        "schemaVersion": "1",
+        "when": { "all": { "required": "archmaker.environment.kernel" } },
+        "action": "block"
+      }
+    },
+    {
+      "id": "CORPUS-ANY-POS",
+      "operator": "any",
+      "kind": "positive",
+      "expect": "valid",
+      "instance": {
+        "id": "RULE-CORPUS-ANY",
+        "documentVersion": "vNext",
+        "schemaVersion": "1",
+        "when": {
+          "any": [
+            { "eq": ["archmaker.environment.gpu", "archmaker.environment.nvidia"] },
+            { "eq": ["archmaker.environment.gpu", "archmaker.environment.amd"] }
+          ]
+        },
+        "action": "suggest"
+      }
+    },
+    {
+      "id": "CORPUS-ANY-EDGE",
+      "operator": "any",
+      "kind": "edge",
+      "expect": "valid",
+      "instance": {
+        "id": "RULE-CORPUS-ANY-EDGE",
+        "documentVersion": "vNext",
+        "schemaVersion": "1",
+        "when": { "any": [{ "selected": "archmaker.environment.pkg.firefox" }] },
+        "action": "suggest"
+      }
+    },
+    {
+      "id": "CORPUS-ANY-NEG",
+      "operator": "any",
+      "kind": "negative",
+      "expect": "invalid",
+      "instance": {
+        "id": "RULE-CORPUS-ANY-NEG",
+        "documentVersion": "vNext",
+        "schemaVersion": "1",
+        "when": { "any": [] },
+        "action": "suggest"
+      }
+    },
+    {
+      "id": "CORPUS-NOT-POS",
+      "operator": "not",
+      "kind": "positive",
+      "expect": "valid",
+      "instance": {
+        "id": "RULE-CORPUS-NOT",
+        "documentVersion": "vNext",
+        "schemaVersion": "1",
+        "when": { "not": { "required": "archmaker.environment.kernel" } },
+        "action": "block",
+        "diagnosticCode": "AM-RULE-004"
+      }
+    },
+    {
+      "id": "CORPUS-NOT-NEG",
+      "operator": "not",
+      "kind": "negative",
+      "expect": "invalid",
+      "instance": {
+        "id": "RULE-CORPUS-NOT-NEG",
+        "documentVersion": "vNext",
+        "schemaVersion": "1",
+        "when": { "not": [{ "required": "archmaker.environment.kernel" }] },
+        "action": "block"
+      }
+    },
+    {
+      "id": "CORPUS-NOT-ADV",
+      "operator": "not",
+      "kind": "adversarial",
+      "expect": "invalid",
+      "instance": {
+        "id": "RULE-CORPUS-NOT-ADV",
+        "documentVersion": "vNext",
+        "schemaVersion": "1",
+        "when": { "not": { "unknown_op": "archmaker.environment.kernel" } },
+        "action": "block"
+      }
+    },
+    {
+      "id": "CORPUS-EQ-POS",
+      "operator": "eq",
+      "kind": "positive",
+      "expect": "valid",
+      "instance": {
+        "id": "RULE-CORPUS-EQ",
+        "documentVersion": "vNext",
+        "schemaVersion": "1",
+        "when": { "eq": ["archmaker.environment.compositor", "archmaker.environment.gnome"] },
+        "action": "change",
+        "target": "archmaker.environment.dm",
+        "allowed": ["archmaker.environment.gdm"],
+        "diagnosticCode": "AM-RULE-002"
+      }
+    },
+    {
+      "id": "CORPUS-EQ-EDGE",
+      "operator": "eq",
+      "kind": "edge",
+      "expect": "valid",
+      "instance": {
+        "id": "RULE-CORPUS-EQ-EDGE",
+        "documentVersion": "vNext",
+        "schemaVersion": "1",
+        "when": { "eq": [true, false] },
+        "action": "suggest"
+      }
+    },
+    {
+      "id": "CORPUS-EQ-NEG",
+      "operator": "eq",
+      "kind": "negative",
+      "expect": "invalid",
+      "instance": {
+        "id": "RULE-CORPUS-EQ-NEG",
+        "documentVersion": "vNext",
+        "schemaVersion": "1",
+        "when": { "eq": ["archmaker.environment.compositor"] },
+        "action": "suggest"
+      }
+    },
+    {
+      "id": "CORPUS-EQ-ADV",
+      "operator": "eq",
+      "kind": "adversarial",
+      "expect": "invalid",
+      "instance": {
+        "id": "RULE-CORPUS-EQ-ADV",
+        "documentVersion": "vNext",
+        "schemaVersion": "1",
+        "when": { "eq": ["archmaker.environment.compositor", "gnome"] },
+        "action": "suggest"
+      }
+    },
+    {
+      "id": "CORPUS-NE-POS",
+      "operator": "ne",
+      "kind": "positive",
+      "expect": "valid",
+      "instance": {
+        "id": "RULE-CORPUS-NE",
+        "documentVersion": "vNext",
+        "schemaVersion": "1",
+        "when": { "ne": ["archmaker.environment.compositor", "archmaker.environment.gnome"] },
+        "action": "suggest"
+      }
+    },
+    {
+      "id": "CORPUS-NE-NEG",
+      "operator": "ne",
+      "kind": "negative",
+      "expect": "invalid",
+      "instance": {
+        "id": "RULE-CORPUS-NE-NEG",
+        "documentVersion": "vNext",
+        "schemaVersion": "1",
+        "when": { "ne": [1] },
+        "action": "suggest"
+      }
+    },
+    {
+      "id": "CORPUS-NE-ADV",
+      "operator": "ne",
+      "kind": "adversarial",
+      "expect": "invalid",
+      "instance": {
+        "id": "RULE-CORPUS-NE-ADV",
+        "documentVersion": "vNext",
+        "schemaVersion": "1",
+        "when": { "ne": { "archmaker.environment.compositor": "archmaker.environment.gnome" } },
+        "action": "suggest"
+      }
+    },
+    {
+      "id": "CORPUS-IN-POS",
+      "operator": "in",
+      "kind": "positive",
+      "expect": "valid",
+      "instance": {
+        "id": "RULE-CORPUS-IN",
+        "documentVersion": "vNext",
+        "schemaVersion": "1",
+        "when": {
+          "in": [
+            "archmaker.environment.compositor",
+            ["archmaker.environment.gnome", "archmaker.environment.cosmic"]
+          ]
+        },
+        "action": "suggest"
+      }
+    },
+    {
+      "id": "CORPUS-IN-EDGE",
+      "operator": "in",
+      "kind": "edge",
+      "expect": "valid",
+      "instance": {
+        "id": "RULE-CORPUS-IN-EDGE",
+        "documentVersion": "vNext",
+        "schemaVersion": "1",
+        "when": { "in": ["archmaker.environment.compositor", ["archmaker.environment.gnome"]] },
+        "action": "suggest"
+      }
+    },
+    {
+      "id": "CORPUS-IN-NEG",
+      "operator": "in",
+      "kind": "negative",
+      "expect": "invalid",
+      "instance": {
+        "id": "RULE-CORPUS-IN-NEG",
+        "documentVersion": "vNext",
+        "schemaVersion": "1",
+        "when": { "in": ["archmaker.environment.compositor", []] },
+        "action": "suggest"
+      }
+    },
+    {
+      "id": "CORPUS-IN-ADV",
+      "operator": "in",
+      "kind": "adversarial",
+      "expect": "invalid",
+      "instance": {
+        "id": "RULE-CORPUS-IN-ADV",
+        "documentVersion": "vNext",
+        "schemaVersion": "1",
+        "when": { "in": ["archmaker.environment.compositor", "archmaker.environment.gnome"] },
+        "action": "suggest"
+      }
+    },
+    {
+      "id": "CORPUS-REQUIRED-POS",
+      "operator": "required",
+      "kind": "positive",
+      "expect": "valid",
+      "instance": {
+        "id": "RULE-CORPUS-REQUIRED",
+        "documentVersion": "vNext",
+        "schemaVersion": "1",
+        "when": { "required": "archmaker.environment.kernel" },
+        "action": "block",
+        "diagnosticCode": "AM-RULE-004"
+      }
+    },
+    {
+      "id": "CORPUS-REQUIRED-NEG",
+      "operator": "required",
+      "kind": "negative",
+      "expect": "invalid",
+      "instance": {
+        "id": "RULE-CORPUS-REQUIRED-NEG",
+        "documentVersion": "vNext",
+        "schemaVersion": "1",
+        "when": { "required": "kernel" },
+        "action": "block"
+      }
+    },
+    {
+      "id": "CORPUS-REQUIRED-ADV",
+      "operator": "required",
+      "kind": "adversarial",
+      "expect": "invalid",
+      "instance": {
+        "id": "RULE-CORPUS-REQUIRED-ADV",
+        "documentVersion": "vNext",
+        "schemaVersion": "1",
+        "when": { "required": ["archmaker.environment.kernel"] },
+        "action": "block"
+      }
+    },
+    {
+      "id": "CORPUS-SELECTED-POS",
+      "operator": "selected",
+      "kind": "positive",
+      "expect": "valid",
+      "instance": {
+        "id": "RULE-CORPUS-SELECTED",
+        "documentVersion": "vNext",
+        "schemaVersion": "1",
+        "when": { "selected": "archmaker.environment.pkg.firefox" },
+        "action": "suggest",
+        "diagnosticCode": "AM-RULE-006"
+      }
+    },
+    {
+      "id": "CORPUS-SELECTED-NEG",
+      "operator": "selected",
+      "kind": "negative",
+      "expect": "invalid",
+      "instance": {
+        "id": "RULE-CORPUS-SELECTED-NEG",
+        "documentVersion": "vNext",
+        "schemaVersion": "1",
+        "when": { "selected": "" },
+        "action": "suggest"
+      }
+    },
+    {
+      "id": "CORPUS-COUNT-POS",
+      "operator": "count",
+      "kind": "positive",
+      "expect": "valid",
+      "instance": {
+        "id": "RULE-CORPUS-COUNT",
+        "documentVersion": "vNext",
+        "schemaVersion": "1",
+        "when": { "eq": [{ "count": "archmaker.environment.compositor" }, 0] },
+        "action": "suggest"
+      }
+    },
+    {
+      "id": "CORPUS-COUNT-NEG",
+      "operator": "count",
+      "kind": "negative",
+      "expect": "invalid",
+      "instance": {
+        "id": "RULE-CORPUS-COUNT-NEG",
+        "documentVersion": "vNext",
+        "schemaVersion": "1",
+        "when": { "eq": [{ "count": "compositor" }, 0] },
+        "action": "suggest"
+      }
+    },
+    {
+      "id": "CORPUS-COUNT-ADV",
+      "operator": "count",
+      "kind": "adversarial",
+      "expect": "invalid",
+      "instance": {
+        "id": "RULE-CORPUS-COUNT-ADV",
+        "documentVersion": "vNext",
+        "schemaVersion": "1",
+        "when": { "eq": [{ "count": ["archmaker.environment.compositor"] }, 0] },
+        "action": "suggest"
+      }
+    },
+    {
+      "id": "CORPUS-PROVIDES-POS",
+      "operator": "provides",
+      "kind": "positive",
+      "expect": "valid",
+      "instance": {
+        "id": "RULE-CORPUS-PROVIDES",
+        "documentVersion": "vNext",
+        "schemaVersion": "1",
+        "when": { "provides": "fs.btrfs" },
+        "action": "block",
+        "diagnosticCode": "AM-RULE-007"
+      }
+    },
+    {
+      "id": "CORPUS-PROVIDES-NEG",
+      "operator": "provides",
+      "kind": "negative",
+      "expect": "invalid",
+      "instance": {
+        "id": "RULE-CORPUS-PROVIDES-NEG",
+        "documentVersion": "vNext",
+        "schemaVersion": "1",
+        "when": { "provides": "fs" },
+        "action": "block"
+      }
+    },
+    {
+      "id": "CORPUS-PROVIDES-ADV",
+      "operator": "provides",
+      "kind": "adversarial",
+      "expect": "invalid",
+      "instance": {
+        "id": "RULE-CORPUS-PROVIDES-ADV",
+        "documentVersion": "vNext",
+        "schemaVersion": "1",
+        "when": { "provides": 123 },
+        "action": "block"
+      }
+    },
+    {
+      "id": "CORPUS-COUNTGT-POS",
+      "operator": "count_gt",
+      "kind": "positive",
+      "expect": "valid",
+      "instance": {
+        "id": "RULE-CORPUS-COUNTGT",
+        "documentVersion": "vNext",
+        "schemaVersion": "1",
+        "when": { "count_gt": ["archmaker.environment.compositor", 1] },
+        "action": "block",
+        "diagnosticCode": "AM-RULE-001"
+      }
+    },
+    {
+      "id": "CORPUS-COUNTGT-EDGE",
+      "operator": "count_gt",
+      "kind": "edge",
+      "expect": "valid",
+      "instance": {
+        "id": "RULE-CORPUS-COUNTGT-EDGE",
+        "documentVersion": "vNext",
+        "schemaVersion": "1",
+        "when": { "count_gt": ["archmaker.environment.kernel", 0] },
+        "action": "block"
+      }
+    },
+    {
+      "id": "CORPUS-COUNTGT-NEG",
+      "operator": "count_gt",
+      "kind": "negative",
+      "expect": "invalid",
+      "instance": {
+        "id": "RULE-CORPUS-COUNTGT-NEG",
+        "documentVersion": "vNext",
+        "schemaVersion": "1",
+        "when": { "count_gt": ["archmaker.environment.compositor", -1] },
+        "action": "block"
+      }
+    },
+    {
+      "id": "CORPUS-TARGETIS-POS",
+      "operator": "target_is",
+      "kind": "positive",
+      "expect": "valid",
+      "instance": {
+        "id": "RULE-CORPUS-TARGETIS",
+        "documentVersion": "vNext",
+        "schemaVersion": "1",
+        "when": { "target_is": "archinstall" },
+        "action": "suggest"
+      }
+    },
+    {
+      "id": "CORPUS-TARGETIS-NEG",
+      "operator": "target_is",
+      "kind": "negative",
+      "expect": "invalid",
+      "instance": {
+        "id": "RULE-CORPUS-TARGETIS-NEG",
+        "documentVersion": "vNext",
+        "schemaVersion": "1",
+        "when": { "target_is": "" },
+        "action": "suggest"
+      }
+    },
+    {
+      "id": "CORPUS-TARGETIS-ADV",
+      "operator": "target_is",
+      "kind": "adversarial",
+      "expect": "invalid",
+      "instance": {
+        "id": "RULE-CORPUS-TARGETIS-ADV",
+        "documentVersion": "vNext",
+        "schemaVersion": "1",
+        "when": { "target_is": "ArchInstall" },
+        "action": "suggest"
+      }
+    },
+    {
+      "id": "CORPUS-UNKNOWN-ADV-1",
+      "operator": "<unsupported>",
+      "kind": "adversarial",
+      "expect": "invalid",
+      "instance": {
+        "id": "RULE-CORPUS-UNKNOWN",
+        "documentVersion": "vNext",
+        "schemaVersion": "1",
+        "when": { "count_gte": ["archmaker.environment.compositor", 1] },
+        "action": "block"
+      }
+    },
+    {
+      "id": "CORPUS-UNKNOWN-ADV-2",
+      "operator": "<unsupported>",
+      "kind": "adversarial",
+      "expect": "invalid",
+      "instance": {
+        "id": "RULE-CORPUS-UNKNOWN-2",
+        "documentVersion": "vNext",
+        "schemaVersion": "1",
+        "when": { "foo": "bar" },
+        "action": "block"
+      }
+    },
+    {
+      "id": "CORPUS-ROOT-ADV-1",
+      "operator": "<root>",
+      "kind": "adversarial",
+      "expect": "invalid",
+      "instance": {
+        "id": "RULE-CORPUS-ROOT",
+        "documentVersion": "vNext",
+        "schemaVersion": "1",
+        "when": { "required": "archmaker.environment.kernel" },
+        "action": "execute"
+      }
+    },
+    {
+      "id": "CORPUS-ROOT-ADV-2",
+      "operator": "<root>",
+      "kind": "adversarial",
+      "expect": "invalid",
+      "instance": {
+        "id": "RULE-CORPUS-ROOT-2",
+        "documentVersion": "vNext",
+        "schemaVersion": "1",
+        "when": { "required": "archmaker.environment.kernel" },
+        "action": "block",
+        "operators": ["all"]
+      }
+    },
+    {
+      "id": "CORPUS-ROOT-NEG",
+      "operator": "<root>",
+      "kind": "negative",
+      "expect": "invalid",
+      "instance": {
+        "id": "RULE-CORPUS-ROOT-3",
+        "documentVersion": "vNext",
+        "schemaVersion": "1",
+        "action": "block"
+      }
+    }
+  ]
+}

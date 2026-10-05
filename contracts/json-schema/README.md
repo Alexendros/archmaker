@@ -31,7 +31,7 @@ compartidos viven una sola vez en `common.schema.json`.
 | `common.schema.json` | `$defs` compartidos | — | v0 |
 | `draft.schema.json` | DM-DRAFT | `documentVersion`, `schemaVersion`, `revision`, `catalogRef.version`, `targetRef.version` | v0 |
 | `catalog.schema.json` | DM-CATALOG | `documentVersion`, `schemaVersion`, `catalogRef.version` | v0 |
-| `rule.schema.json` | RULE-* | `documentVersion`, `schemaVersion` | draft (AUD-017) |
+| `rule.schema.json` | RULE-* | `documentVersion`, `schemaVersion` | v0 (AUD-017) |
 | `diagnostic.schema.json` | Diagnostic (AM-*) | `schemaVersion` | v0 |
 | `core-error.schema.json` | CoreError (AM-*) | `schemaVersion` | v0 |
 | `changeset.schema.json` | ChangeSet | `schemaVersion`, `baseRevision` | v0 |
@@ -128,15 +128,25 @@ y `vnext-draft.expected.json` (destino esperado). El gate valida que el destino 
 `examples/non-normative/` agrupa ejemplos ilustrativos **excluidos** del corpus y del chequeo de
 límites (p. ej. el anti-patrón de almacenar `derivedSelections`).
 
+### Corpus de operadores de reglas
+
+`rule-corpus/operators.corpus.json` es el corpus **ejecutable** del vocabulario de operadores de
+`rule.schema.json` (fase R8, AUD-017). Cada caso declara `operator`, `kind`
+(`positive`/`negative`/`edge`/`adversarial`), `expect` (`valid`/`invalid`) y una `Rule` completa.
+Cubre los 12 tokens de `$defs.operator`. La especificación y la tabla de casos viven en
+`docs/07-validation/operator-spec.md` y `docs/07-validation/operator-corpus.md`.
+
 ## Validación en CI
 
-El gate `json-schema` (`.github/workflows/json-schema.yml`, G4/G5) tiene tres jobs:
+El gate `json-schema` (`.github/workflows/json-schema.yml`, G4/G5/G7) tiene cuatro jobs:
 
 1. **meta-validate**: `Draft202012Validator.check_schema` sobre cada `contracts/json-schema/**/*.schema.json`.
 2. **corpus-validate**: construye un registro `$id → schema` (resolución de `$ref` externos),
    valida cada `*.valid.json`/`*.invalid.json`, resuelve tokens con prefijo (`common-*`, `draft-savedraft`)
    y comprueba las fixtures de migración.
-3. **limits-validate**: comprueba bytes, profundidad, tamaño de array y longitud de string de cada
+3. **rule-corpus-validate**: valida cada caso de `rule-corpus/operators.corpus.json` contra
+   `rule.schema.json` (positivo **y** negativo) y exige cobertura de todo operador de `$defs.operator`.
+4. **limits-validate**: comprueba bytes, profundidad, tamaño de array y longitud de string de cada
    fixture normativo contra los límites declarados.
 
 El gate `docs-validate` (G5) escanea los contratos no-Markdown y rechaza cualquier construcción de

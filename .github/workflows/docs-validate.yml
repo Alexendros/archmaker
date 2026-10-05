@@ -343,5 +343,6 @@ jobs:
           # Dependencias fijadas (supply-chain). Autoridad de gates: contracts/governance/gates/.
           python3 -m pip install --no-input --disable-pip-version-check pyyaml==6.0.2 "jsonschema==4.23.0"
           python3 tools/validate_front_matter.py
+          python3 tools/validate_schema_refs.py
           python3 tools/gates.py
           python3 tools/validate_traceability.py

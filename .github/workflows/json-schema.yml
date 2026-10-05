@@ -5,9 +5,10 @@
 #   G5  Interfaces -> base de contratos CorePort/protocol (cuando existan)
 #
 # Fuente: contracts/json-schema/README.md, ADR-0005, ADR-0007, docs/09-quality/ci-cd.md
-# Estado: v0 (fase R6). Los contratos v0 añaden common/core-error/changeset y extraen
-# los $defs compartidos a common.schema.json, referenciado por $id. Tres jobs:
-# meta-validación de schemas, validación del corpus (con registro de $ref) y límites.
+# Estado: v0 (fase R8). Los contratos v0 añaden common/core-error/changeset y extraen
+# los $defs compartidos a common.schema.json, referenciado por $id. Cuatro jobs:
+# meta-validación de schemas, validación del corpus (con registro de $ref), corpus de
+# operadores de reglas (AUD-017, positivo y negativo) y límites.
 
 name: json-schema
 
@@ -218,6 +219,88 @@ jobs:
               print(f"{errors} discrepancias en el corpus")
               sys.exit(1)
           print(f"Corpus OK: {len(valid_files)} válidos + {len(invalid_files)} inválidos + fixtures de migración")
+          PY
+
+  rule-corpus-validate:
+    name: Corpus de operadores de reglas (G7)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Setup Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: "3.x"
+      - name: Validar corpus de operadores contra rule.schema.json
+        run: |
+          # jsonschema fijado (supply-chain).
+          python3 -m pip install --no-input --disable-pip-version-check "jsonschema==4.23.0"
+          python3 - <<'PY'
+          import glob
+          import json
+          import os
+          import sys
+
+          from jsonschema import Draft202012Validator
+          from referencing import Registry, Resource
+          from referencing.jsonschema import DRAFT202012
+
+          base = "contracts/json-schema"
+          corpus_path = os.path.join(base, "rule-corpus", "operators.corpus.json")
+
+          if not os.path.exists(corpus_path):
+              print(f"PENDIENTE: no hay corpus de operadores en {corpus_path} (guard).")
+              sys.exit(0)
+
+          schemas_by_id = {}
+          for f in sorted(glob.glob(os.path.join(base, "**", "*.schema.json"), recursive=True)):
+              schema = json.load(open(f, encoding="utf-8"))
+              schemas_by_id[schema["$id"]] = schema
+
+          registry = Registry().with_resources(
+              (sid, Resource.from_contents(s, default_specification=DRAFT202012))
+              for sid, s in schemas_by_id.items()
+          )
+
+          rule = json.load(open(os.path.join(base, "rule.schema.json"), encoding="utf-8"))
+          validator = Draft202012Validator(rule, registry=registry)
+          corpus = json.load(open(corpus_path, encoding="utf-8"))
+
+          errors = 0
+          seen = set()
+          for case in corpus.get("cases", []):
+              op = case.get("operator", "?")
+              expect = case.get("expect")
+              if expect not in ("valid", "invalid"):
+                  errors += 1
+                  print(f"FAIL {case.get('id')}: expect inválido {expect!r}")
+                  continue
+              errs = list(validator.iter_errors(case.get("instance")))
+              if op not in ("<unsupported>", "<root>"):
+                  seen.add(op)
+              if expect == "valid" and errs:
+                  errors += 1
+                  print(f"FAIL {case['id']} ({op}): debería ser válido")
+                  for e in errs[:3]:
+                      print(f"    - {list(e.path)}: {e.message}")
+              elif expect == "invalid" and not errs:
+                  errors += 1
+                  print(f"FAIL {case['id']} ({op}): debería ser inválido y fue aceptado")
+
+          vocab = set(rule.get("$defs", {}).get("operator", {}).get("enum", []))
+          missing = vocab - seen
+          if missing:
+              errors += 1
+              print(f"FAIL cobertura: operadores sin caso de corpus = {sorted(missing)}")
+
+          if errors:
+              print(f"{errors} discrepancias en el corpus de operadores")
+              sys.exit(1)
+          print(
+              f"Corpus de operadores OK: {len(corpus.get('cases', []))} casos, "
+              f"{len(vocab)} operadores cubiertos"
+          )
           PY
 
   limits-validate:

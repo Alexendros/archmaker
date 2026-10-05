@@ -59,6 +59,11 @@ declaran `schemaVersion: "1"`; la etiqueta `v0` es la revisión del contrato, no
   `manifestRef.digest` → `manifestRef.contentDigest` (semántico).
 - `installation-plan.schema.json`: `$defs` a `common`; `planHash`/`manifestHash` tipados como
   `contentDigest`; `parameters.checksum` como `binaryDigest`.
+- `rule.schema.json` (fase R8, AUD-017): vocabulario **cerrado** de operadores (`$defs.operator`,
+  enum normativo) y `propertyNames` sobre cada expresión; `$defs.entityId` y `$defs.capabilityId`
+  **extraídos** a `common` y referenciados por `$id`; `severity` referenciado a `common`; `$defs`
+  locales de identificadores eliminados. `count_gt` queda marcado **legacy** (solo migración) y
+  `target_is` **diferido a v1**; el resto son canónicos.
 - `README.md`: tabla de schemas (11), política de cierre, corpus y CI.
 - `docs/04-interfaces/dto.md`: DTO verificados contra los contratos v0.
 
@@ -70,6 +75,10 @@ declaran `schemaVersion: "1"`; la etiqueta `v0` es la revisión del contrato, no
 - Fixtures de migración v5.1 en `examples/migration/` (el destino esperado valida; el sample
   heredado no).
 - Ejemplos no normativos separados en `examples/non-normative/`.
+- `rule-corpus/operators.corpus.json` (fase R8, AUD-017): corpus **ejecutable** por operador
+  (positivo/negativo/borde/adversarial) que cubre los 12 tokens del vocabulario; validado por el job
+  `rule-corpus-validate` de `.github/workflows/json-schema.yml` (positivo y negativo + cobertura del
+  enum). Ver `docs/07-validation/operator-corpus.md`.
 
 ### Compatibilidad y política de campos
 

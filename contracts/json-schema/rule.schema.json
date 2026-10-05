@@ -2,8 +2,10 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://archmaker.dev/schemas/rule.schema.json",
   "title": "ArchMaker Rule (RULE-*)",
-  "description": "Typed declarative AST evaluating condition to effect (block / suggest / derive / change / lock). Operators follow docs/07-validation/operator-spec.md. Unknown operators must produce a blocking diagnostic and are rejected by this closed union. Contract state: draft.",
+  "description": "Typed declarative AST evaluating a condition to an effect (block / suggest / derive / change / lock). Operators follow docs/07-validation/operator-spec.md. The condition is a CLOSED union: every operator token belongs to the normative vocabulary in $defs.operator. An unknown operator matches no variant and is rejected here; the runtime must still emit the blocking diagnostic AM-RULE-009 (never evaluate it as false). Shared identifiers ($defs.entityId, $defs.capabilityId) and the severity vocabulary live in common.schema.json and are referenced by $id. Contract state: v0 (draft).",
+  "$comment": "Contract v0 (phase R8, AUD-017). Duplicated $defs.entityId/$defs.capabilityId extracted to common.schema.json and referenced by $id; local rule-only $defs kept here. $defs.operator is the closed normative vocabulary (canonical, legacy-migration-only and v1-deferred tokens are annotated per operator). count_gt is legacy (migration-only, rewritten to count with a threshold, never executed by the new runtime); target_is is deferred to v1. additionalProperties:false at every object edge; unknown fields rejected.",
   "type": "object",
+  "additionalProperties": false,
   "required": [
     "id",
     "documentVersion",
@@ -11,41 +13,68 @@
     "when",
     "action"
   ],
-  "additionalProperties": false,
   "properties": {
     "id": {
-      "description": "Rule identifier.",
-      "type": "string",
-      "pattern": "^RULE-[A-Z0-9]+(-[A-Z0-9]+)+$"
+      "description": "Rule identifier, RULE-<SEGMENT>(-<SEGMENT>)+.",
+      "$ref": "#/$defs/ruleId"
     },
     "documentVersion": {
       "description": "Domain document contract version (axis documentVersion).",
-      "type": "string",
-      "minLength": 1
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/documentVersion"
     },
     "schemaVersion": {
       "description": "JSON Schema contract version (axis schemaVersion).",
-      "type": "string",
-      "minLength": 1
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/schemaVersion"
     },
     "severity": {
-      "description": "Diagnostic severity emitted by the rule.",
-      "enum": [
-        "error",
-        "warning",
-        "info"
-      ]
+      "description": "Diagnostic severity emitted by the rule. Canonical vocabulary from common.schema.json (errors-events.md is the single source of truth).",
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/severity"
     },
     "blocking": {
-      "description": "Whether the emitted diagnostic blocks manifest construction.",
+      "description": "Whether the emitted diagnostic blocks manifest construction. Must be consistent with severity (error => blocking:true; warning/info => blocking:false).",
       "type": "boolean"
     },
     "when": {
-      "description": "Boolean condition evaluated over the domain.",
+      "description": "Boolean condition evaluated over the domain (pipeline stage 8).",
       "$ref": "#/$defs/condition"
     },
     "action": {
       "description": "Effect applied when the condition holds.",
+      "$ref": "#/$defs/action"
+    },
+    "target": {
+      "description": "Target step affected by change or derive effects (resolution/objective).",
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/entityId"
+    },
+    "allowed": {
+      "description": "Options the effect may select on the target.",
+      "type": "array",
+      "items": {
+        "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/entityId"
+      }
+    },
+    "diagnosticCode": {
+      "description": "AM-* code emitted by the rule; the canonical numeric assignment lives in docs/04-interfaces/errors-events.md (single source).",
+      "$ref": "#/$defs/diagnosticCode"
+    },
+    "note": {
+      "description": "Free-form human note. Not part of the canonical hashed payload semantics beyond the document field rules.",
+      "type": "string"
+    }
+  },
+  "$defs": {
+    "ruleId": {
+      "description": "Rule identifier: RULE- prefix plus at least two upper-case alphanumeric segments.",
+      "type": "string",
+      "pattern": "^RULE-[A-Z0-9]+(-[A-Z0-9]+)+$"
+    },
+    "diagnosticCode": {
+      "description": "Diagnostic code AM-<FAMILY>-<NNN>; catalogued in docs/04-interfaces/errors-events.md.",
+      "type": "string",
+      "pattern": "^AM-[A-Z]+-[0-9]{3}$"
+    },
+    "action": {
+      "description": "Closed effect vocabulary. block stops construction; suggest informs; derive computes a value; change may reassign the target within allowed; lock freezes the target.",
       "enum": [
         "block",
         "suggest",
@@ -54,60 +83,49 @@
         "lock"
       ]
     },
-    "target": {
-      "description": "Target step affected by change or derive effects.",
-      "$ref": "#/$defs/entityId"
-    },
-    "allowed": {
-      "description": "Options the effect may select on the target.",
-      "type": "array",
-      "items": {
-        "$ref": "#/$defs/entityId"
-      }
-    },
-    "diagnosticCode": {
-      "description": "AM-* code emitted by the rule.",
-      "type": "string",
-      "pattern": "^AM-[A-Z]+-[0-9]{3}$"
-    },
-    "note": {
-      "type": "string"
-    }
-  },
-  "$defs": {
-    "entityId": {
-      "description": "Global entity identifier with the DEC-002 vendor.kind.id shape.",
-      "type": "string",
-      "pattern": "^[a-z0-9][a-z0-9._-]*\\.[a-z0-9][a-z0-9._-]*\\.[a-z0-9][a-z0-9._-]*$"
-    },
-    "capabilityId": {
-      "description": "Capability identifier such as fs.btrfs, gpu.nvidia or boot.uefi.",
-      "type": "string",
-      "pattern": "^[a-z0-9][a-z0-9._-]*\\.[a-z0-9][a-z0-9._-]*$"
+    "operator": {
+      "description": "Closed normative vocabulary of rule operators (names). Canonical/executable: all, any, not, eq, ne, in, required, selected, count, provides. Legacy (migration-only, never executed by the new runtime): count_gt. v1-deferred (not used by the MVP): target_is. Every condition variant constrains its property names to this enum, so an operator token outside it can never validate.",
+      "enum": [
+        "all",
+        "any",
+        "not",
+        "eq",
+        "ne",
+        "in",
+        "required",
+        "selected",
+        "count",
+        "provides",
+        "count_gt",
+        "target_is"
+      ]
     },
     "targetId": {
-      "description": "Export or execution target identifier.",
+      "description": "Export or execution target identifier (DEC-001), e.g. archinstall. Single segment.",
       "type": "string",
       "pattern": "^[a-z0-9][a-z0-9._-]*$"
     },
     "countExpr": {
-      "description": "Integer expression returning the number of effective selections of a reference.",
+      "description": "Term operator count: integer expression returning the number of effective selections of a reference. A term, not a boolean; usable as an operand of eq/ne/in.",
       "type": "object",
       "additionalProperties": false,
+      "propertyNames": {
+        "$ref": "#/$defs/operator"
+      },
       "required": [
         "count"
       ],
       "properties": {
         "count": {
-          "$ref": "#/$defs/entityId"
+          "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/entityId"
         }
       }
     },
     "operand": {
-      "description": "A comparison operand: an entity reference, a boolean, an integer or a count expression.",
+      "description": "A comparison operand: an entity reference (DEC-002 vendor.kind.id), a boolean, an integer or a count expression. Literals are typed; there is no untyped string literal.",
       "oneOf": [
         {
-          "$ref": "#/$defs/entityId"
+          "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/entityId"
         },
         {
           "type": "boolean"
@@ -121,7 +139,7 @@
       ]
     },
     "condition": {
-      "description": "Closed boolean expression union over the supported operators.",
+      "description": "Closed boolean-expression union over the supported operators. Exactly one variant matches; any other operator key is rejected.",
       "oneOf": [
         {
           "$ref": "#/$defs/allExpr"
@@ -159,9 +177,12 @@
       ]
     },
     "allExpr": {
-      "description": "True when all listed expressions are true.",
+      "description": "all(List<Expr>) -> bool: true iff every listed expression is true. minItems 1 (empty conjunction is not representable).",
       "type": "object",
       "additionalProperties": false,
+      "propertyNames": {
+        "$ref": "#/$defs/operator"
+      },
       "required": [
         "all"
       ],
@@ -176,9 +197,12 @@
       }
     },
     "anyExpr": {
-      "description": "True when at least one listed expression is true.",
+      "description": "any(List<Expr>) -> bool: true iff at least one listed expression is true. minItems 1 (empty disjunction is not representable).",
       "type": "object",
       "additionalProperties": false,
+      "propertyNames": {
+        "$ref": "#/$defs/operator"
+      },
       "required": [
         "any"
       ],
@@ -193,9 +217,12 @@
       }
     },
     "notExpr": {
-      "description": "Logical negation of an expression.",
+      "description": "not(Expr) -> bool: logical negation of a sub-expression.",
       "type": "object",
       "additionalProperties": false,
+      "propertyNames": {
+        "$ref": "#/$defs/operator"
+      },
       "required": [
         "not"
       ],
@@ -206,9 +233,12 @@
       }
     },
     "eqExpr": {
-      "description": "Equality of two operands of the same type: eq(T, T).",
+      "description": "eq(T,T) -> bool: equality of two operands. Exactly two operands.",
       "type": "object",
       "additionalProperties": false,
+      "propertyNames": {
+        "$ref": "#/$defs/operator"
+      },
       "required": [
         "eq"
       ],
@@ -229,9 +259,12 @@
       }
     },
     "neExpr": {
-      "description": "Inequality of two operands of the same type: ne(T, T).",
+      "description": "ne(T,T) -> bool: inequality of two operands. Exactly two operands.",
       "type": "object",
       "additionalProperties": false,
+      "propertyNames": {
+        "$ref": "#/$defs/operator"
+      },
       "required": [
         "ne"
       ],
@@ -252,9 +285,12 @@
       }
     },
     "inExpr": {
-      "description": "Membership test: in(T, List<T>).",
+      "description": "in(T,List<T>) -> bool: membership of a value in a non-empty list.",
       "type": "object",
       "additionalProperties": false,
+      "propertyNames": {
+        "$ref": "#/$defs/operator"
+      },
       "required": [
         "in"
       ],
@@ -279,35 +315,44 @@
       }
     },
     "requiredExpr": {
-      "description": "Stable operator (ratified 2026-10-05): true when the reference has cardinality at least one.",
+      "description": "required(ValueRef) -> bool (canonical, ratified 2026-10-05): true when the referenced entity has cardinality >= 1.",
       "type": "object",
       "additionalProperties": false,
+      "propertyNames": {
+        "$ref": "#/$defs/operator"
+      },
       "required": [
         "required"
       ],
       "properties": {
         "required": {
-          "$ref": "#/$defs/entityId"
+          "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/entityId"
         }
       }
     },
     "selectedExpr": {
-      "description": "True when the option is selected in the draft.",
+      "description": "selected(Id) -> bool (canonical): true when the option Id is selected in the draft.",
       "type": "object",
       "additionalProperties": false,
+      "propertyNames": {
+        "$ref": "#/$defs/operator"
+      },
       "required": [
         "selected"
       ],
       "properties": {
         "selected": {
-          "$ref": "#/$defs/entityId"
+          "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/entityId"
         }
       }
     },
     "countGtExpr": {
-      "description": "Legacy operator, retained only to migrate v5.1 documents: the v5.1 migration rewrites count_gt(ValueRef, integer) to count with a threshold. It is NOT executed by the new runtime.",
+      "description": "count_gt(ValueRef,integer) -> bool. LEGACY, migration-only: the v5.1 migration rewrites count_gt(Ref,n) to the normalized count term with a threshold (gt(count(Ref), n)); the new runtime never executes count_gt. Retained so inherited documents can be parsed and migrated.",
       "type": "object",
       "additionalProperties": false,
+      "propertyNames": {
+        "$ref": "#/$defs/operator"
+      },
       "required": [
         "count_gt"
       ],
@@ -316,7 +361,7 @@
           "type": "array",
           "prefixItems": [
             {
-              "$ref": "#/$defs/entityId"
+              "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/entityId"
             },
             {
               "type": "integer",
@@ -329,22 +374,28 @@
       }
     },
     "providesExpr": {
-      "description": "True when resolution provides the capability.",
+      "description": "provides(Capability) -> bool (canonical): true when the resolution provides the capability (evaluated in pipeline stage 9).",
       "type": "object",
       "additionalProperties": false,
+      "propertyNames": {
+        "$ref": "#/$defs/operator"
+      },
       "required": [
         "provides"
       ],
       "properties": {
         "provides": {
-          "$ref": "#/$defs/capabilityId"
+          "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/capabilityId"
         }
       }
     },
     "targetIsExpr": {
-      "description": "Proposed operator, deferred to v1: true when the active target matches the identifier. Not used in the MVP.",
+      "description": "target_is(TargetId) -> bool. DEFERRED to v1 (VAL-TARGET): not used by any MVP rule; the schema keeps it representable so v1 documents can be typed without a breaking change. Evaluates the active export/execution target (DEC-001).",
       "type": "object",
       "additionalProperties": false,
+      "propertyNames": {
+        "$ref": "#/$defs/operator"
+      },
       "required": [
         "target_is"
       ],

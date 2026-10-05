@@ -67,11 +67,11 @@ reviewers:
 
 | Documento | ID | Estado |
 |---|---|---|
-| `core-port.md` (CorePort, 15 métodos) | DOC-IF-CORE-001 | draft |
-| `dto.md` | DOC-IF-DTO-001 | draft |
-| `errors-events.md` (CoreError, Diagnostic, AM-*) | DOC-IF-ERR-001 | draft |
-| `tauri-commands.md` (8 comandos + capabilities) | DOC-IF-TAURI-001 | draft |
-| `tauri-wasm.md` | DOC-IF-WASM-001 | draft |
+| `core-port.md` (CorePort v0, 7 operaciones) | DOC-IF-CORE-001 | accepted |
+| `dto.md` | DOC-IF-DTO-001 | accepted |
+| `errors-events.md` (CoreError, Diagnostic, AM-*) | DOC-IF-ERR-001 | accepted |
+| `tauri-commands.md` (7 comandos + capabilities) | DOC-IF-TAURI-001 | in-review |
+| `tauri-wasm.md` (adaptadores Tauri/WASM) | DOC-IF-WASM-001 | in-review |
 | `runner-protocol.md` (protocolo v1 draft) | DOC-IF-PROTO-001 | draft |
 
 ## 05–06 — UX y diseño
