@@ -25,12 +25,12 @@ La planificación avanzó (ver «Progreso»), pero **no puede autorizarse el des
 
 1. Persisten **riesgos P0 residuales**: RSK-003 (divergencia WASM/Tauri), RSK-004 (migración pierde selecciones) y RSK-007 (supply-chain) siguen abiertos; RSK-001/002/008 tienen control definido y sign-off, con verificación de implementación pendiente.
 2. La **CI no se ha ejecutado en verde**: los jobs de documentación, meta-validación y corpus existen (Etapas C), pero aún no hay una ejecución verde registrada.
-3. El **SBOM, las firmas reales y la provenance** quedan pendientes de artefactos de producto (DEC-005/DEC-006 aceptadas; Etapa C parcial).
+3. El **SBOM, las firmas reales y la provenance** quedan pendientes de artefactos de producto (DEC-005/DEC-006; Etapa C parcial).
 4. Quedan **pendientes de ejecución**: validación de accesibilidad (G6), cierre de la verificación de implementación de Seguridad (G8) y owners del backlog (G10).
 
 ## Progreso desde la evaluación anterior
 
-- **DEC-001..DEC-008 accepted** (2026-10-05): alcance de exportación, IDs globales `vendor.kind.id`, adapter archinstall, transporte del runner (Unix socket + auth), licencia (Apache-2.0/dual), firma (Sigstore + offline), **updater firmado en MVP** (desviación), **solo Arch x86_64** (desviación).
+- **Decisiones `DEC-001..DEC-010` vigentes**; estado, autoridad, fecha y consecuencias en `docs/00-governance/decision-register.md` (autoridad única).
 - **ADR-0001..ADR-0009 accepted**.
 - **8 JSON Schema Draft 2020-12** cerrados (`additionalProperties:false`) + corpus válido/inválido + fixture de migración v5.1.
 - **Fuentes SRC-001..SRC-008 verificadas** (SRC-002/003/006 en Paso 2; SRC-005/007/008 en Etapa B).

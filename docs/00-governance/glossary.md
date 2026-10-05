@@ -55,19 +55,24 @@ reviewers:
 | `ChangeSet` | Diferencia explicable entre dos estados de un Draft (manual vs derivado). Producido por `applyPreset`/`compareDrafts`. |
 | `Diagnostic` | Resultado tipado y localizado de una etapa de validación. Ver `errors-events.md`. |
 | `CoreError` | Error estructurado de una operación de `CorePort`. Nunca string libre. Ver `errors-events.md`. |
-| `ExportTarget` | Destino de exportación (`archmaker-profile`, `archinstall-profile`, `report`). Su conjunto exacto depende de **DEC-001**. |
+| `ExportTarget` | Destino de exportación (`archmaker-profile`, `archinstall-profile`, `report`). Conjunto fijado por **DEC-001**. |
 | `Evidence` / `Claim` | Afirmación mutable de catálogo con fuente primaria, fecha de captura, verificador y caducidad. Ver `source-register.md`. |
 | `Scope` | Conjunto mínimo de rutas/permisos concedidos a una capability de Tauri. Ver `tauri-policy.md`. |
 
-## Vínculos con decisiones abiertas
+## Vínculos con decisiones
 
-| `DECISION-REQUIRED` | Término afectado | Efecto |
+El estado y la fecha de cada decisión se leen en `decision-register.md`; aquí solo se fija el
+término afectado.
+
+| Decisión | Término afectado | Efecto sobre el término |
 |---|---|---|
-| DEC-001 (export MVP) | `Artifact`, `ExportTarget` | Qué produce el MVP y si `archinstall` es experimental. |
-| DEC-002 (ámbito de IDs) | `Catalog`, `Draft`, `Preset` | Global `vendor.kind.id` vs scoped; afecta detección de duplicados (`CON-004`). |
-| DEC-004 (transporte runner) | `Runner` | Unix socket / stdio / D-Bus y modelo de elevación. |
-| DEC-006 (catálogo firmado) | `Catalog`, `Policy` | Minisign / Sigstore / ambos. |
-| DEC-008 (targets soportados) | `Artifact`, `InstallationPlan` | Arch x86_64 como principal; aarch64 experimental. |
+| DEC-001 | `Artifact`, `ExportTarget` | Perfil ArchMaker + reporte; `archinstall` experimental. |
+| DEC-002 | `Catalog`, `Draft`, `Preset` | IDs globales `vendor.kind.id`; afecta la detección de duplicados (`CON-004`). |
+| DEC-004 | `Runner` | Transporte Unix socket + autenticación de sesión; elevación fuera del WebView. |
+| DEC-006 | `Catalog`, `Policy` | Sigstore para releases + firma offline evaluada. |
+| DEC-008 | `Artifact`, `InstallationPlan` | Solo Arch x86_64; aarch64 fuera de alcance. |
+| DEC-009 | `Artifact`, `Catalog` | Recursos empaquetados o del sistema; sin CDN en runtime. |
+| DEC-010 | `Diagnostic` (observabilidad) | Sin telemetría en MVP; opt-in futuro con ADR. |
 
 ## Anti-patrones explícitamente prohibidos en el vocabulario
 

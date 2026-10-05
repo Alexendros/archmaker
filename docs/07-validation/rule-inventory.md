@@ -35,7 +35,7 @@ reviewers:
 | RULE-BROWSER-001 | App.tsx | ningún browser | suggest | No bloqueante | none/one |
 | RULE-PKG-001 | pendiente (SRC-002/SRC-003) | `selected(pkg)` sin `provides` | — (nueva) | No verificado — fuente primaria pendiente | disponibilidad/no disponibilidad |
 | RULE-KERNEL-002 | derivada de FR-RESOLVE-001 | fs seleccionado no aportado por kernel | — (nueva) | Conflicto de capabilities | combinaciones kernel/fs |
-| RULE-DUP-001 | instancia v5.1 (CON-004) | identidad de paquete repetida | — (nueva) | Identidad pendiente DEC-002 | único/duplicado |
+| RULE-DUP-001 | instancia v5.1 (CON-004) | identidad de paquete repetida | — (nueva) | Identidad global `vendor.kind.id` (DEC-002) | único/duplicado |
 
 ## Convención de códigos de diagnóstico
 
@@ -201,9 +201,9 @@ Cada regla futura declara ID, fuente, tipos, condición, prioridad, efecto, seve
 | Diagnóstico | `AM-RULE-008` |
 | Severidad | error |
 | Bloqueante | sí |
-| Remedio / sugerencia | Unificar la definición duplicada o resolver el ámbito de identidad (DEC-002: global `vendor.kind.id` vs scoped). |
+| Remedio / sugerencia | Unificar la definición duplicada aplicando el ámbito de identidad global `vendor.kind.id` (DEC-002). |
 | Fase | MVP |
 | Interacciones | CON-004; DEC-002; catálogo con referencias únicas (`DM-CATALOG`). |
 | Prueba positiva | identidad de paquete única → sin diagnóstico. |
 | Prueba negativa | `base-devel` definido dos veces → `AM-RULE-008` bloqueante. |
-| Migración v5.1→nuevo | Detecta el duplicado; la resolución de identidad queda supeditada a DEC-002. |
+| Migración v5.1→nuevo | Detecta el duplicado; la resolución de identidad sigue DEC-002. |

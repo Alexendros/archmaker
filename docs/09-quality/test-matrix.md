@@ -33,4 +33,4 @@ Minimal UEFI/ext4; GNOME/Btrfs; Hyprland/AMD; Sway/NVIDIA conflict; gaming/multi
 
 ## Alcance de plataforma
 
-Todos los perfiles y pruebas se ejecutan sobre **Arch Linux x86_64** (DEC-008, 2026-10-05). No se define matriz aarch64; un futuro soporte requeriría decisión, hardware/CI y catálogo verificado.
+Todos los perfiles y pruebas se ejecutan sobre **Arch Linux x86_64** (DEC-008). No se define matriz aarch64; un futuro soporte requeriría decisión, hardware/CI y catálogo verificado.

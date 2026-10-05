@@ -20,7 +20,7 @@ reviewers:
 - Última revisión: 2026-10-05
 - Requisitos relacionados: NFR-DET-001, NFR-OBS-001, NFR-SEC-001, NFR-PORT-001
 - Sustituye / sustituido por: —
-- Decisiones aplicables: DEC-005 (licencia, aceptada), DEC-006 (firma, aceptada), DEC-007 (actualización, aceptada), DEC-009 (fuentes, propuesta)
+- Decisiones aplicables: DEC-005, DEC-006, DEC-007, DEC-009 (ver `../00-governance/decision-register.md`)
 
 ## Alcance
 
@@ -45,8 +45,8 @@ documentación y contratos**; no se construye producto. La validación documenta
 - **Release**: promoción sin rebuild (ver más abajo); los artefactos firmados y atestados del
   nightly promovido son los que se publican.
 
-Estado (G9): DEC-005 y DEC-006 aceptadas el 2026-10-05. El workflow de build/attest/SBOM aún no
-existe; se implementará en la Etapa C del plan de cierre.
+Estado (G9): el workflow de build/attest/SBOM aún no existe; se implementará en la Etapa C del plan
+de cierre.
 
 ## Supply chain
 
@@ -77,22 +77,21 @@ No deben introducirse hashes no verificados contra la fuente.
 
 ## Artefactos: attestation, SBOM y firma
 
-DEC-005 (licencia) y DEC-006 (firma) aceptadas el 2026-10-05. La política de firma queda fijada
-(Sigstore para releases + firma offline evaluada); el pipeline de build/attest sigue siendo
-propuesta `draft` hasta implementarse.
+La política de firma queda fijada por DEC-006 (Sigstore para releases + firma offline evaluada);
+el pipeline de build/attest sigue siendo propuesta `draft` hasta implementarse.
 
 | Elemento | Mecanismo | Estándar | Estado |
 |---|---|---|---|
 | Provenance | GitHub Artifact Attestations (`actions/attest-build-provenance`) | SLSA v1.2 / in-toto | Propuesto |
 | SBOM | Generación CycloneDX y/o SPDX; `actions/attest-sbom` | CycloneDX / SPDX | Propuesto |
-| Firma de artefactos | Sigstore (keyless, ligada a OIDC) + firma offline evaluada | Sigstore | Resuelto por DEC-006 |
+| Firma de artefactos | Sigstore (keyless, ligada a OIDC) + firma offline evaluada | Sigstore | Fijado por DEC-006 |
 | Checksums | `SHA256SUMS` + verificación `sha256sum --check` | SHA-256 | Propuesto |
 
 - **Provenance**: se atesta cada artefacto de build para ligar binario, commit y workflow. La
   fuente institucional (NIST SSDF/SLSA/Sigstore) está registrada como `SRC-008`, con captura
   pendiente; no se declara conformidad verificada hasta capturarla.
 - **SBOM**: se publica CycloneDX y/o SPDX junto al release para inventario de dependencias.
-- **Firma**: Sigstore para releases y firma offline evaluada (DEC-006, aceptada 2026-10-05).
+- **Firma**: Sigstore para releases y firma offline evaluada (DEC-006).
 - Toda atestación requiere `id-token: write` y `attestations: write` en el job correspondiente.
 
 ## Promoción sin rebuild
@@ -102,21 +101,21 @@ recompilar. La promoción reutiliza el binario ya firmado y atestado; cambia la 
 no el contenido. Cualquier rebuild invalida la atestación y exige re-firmar. Detalle de canales y
 rollback en [packaging-release.md](../10-delivery/packaging-release.md).
 
-## Decisiones aplicadas y pendientes
+## Decisiones aplicables
 
-**Aceptadas el 2026-10-05** (ver `decision-register.md`): DEC-002 (IDs globales `vendor.kind.id`),
-DEC-005 (licencia Apache-2.0 o dual MIT/Apache), DEC-006 (firma Sigstore + offline evaluada) y
-DEC-007 (updater Tauri en MVP, firmado y fail-open offline).
+Las decisiones que rigen esta área y su estado se leen en `decision-register.md` (DEC-005,
+DEC-006, DEC-007, DEC-009).
 
 - **Pendiente de implementación (G9)**: el pipeline de build/attest/SBOM y la firma real aún no
   existen; solo existe validación documental.
-- **DEC-009** (fuentes, propuesta): confirma la prohibición de CDN en docs de producción.
+- **DEC-009** confirma la prohibición de CDN en runtime; los recursos se empaquetan o se toman del
+  sistema.
 
 ## Referencias
 
 - Reglas de validación: [documentation-validation.md](documentation-validation.md).
 - Gates G0–G10: [gates.md](../10-delivery/gates.md).
 - Artefactos y canales: [packaging-release.md](../10-delivery/packaging-release.md).
-- Decisiones abiertas: [decision-register.md](../00-governance/decision-register.md).
+- Decisiones: [decision-register.md](../00-governance/decision-register.md).
 - Contratos JSON Schema: `contracts/json-schema/README.md`.
 - Política Tauri (CSP sin CDN en producción): [tauri-policy.md](../08-security/tauri-policy.md).

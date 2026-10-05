@@ -73,7 +73,7 @@ reviewers:
 ## JNY-003 — Instalar (v1)
 
 - **Actor:** PER-001, PER-002.
-- **Precondición:** runner compatible disponible y manifest válido; fuera del MVP (v1). *(Transporte del runner: DEC-004 pendiente; motor: DEC-003 pendiente.)*
+- **Precondición:** runner compatible disponible y manifest válido; fuera del MVP (v1). *(Transporte del runner: DEC-004; motor: DEC-003.)*
 - **Pasos:**
   1. Verificar compatibilidad del runner y preflight del entorno (UC-006).
   2. Derivar el `InstallationPlan` inmutable desde el manifest.
@@ -93,7 +93,7 @@ reviewers:
 ## JNY-004 — Gobernar flotas (Enterprise)
 
 - **Actor:** PER-004.
-- **Precondición:** organización con RBAC y `PolicyBundle` firmado; servicio Enterprise, no producto local. *(Firma: DEC-006 pendiente.)*
+- **Precondición:** organización con RBAC y `PolicyBundle` firmado; servicio Enterprise, no producto local. *(Firma: DEC-006.)*
 - **Pasos:**
   1. Definir o seleccionar perfil y policies de organización (UC-007).
   2. Validar la firma y el ámbito de aplicación.

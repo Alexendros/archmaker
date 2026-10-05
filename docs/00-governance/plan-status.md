@@ -22,17 +22,9 @@ reviewers:
 
 ## Bloqueos P0
 
-Sin bloqueos P0 activos. DEC-001..DEC-008 quedaron **resueltas y aceptadas** el 2026-10-05 (ver `docs/00-governance/decision-register.md`).
-
-Consecuencias que pasan a ser obligaciones de MVP (no bloqueos de planificación):
-
-- DEC-007 (Tauri updater en MVP): `THR-UPD-001` debe cerrarse antes de MVP-0; el canal de actualización debe estar firmado (arrastra DEC-006) y ser fail-open offline (`NFR-OFF-001`).
-- DEC-008 (solo Arch x86_64): aarch64 sale del alcance; matriz de soporte y pruebas reducidas a x86_64.
-
-## Decisiones aún abiertas (P1, no bloqueantes)
-
-- DEC-009: fuentes sin CDN runtime.
-- DEC-010: telemetría (ninguna en MVP).
+Sin bloqueos P0 activos. El estado, la autoridad, la fecha y las consecuencias de las decisiones
+`DEC-001..DEC-010` se leen en `docs/00-governance/decision-register.md` (autoridad única); este
+documento no los repite.
 
 ## Regla de avance
 

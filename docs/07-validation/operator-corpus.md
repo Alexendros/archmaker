@@ -182,7 +182,7 @@ reviewers:
   ```
 - **Satisface:** target `archinstall` seleccionado → verdadero.
 - **Viola:** target `yaml` → falso.
-- **Diagnóstico esperado:** el de la regla contenedora; fase v1/`VAL-TARGET`. Conjunto exacto de targets: DEC-001 pendiente.
+- **Diagnóstico esperado:** el de la regla contenedora; fase v1/`VAL-TARGET`. Conjunto de targets según DEC-001.
 
 ## Operador desconocido o no soportado
 

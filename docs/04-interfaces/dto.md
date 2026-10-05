@@ -566,7 +566,7 @@ Asociación indicativa (las familias están definidas en `errors-events.md`):
 - `versioning-migrations.md` y `canonicalization.md`: versiones, campos efímeros y hashing.
 - `tauri-wasm.md`: paridad y adaptadores.
 - `glossary.md`: términos canónicos y anti-patrones.
-- Decisiones resueltas: **DEC-001** (`ExportTarget`: perfil ArchMaker + reporte, archinstall
+- Decisiones aplicables: **DEC-001** (`ExportTarget`: perfil ArchMaker + reporte, archinstall
   experimental), **DEC-002** (`CatalogRef.namespace`: global `vendor.kind.id`), **DEC-008**
   (`TargetRef`: solo Arch x86_64).
 - Schemas canónicos: `contracts/json-schema/` (8 schemas Draft 2020-12, ADR-0005); **SRC-006**

@@ -27,7 +27,7 @@ reviewers:
 | `plan-status.md` | DOC-GOV-STATUS | in-review |
 | `document-control.md` | DOC-GOV-CONTROL | accepted (política) |
 | `glossary.md` (12 términos canónicos) | DOC-GOV-001 | draft |
-| `decision-register.md` (DEC-001..010) | DOC-GOV-DEC | in-review |
+| `decision-register.md` (DEC-001..010) | DOC-GOV-DEC | accepted |
 | `contradiction-register.md` (CON-001..012) | DOC-GOV-CON | in-review |
 | `risk-register.md` (RSK-001..010) | DOC-GOV-RSK | in-review |
 | `source-register.md` (SRC-001..008) | DOC-GOV-SRC | in-review |
@@ -129,7 +129,7 @@ reviewers:
 | Documento | Estado | Nota |
 |---|---|---|
 | `events/README.md` | draft | eventos públicos; sin schemas aún |
-| `json-schema/README.md` | draft | bloqueado hasta aceptar DEC-002 y el modelo |
+| `json-schema/README.md` | draft | pendiente de modelo; DEC-002 aplicada |
 | `openapi/README.md` | draft | Enterprise, no ejecutable en MVP |
 | `protocol/README.md` | draft | runner v1 tras aceptar transporte/elevación |
 
