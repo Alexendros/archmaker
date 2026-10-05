@@ -24,3 +24,9 @@
 - Confirmaciones destructivas expiran y se ligan a hashes.
 - Cambios del inventario invalidan el plan.
 - Los secretos se suministran just-in-time y se borran de memoria cuando sea posible.
+
+## Sign-off
+
+- Estado del modelo: revisado 2026-10-05. Incorporadas DEC-004 (transporte Unix socket + autenticación de sesión, elevación fuera del WebView) y DEC-007 (updater firmado en MVP, fail-open offline, ADR-0009).
+- MVP: sin shell/sidecars/root/discos; red solo para comprobación de actualizaciones firmada y opcional.
+- Pendiente: aprobación formal del propietario de Seguridad antes de G8.

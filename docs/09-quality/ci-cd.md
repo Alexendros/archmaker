@@ -64,7 +64,7 @@ propuesta `draft` sujeta a esas decisiones.
 
 | Elemento | Mecanismo | Estándar | Estado |
 |---|---|---|---|
-| Provenance | GitHub Artifact Attestations (`actions/attest-build-provenance`) | SLSA / in-toto | Propuesto |
+| Provenance | GitHub Artifact Attestations (`actions/attest-build-provenance`) | SLSA v1.2 / in-toto | Propuesto |
 | SBOM | Generación CycloneDX y/o SPDX; `actions/attest-sbom` | CycloneDX / SPDX | Propuesto |
 | Firma de artefactos | Sigstore (keyless, ligada a OIDC) o firma offline | Sigstore / Minisign | PENDIENTE DEC-006 |
 | Checksums | `SHA256SUMS` + verificación `sha256sum --check` | SHA-256 | Propuesto |

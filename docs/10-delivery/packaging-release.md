@@ -27,7 +27,7 @@ Cada release publica, como mínimo:
 | Checksums | `SHA256SUMS` por release; verificación `sha256sum --check`. | draft |
 | Firmas | Firma de artefactos y de `SHA256SUMS`. Mecanismo PENDIENTE (DEC-006). | PENDIENTE DEC-006 |
 | SBOM | CycloneDX y/o SPDX con el inventario de dependencias. | draft |
-| Provenance | Atestación SLSA/in-toto ligada a commit y workflow. | draft |
+| Provenance | Atestación SLSA v1.2/in-toto ligada a commit y workflow. | draft |
 | Source tarball | Código fuente reproducible del commit taggeado. | draft |
 | Changelog | Formato Keep a Changelog; cambios por versión. | draft |
 | Compatibilidad | Matriz target/arquitectura/dependencias por release. | draft |

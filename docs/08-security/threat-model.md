@@ -10,6 +10,6 @@
 | THR-RUN-001 | WebView controla root. | Desktop/runner | Proceso separado y protocolo tipado. |
 | THR-RUN-002 | TOCTOU tras confirmar. | Plan/runner | Hashes, snapshot de target y re-preflight. |
 | THR-SEC-001 | Secreto en logs/draft. | Todas | SecretRef, redaction y canal temporal. |
-| THR-UPD-001 | Update comprometida. | Release/client | Firma, HTTPS, pin de canal y rollback. |
+| THR-UPD-001 | Update comprometida. | Release/client | **En alcance MVP (DEC-007).** Canal firmado (DEC-006), HTTPS, pin de canal, verificación de firma, rollback y fail-open offline; ver ADR-0009. Cerrable antes de MVP-0. |
 | THR-SUP-001 | Dependencia comprometida. | Build | Lock, audit, SBOM y provenance. |
 | THR-TEN-001 | Cruce de tenant. | Enterprise | Tenant from claims, RLS/tests y audit. |
