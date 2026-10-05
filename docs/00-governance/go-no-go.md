@@ -8,11 +8,10 @@
 
 La planificación avanzó (ver «Progreso»), pero **no puede autorizarse el desarrollo** porque:
 
-1. Los documentos de producto, arquitectura y datos siguen en `draft`/`in-review`: falta la **aprobación humana** (`accepted`) de FR/NFR, modelo de dominio y C4/módulos.
-2. Persisten **riesgos P0 residuales**: RSK-003 (divergencia WASM/Tauri), RSK-004 (migración pierde selecciones) y RSK-007 (supply-chain) siguen abiertos; RSK-001/002/008 tienen control definido y sign-off, con verificación de implementación pendiente.
-3. La **CI no se ha ejecutado en verde**: el job de corpus válido/inválido existe (Etapa C), pero aún no hay una ejecución verde registrada.
-4. El **SBOM, las firmas reales y la provenance** quedan pendientes de artefactos de producto (DEC-005/DEC-006 aceptadas; Etapa C parcial).
-5. La **aprobación humana** (`accepted`) de FR/NFR, modelo de dominio y C4/módulos sigue pendiente (Etapa E).
+1. Persisten **riesgos P0 residuales**: RSK-003 (divergencia WASM/Tauri), RSK-004 (migración pierde selecciones) y RSK-007 (supply-chain) siguen abiertos; RSK-001/002/008 tienen control definido y sign-off, con verificación de implementación pendiente.
+2. La **CI no se ha ejecutado en verde**: los jobs de documentación, meta-validación y corpus existen (Etapas C), pero aún no hay una ejecución verde registrada.
+3. El **SBOM, las firmas reales y la provenance** quedan pendientes de artefactos de producto (DEC-005/DEC-006 aceptadas; Etapa C parcial).
+4. Quedan **pendientes de ejecución**: validación de accesibilidad (G6), cierre de la verificación de implementación de Seguridad (G8) y owners del backlog (G10).
 
 ## Progreso desde la evaluación anterior
 
@@ -23,15 +22,16 @@ La planificación avanzó (ver «Progreso»), pero **no puede autorizarse el des
 - **CI documental** con acciones fijadas por SHA; `sha256sum --check` en verde; job `corpus-validate` (válido/inválido) añadido (Etapa C).
 - **Etapa D**: sign-off de Seguridad registrado 2026-10-05; RSK-001/002/008 con control definido (verificación de implementación pendiente).
 - **Etapa A (A1-A6)**: marcadores obsoletos resueltos, índice ADR, plantilla de issue, severidad canónica, catálogo AM-* completo.
+- **Etapa E (2026-10-05)**: aceptados FR/NFR, modelo de dominio, C4/módulos, personas, objetivos, journeys y casos de uso; ADR-0007 rebajado a `proposed`; operadores `required` ratificado y `target_is` diferido a v1; sign-off de Seguridad aprobado formalmente.
 
 ## Cobertura de gates
 
 | Gate | Estado | Falta para `complete` |
 |---|---|---|
 | G0 Fuentes | complete | — (evidencia v5.1 íntegra; capturas primarias pendientes como tareas) |
-| G1 Problema/usuarios | partial | aprobar objetivos/personas; métricas no verificadas |
-| G2 Alcance/requisitos | partial | aprobar FR/NFR (hoy draft) |
-| G3 Arquitectura | partial | aprobar C4/módulos (hoy draft) |
+| G1 Problema/usuarios | complete | — (docs accepted; métricas cuantitativas no verificadas) |
+| G2 Alcance/requisitos | complete | — (docs accepted; DEC resueltas) |
+| G3 Arquitectura | complete | — (docs accepted; ADR-0001..0009 accepted, ADR-0007 proposed) |
 | G4 Datos | partial | CI en verde; aprobar modelo e identidad |
 | G5 Interfaces | partial | aprobar CorePort/DTO; ratificar cobertura CorePort |
 | G6 UX/diseño | partial | validación de accesibilidad; aprobar tokens preservados |
@@ -43,11 +43,10 @@ La planificación avanzó (ver «Progreso»), pero **no puede autorizarse el des
 ## Criterios de salida (para pasar a Go)
 
 - G0–G10 en `complete` con evidencia ejecutable y sin P0 abiertos asociados.
-- FR/NFR, modelo de dominio y C4 aprobados (`accepted`).
 - Contratos P0 con corpus válido **e** inválido validado en CI (job de corpus activo).
 - CI en verde (documental + meta-validación + corpus).
 - `sha256sum --check reference/v5.1/SHA256SUMS` en verde y sin regresiones de trazabilidad.
-- Aprobación formal de Seguridad (G8).
+- Cierre de RSK-003/004/007 y de la verificación de implementación de Seguridad; owners del backlog (G10).
 
 ## Consecuencia inmediata
 

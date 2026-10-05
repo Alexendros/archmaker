@@ -1,22 +1,22 @@
 # Gates G0–G10
 
-Evaluación: 2026-10-05 (Etapa F; tras A1-A6 y Etapas B–D).
+Evaluación: 2026-10-05 (Etapa E; tras aceptación de producto/arquitectura/datos).
 
 | Gate | Criterio | Evidencia mínima | Estado | Falta para `complete` |
 |---|---|---|---|---|
 | G0 | Fuentes controladas | `reference/v5.1/` íntegro (sha256 OK) + `source-register.md` (SRC-001..008 verificadas) + `inventory-v5.1.md` | complete | — |
-| G1 | Problema/usuarios | `personas.md`, `objectives.md` (OBJ-*), `product-brief` en `requirements.md` | partial | aprobar (accepted) personas/objetivos; métricas aún no verificadas |
-| G2 | Alcance/requisitos | `requirements.md` (FR/NFR con Given/When/Then), `use-cases.md`, `journeys.md` | partial | aprobar FR/NFR (hoy draft); DEC-001/DEC-008 ya resueltas |
-| G3 | Arquitectura | `c4/README.md`, `module-map.md`, `dependency-rules.md`, `adr/ADR-0001..0009` (accepted) | partial | aprobar C4/módulos (hoy draft) |
-| G4 | Datos | `domain-model.md`, `lifecycles.md`, `canonicalization.md`, `versioning-migrations.md`, `contracts/json-schema/` (8 schemas + corpus + job CI de corpus) | partial | CI en verde; aprobar modelo e identidad |
+| G1 | Problema/usuarios | `personas.md`, `objectives.md` (OBJ-*), `product-brief` en `requirements.md` | complete | — (docs `accepted` 2026-10-05; métricas cuantitativas aún no verificadas) |
+| G2 | Alcance/requisitos | `requirements.md` (FR/NFR con Given/When/Then), `use-cases.md`, `journeys.md` | complete | — (docs `accepted` 2026-10-05; DEC-001/DEC-008 resueltas) |
+| G3 | Arquitectura | `c4/README.md`, `module-map.md`, `dependency-rules.md`, `adr/ADR-0001..0009` (accepted) | complete | — (docs `accepted` 2026-10-05; ADR-0001..0009 accepted, ADR-0007 proposed) |
+| G4 | Datos | `domain-model.md`, `lifecycles.md`, `canonicalization.md`, `versioning-migrations.md`, `contracts/json-schema/` (8 schemas + corpus + job CI de corpus) | partial | CI en verde (meta-validación + corpus); canonicalización ADR-0007 en `proposed` |
 | G5 | Interfaces | `core-port.md`, `dto.md`, `errors-events.md`, `tauri-commands.md`, `tauri-wasm.md`, `runner-protocol.md` | partial | aprobar CorePort/DTO; ratificar cobertura CorePort (C4) |
 | G6 | UX/diseño | `interaction-matrix.md`, `component-contracts.md`, `design-system.md` | partial | validación de accesibilidad; aprobar tokens preservados |
-| G7 | Validación | `operator-spec.md`, `operator-corpus.md`, `pipeline.md`, `rule-inventory.md` | partial | corpus ejecutable; ratificar operador `required`; RULE-GPU-001 no implementable (SRC-002/003) |
-| G8 | Seguridad | `threat-model.md`, `privilege-model.md`, `tauri-policy.md` | partial | verificación de implementación (pruebas negativas de capabilities/elevación); RSK-001/002/008 con control definido y sign-off |
+| G7 | Validación | `operator-spec.md`, `operator-corpus.md`, `pipeline.md`, `rule-inventory.md` | partial | corpus ejecutable en CI; RULE-GPU-001 no implementable (SRC-002/003); `target_is` diferido a v1 |
+| G8 | Seguridad | `threat-model.md`, `privilege-model.md`, `tauri-policy.md` | partial | sign-off aprobado formalmente 2026-10-05; falta verificación de implementación (pruebas negativas de capabilities/elevación) y cierre de RSK-001/002/008 |
 | G9 | Calidad | `test-matrix.md`, `documentation-validation.md`, `ci-cd.md`, `.github/workflows/` (pins por SHA), `packaging-release.md` | partial | CI en verde; SBOM/firmas reales |
 | G10 | Delivery | `roadmap.md`, `backlog.md`, `next-issues.md`, `gates.md`, `packaging-release.md` | partial | owners en backlog; releases |
 
-`complete` exige documento accepted, evidencia ejecutable y ausencia de P0 abiertos asociados.
+`complete` exige documentos `accepted`, ausencia de P0 abiertos asociados y, en los gates con artefacto ejecutable (G4, G9), evidencia ejecutable (CI en verde). En gates documentales (G0–G3, G5–G8, G10), `complete` = documentos `accepted` + sin P0 asociados.
 
 ## Progreso (Pasos 0–7 + Etapas A–F)
 
@@ -27,4 +27,5 @@ Evaluación: 2026-10-05 (Etapa F; tras A1-A6 y Etapas B–D).
 - **Etapa A (A1-A6)**: marcadores obsoletos resueltos, índice ADR, plantilla de issue, severidad canónica, catálogo AM-* completo, aliases ValueRef, mapas abiertos documentados.
 - **Etapa C**: job de CI `corpus-validate` (válido/inválido) + meta-validación acotada a `*.schema.json`.
 - **Etapa D**: sign-off de Seguridad registrado 2026-10-05; RSK-001/002/008 con control definido (verificación de implementación pendiente).
+- **Etapa E**: aceptados FR/NFR, modelo de dominio, C4/módulos, personas, objetivos, journeys y casos de uso (2026-10-05); ADR-0007 rebajado a `proposed`; operadores `required` ratificado y `target_is` diferido a v1; sign-off de Seguridad aprobado formalmente.
 - Gate global `planning-v1`: sigue **No-Go** (ver `go-no-go.md`).
