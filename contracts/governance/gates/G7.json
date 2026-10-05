@@ -15,10 +15,20 @@
       "id": "G7-C01",
       "description": "Operadores normalizados y corpus por operador (R8).",
       "kind": "artifact",
-      "status": "in-progress",
+      "status": "complete",
       "evidence": [
         { "type": "document", "ref": "docs/07-validation/operator-spec.md" },
-        { "type": "document", "ref": "docs/07-validation/operator-corpus.md" }
+        { "type": "document", "ref": "docs/07-validation/operator-corpus.md" },
+        {
+          "type": "workflowRun",
+          "ref": "json-schema (37390632952)",
+          "commit": "3e112c0",
+          "workflowRun": "json-schema (37390632952)",
+          "artifact": "https://github.com/Alexendros/archmaker/actions/runs/37390632952",
+          "reviewer": "independent-reviewer",
+          "reviewDate": "2026-10-06",
+          "note": "corpus de operadores de reglas (positivo y negativo) en verde"
+        }
       ]
     },
     {
@@ -34,7 +44,29 @@
       "id": "G7-C03",
       "description": "Corpus positivo y negativo ejecutable en CI con diagnósticos reproducibles.",
       "kind": "metric-verified",
-      "status": "pending"
+      "status": "complete",
+      "evidence": [
+        {
+          "type": "workflowRun",
+          "ref": "json-schema (37390632952)",
+          "commit": "3e112c0",
+          "workflowRun": "json-schema (37390632952)",
+          "artifact": "https://github.com/Alexendros/archmaker/actions/runs/37390632952",
+          "reviewer": "independent-reviewer",
+          "reviewDate": "2026-10-06",
+          "note": "corpus valido/invalido, corpus de operadores y limites en verde"
+        },
+        {
+          "type": "workflowRun",
+          "ref": "docs-validate (37390633111)",
+          "commit": "3e112c0",
+          "workflowRun": "docs-validate (37390633111)",
+          "artifact": "https://github.com/Alexendros/archmaker/actions/runs/37390633111",
+          "reviewer": "independent-reviewer",
+          "reviewDate": "2026-10-06",
+          "note": "enlaces internos y parseo/render de Mermaid en verde"
+        }
+      ]
     }
   ]
 }

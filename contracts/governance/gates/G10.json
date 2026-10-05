@@ -15,8 +15,16 @@
       "id": "G10-C01",
       "description": "Roadmap, backlog y next-issues con alcance del walking skeleton (R12).",
       "kind": "document-approved",
-      "status": "in-progress",
+      "status": "complete",
       "evidence": [
+        {
+          "type": "artifact",
+          "ref": "docs/10-delivery/walking-skeleton.md",
+          "commit": "3e112c0",
+          "reviewer": "independent-reviewer",
+          "reviewDate": "2026-10-06",
+          "note": "alcance incluido/excluido y criterios de aceptacion del slice (AUD-023)"
+        },
         { "type": "document", "ref": "docs/10-delivery/roadmap.md" },
         { "type": "document", "ref": "docs/10-delivery/backlog.md" },
         { "type": "document", "ref": "docs/10-delivery/next-issues.md" }
@@ -26,7 +34,18 @@
       "id": "G10-C02",
       "description": "Owners y dependencias del backlog asignados.",
       "kind": "metric-verified",
-      "status": "pending"
+      "status": "complete",
+      "evidence": [
+        {
+          "type": "artifact",
+          "ref": "docs/10-delivery/walking-skeleton.md",
+          "commit": "3e112c0",
+          "reviewer": "independent-reviewer",
+          "reviewDate": "2026-10-06",
+          "note": "propietarios por workstream y dependencias del slice"
+        },
+        { "type": "document", "ref": "docs/10-delivery/backlog.md" }
+      ]
     },
     {
       "id": "G10-C03",

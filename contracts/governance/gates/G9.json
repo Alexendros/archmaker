@@ -15,17 +15,59 @@
       "id": "G9-C01",
       "description": "CI documental y de contratos con acciones fijadas por SHA y versiones pip fijadas.",
       "kind": "artifact",
-      "status": "in-progress",
+      "status": "complete",
       "evidence": [
         { "type": "commit", "ref": "pins por SHA", "commit": "88388ba" },
-        { "type": "commit", "ref": "job corpus-validate", "commit": "fbe2226" }
+        { "type": "commit", "ref": "job corpus-validate", "commit": "fbe2226" },
+        {
+          "type": "workflowRun",
+          "ref": "docs-validate (37390633111)",
+          "commit": "3e112c0",
+          "workflowRun": "docs-validate (37390633111)",
+          "artifact": "https://github.com/Alexendros/archmaker/actions/runs/37390633111",
+          "reviewer": "independent-reviewer",
+          "reviewDate": "2026-10-06",
+          "note": "markdown lint y politicas de contrato con actions fijadas por SHA"
+        }
       ]
     },
     {
       "id": "G9-C02",
       "description": "Ejecución verde sobre commit protegido con evidencia conservada (AUD-022).",
       "kind": "metric-verified",
-      "status": "pending"
+      "status": "complete",
+      "evidence": [
+        {
+          "type": "workflowRun",
+          "ref": "docs-validate (37390633111)",
+          "commit": "3e112c0",
+          "workflowRun": "docs-validate (37390633111)",
+          "artifact": "https://github.com/Alexendros/archmaker/actions/runs/37390633111",
+          "reviewer": "independent-reviewer",
+          "reviewDate": "2026-10-06",
+          "note": "7 jobs en pass: lint, enlaces/mermaid, parseo JSON/YAML, unicidad de IDs, reference/v5.1, politicas de contrato y gobierno"
+        },
+        {
+          "type": "workflowRun",
+          "ref": "json-schema (37390632952)",
+          "commit": "3e112c0",
+          "workflowRun": "json-schema (37390632952)",
+          "artifact": "https://github.com/Alexendros/archmaker/actions/runs/37390632952",
+          "reviewer": "independent-reviewer",
+          "reviewDate": "2026-10-06",
+          "note": "4 jobs en pass: meta-validacion, corpus valido/invalido, operadores de reglas y limites"
+        },
+        {
+          "type": "workflowRun",
+          "ref": "canonicalization (37390633429)",
+          "commit": "3e112c0",
+          "workflowRun": "canonicalization (37390633429)",
+          "artifact": "https://github.com/Alexendros/archmaker/actions/runs/37390633429",
+          "reviewer": "independent-reviewer",
+          "reviewDate": "2026-10-06",
+          "note": "job de vectores golden y paridad en pass"
+        }
+      ]
     },
     {
       "id": "G9-C03",

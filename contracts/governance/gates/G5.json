@@ -15,22 +15,53 @@
       "id": "G5-C01",
       "description": "CorePort v0 congelado con precondiciones, postcondiciones y errores tipados (R7).",
       "kind": "document-approved",
-      "status": "in-progress",
+      "status": "complete",
       "evidence": [
-        { "type": "document", "ref": "docs/04-interfaces/core-port.md", "note": "base existente; v0 pendiente" }
+        { "type": "document", "ref": "docs/04-interfaces/core-port.md", "note": "documentStatus accepted / approvalStatus approved (v0 congelado)" },
+        {
+          "type": "workflowRun",
+          "ref": "docs-validate (37390633111)",
+          "commit": "3e112c0",
+          "workflowRun": "docs-validate (37390633111)",
+          "artifact": "https://github.com/Alexendros/archmaker/actions/runs/37390633111",
+          "reviewer": "independent-reviewer",
+          "reviewDate": "2026-10-06",
+          "note": "politicas de contrato (prohibicion de cmd/hooks/shell) en verde"
+        }
       ]
     },
     {
       "id": "G5-C02",
       "description": "DTO y catálogo de errores v0 aceptados.",
       "kind": "artifact",
-      "status": "pending"
+      "status": "complete",
+      "evidence": [
+        { "type": "document", "ref": "docs/04-interfaces/dto.md" },
+        { "type": "document", "ref": "docs/04-interfaces/errors-events.md" },
+        {
+          "type": "workflowRun",
+          "ref": "json-schema (37390632952)",
+          "commit": "3e112c0",
+          "workflowRun": "json-schema (37390632952)",
+          "artifact": "https://github.com/Alexendros/archmaker/actions/runs/37390632952",
+          "reviewer": "independent-reviewer",
+          "reviewDate": "2026-10-06",
+          "note": "meta-validacion y corpus de core-error.schema.json"
+        }
+      ]
     },
     {
       "id": "G5-C03",
       "description": "Contract tests definidos con paridad Tauri/WASM sin semántica divergente.",
       "kind": "review",
-      "status": "pending"
+      "status": "pending",
+      "evidence": [
+        {
+          "type": "document",
+          "ref": "docs/10-delivery/walking-skeleton.md",
+          "note": "paridad nativo/WASM definida como criterio del slice; contract tests de producto pendientes de R13"
+        }
+      ]
     }
   ]
 }

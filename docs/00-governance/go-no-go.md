@@ -50,13 +50,13 @@ Bloque generado desde `contracts/governance/gates/G*.json` por `tools/gates.py`;
 | G1 Problema y usuarios | in-progress | complete/n/a/n/a/pending/n/a | G1-C03 |
 | G2 Alcance y requisitos | in-progress | complete/n/a/n/a/pending/n/a | G2-C04 |
 | G3 Arquitectura | in-progress | complete/complete/n/a/pending/n/a | G3-C04 |
-| G4 Datos y contratos | in-progress | in-progress/in-progress/pending/pending/n/a | G4-C02, G4-C03, G4-C04 |
-| G5 Interfaces y CorePort | in-progress | in-progress/pending/pending/pending/n/a | G5-C01, G5-C02, G5-C03 |
+| G4 Datos y contratos | in-progress | in-progress/in-progress/pending/pending/n/a | — |
+| G5 Interfaces y CorePort | in-progress | in-progress/pending/pending/pending/n/a | G5-C03 |
 | G6 UX y design system | in-progress | in-progress/in-progress/pending/pending/n/a | G6-C01, G6-C03 |
-| G7 Validación y corpus | in-progress | in-progress/n/a/in-progress/pending/n/a | G7-C01, G7-C03 |
+| G7 Validación y corpus | in-progress | in-progress/n/a/in-progress/pending/n/a | — |
 | G8 Seguridad | in-progress | in-progress/in-progress/pending/pending/n/a | G8-C01, G8-C04 |
-| G9 Calidad y CI | in-progress | in-progress/n/a/in-progress/pending/n/a | G9-C01, G9-C02, G9-C03 |
-| G10 Delivery y walking skeleton | in-progress | in-progress/n/a/pending/pending/pending | G10-C01, G10-C02, G10-C03 |
+| G9 Calidad y CI | in-progress | in-progress/n/a/in-progress/pending/n/a | G9-C03 |
+| G10 Delivery y walking skeleton | in-progress | in-progress/n/a/pending/pending/pending | G10-C03 |
 
 Resultado derivado: **No-Go** — no todos los gates están `complete` (faltan G1, G2, G3, G4, G5, G6, G7, G8, G9, G10).
 <!-- END GATES-DERIVED -->
