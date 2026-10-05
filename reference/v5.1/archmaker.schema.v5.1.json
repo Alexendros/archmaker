@@ -1,0 +1,353 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://archmaker.local/archmaker.schema.v5.1.json",
+  "title": "ArchMaker configuration v5.1 - Single Compositor + LibPacks",
+  "type": "object",
+  "required": [
+    "archmaker",
+    "configurator"
+  ],
+  "properties": {
+    "archmaker": {
+      "type": "object",
+      "required": [
+        "name",
+        "version",
+        "arch"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "default": "ArchMaker"
+        },
+        "version": {
+          "type": "string",
+          "default": "5.1.0"
+        },
+        "date": {
+          "type": "string",
+          "format": "date"
+        },
+        "arch": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "x86_64",
+              "aarch64"
+            ]
+          },
+          "minItems": 1,
+          "description": "x86_64: Intel/AMD total compat, AUR full, Steam native. aarch64: ARM efficiency, Apple Silicon/RPi5, needs box64 for Steam"
+        },
+        "deploy": {
+          "enum": [
+            "local",
+            "remote",
+            "chroot"
+          ]
+        },
+        "iso": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    },
+    "configurator": {
+      "type": "object",
+      "required": [
+        "type",
+        "steps"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "single",
+            "multi"
+          ],
+          "default": "multi"
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/step"
+          }
+        }
+      }
+    },
+    "palette": {
+      "type": "object"
+    },
+    "validation": {
+      "type": "object"
+    },
+    "build": {
+      "type": "object"
+    },
+    "presets": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/preset"
+      }
+    },
+    "libpacks": {
+      "type": "object",
+      "description": "Nueva capa entre Entorno y Aplicaciones",
+      "properties": {
+        "office": {
+          "$ref": "#/$defs/libpack"
+        },
+        "dev": {
+          "$ref": "#/$defs/libpack"
+        },
+        "gaming": {
+          "$ref": "#/$defs/libpack"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "option": {
+      "type": "object",
+      "required": [
+        "id",
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "pkg": {
+          "type": "string"
+        },
+        "size": {
+          "type": "integer"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "fixed": {
+          "type": "boolean",
+          "description": "Esencial, no se puede deseleccionar"
+        },
+        "essentialReason": {
+          "type": "string"
+        },
+        "cmd": {
+          "type": "string"
+        }
+      }
+    },
+    "section": {
+      "type": "object",
+      "required": [
+        "id",
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "single": {
+          "type": "boolean",
+          "description": "Solo 1 seleccion permitida"
+        },
+        "packages": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/option"
+          }
+        }
+      }
+    },
+    "step": {
+      "type": "object",
+      "required": [
+        "id",
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_-]*$"
+        },
+        "name": {
+          "type": "string"
+        },
+        "icon": {
+          "type": "string"
+        },
+        "mode": {
+          "enum": [
+            "grouped",
+            "flat",
+            "single"
+          ]
+        },
+        "sections": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/section"
+          }
+        }
+      }
+    },
+    "libpack": {
+      "type": "object",
+      "properties": {
+        "essential": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/option"
+          },
+          "description": "Librerias fijas"
+        },
+        "recommended": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/option"
+          }
+        }
+      }
+    },
+    "rule": {
+      "type": "object",
+      "required": [
+        "id",
+        "when",
+        "action"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "error",
+            "warn",
+            "info"
+          ]
+        },
+        "blocking": {
+          "type": "boolean"
+        },
+        "when": {
+          "$ref": "#/$defs/logic"
+        },
+        "action": {
+          "enum": [
+            "change",
+            "suggest",
+            "block"
+          ]
+        },
+        "target": {
+          "type": "string"
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    },
+    "logic": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "all"
+          ],
+          "properties": {
+            "all": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/logic"
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "any"
+          ],
+          "properties": {
+            "any": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/logic"
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "not"
+          ],
+          "properties": {
+            "not": {
+              "$ref": "#/$defs/logic"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "eq"
+          ],
+          "properties": {
+            "eq": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "in"
+          ],
+          "properties": {
+            "in": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2
+            }
+          }
+        }
+      ]
+    },
+    "preset": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "selections"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "selections": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    }
+  }
+}

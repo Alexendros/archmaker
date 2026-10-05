@@ -1,0 +1,89 @@
+{
+  "manifestVersion": "1.0.0",
+  "collection": "archmaker-v5.1",
+  "source": "user attachments",
+  "files": [
+    {
+      "path": "archmaker.instance.v5.1.json",
+      "bytes": 15954,
+      "sha256": "7e24779787479fc7235969b61114a6d9ab518712a8e6031ea979436a5d4e25ef",
+      "mediaType": "application/json",
+      "status": "received-unmodified"
+    },
+    {
+      "path": "archmaker.schema.original.json",
+      "bytes": 16443,
+      "sha256": "e4542b88dc57afe362fca8fc73e245fdd0a7010df4157682e220b46bdc217cdd",
+      "mediaType": "application/json",
+      "status": "received-unmodified"
+    },
+    {
+      "path": "arch-info.json",
+      "bytes": 582,
+      "sha256": "bd9e3be80848742a308e33849c4e885c890ec918e51cb0a9df99a5064445b0a7",
+      "mediaType": "application/json",
+      "status": "received-unmodified"
+    },
+    {
+      "path": "App.tsx",
+      "bytes": 81977,
+      "sha256": "1c649703dc67d2c4c977d6140061d3fdf175f8ee06b1a1cadf97839a42014fd4",
+      "mediaType": "application/octet-stream",
+      "status": "received-unmodified"
+    },
+    {
+      "path": "archmaker.schema.v5.1.json",
+      "bytes": 6975,
+      "sha256": "6d40c7d19ea8d2988e6e5b747b1f97cadda9d74d0492071b58ffd3a862b8af0e",
+      "mediaType": "application/json",
+      "status": "received-unmodified"
+    },
+    {
+      "path": "forge_v4_final.html",
+      "bytes": 35288,
+      "sha256": "02e37d4be7dbb894c7751cc0a2da5f946b755a41a1e58b74363f854661bb1426",
+      "mediaType": "text/html",
+      "status": "received-unmodified"
+    },
+    {
+      "path": "index.html",
+      "bytes": 84253,
+      "sha256": "6e08055891c89f3480032cb4ab443220be6a8aee538666b13aca93f39e39f8cf",
+      "mediaType": "text/html",
+      "status": "received-unmodified"
+    },
+    {
+      "path": "libpacks.json",
+      "bytes": 3448,
+      "sha256": "01725c753f4cf1d2903db8a80621d3c56b785bfb48ec30bfe5cb5eef32ea7c09",
+      "mediaType": "application/json",
+      "status": "received-unmodified"
+    },
+    {
+      "path": "presets.json",
+      "bytes": 708,
+      "sha256": "b810dc64add4c23d5d6f30529ba9c6de2c5d7351f8b875ec23d31cf82c3522f5",
+      "mediaType": "application/json",
+      "status": "received-unmodified"
+    },
+    {
+      "path": "README.md",
+      "bytes": 2480,
+      "sha256": "3ec9801be46f10e9d514d549f9b47c3220e545d9b8938f732323de8cc17e50e3",
+      "mediaType": "text/markdown",
+      "status": "received-unmodified"
+    },
+    {
+      "path": "validation-rules.json",
+      "bytes": 986,
+      "sha256": "f013dbef741bec2c8a342411ce5fcc5165e7ce639e207fbdf751dbd53d73331d",
+      "mediaType": "application/json",
+      "status": "received-unmodified"
+    }
+  ],
+  "declaredButMissing": [
+    "archmaker-v10.4-p3.yaml",
+    "i18n.es.json",
+    "neubat_forge_v4_final.html"
+  ]
+}

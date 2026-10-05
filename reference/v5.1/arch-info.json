@@ -1,0 +1,14 @@
+{
+  "x86_64": {
+    "desc": "Intel/AMD 64-bit",
+    "compat": "Total: AUR completo, Steam nativo, drivers Nvidia/AMD maduros",
+    "recommended_for": "PC/laptop estándar, gaming, workstation",
+    "pacstrap": "pacstrap /mnt base linux btrfs-progs base-devel"
+  },
+  "aarch64": {
+    "desc": "ARM 64-bit",
+    "compat": "Parcial: algunos AUR no compilados, Steam requiere box64, drivers en evolución",
+    "recommended_for": "Apple Silicon, Raspberry Pi 5, Snapdragon X Elite, eficiencia energética",
+    "pacstrap": "pacstrap /mnt base linux-aarch64 btrfs-progs base-devel"
+  }
+}

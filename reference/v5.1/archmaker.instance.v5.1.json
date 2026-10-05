@@ -1,0 +1,619 @@
+{
+  "archmaker": {
+    "name": "ArchMaker",
+    "version": "5.1.0",
+    "date": "2026-10-05",
+    "arch": [
+      "x86_64"
+    ],
+    "deploy": "local",
+    "arch_info": {
+      "x86_64": {
+        "desc": "Intel/AMD 64-bit",
+        "compat": "Total: AUR completo, Steam nativo, drivers Nvidia/AMD maduros",
+        "recommended_for": "PC/laptop estándar, gaming, workstation",
+        "pacstrap": "pacstrap /mnt base linux btrfs-progs base-devel"
+      },
+      "aarch64": {
+        "desc": "ARM 64-bit",
+        "compat": "Parcial: algunos AUR no compilados, Steam requiere box64, drivers en evolución",
+        "recommended_for": "Apple Silicon, Raspberry Pi 5, Snapdragon X Elite, eficiencia energética",
+        "pacstrap": "pacstrap /mnt base linux-aarch64 btrfs-progs base-devel"
+      }
+    },
+    "iso": {
+      "name": "archmaker-forge-v5.1"
+    }
+  },
+  "palette": {
+    "canonical": "oklch",
+    "tokens": [
+      {
+        "token": "--rh-red",
+        "hex": "#ee0000",
+        "oklch": "oklch(0.62 0.24 29)",
+        "usage": "primary"
+      },
+      {
+        "token": "--rh-blue",
+        "hex": "#0066cc",
+        "oklch": "oklch(0.55 0.18 250)",
+        "usage": "focus"
+      },
+      {
+        "token": "--rh-black",
+        "hex": "#151515",
+        "oklch": "oklch(0.20 0 0)",
+        "usage": "text"
+      }
+    ]
+  },
+  "configurator": {
+    "type": "multi",
+    "steps": [
+      {
+        "id": "base",
+        "name": "Sistema Base",
+        "icon": "🧰",
+        "mode": "grouped",
+        "sections": [
+          {
+            "id": "kernel",
+            "name": "Kernel",
+            "single": true,
+            "options": [
+              {
+                "id": "linux",
+                "name": "Linux",
+                "pkg": "linux",
+                "size": 180,
+                "tags": [
+                  "Recomendado"
+                ],
+                "description": "7.1.2 estable"
+              },
+              {
+                "id": "linux-zen",
+                "name": "Linux Zen",
+                "pkg": "linux-zen",
+                "size": 185,
+                "tags": [
+                  "Gaming"
+                ],
+                "description": "7.1-zen baja latencia"
+              },
+              {
+                "id": "linux-hardened",
+                "name": "Linux Hardened",
+                "pkg": "linux-hardened",
+                "size": 182,
+                "tags": [
+                  "Seguridad"
+                ],
+                "description": "Endurecido, nuevo en v5.1, reemplaza LTS"
+              }
+            ]
+          },
+          {
+            "id": "filesystem",
+            "name": "Sistema de Archivos",
+            "options": [
+              {
+                "id": "btrfs-progs",
+                "name": "Btrfs",
+                "pkg": "btrfs-progs",
+                "fixed": true,
+                "tags": [
+                  "Recomendado"
+                ],
+                "description": "Snapshots + zstd, recomendado"
+              },
+              {
+                "id": "e2fsprogs",
+                "name": "Ext4",
+                "pkg": "e2fsprogs",
+                "tags": [
+                  "Clásico"
+                ],
+                "description": "Estable clásico"
+              }
+            ]
+          },
+          {
+            "id": "base-devel",
+            "name": "Base Devel",
+            "options": [
+              {
+                "id": "base-devel",
+                "name": "base-devel",
+                "pkg": "base-devel",
+                "fixed": true,
+                "tags": [
+                  "Esencial"
+                ],
+                "description": "gcc, make, patch - esencial AUR, sustituye concepto antiguo base-devel como pack fijo"
+              }
+            ]
+          },
+          {
+            "id": "boot",
+            "name": "Bootloader",
+            "single": true,
+            "options": [
+              {
+                "id": "systemd-boot",
+                "name": "systemd-boot",
+                "pkg": "systemd-boot",
+                "tags": [
+                  "Recomendado"
+                ],
+                "description": "Ligero UEFI 2025+"
+              },
+              {
+                "id": "grub",
+                "name": "GRUB",
+                "pkg": "grub",
+                "tags": [
+                  "Clásico"
+                ]
+              },
+              {
+                "id": "limine",
+                "name": "Limine",
+                "pkg": "limine",
+                "tags": [
+                  "Actual",
+                  "Moderno"
+                ],
+                "description": "Reemplaza efibootmgr, BIOS/UEFI 2024-2026"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "environment",
+        "name": "Entorno Gráfico",
+        "icon": "🖥️",
+        "mode": "single",
+        "single_compositor": true,
+        "sections": [
+          {
+            "id": "compositor",
+            "name": "Compositor / DE - Selección Única",
+            "single": true,
+            "options": [
+              {
+                "id": "hyprland",
+                "name": "Hyprland",
+                "pkg": "hyprland"
+              },
+              {
+                "id": "gnome",
+                "name": "GNOME",
+                "pkg": "gnome",
+                "auto_dm": "gdm"
+              },
+              {
+                "id": "sway",
+                "name": "Sway",
+                "pkg": "sway"
+              },
+              {
+                "id": "cosmic",
+                "name": "COSMIC",
+                "pkg": "cosmic-epoch",
+                "note": "Reemplaza KDE Plasma"
+              }
+            ]
+          },
+          {
+            "id": "dm",
+            "name": "Display Manager",
+            "single": true,
+            "auto_logic": "GNOME -> GDM bloqueado",
+            "options": [
+              {
+                "id": "gdm",
+                "name": "GDM",
+                "pkg": "gdm"
+              },
+              {
+                "id": "sddm",
+                "name": "SDDM",
+                "pkg": "sddm"
+              },
+              {
+                "id": "greetd-tuigreet",
+                "name": "greetd + tuigreet",
+                "pkg": "greetd-tuigreet"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "libpacks",
+        "name": "Packs de librerías",
+        "icon": "📚",
+        "description": "Nueva capa entre Entorno y Aplicaciones",
+        "sections": [
+          {
+            "id": "office-pack",
+            "name": "Oficina",
+            "essential": [
+              {
+                "id": "libreoffice-fresh",
+                "name": "LibreOffice Fresh",
+                "fixed": true,
+                "pkg": "libreoffice-fresh",
+                "reason": "Suite base ODT/DOCX"
+              },
+              {
+                "id": "hunspell-es",
+                "name": "Hunspell ES",
+                "fixed": true,
+                "pkg": "hunspell-es_es",
+                "reason": "Corrector ortográfico"
+              },
+              {
+                "id": "poppler",
+                "name": "Poppler",
+                "fixed": true,
+                "pkg": "poppler",
+                "reason": "Render PDF"
+              }
+            ],
+            "recommended": [
+              {
+                "id": "onlyoffice-bin",
+                "name": "OnlyOffice",
+                "pkg": "onlyoffice-bin"
+              },
+              {
+                "id": "pdfarranger",
+                "name": "PDF Arranger",
+                "pkg": "pdfarranger"
+              },
+              {
+                "id": "nextcloud-client",
+                "name": "Nextcloud",
+                "pkg": "nextcloud-client"
+              }
+            ]
+          },
+          {
+            "id": "dev-pack",
+            "name": "Desarrollo",
+            "essential": [
+              {
+                "id": "git",
+                "name": "Git",
+                "fixed": true,
+                "pkg": "git",
+                "reason": "Control versiones base"
+              },
+              {
+                "id": "python",
+                "name": "Python",
+                "fixed": true,
+                "pkg": "python",
+                "reason": "Runtime base"
+              },
+              {
+                "id": "nodejs",
+                "name": "Node.js",
+                "fixed": true,
+                "pkg": "nodejs",
+                "reason": "JS runtime"
+              }
+            ],
+            "recommended": [
+              {
+                "id": "docker",
+                "name": "Docker",
+                "pkg": "docker"
+              },
+              {
+                "id": "podman",
+                "name": "Podman",
+                "pkg": "podman"
+              },
+              {
+                "id": "rustup",
+                "name": "Rustup",
+                "pkg": "rustup"
+              },
+              {
+                "id": "go",
+                "name": "Go",
+                "pkg": "go"
+              },
+              {
+                "id": "jdk-openjdk",
+                "name": "JDK OpenJDK",
+                "pkg": "jdk-openjdk"
+              }
+            ]
+          },
+          {
+            "id": "gaming-pack",
+            "name": "Gaming",
+            "essential": [
+              {
+                "id": "vulkan-icd-loader",
+                "name": "Vulkan ICD Loader",
+                "fixed": true,
+                "pkg": "vulkan-icd-loader",
+                "reason": "API Vulkan base"
+              },
+              {
+                "id": "lib32-vulkan",
+                "name": "lib32 Vulkan",
+                "fixed": true,
+                "pkg": "lib32-vulkan-icd-loader",
+                "reason": "Compat 32-bit Proton"
+              },
+              {
+                "id": "gamemode",
+                "name": "GameMode",
+                "fixed": true,
+                "pkg": "gamemode",
+                "reason": "Optimiza CPU/GPU en juegos"
+              }
+            ],
+            "recommended": [
+              {
+                "id": "mangohud",
+                "name": "MangoHud",
+                "pkg": "mangohud"
+              },
+              {
+                "id": "gamescope",
+                "name": "Gamescope",
+                "pkg": "gamescope"
+              },
+              {
+                "id": "protonup-qt",
+                "name": "ProtonUp-Qt",
+                "pkg": "protonup-qt"
+              },
+              {
+                "id": "lutris",
+                "name": "Lutris",
+                "pkg": "lutris"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "apps",
+        "name": "Aplicaciones",
+        "icon": "📦",
+        "sections": [
+          {
+            "id": "terminal",
+            "name": "Terminal",
+            "options": [
+              {
+                "id": "ghostty",
+                "name": "Ghostty",
+                "pkg": "ghostty",
+                "tags": [
+                  "Moderno"
+                ],
+                "description": "Zig, GPU, reemplaza Alacritty"
+              },
+              {
+                "id": "kitty",
+                "name": "Kitty",
+                "pkg": "kitty",
+                "tags": [
+                  "Recomendado"
+                ],
+                "description": "GPU, ligatures"
+              },
+              {
+                "id": "foot",
+                "name": "Foot",
+                "pkg": "foot",
+                "tags": [
+                  "Ligero"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "browser",
+            "name": "Navegación",
+            "options": [
+              {
+                "id": "firefox",
+                "name": "Firefox",
+                "pkg": "firefox"
+              },
+              {
+                "id": "vivaldi",
+                "name": "Vivaldi",
+                "pkg": "vivaldi"
+              },
+              {
+                "id": "brave-bin",
+                "name": "Brave",
+                "pkg": "brave-bin"
+              }
+            ]
+          },
+          {
+            "id": "apps-core",
+            "name": "Aplicaciones Fundamentales",
+            "options": [
+              {
+                "id": "steam",
+                "name": "Steam",
+                "pkg": "steam",
+                "tags": [
+                  "Gaming"
+                ],
+                "description": "Nuevo en v5.1"
+              },
+              {
+                "id": "vlc",
+                "name": "VLC",
+                "pkg": "vlc",
+                "tags": [
+                  "Fundamental"
+                ],
+                "description": "Reproductor universal - nuevo"
+              },
+              {
+                "id": "gimp",
+                "name": "GIMP",
+                "pkg": "gimp",
+                "tags": [
+                  "Fundamental"
+                ],
+                "description": "Edición imagen - nuevo"
+              },
+              {
+                "id": "obsidian",
+                "name": "Obsidian",
+                "pkg": "obsidian",
+                "tags": [
+                  "Fundamental"
+                ],
+                "description": "Notas markdown - nuevo"
+              },
+              {
+                "id": "micro",
+                "name": "Micro",
+                "pkg": "micro"
+              },
+              {
+                "id": "btop",
+                "name": "btop",
+                "pkg": "btop"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "validation": {
+    "engine": "live",
+    "blocking": true,
+    "rules": [
+      {
+        "id": "single-compositor",
+        "type": "error",
+        "blocking": true,
+        "when": {
+          "count_gt": [
+            "compositor",
+            1
+          ]
+        },
+        "action": "block",
+        "note": "Solo 1 compositor permitido - nueva lógica v5.1"
+      },
+      {
+        "id": "gdm-gnome",
+        "type": "info",
+        "when": {
+          "eq": [
+            "compositor",
+            "gnome"
+          ]
+        },
+        "action": "change",
+        "target": "dm",
+        "allowed": [
+          "gdm"
+        ],
+        "note": "GNOME -> GDM autoseleccionado y bloqueado"
+      },
+      {
+        "id": "nvidia-sway",
+        "type": "error",
+        "when": {
+          "all": [
+            {
+              "eq": [
+                "gpu",
+                "nvidia"
+              ]
+            },
+            {
+              "eq": [
+                "compositor",
+                "sway"
+              ]
+            }
+          ]
+        },
+        "action": "change"
+      }
+    ]
+  },
+  "build": {
+    "output_dir": "./out",
+    "iso_name_template": "archmaker-{version}-{arch}.iso",
+    "compression": "zstd",
+    "compression_level": 15,
+    "checksums": [
+      "sha256"
+    ],
+    "pipeline": [
+      "validate",
+      "resolve",
+      "derive_palette",
+      "pacstrap",
+      "assemble",
+      "checksum"
+    ]
+  },
+  "presets": [
+    {
+      "id": "minimal",
+      "name": "Mínimo",
+      "selections": {
+        "kernel": "linux",
+        "filesystem": "btrfs-progs",
+        "boot": "systemd-boot",
+        "compositor": "hyprland",
+        "terminal": "ghostty"
+      }
+    },
+    {
+      "id": "desktop",
+      "name": "Escritorio",
+      "parent": "minimal",
+      "selections": {
+        "compositor": "gnome",
+        "dm": "gdm",
+        "browser": "firefox",
+        "apps": [
+          "steam",
+          "vlc"
+        ]
+      }
+    },
+    {
+      "id": "dev",
+      "name": "Desarrollo",
+      "parent": "desktop",
+      "selections": {
+        "dev-pack": [
+          "docker",
+          "rustup"
+        ],
+        "terminal": "ghostty",
+        "apps": [
+          "obsidian"
+        ]
+      }
+    }
+  ]
+}

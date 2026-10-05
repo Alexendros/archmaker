@@ -1,0 +1,56 @@
+{
+  "engine": "live",
+  "blocking": true,
+  "rules": [
+    {
+      "id": "single-compositor",
+      "type": "error",
+      "blocking": true,
+      "when": {
+        "count_gt": [
+          "compositor",
+          1
+        ]
+      },
+      "action": "block",
+      "note": "Solo 1 compositor permitido - nueva lógica v5.1"
+    },
+    {
+      "id": "gdm-gnome",
+      "type": "info",
+      "when": {
+        "eq": [
+          "compositor",
+          "gnome"
+        ]
+      },
+      "action": "change",
+      "target": "dm",
+      "allowed": [
+        "gdm"
+      ],
+      "note": "GNOME -> GDM autoseleccionado y bloqueado"
+    },
+    {
+      "id": "nvidia-sway",
+      "type": "error",
+      "when": {
+        "all": [
+          {
+            "eq": [
+              "gpu",
+              "nvidia"
+            ]
+          },
+          {
+            "eq": [
+              "compositor",
+              "sway"
+            ]
+          }
+        ]
+      },
+      "action": "change"
+    }
+  ]
+}

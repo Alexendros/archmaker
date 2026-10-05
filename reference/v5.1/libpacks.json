@@ -1,0 +1,155 @@
+{
+  "id": "libpacks",
+  "name": "Packs de librerías",
+  "icon": "📚",
+  "description": "Nueva capa entre Entorno y Aplicaciones",
+  "sections": [
+    {
+      "id": "office-pack",
+      "name": "Oficina",
+      "essential": [
+        {
+          "id": "libreoffice-fresh",
+          "name": "LibreOffice Fresh",
+          "fixed": true,
+          "pkg": "libreoffice-fresh",
+          "reason": "Suite base ODT/DOCX"
+        },
+        {
+          "id": "hunspell-es",
+          "name": "Hunspell ES",
+          "fixed": true,
+          "pkg": "hunspell-es_es",
+          "reason": "Corrector ortográfico"
+        },
+        {
+          "id": "poppler",
+          "name": "Poppler",
+          "fixed": true,
+          "pkg": "poppler",
+          "reason": "Render PDF"
+        }
+      ],
+      "recommended": [
+        {
+          "id": "onlyoffice-bin",
+          "name": "OnlyOffice",
+          "pkg": "onlyoffice-bin"
+        },
+        {
+          "id": "pdfarranger",
+          "name": "PDF Arranger",
+          "pkg": "pdfarranger"
+        },
+        {
+          "id": "nextcloud-client",
+          "name": "Nextcloud",
+          "pkg": "nextcloud-client"
+        }
+      ]
+    },
+    {
+      "id": "dev-pack",
+      "name": "Desarrollo",
+      "essential": [
+        {
+          "id": "git",
+          "name": "Git",
+          "fixed": true,
+          "pkg": "git",
+          "reason": "Control versiones base"
+        },
+        {
+          "id": "python",
+          "name": "Python",
+          "fixed": true,
+          "pkg": "python",
+          "reason": "Runtime base"
+        },
+        {
+          "id": "nodejs",
+          "name": "Node.js",
+          "fixed": true,
+          "pkg": "nodejs",
+          "reason": "JS runtime"
+        }
+      ],
+      "recommended": [
+        {
+          "id": "docker",
+          "name": "Docker",
+          "pkg": "docker"
+        },
+        {
+          "id": "podman",
+          "name": "Podman",
+          "pkg": "podman"
+        },
+        {
+          "id": "rustup",
+          "name": "Rustup",
+          "pkg": "rustup"
+        },
+        {
+          "id": "go",
+          "name": "Go",
+          "pkg": "go"
+        },
+        {
+          "id": "jdk-openjdk",
+          "name": "JDK OpenJDK",
+          "pkg": "jdk-openjdk"
+        }
+      ]
+    },
+    {
+      "id": "gaming-pack",
+      "name": "Gaming",
+      "essential": [
+        {
+          "id": "vulkan-icd-loader",
+          "name": "Vulkan ICD Loader",
+          "fixed": true,
+          "pkg": "vulkan-icd-loader",
+          "reason": "API Vulkan base"
+        },
+        {
+          "id": "lib32-vulkan",
+          "name": "lib32 Vulkan",
+          "fixed": true,
+          "pkg": "lib32-vulkan-icd-loader",
+          "reason": "Compat 32-bit Proton"
+        },
+        {
+          "id": "gamemode",
+          "name": "GameMode",
+          "fixed": true,
+          "pkg": "gamemode",
+          "reason": "Optimiza CPU/GPU en juegos"
+        }
+      ],
+      "recommended": [
+        {
+          "id": "mangohud",
+          "name": "MangoHud",
+          "pkg": "mangohud"
+        },
+        {
+          "id": "gamescope",
+          "name": "Gamescope",
+          "pkg": "gamescope"
+        },
+        {
+          "id": "protonup-qt",
+          "name": "ProtonUp-Qt",
+          "pkg": "protonup-qt"
+        },
+        {
+          "id": "lutris",
+          "name": "Lutris",
+          "pkg": "lutris"
+        }
+      ]
+    }
+  ]
+}

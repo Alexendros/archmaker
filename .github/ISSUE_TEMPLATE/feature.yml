@@ -1,0 +1,25 @@
+name: Feature
+about: Funcionalidad trazada
+body:
+  - type: input
+    id: ids
+    attributes:
+      label: IDs de requisitos y journey
+    validations:
+      required: true
+  - type: textarea
+    id: objective
+    attributes:
+      label: Objetivo
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Criterios de aceptación
+    validations:
+      required: true
+  - type: textarea
+    id: security
+    attributes:
+      label: Validación, seguridad y pruebas

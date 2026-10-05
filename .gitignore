@@ -1,0 +1,20 @@
+# Editores
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Build futuro (MVP+)
+node_modules/
+dist/
+target/
+*.log
+
+# Entornos y secretos
+.env
+.env.*
+!.env.example

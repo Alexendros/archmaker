@@ -1,0 +1,787 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://archmaker.local/archmaker.schema.json",
+  "title": "ArchMaker configuration",
+  "type": "object",
+  "required": [
+    "archmaker",
+    "configurator"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "archmaker": {
+      "type": "object",
+      "required": [
+        "name",
+        "version",
+        "arch"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string"
+        },
+        "arch": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "x86_64",
+              "aarch64"
+            ]
+          },
+          "minItems": 1
+        },
+        "deploy": {
+          "enum": [
+            "local",
+            "remote",
+            "chroot"
+          ]
+        },
+        "iso": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    },
+    "palette": {
+      "type": "object",
+      "properties": {
+        "tokens": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "token"
+            ],
+            "properties": {
+              "token": {
+                "type": "string"
+              },
+              "hex": {
+                "type": "string",
+                "pattern": "^#[0-9a-fA-F]{6}$"
+              },
+              "oklch": {
+                "type": "string",
+                "pattern": "^oklch\\("
+              },
+              "usage": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "semantic": {
+          "type": "object",
+          "properties": {
+            "tokens": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/palette_token"
+              }
+            }
+          },
+          "additionalProperties": true
+        },
+        "canonical": {
+          "enum": [
+            "hex",
+            "oklch"
+          ],
+          "description": "valor canónico por token; el otro se deriva en build"
+        },
+        "themes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "description": "override de tokens semanticos por tema; 'dark' es el primero soportado"
+        }
+      },
+      "additionalProperties": true
+    },
+    "templates": {
+      "type": "object",
+      "properties": {
+        "resolvers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "configurator": {
+      "type": "object",
+      "required": [
+        "type",
+        "steps"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "single",
+            "multi"
+          ]
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/step"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "validation": {
+      "type": "object",
+      "properties": {
+        "engine": {
+          "enum": [
+            "live",
+            "batch"
+          ]
+        },
+        "blocking": {
+          "type": "boolean"
+        },
+        "rules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/rule"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "rust_core": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "presets": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/preset"
+      }
+    },
+    "build": {
+      "type": "object",
+      "properties": {
+        "output_dir": {
+          "type": "string"
+        },
+        "iso_name_template": {
+          "type": "string"
+        },
+        "compression": {
+          "enum": [
+            "zstd",
+            "xz",
+            "none"
+          ]
+        },
+        "compression_level": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 22
+        },
+        "checksums": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "sha256",
+              "sha512",
+              "blake2b"
+            ]
+          }
+        },
+        "gpg_sign": {
+          "type": "boolean"
+        },
+        "dry_run": {
+          "type": "boolean"
+        },
+        "pipeline": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "validate",
+              "resolve",
+              "derive_palette",
+              "pacstrap",
+              "assemble",
+              "checksum"
+            ]
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "i18n": {
+      "type": "object",
+      "properties": {
+        "default": {
+          "type": "string"
+        },
+        "fallback": {
+          "type": "string"
+        },
+        "catalogs": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "testing": {
+      "type": "object",
+      "properties": {
+        "schema_check": {
+          "type": "boolean"
+        },
+        "resolver_dry_run": {
+          "type": "boolean"
+        },
+        "vm_smoke": {
+          "type": "object",
+          "properties": {
+            "runner": {
+              "enum": [
+                "qemu",
+                "virtualbox",
+                "libvirt"
+              ]
+            },
+            "headless": {
+              "type": "boolean"
+            },
+            "timeout_min": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "asserts": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": true
+        },
+        "ci": {
+          "type": "object",
+          "properties": {
+            "on": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "install": {
+      "type": "object",
+      "required": [
+        "manager"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "manager": {
+          "enum": [
+            "pacman",
+            "aur",
+            "none"
+          ],
+          "description": "none = sin paquete (opción desactivable o gestión externa, p. ej. particionado)"
+        },
+        "helper": {
+          "enum": [
+            "paru",
+            "yay"
+          ]
+        },
+        "packages": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "when": {
+          "type": "string",
+          "description": "expresión del motor de resolvers; la instalación solo ocurre si es verdadera"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "manager": {
+                "const": "pacman"
+              }
+            },
+            "required": [
+              "manager"
+            ]
+          },
+          "then": {
+            "required": [
+              "packages"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "manager": {
+                "const": "aur"
+              }
+            },
+            "required": [
+              "manager"
+            ]
+          },
+          "then": {
+            "required": [
+              "helper",
+              "packages"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "manager": {
+                "const": "none"
+              }
+            },
+            "required": [
+              "manager"
+            ]
+          },
+          "then": {
+            "not": {
+              "required": [
+                "packages"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "option": {
+      "type": "object",
+      "required": [
+        "id",
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_-]*$"
+        },
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "version_source": {
+          "type": "string",
+          "format": "uri"
+        },
+        "install": {
+          "$ref": "#/$defs/install"
+        },
+        "wiki": {
+          "type": "string",
+          "format": "uri"
+        },
+        "recommended": {
+          "type": "boolean"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "hooks": {
+          "$ref": "#/$defs/hooks"
+        }
+      },
+      "additionalProperties": true
+    },
+    "field": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "type"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_-]*$"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "string",
+            "enum",
+            "boolean",
+            "number"
+          ]
+        },
+        "default": true,
+        "required": {
+          "type": "boolean"
+        },
+        "validation": {
+          "type": "string"
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/option"
+          }
+        },
+        "requires": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "install": {
+          "$ref": "#/$defs/install"
+        }
+      },
+      "additionalProperties": true
+    },
+    "section": {
+      "type": "object",
+      "required": [
+        "id",
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_-]*$"
+        },
+        "name": {
+          "type": "string"
+        },
+        "multi": {
+          "type": "boolean"
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/option"
+          }
+        },
+        "fields": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/field"
+          }
+        },
+        "groups": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "name"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "required": {
+                "type": "boolean"
+              },
+              "packages": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/option"
+                }
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "hooks": {
+          "$ref": "#/$defs/hooks"
+        }
+      },
+      "additionalProperties": true
+    },
+    "step": {
+      "type": "object",
+      "required": [
+        "id",
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_-]*$"
+        },
+        "name": {
+          "type": "string"
+        },
+        "mode": {
+          "enum": [
+            "grouped",
+            "flat"
+          ]
+        },
+        "sections": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/section"
+          }
+        },
+        "hooks": {
+          "$ref": "#/$defs/hooks"
+        }
+      },
+      "additionalProperties": true
+    },
+    "rule": {
+      "type": "object",
+      "required": [
+        "id",
+        "when",
+        "action"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "error",
+            "warn",
+            "info"
+          ]
+        },
+        "blocking": {
+          "type": "boolean"
+        },
+        "action": {
+          "enum": [
+            "change",
+            "suggest",
+            "block"
+          ]
+        },
+        "target": {
+          "type": "string"
+        },
+        "allowed": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "when": {
+          "$ref": "#/$defs/logic"
+        },
+        "note": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "logic": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "all"
+          ],
+          "properties": {
+            "all": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/logic"
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "any"
+          ],
+          "properties": {
+            "any": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/logic"
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "not"
+          ],
+          "properties": {
+            "not": {
+              "$ref": "#/$defs/logic"
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "eq"
+          ],
+          "properties": {
+            "eq": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": true
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "ne"
+          ],
+          "properties": {
+            "ne": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": true
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "in"
+          ],
+          "properties": {
+            "in": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": true
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "palette_token": {
+      "type": "object",
+      "required": [
+        "token"
+      ],
+      "properties": {
+        "token": {
+          "type": "string"
+        },
+        "hex": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "oklch": {
+          "type": "string",
+          "pattern": "^oklch\\("
+        },
+        "usage": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "hooks": {
+      "type": "object",
+      "properties": {
+        "pre": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "post": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "preset": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "selections"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+$"
+        },
+        "name": {
+          "type": "string"
+        },
+        "parent": {
+          "type": "string"
+        },
+        "selections": {
+          "type": "object",
+          "additionalProperties": {
+            "type": [
+              "string",
+              "boolean",
+              "number"
+            ]
+          }
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}

@@ -1,0 +1,42 @@
+[
+  {
+    "id": "minimal",
+    "name": "Mínimo",
+    "selections": {
+      "kernel": "linux",
+      "filesystem": "btrfs-progs",
+      "boot": "systemd-boot",
+      "compositor": "hyprland",
+      "terminal": "ghostty"
+    }
+  },
+  {
+    "id": "desktop",
+    "name": "Escritorio",
+    "parent": "minimal",
+    "selections": {
+      "compositor": "gnome",
+      "dm": "gdm",
+      "browser": "firefox",
+      "apps": [
+        "steam",
+        "vlc"
+      ]
+    }
+  },
+  {
+    "id": "dev",
+    "name": "Desarrollo",
+    "parent": "desktop",
+    "selections": {
+      "dev-pack": [
+        "docker",
+        "rustup"
+      ],
+      "terminal": "ghostty",
+      "apps": [
+        "obsidian"
+      ]
+    }
+  }
+]

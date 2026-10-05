@@ -1,0 +1,11 @@
+archmaker.instance.v5.1.json: OK
+archmaker.schema.original.json: OK
+arch-info.json: OK
+App.tsx: OK
+archmaker.schema.v5.1.json: OK
+forge_v4_final.html: OK
+index.html: OK
+libpacks.json: OK
+presets.json: OK
+README.md: OK
+validation-rules.json: OK
