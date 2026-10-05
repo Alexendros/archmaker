@@ -10,9 +10,10 @@
 ## Alcance
 
 Este documento enumera los DTO que cruzan `CorePort` (ver `core-port.md`), los tipos de valor
-compartidos y las reglas de paridad entre Rust, TypeScript y WASM. **No define schemas
-definitivos**: la forma exacta se fijará en JSON Schema 2020-12 (`SRC-006`, pendiente de captura)
-y en los correspondientes ADR de contrato. Los ejemplos JSON son ilustrativos.
+compartidos y las reglas de paridad entre Rust, TypeScript y WASM. La **forma canónica** de los
+contratos persistidos está fijada en los 8 JSON Schema 2020-12 de `contracts/json-schema/`
+(ADR-0005); este documento describe su semántica y los DTO de operación que no tienen schema
+propio. Los ejemplos JSON de más abajo son ilustrativos.
 
 Cada contrato se versiona con `schemaVersion`, independiente de `documentVersion`,
 `catalogRef.version`, `targetRef.version`, `producer.version` y `protocolVersion`
@@ -74,7 +75,14 @@ contenido sea un secreto: `secretRef` **nunca** serializa el secreto (`THR-SEC-0
 | `RequestId` | uuid | Sí | Correlación de operaciones largas. |
 | `CorrelationId` | uuid | Sí | Correlación de errores/eventos. |
 
-`documentVersion` y `schemaVersion` son cadenas; su formato exacto depende de un ADR pendiente.
+`documentVersion` y `schemaVersion` son cadenas; su formato lo fija ADR-0006 (ejes de versionado
+independientes).
+
+**`ValueRef` (identificadores en reglas)**: las referencias de valor usadas por los operadores
+(`eq`, `in`, `count`, `required`, `selected`) usan el espacio **global** `vendor.kind.id` (DEC-002).
+El corpus heredado v5.1 usa IDs cortos (p. ej. `compositor`); el migrador los resuelve a su ID
+global mediante la tabla de aliases del catálogo destino (`versioning-migrations.md`). Una
+`ValueRef` que no resuelva produce un diagnóstico `AM-RES` bloqueante.
 
 ### `CoreError` y `Diagnostic`
 
@@ -82,6 +90,34 @@ Se definen en `errors-events.md` y se referencian, no se redefinen aquí:
 
 - `CoreError`: `code`, `category`, `messageKey`, `params`, `retryable`, `correlationId`, `causeCode`.
 - `Diagnostic`: `code`, `severity`, `blocking`, `path`, `messageKey`, `params`, `source`, `ruleId`, `suggestions`.
+
+`severity` usa `error | warning | info`; la lista canónica y los códigos `AM-*` los fija
+`errors-events.md` (catálogo único). `fatal` y `debug` quedan **reservados**, no usados por el MVP.
+
+## Correspondencia con JSON Schema
+
+Los contratos persistidos tienen schema canónico en `contracts/json-schema/` (Draft 2020-12,
+`additionalProperties:false`, ADR-0005). Los DTO de operación (`*Input`/`*Result`) no tienen schema
+propio salvo los indicados; su forma se deriva de las firmas de `core-port.md`.
+
+| DTO | Schema | Estado |
+|---|---|---|
+| `Draft` | `draft.schema.json` | canónico |
+| `CatalogView` | `catalog.schema.json` | canónico |
+| `Diagnostic` | `diagnostic.schema.json` | canónico |
+| `ManifestResult` | `manifest.schema.json` | canónico |
+| `ExportResult` | `artifact.schema.json` | canónico |
+| InstallationPlan (v1) | `installation-plan.schema.json` | canónico (v1) |
+| RunnerEnvelope (v1) | `runner-envelope.schema.json` | canónico (v1) |
+| `Rule` | `rule.schema.json` | canónico |
+
+El corpus positivo/negativo vive en `contracts/json-schema/examples/` y la migración v5.1 en
+`contracts/json-schema/examples/migration/`. La paridad TS/Rust/WASM se verifica contra ese corpus
+compartido.
+
+> Mapas abiertos: `artifact.content` y `runner-envelope.payload` permanecen como mapas abiertos
+> documentados; cerrarlos por `oneOf` exige fijar el profile `archinstall` (no verificado, SRC-003).
+> Se cerrarán cuando SRC-003 fije el formato del target.
 
 ## DTO de entrada
 
@@ -504,6 +540,8 @@ Asociación indicativa (las familias están definidas en `errors-events.md`):
 - `versioning-migrations.md` y `canonicalization.md`: versiones, campos efímeros y hashing.
 - `tauri-wasm.md`: paridad y adaptadores.
 - `glossary.md`: términos canónicos y anti-patrones.
-- Decisiones abiertas: **DEC-001** (`ExportTarget`), **DEC-002** (`CatalogRef.namespace`),
-  **DEC-008** (`TargetRef`).
-- Fuente pendiente: **SRC-006** (JSON Schema 2020-12) para cerrar los schemas definitivos.
+- Decisiones resueltas: **DEC-001** (`ExportTarget`: perfil ArchMaker + reporte, archinstall
+  experimental), **DEC-002** (`CatalogRef.namespace`: global `vendor.kind.id`), **DEC-008**
+  (`TargetRef`: solo Arch x86_64).
+- Schemas canónicos: `contracts/json-schema/` (8 schemas Draft 2020-12, ADR-0005); **SRC-006**
+  capturado el 2026-10-05.
