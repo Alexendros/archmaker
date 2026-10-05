@@ -9,18 +9,20 @@
 La planificación avanzó (ver «Progreso»), pero **no puede autorizarse el desarrollo** porque:
 
 1. Los documentos de producto, arquitectura y datos siguen en `draft`/`in-review`: falta la **aprobación humana** (`accepted`) de FR/NFR, modelo de dominio y C4/módulos.
-2. Persisten **riesgos P0** (RSK-001/002/003/004/007/008) sin tratamiento cerrado.
-3. Las fuentes mutables **SRC-005 (Rust/RustSec)** y **SRC-008 (SSDF/Sigstore)** están `pending-capture`, y **SRC-007 (ARIA APG)** parcial; imprescindibles para G8/G9.
-4. Los **contratos P0** existen con corpus válido/inválido, pero el **job de CI de corpus** está pendiente y la CI no se ha ejecutado en verde.
-5. La **aprobación formal de Seguridad** (sign-off del privilege model) está pendiente antes de G8.
+2. Persisten **riesgos P0 residuales**: RSK-003 (divergencia WASM/Tauri), RSK-004 (migración pierde selecciones) y RSK-007 (supply-chain) siguen abiertos; RSK-001/002/008 tienen control definido y sign-off, con verificación de implementación pendiente.
+3. La **CI no se ha ejecutado en verde**: el job de corpus válido/inválido existe (Etapa C), pero aún no hay una ejecución verde registrada.
+4. El **SBOM, las firmas reales y la provenance** quedan pendientes de artefactos de producto (DEC-005/DEC-006 aceptadas; Etapa C parcial).
+5. La **aprobación humana** (`accepted`) de FR/NFR, modelo de dominio y C4/módulos sigue pendiente (Etapa E).
 
 ## Progreso desde la evaluación anterior
 
 - **DEC-001..DEC-008 accepted** (2026-10-05): alcance de exportación, IDs globales `vendor.kind.id`, adapter archinstall, transporte del runner (Unix socket + auth), licencia (Apache-2.0/dual), firma (Sigstore + offline), **updater firmado en MVP** (desviación), **solo Arch x86_64** (desviación).
 - **ADR-0001..ADR-0009 accepted**.
 - **8 JSON Schema Draft 2020-12** cerrados (`additionalProperties:false`) + corpus válido/inválido + fixture de migración v5.1.
-- **Fuentes SRC-002/003/006 capturadas**; SRC-007/008 partial; SRC-005 pendiente.
-- **CI documental** con acciones fijadas por SHA; `sha256sum --check` en verde.
+- **Fuentes SRC-001..SRC-008 verificadas** (SRC-002/003/006 en Paso 2; SRC-005/007/008 en Etapa B).
+- **CI documental** con acciones fijadas por SHA; `sha256sum --check` en verde; job `corpus-validate` (válido/inválido) añadido (Etapa C).
+- **Etapa D**: sign-off de Seguridad registrado 2026-10-05; RSK-001/002/008 con control definido (verificación de implementación pendiente).
+- **Etapa A (A1-A6)**: marcadores obsoletos resueltos, índice ADR, plantilla de issue, severidad canónica, catálogo AM-* completo.
 
 ## Cobertura de gates
 
@@ -30,12 +32,12 @@ La planificación avanzó (ver «Progreso»), pero **no puede autorizarse el des
 | G1 Problema/usuarios | partial | aprobar objetivos/personas; métricas no verificadas |
 | G2 Alcance/requisitos | partial | aprobar FR/NFR (hoy draft) |
 | G3 Arquitectura | partial | aprobar C4/módulos (hoy draft) |
-| G4 Datos | partial | meta-validación CI en verde; aprobar modelo e identidad |
+| G4 Datos | partial | CI en verde; aprobar modelo e identidad |
 | G5 Interfaces | partial | aprobar CorePort/DTO; ratificar cobertura CorePort |
 | G6 UX/diseño | partial | validación de accesibilidad; aprobar tokens preservados |
-| G7 Validación | partial | corpus ejecutable; ratificar `required`; RULE-GPU-001 no implementable |
-| G8 Seguridad | partial | aprobación formal de Seguridad; cerrar RSK-001/002/008 |
-| G9 Calidad | partial | CI en verde; capturar SRC-005/SRC-008; SBOM/firmas reales |
+| G7 Validación | partial | ratificar `required`; RULE-GPU-001 no implementable |
+| G8 Seguridad | partial | verificación de implementación (pruebas negativas de capabilities/elevación); RSK-001/002/008 con control definido y sign-off |
+| G9 Calidad | partial | CI en verde; SBOM/firmas reales |
 | G10 Delivery | partial | owners en backlog; releases |
 
 ## Criterios de salida (para pasar a Go)
