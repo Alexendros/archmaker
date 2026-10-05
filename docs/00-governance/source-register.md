@@ -21,13 +21,13 @@ Toda afirmación mutable (paquetes, versiones, compatibilidad, comportamiento de
 
 | ID | URL canónica | Versión objetivo | Fecha de captura | Verificador | Caducidad / revisión |
 |---|---|---|---|---|---|
-| SRC-002 | https://wiki.archlinux.org/title/Installation_guide | Contenido wiki vigente a la fecha | 2026-10-05 | Gobierno | Revisar por release de soporte o si cambia el flujo de instalación |
-| SRC-003 | https://github.com/archlinux/archinstall | Repositorio oficial vigente a la fecha | 2026-10-05 | Gobierno | Revisar antes de fijar el adapter v1 (DEC-003) |
-| SRC-004 | https://v2.tauri.app/ | Tauri 2.x | 2026-10-05 (previa) | Seguridad | Revisar por minor; fijar permisos por ventana |
-| SRC-005 | https://doc.rust-lang.org/stable/ · https://rustsec.org/ | Rust estable + RustSec Advisory DB | 2026-10-05 | Seguridad | Revisar por release estable y por aviso relevante en `cargo-audit` |
-| SRC-006 | https://json-schema.org/draft/2020-12/release-notes | Draft 2020-12 | 2026-10-05 | Arquitectura | Estable; revisar notas de errata |
-| SRC-007 | https://www.w3.org/TR/WCAG22/ · https://www.w3.org/WAI/ARIA/apg/ | **W3C Recommendation 12 December 2024** + ARIA APG vigente | 2026-10-05 | UX/Accesibilidad | Estable; revisar APG por cambios de patrón |
-| SRC-008 | https://slsa.dev/spec/v1.2/ · https://csrc.nist.gov/pubs/sp/800/218/final · https://docs.sigstore.dev/ | **SLSA v1.2** (v1.0 retirada) · **NIST SSDF SP 800-218 v1.1** · Sigstore vigente | 2026-10-05 | Seguridad/Release | Revisar por nueva versión de especificación; fijar versiones antes de firmar releases |
+| SRC-002 | <https://wiki.archlinux.org/title/Installation_guide> | Contenido wiki vigente a la fecha | 2026-10-05 | Gobierno | Revisar por release de soporte o si cambia el flujo de instalación |
+| SRC-003 | <https://github.com/archlinux/archinstall> | Repositorio oficial vigente a la fecha | 2026-10-05 | Gobierno | Revisar antes de fijar el adapter v1 (DEC-003) |
+| SRC-004 | <https://v2.tauri.app/> | Tauri 2.x | 2026-10-05 (previa) | Seguridad | Revisar por minor; fijar permisos por ventana |
+| SRC-005 | <https://doc.rust-lang.org/stable/> · <https://rustsec.org/> | Rust estable + RustSec Advisory DB | 2026-10-05 | Seguridad | Revisar por release estable y por aviso relevante en `cargo-audit` |
+| SRC-006 | <https://json-schema.org/draft/2020-12/release-notes> | Draft 2020-12 | 2026-10-05 | Arquitectura | Estable; revisar notas de errata |
+| SRC-007 | <https://www.w3.org/TR/WCAG22/> · <https://www.w3.org/WAI/ARIA/apg/> | **W3C Recommendation 12 December 2024** + ARIA APG vigente | 2026-10-05 | UX/Accesibilidad | Estable; revisar APG por cambios de patrón |
+| SRC-008 | <https://slsa.dev/spec/v1.2/> · <https://csrc.nist.gov/pubs/sp/800/218/final> · <https://docs.sigstore.dev/> | **SLSA v1.2** (v1.0 retirada) · **NIST SSDF SP 800-218 v1.1** · Sigstore vigente | 2026-10-05 | Seguridad/Release | Revisar por nueva versión de especificación; fijar versiones antes de firmar releases |
 
 ## Notas de verificación
 
