@@ -50,24 +50,23 @@ documento conserva únicamente el resultado motivado y deriva la cobertura de ga
 manifiestos.
 
 <!-- BEGIN GATES-DERIVED -->
-
 ## Cobertura de gates (derivada)
 
 Bloque generado desde `contracts/governance/gates/G*.json` por `tools/gates.py`; no editar a mano.
 
-| Gate                            | Estado      | Fases (doc/diseño/impl/verif/release)       | Falta para `complete` |
-| ------------------------------- | ----------- | ------------------------------------------- | --------------------- |
-| G0 Fuentes controladas          | complete    | complete/n/a/complete/complete/n/a          | —                     |
-| G1 Problema y usuarios          | in-progress | complete/n/a/n/a/pending/n/a                | G1-C03                |
-| G2 Alcance y requisitos         | in-progress | complete/n/a/n/a/pending/n/a                | G2-C04                |
-| G3 Arquitectura                 | in-progress | complete/complete/n/a/pending/n/a           | —                     |
-| G4 Datos y contratos            | complete    | complete/complete/complete/complete/n/a     | —                     |
-| G5 Interfaces y CorePort        | complete    | complete/complete/complete/complete/n/a     | —                     |
-| G6 UX y design system           | in-progress | in-progress/in-progress/pending/pending/n/a | G6-C01, G6-C03        |
-| G7 Validación y corpus          | complete    | complete/complete/complete/complete/n/a     | —                     |
-| G8 Seguridad                    | complete    | complete/complete/complete/complete/n/a     | —                     |
-| G9 Calidad y CI                 | complete    | complete/complete/complete/complete/n/a     | —                     |
-| G10 Delivery y walking skeleton | complete    | complete/complete/complete/complete/n/a     | —                     |
+| Gate | Estado | Fases (doc/diseño/impl/verif/release) | Falta para `complete` |
+|---|---|---|---|
+| G0 Fuentes controladas | complete | complete/n/a/complete/complete/n/a | — |
+| G1 Problema y usuarios | in-progress | complete/n/a/n/a/pending/n/a | G1-C03 |
+| G2 Alcance y requisitos | in-progress | complete/n/a/n/a/pending/n/a | G2-C04 |
+| G3 Arquitectura | in-progress | complete/complete/n/a/pending/n/a | — |
+| G4 Datos y contratos | complete | complete/complete/complete/complete/n/a | — |
+| G5 Interfaces y CorePort | complete | complete/complete/complete/complete/n/a | — |
+| G6 UX y design system | in-progress | in-progress/in-progress/pending/pending/n/a | G6-C01, G6-C03 |
+| G7 Validación y corpus | complete | complete/complete/complete/complete/n/a | — |
+| G8 Seguridad | complete | complete/complete/complete/complete/n/a | — |
+| G9 Calidad y CI | complete | complete/complete/complete/complete/n/a | — |
+| G10 Delivery y walking skeleton | complete | complete/complete/complete/complete/n/a | — |
 
 Resultado derivado: **No-Go** — no todos los gates están `complete` (faltan G1, G2, G3, G6).
 <!-- END GATES-DERIVED -->

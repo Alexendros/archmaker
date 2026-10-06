@@ -23,19 +23,19 @@ Tabla **generada** desde `contracts/governance/gates/G*.json` por `tools/gates.p
 No editar a mano: `python3 tools/gates.py` falla si esta tabla contradice los manifiestos.
 La semántica de los estados se lee en `docs/00-governance/status-model.md` (DOC-GOV-STATUS-001).
 
-| Gate | Título                      | Fases (doc/diseño/impl/verif/release)       | Estado      | Criterios pendientes |
-| ---- | --------------------------- | ------------------------------------------- | ----------- | -------------------- |
-| G0   | Fuentes controladas         | complete/n/a/complete/complete/n/a          | complete    | —                    |
-| G1   | Problema y usuarios         | complete/n/a/n/a/pending/n/a                | in-progress | G1-C03               |
-| G2   | Alcance y requisitos        | complete/n/a/n/a/pending/n/a                | in-progress | G2-C04               |
-| G3   | Arquitectura                | complete/complete/n/a/pending/n/a           | in-progress | —                    |
-| G4   | Datos y contratos           | complete/complete/complete/complete/n/a     | complete    | —                    |
-| G5   | Interfaces y CorePort       | complete/complete/complete/complete/n/a     | complete    | —                    |
-| G6   | UX y design system          | in-progress/in-progress/pending/pending/n/a | in-progress | G6-C01, G6-C03       |
-| G7   | Validación y corpus         | complete/complete/complete/complete/n/a     | complete    | —                    |
-| G8   | Seguridad                   | complete/complete/complete/complete/n/a     | complete    | —                    |
-| G9   | Calidad y CI                | complete/complete/complete/complete/n/a     | complete    | —                    |
-| G10  | Delivery y walking skeleton | complete/complete/complete/complete/n/a     | complete    | —                    |
+| Gate | Título | Fases (doc/diseño/impl/verif/release) | Estado | Criterios pendientes |
+|---|---|---|---|---|
+| G0 | Fuentes controladas | complete/n/a/complete/complete/n/a | complete | — |
+| G1 | Problema y usuarios | complete/n/a/n/a/pending/n/a | in-progress | G1-C03 |
+| G2 | Alcance y requisitos | complete/n/a/n/a/pending/n/a | in-progress | G2-C04 |
+| G3 | Arquitectura | complete/complete/n/a/pending/n/a | in-progress | — |
+| G4 | Datos y contratos | complete/complete/complete/complete/n/a | complete | — |
+| G5 | Interfaces y CorePort | complete/complete/complete/complete/n/a | complete | — |
+| G6 | UX y design system | in-progress/in-progress/pending/pending/n/a | in-progress | G6-C01, G6-C03 |
+| G7 | Validación y corpus | complete/complete/complete/complete/n/a | complete | — |
+| G8 | Seguridad | complete/complete/complete/complete/n/a | complete | — |
+| G9 | Calidad y CI | complete/complete/complete/complete/n/a | complete | — |
+| G10 | Delivery y walking skeleton | complete/complete/complete/complete/n/a | complete | — |
 
 ## Criterios por gate
 
@@ -116,3 +116,4 @@ La semántica de los estados se lee en `docs/00-governance/status-model.md` (DOC
 
 - Resultado global derivado: **No-Go** — no todos los gates están `complete` (faltan G1, G2, G3, G6).
 - `docs/00-governance/go-no-go.md` reproduce esta cobertura desde los mismos manifiestos.
+
