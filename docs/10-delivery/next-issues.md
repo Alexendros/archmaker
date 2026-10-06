@@ -17,7 +17,9 @@ reviewers:
 
 - Documento: DOC-DEL-ISS-001 · Estado: draft · Propietario: Delivery · Fecha: 2026-10-05
 - Formato: issues trazables en Markdown (decisión D7). Cada issue declara requisitos, riesgos, amenazas, validadores y pruebas afectados.
-- Estos 10 issues son la descomposición ejecutable de `docs/10-delivery/backlog.md`; **no** autorizan código funcional de producto mientras el gate siga en No-Go.
+- Estos 10 issues son la descomposición ejecutable de `docs/10-delivery/backlog.md`. El veredicto
+  vigente es **CONDITIONAL-GO — walking skeleton MVP-0** (`docs/00-governance/final-review-planning-v1.1.md`);
+  autoriza el vertical slice de `docs/10-delivery/walking-skeleton.md`, no el MVP completo ni el runner.
 
 | # | Issue | Depende de | Gate | Rol propietario | Criterio de Done |
 |---|---|---|---|---|---|
@@ -42,4 +44,8 @@ reviewers:
 
 ## Regla de cierre del plan
 
-Tras ISSUE-001..010 en verde y sin P0 abiertos, se reevalúa `docs/00-governance/go-no-go.md`; solo entonces se autoriza `MVP-0`.
+El veredicto de la revisión independiente R13 es **CONDITIONAL-GO — walking skeleton MVP-0**
+(`docs/00-governance/final-review-planning-v1.1.md`), con condiciones fechadas `C1`–`C8`. La
+reevaluación del gate global y la autorización del MVP completo exigen G0–G10 en `complete`, sin
+P0 abiertos y con las condiciones cerradas; solo entonces se actualiza
+`docs/00-governance/go-no-go.md`.

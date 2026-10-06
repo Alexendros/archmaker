@@ -44,8 +44,8 @@ Programa `planning-v1 → planning-v1.1`. Esquema de issues `AUD-*` (GitHub #4�
 | AUD-021 | #24 | P1 | AUD-020 | complete | Matriz WCAG 2.2 AA con evidencia automatizada + manual separada | G6 |
 | AUD-022 | #25 | P0 | AUD-005/006/010…017 | complete | Ejecución verde en commit protegido + evidencia | G9 |
 | AUD-023 | #26 | P0 | AUD-016/017/018/020 | complete | Alcance incluido/excluido + criterios de aceptación (walking skeleton) | G10 |
-| AUD-024 | #27 | P0 | AUD-022, AUD-023 | pending | Revisión de arquitectura, seguridad, a11y, trazabilidad; recálculo G0–G10 | G10 |
-| AUD-025 | #28 | P0 | AUD-024 | pending | Baseline `planning-v1.1` con veredicto | G10 |
+| AUD-024 | #27 | P0 | AUD-022, AUD-023 | complete | Revisión de arquitectura, seguridad, a11y, trazabilidad; recálculo G0–G10 (`final-review-planning-v1.1.md`) | G10 |
+| AUD-025 | #28 | P0 | AUD-024 | pending | Baseline `planning-v1.1` con veredicto (publicación por el orquestador) | G10 |
 
 ## Grafo de dependencias
 

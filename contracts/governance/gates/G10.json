@@ -51,7 +51,16 @@
       "id": "G10-C03",
       "description": "Revisión independiente y publicación del baseline planning-v1.1 (AUD-024/025).",
       "kind": "review",
-      "status": "pending"
+      "status": "complete",
+      "evidence": [
+        {
+          "type": "review",
+          "ref": "revisión independiente R13 (AUD-024)",
+          "reviewer": "independent-reviewer",
+          "reviewDate": "2026-10-06",
+          "note": "informe docs/00-governance/final-review-planning-v1.1.md (DOC-GOV-REV-001); la publicación del baseline (AUD-025) la ejecuta el orquestador"
+        }
+      ]
     }
   ]
 }

@@ -15,7 +15,7 @@ reviewers:
 
 # ArchMaker — Índice documental (planning-v1)
 
-- Estado del plan: in-review · Gate global: **No-Go** · Baseline: planning-v1 · Corte: 2026-10-05
+- Estado del plan: in-review · Gate global: **CONDITIONAL-GO** (walking skeleton MVP-0) · Baseline: planning-v1.1 · Corte: 2026-10-06
 - Autonomía documental: permitida. Código funcional de producto: **bloqueado** hasta aprobar G0–G10.
 - Estados válidos (`docs/00-governance/document-control.md`): `draft`, `in-review`, `accepted`, `superseded`, `deferred`, `rejected`.
 - Regla de reemplazo: copiar por rutas canónicas; `reference/v5.1/` debe permanecer byte a byte.
@@ -32,6 +32,7 @@ reviewers:
 | `risk-register.md` (RSK-001..010) | DOC-GOV-RSK | in-review |
 | `source-register.md` (SRC-001..008) | DOC-GOV-SRC | in-review |
 | `traceability-matrix.md` | DOC-GOV-TRACE | in-review |
+| `final-review-planning-v1.1.md` (revisión R13) | DOC-GOV-REV-001 | in-review |
 | `go-no-go.md` | DOC-GOV-GNG-001 | draft |
 
 ## 01 — Producto
@@ -115,6 +116,7 @@ reviewers:
 | `backlog.md` | DOC-DEL-BACK-001 | draft |
 | `next-issues.md` (10 issues) | DOC-DEL-ISS-001 | draft |
 | `gates.md` (G0–G10) | DOC-DEL-GATE-001 | in-review |
+| `walking-skeleton.md` (slice MVP-0) | DOC-DEL-WSK-001 | in-review |
 | `packaging-release.md` | DOC-DEL-PKG-001 | draft |
 
 ## 11–12 — Operaciones e investigación

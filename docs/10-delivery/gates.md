@@ -28,14 +28,14 @@ La semántica de los estados se lee en `docs/00-governance/status-model.md` (DOC
 | G0 | Fuentes controladas | complete/n/a/complete/complete/n/a | complete | — |
 | G1 | Problema y usuarios | complete/n/a/n/a/pending/n/a | in-progress | G1-C03 |
 | G2 | Alcance y requisitos | complete/n/a/n/a/pending/n/a | in-progress | G2-C04 |
-| G3 | Arquitectura | complete/complete/n/a/pending/n/a | in-progress | G3-C04 |
+| G3 | Arquitectura | complete/complete/n/a/pending/n/a | in-progress | — |
 | G4 | Datos y contratos | in-progress/in-progress/pending/pending/n/a | in-progress | — |
 | G5 | Interfaces y CorePort | in-progress/pending/pending/pending/n/a | in-progress | G5-C03 |
 | G6 | UX y design system | in-progress/in-progress/pending/pending/n/a | in-progress | G6-C01, G6-C03 |
 | G7 | Validación y corpus | in-progress/n/a/in-progress/pending/n/a | in-progress | — |
 | G8 | Seguridad | in-progress/in-progress/pending/pending/n/a | in-progress | G8-C01, G8-C04 |
 | G9 | Calidad y CI | in-progress/n/a/in-progress/pending/n/a | in-progress | G9-C03 |
-| G10 | Delivery y walking skeleton | in-progress/n/a/pending/pending/pending | in-progress | G10-C03 |
+| G10 | Delivery y walking skeleton | in-progress/n/a/pending/pending/pending | in-progress | — |
 
 ## Criterios por gate
 
@@ -66,7 +66,7 @@ La semántica de los estados se lee en `docs/00-governance/status-model.md` (DOC
 - `G3-C01` · document-approved · complete — C4 corregido (Rust Core como componente interno) y viewpoints ISO/IEC/IEEE 42010. · 3 evidencia(s)
 - `G3-C02` · document-approved · complete — Mapa de módulos y reglas de dependencia aprobados. · 2 evidencia(s)
 - `G3-C03` · decision · complete — ADR-0007 aceptado con las decisiones normativas de canonicalización (R5). · 1 evidencia(s)
-- `G3-C04` · review · pending — Revisión arquitectónica independiente (R13, AUD-024).
+- `G3-C04` · review · complete — Revisión arquitectónica independiente (R13, AUD-024). · 1 evidencia(s)
 
 ### G4 — Datos y contratos (`in-progress`)
 
@@ -110,7 +110,7 @@ La semántica de los estados se lee en `docs/00-governance/status-model.md` (DOC
 
 - `G10-C01` · document-approved · complete — Roadmap, backlog y next-issues con alcance del walking skeleton (R12). · 4 evidencia(s)
 - `G10-C02` · metric-verified · complete — Owners y dependencias del backlog asignados. · 2 evidencia(s)
-- `G10-C03` · review · pending — Revisión independiente y publicación del baseline planning-v1.1 (AUD-024/025).
+- `G10-C03` · review · complete — Revisión independiente y publicación del baseline planning-v1.1 (AUD-024/025). · 1 evidencia(s)
 
 ## Derivación
 
