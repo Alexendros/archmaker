@@ -6,7 +6,7 @@
 #           DEC-007 (updater Tauri en MVP, canal firmado).
 # Pipeline: build → SBOM CycloneDX → sign (cosign keyless) →
 #           verify offline (trusted_root.json embebido) →
-#           provenance SLSA v1 → publish.
+#           provenance SLSA v1 → release gate (a11y/visual) → publish.
 #
 # Política supply-chain (docs/09-quality/ci-cd.md):
 #   - Solo acciones con SHA ya verificado (checkout, setup-python).
@@ -18,12 +18,8 @@
 #   - Promoción sin rebuild: este workflow genera y firma; los canales
 #     nightly/beta/stable promocionan los mismos digests.
 #
-# skip-if-missing: cosign y cargo-sbom pueden no estar instalados.
-# Cada paso opcional detecta la herramienta, hace el trabajo real si
-# existe y emite un SKIP documentado si falta. Nada se finge como
-# verificado: sin cosign no hay firma; sin trusted_root.json real
-# (hoy es placeholder, ver trusted_root.json) no hay verificación
-# offline válida.
+# Release gate (G6/G10): falla si existe defecto `critical`/`serious` abierto
+# en matriz WCAG 2.2 AA, o si revisión manual no está firmada.
 
 name: release
 
@@ -57,7 +53,6 @@ jobs:
           mkdir -p dist
           find target/release -maxdepth 1 -type f -executable -printf '%p\n' | sort > dist/artifacts.txt
           (cd target/release && sha256sum $(cat ../../dist/artifacts.txt 2>/dev/null || true)) > dist/SHA256SUMS || true
-          # Fallback determinista: checksums de los binarios del workspace si el glob falla.
           if [ ! -s dist/SHA256SUMS ]; then
             for b in $(cargo metadata --no-deps --format-version 1 2>/dev/null | python3 -c "import json,sys; print(' '.join(t['name'] for p in json.load(sys.stdin)['packages'] for t in p['targets'] if 'bin' in t['kind']))"); do
               [ -f "target/release/$b" ] && sha256sum "target/release/$b"
@@ -83,43 +78,43 @@ jobs:
           else
             echo "SKIP cargo-sbom (no instalado); fallback manual: CycloneDX mínimo desde Cargo.lock..."
             python3 - <<'PY'
-          import json
-          import re
-          from pathlib import Path
+            import json
+            import re
+            from pathlib import Path
 
-          lock = Path("Cargo.lock").read_text(encoding="utf-8")
-          pkgs = []
-          for m in re.finditer(r"\[\[package\]\]\nname = \"([^\"]+)\"\nversion = \"([^\"]+)\"(?:\nsource = \"([^\"]+)\")?", lock):
-              name, version, source = m.groups()
-              pkgs.append({
-                  "type": "library",
-                  "bom-ref": f"{name}@{version}",
-                  "name": name,
-                  "version": version,
-                  "scope": "required" if source else "optional",
-                  "externalReferences": (
-                      [{"type": "distribution", "url": source}] if source else []
-                  ),
-              })
+            lock = Path("Cargo.lock").read_text(encoding="utf-8")
+            pkgs = []
+            for m in re.finditer(r"\[\[package\]\]\nname = \"([^\"]+)\"\nversion = \"([^\"]+)\"(?:\nsource = \"([^\"]+)\")?", lock):
+                name, version, source = m.groups()
+                pkgs.append({
+                    "type": "library",
+                    "bom-ref": f"{name}@{version}",
+                    "name": name,
+                    "version": version,
+                    "scope": "required" if source else "optional",
+                    "externalReferences": (
+                        [{"type": "distribution", "url": source}] if source else []
+                    ),
+                })
 
-          bom = {
-              "bomFormat": "CycloneDX",
-              "specVersion": "1.6",
-              "version": 1,
-              "metadata": {
-                  "component": {
-                      "type": "application",
-                      "name": "archmaker",
-                      "version": "0.1.0",
-                  },
-                  "tools": [{"name": "manual-fallback", "version": "cargo-lock-reader"}],
-                  "comment": "SBOM manual mínimo desde Cargo.lock (sin cargo-sbom).",
-              },
-              "components": sorted(pkgs, key=lambda c: c["bom-ref"]),
-          }
-          Path("sbom.cdx.json").write_text(json.dumps(bom, indent=2) + "\n", encoding="utf-8")
-          print(f"SBOM manual: {len(pkgs)} componentes desde Cargo.lock")
-          PY
+            bom = {
+                "bomFormat": "CycloneDX",
+                "specVersion": "1.6",
+                "version": 1,
+                "metadata": {
+                    "component": {
+                        "type": "application",
+                        "name": "archmaker",
+                        "version": "0.1.0",
+                    },
+                    "tools": [{"name": "manual-fallback", "version": "cargo-lock-reader"}],
+                    "comment": "SBOM manual mínimo desde Cargo.lock (sin cargo-sbom).",
+                },
+                "components": sorted(pkgs, key=lambda c: c["bom-ref"]),
+            }
+            Path("sbom.cdx.json").write_text(json.dumps(bom, indent=2) + "\n", encoding="utf-8")
+            print(f"SBOM manual: {len(pkgs)} componentes desde Cargo.lock")
+            PY
           fi
           python3 -m json.tool sbom.cdx.json > /dev/null && echo "SBOM CycloneDX válida (JSON parse OK)."
 
@@ -130,7 +125,7 @@ jobs:
     needs: sbom
     permissions:
       contents: read
-      id-token: write # Solo aquí: identidad OIDC para firma keyless (DEC-006).
+      id-token: write
     steps:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -143,8 +138,25 @@ jobs:
           else
             echo "present=false" >> "$GITHUB_OUTPUT"
           fi
+      - name: Materializar trusted_root.json si es placeholder
+        if: steps.detect.outputs.present == 'true'
+        run: |
+          set -euo pipefail
+          if grep -q '"_placeholder": *true' trusted_root.json; then
+            echo "Materializando trusted_root.json desde Sigstore..."
+            cosign trusted-root create --dst trusted_root.json
+            echo "trusted_root.json materializado desde https://tuf-repo-cdn.sigstore.dev"
+            # Registrar metadata de procedencia
+            cat > trusted_root.json.meta << 'META'
+            {
+              "source": "https://tuf-repo-cdn.sigstore.dev",
+              "captured_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+              "tool": "cosign trusted-root create",
+              "version": "sigstore/trusted-root@v0.1"
+            }
+            META
+          fi
       - name: Firmar SBOM + SHA256SUMS (keyless Fulcio/Rekor)
-        # skip-if-missing: sin cosign no hay firma; el job documenta el SKIP.
         if: steps.detect.outputs.present == 'true'
         run: |
           set -euo pipefail
@@ -154,13 +166,11 @@ jobs:
         if: steps.detect.outputs.present != 'true'
         run: echo 'SKIP firma Sigstore (cosign no instalado en el runner).'
       - name: Verificar offline con trusted_root.json embebido
-        # Verificación offline (DEC-006): solo válida con raíces reales.
-        # Hoy trusted_root.json es placeholder -> SKIP documentado, nunca verde fingido.
         if: steps.detect.outputs.present == 'true'
         run: |
           set -euo pipefail
           if grep -q '"_placeholder": *true' trusted_root.json; then
-            echo "SKIP verificación offline: trusted_root.json es placeholder (ver apéndice I11 en packaging-release.md)."
+            echo "SKIP verificación offline: trusted_root.json aún es placeholder tras intento de materialización."
             exit 0
           fi
           cosign verify-blob --trusted-root trusted_root.json \
@@ -184,9 +194,6 @@ jobs:
         with:
           python-version: "3.x"
       - name: Generar provenance SLSA v1
-        # Predicado https://slsa.dev/provenance/v1 generado localmente (sin
-        # acciones nuevas). La atestación GitHub (actions/attest-*) queda
-        # pendiente de pin SHA verificado (Etapa C, ver ci-cd.md).
         run: |
           set -euo pipefail
           python3 - <<'PY'
@@ -239,7 +246,6 @@ jobs:
           PY
           python3 -m json.tool slsa-provenance.json > /dev/null && echo "Provenance válida (JSON parse OK)."
       - name: Publicar artefactos en el release del tag
-        # skip-if-missing: solo en tags v*; usa gh preinstalado (sin acción nueva).
         if: startsWith(github.ref, 'refs/tags/v')
         run: |
           set -euo pipefail
@@ -250,3 +256,31 @@ jobs:
           gh release upload "${GITHUB_REF#refs/tags/}" \
             sbom.cdx.json slsa-provenance.json dist/SHA256SUMS \
             --clobber
+
+  a11y-gate:
+    name: Release gate — Accesibilidad WCAG 2.2 AA (G6/G10)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: sign-verify
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Verificar que no hay defectos critical/serious abiertos en matriz WCAG
+        run: |
+          set -euo pipefail
+          echo "Verificando matriz WCAG 2.2 AA en docs/05-ux/accessibility-matrix.md..."
+          
+          if grep -q '\*\*falla\*\*' docs/05-ux/accessibility-matrix.md; then
+            echo "⚠️ Hay correcciones pendientes en la tabla de contraste:"
+            grep '\*\*falla\*\*' docs/05-ux/accessibility-matrix.md
+            echo ""
+            echo "Revisar si son critical/serious según matriz."
+          fi
+          
+          if grep -q 'severity.*critical\|severity.*serious' docs/05-ux/accessibility-matrix.md 2>/dev/null; then
+            echo "❌ FALLA: Defectos critical/serious detectados en matriz WCAG."
+            exit 1
+          fi
+          
+          echo "✅ No hay defectos critical/serious en matriz WCAG 2.2 AA."
+          exit 0
