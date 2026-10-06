@@ -65,9 +65,7 @@ Renovate ya configurado (`.github/dependabot.yml`: cargo, npm, github-actions, s
 | Runner | ✓ | ✓ | ✓ | ✓ | VM | ✓ |
 | Enterprise | ✓ |  |  | ✓ | ✓ | fault |
 
-## Golden profiles
-
-Minimal UEFI/ext4; GNOME/Btrfs; Hyprland/AMD; Sway/NVIDIA conflict; gaming/multilib; dev/Podman; v5.1 migration; aliases; catálogo manipulado; target incompatible.
+## Golden profiles (cobertura I10)
 
 ## Alcance de plataforma
 

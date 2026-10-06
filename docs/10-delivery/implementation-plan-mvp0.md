@@ -428,7 +428,7 @@ El plan se considera **completo y autorizable para implementación** cuando:
 2. ✅ Todos los 41 issues propuestos creados en GitHub con labels, milestones y dependencias
 3. ✅ Hitos M0–M8 creados en GitHub con fechas objetivo
 4. ✅ No existen contradicciones P0 sin resolución en la tabla §9
-6. ✅ Condiciones C1–C8 tienen tareas asignadas y trazables
+5. ✅ Condiciones C1–C8 tienen tareas asignadas y trazables
 6. ✅ Revisión independiente (AUD-024 bis) programada con revisor confirmado
 7. ✅ Aprobación explícita del operador para proceder a implementación
 
