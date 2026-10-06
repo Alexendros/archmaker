@@ -10,7 +10,7 @@ releaseStatus: ineligible
 owners:
   - ux
 reviewers:
-  - independent-reviewer
+  - Alexendros
 ---
 
 # Matriz de accesibilidad WCAG 2.2 AA
@@ -219,7 +219,7 @@ Niveles:
 2. Lectura con cada combinación **soportada**, verificando nombre, rol, valor, anuncios de
    estado y errores.
 3. Revisión de reflow, zoom, espaciado y movimiento reducido.
-4. Firmar cada criterio `pasa` con revisor independiente distinto del autor.
+4. Firmar cada criterio `pasa` con **Alexendros (supervisor)** distinto del autor.
 
 ## Trazabilidad
 

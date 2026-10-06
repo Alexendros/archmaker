@@ -10,7 +10,7 @@ releaseStatus: ineligible
 owners:
   - governance
 reviewers:
-  - independent-reviewer
+  - Alexendros
 ---
 
 # Plan completo de remediación — ArchMaker planning-v1.1

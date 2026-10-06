@@ -1,0 +1,66 @@
+{
+  "generated_at": "1791283483",
+  "git_sha": "4eb7390c009c23ffad3555bf362ea09f8943fba9",
+  "validators": [
+    {
+      "id": "VAL-CANONICALIZE",
+      "type": "canonicalize",
+      "location": "tools/canonicalize.py",
+      "command": "python3 tools/canonicalize.py",
+      "workflow": "ci",
+      "covers": ["NFR-DET-001", "FR-MANIFEST-001"],
+      "description": "Canonicalizacion y verificacion de digests (NFR-DET-001, FR-MANIFEST-001)",
+      "transversal": false
+    },
+    {
+      "id": "VAL-SCHEMA-REFS",
+      "type": "schema",
+      "location": "tools/validate_schema_refs.py",
+      "command": "python3 tools/validate_schema_refs.py",
+      "workflow": "ci",
+      "covers": ["FR-DRAFT-001", "FR-CAT-001", "FR-MANIFEST-001"],
+      "description": "Validacion de referencias de schema JSON (FR-DRAFT-001, FR-CAT-001, FR-MANIFEST-001)",
+      "transversal": false
+    },
+    {
+      "id": "VAL-NEG-CAPABILITIES",
+      "type": "negative",
+      "location": "tools/check_negative_capabilities.py",
+      "command": "python3 tools/check_negative_capabilities.py",
+      "workflow": "ci",
+      "covers": ["NFR-SEC-001", "FR-DRAFT-001", "FR-CAT-001", "FR-MANIFEST-001"],
+      "description": "Comprobacion estatica de capabilities y denegaciones (NFR-SEC-001, FR-DRAFT-001, FR-CAT-001, FR-MANIFEST-001)",
+      "transversal": false
+    },
+    {
+      "id": "VAL-FRONT-MATTER",
+      "type": "doc",
+      "location": "tools/validate_front_matter.py",
+      "command": "python3 tools/validate_front_matter.py",
+      "workflow": "ci",
+      "covers": [],
+      "description": "Validacion de front matter de documentos (control transversal)",
+      "transversal": true
+    },
+    {
+      "id": "VAL-GATES",
+      "type": "gate",
+      "location": "tools/gates.py",
+      "command": "python3 tools/gates.py",
+      "workflow": "ci",
+      "covers": [],
+      "description": "Validacion de estado de gates (control transversal)",
+      "transversal": true
+    },
+    {
+      "id": "VAL-TRACEABILITY",
+      "type": "doc",
+      "location": "tools/validate_traceability.py",
+      "command": "python3 tools/validate_traceability.py",
+      "workflow": "ci",
+      "covers": [],
+      "description": "Validacion de integridad de matriz de trazabilidad (control transversal)",
+      "transversal": true
+    }
+  ]
+}
