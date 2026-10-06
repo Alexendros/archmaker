@@ -1,0 +1,17 @@
+[package]
+name = "archmaker-core"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+archmaker-domain = { path = "../archmaker-domain" }
+archmaker-canonicalization = { path = "../archmaker-canonicalization" }
+archmaker-rules = { path = "../archmaker-rules" }
+archmaker-resolution = { path = "../archmaker-resolution" }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+
+[dev-dependencies]
+serde_json = "1"

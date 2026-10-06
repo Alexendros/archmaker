@@ -1,0 +1,125 @@
+:root {
+  --ds-color-neutral-0: #ffffff;
+  --ds-color-neutral-50: #f5f5f5;
+  --ds-color-neutral-100: #f0f0f0;
+  --ds-color-neutral-150: #e5e7eb;
+  --ds-color-neutral-200: #d2d2d2;
+  --ds-color-neutral-400: #a8a8a8;
+  --ds-color-neutral-600: #6a6e73;
+  --ds-color-neutral-700: #3c3f42;
+  --ds-color-neutral-800: #2a2a2a;
+  --ds-color-neutral-850: #1e1e1e;
+  --ds-color-neutral-900: #151515;
+  --ds-color-red-50: #fff5f5;
+  --ds-color-red-600: #ee0000;
+  --ds-color-red-950: #2a1515;
+  --ds-color-blue-50: #f0f6ff;
+  --ds-color-blue-200: #9ecaff;
+  --ds-color-blue-500: #3a6bc5;
+  --ds-color-blue-600: #0066cc;
+  --ds-color-blue-700: #2d5aa0;
+  --ds-color-blue-900: #1e3a5f;
+  --ds-color-green-600: #3e8635;
+  --ds-color-yellow-50: #fff8e6;
+  --ds-color-yellow-500: #f0ab00;
+  --ds-font-sans: "Red Hat Text", system-ui, sans-serif;
+  --ds-font-mono: "Red Hat Mono", ui-monospace, monospace;
+  --ds-size-base: 1rem;
+  --ds-space-1: 0.25rem;
+  --ds-space-2: 0.5rem;
+  --ds-space-3: 0.75rem;
+  --ds-space-4: 1rem;
+  --ds-space-6: 1.5rem;
+  --ds-radius-sm: 3px;
+  --ds-radius-md: 6px;
+  --ds-border-thin: 1px solid;
+  --ds-shadow-dialog: 0 8px 24px rgba(21, 21, 21, 0.24);
+  --ds-duration-instant: 0ms;
+  --ds-duration-fast: 120ms;
+  --ds-easing-standard: ease;
+  --ds-z-toast: 60;
+  --ds-z-dialog: 50;
+  --color-canvas: var(--ds-color-neutral-0);
+  --color-surface: var(--ds-color-neutral-50);
+  --color-border: var(--ds-color-neutral-200);
+  --color-text: var(--ds-color-neutral-900);
+  --color-text-muted: var(--ds-color-neutral-600);
+  --color-text-subtle: var(--ds-color-neutral-700);
+  --color-action: var(--ds-color-red-600);
+  --color-danger: var(--ds-color-red-600);
+  --color-focus: var(--ds-color-blue-600);
+  --color-info: var(--ds-color-blue-600);
+  --color-success: var(--ds-color-green-600);
+  --color-warning: var(--ds-color-yellow-500);
+  --button-bg: var(--color-action);
+  --button-fg: var(--ds-color-neutral-0);
+  --button-border: var(--color-action);
+  --button-radius: var(--ds-radius-md);
+  --option-card-bg: var(--color-surface);
+  --option-card-border: var(--color-border);
+  --option-card-selected-bg: var(--ds-color-red-50);
+  --option-card-selected-border: var(--color-action);
+  --field-bg: var(--color-canvas);
+  --field-border: var(--color-border);
+  --field-invalid-border: var(--color-danger);
+  --field-radius: var(--ds-radius-md);
+  --dialog-bg: var(--color-surface);
+  --dialog-border: var(--color-border);
+  --dialog-shadow: var(--ds-shadow-dialog);
+  --rail-bg: var(--color-surface);
+  --rail-item-current-bg: var(--ds-color-blue-50);
+  --rail-item-done-fg: var(--color-success);
+  --inspector-bg: var(--color-surface);
+  --inspector-border: var(--color-border);
+  --rh-red: var(--color-action);
+  --rh-blue: var(--color-focus);
+  --rh-green: var(--color-success);
+  --rh-yellow: var(--color-warning);
+  --rh-bg: var(--color-canvas);
+  --rh-surface: var(--color-surface);
+  --rh-border: var(--color-border);
+  --rh-black: var(--color-text);
+  --rh-gray: var(--color-text-muted);
+  --rh-gray-dark: var(--color-text-subtle);
+}
+
+.dark {
+  --color-canvas: var(--ds-color-neutral-900);
+  --color-surface: var(--ds-color-neutral-850);
+  --color-border: var(--ds-color-neutral-800);
+  --color-text: var(--ds-color-neutral-0);
+  --color-text-muted: var(--ds-color-neutral-400);
+  --color-text-subtle: var(--ds-color-neutral-400);
+  --color-action: var(--ds-color-red-600);
+  --color-danger: var(--ds-color-red-600);
+  --color-focus: var(--ds-color-blue-600);
+  --color-info: var(--ds-color-blue-600);
+  --color-success: var(--ds-color-green-600);
+  --color-warning: var(--ds-color-yellow-500);
+  --option-card-selected-bg: var(--ds-color-red-950);
+  --rail-item-current-bg: var(--ds-color-blue-900);
+}
+
+.hc {
+  --color-canvas: #000000;
+  --color-surface: #000000;
+  --color-border: #ffffff;
+  --color-text: #ffffff;
+  --color-text-muted: #ffffff;
+  --color-text-subtle: #ffffff;
+  --color-focus: #ffff00;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: var(--ds-duration-instant);
+    animation-iteration-count: 1;
+    transition-duration: var(--ds-duration-instant);
+    scroll-behavior: auto;
+  }
+}

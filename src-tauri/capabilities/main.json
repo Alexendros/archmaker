@@ -1,0 +1,16 @@
+{
+  "$schema": "../gen/schemas/capability.schema.json",
+  "identifier": "main-capability",
+  "description": "Deny-by-default: ventana main, solo los 7 comandos CorePort v0. Sin shell, sin FS global.",
+  "windows": ["main"],
+  "permissions": [
+    "core:create-draft",
+    "core:load-catalog",
+    "core:save-draft",
+    "core:resolve-draft",
+    "core:validate-draft",
+    "core:build-manifest",
+    "core:export-artifact"
+  ],
+  "denied": ["shell:*", "fs:read-home", "fs:write-home", "http:*", "updater:*"]
+}

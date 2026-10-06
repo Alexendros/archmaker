@@ -70,3 +70,31 @@ Cada release publica, como mínimo:
 - **Updater**: **en alcance MVP por DEC-007**. Canal firmado (DEC-006), endpoint por allowlist
   con TLS, verificación de firma, rollback y **fail-open offline** (la app funciona sin red).
   Ver `ADR-0009-actualizacion-firmada-mvp.md` y `docs/09-quality/ci-cd.md`.
+
+## Apéndice I11 — Canal, versión mínima, rollback y verificación offline (T-I11-02/T-I11-03)
+
+Fase I11 (2026-10-06). Decisiones: DEC-006 (Sigstore keyless + verificación offline),
+DEC-007 (updater en MVP), ADR-0008 (catálogos firmados), ADR-0009 (actualización firmada).
+Pipeline: `.github/workflows/release.yml`; raíces: `trusted_root.json` (raíz del repo).
+
+| Canal | Artefacto | Firma | Requisito de instalación |
+|---|---|---|---|
+| `nightly` | build de `main` (mismos digests) | Sigstore keyless (Fulcio/Rekor) | firma válida o rechazo |
+| `beta` | nightly promovido, sin rebuild | la del nightly promovido | firma válida + versión ≥ mínima |
+| `stable` | beta promovido, sin rebuild | la del beta promovido | firma válida + versión ≥ mínima |
+
+- **Versión mínima**: cada canal declara `minVersion`; el updater rechaza
+  `versión < minVersion` (anti-downgrade) y rechaza artefactos con firma
+  inválida o ausente (TST-SUP-001). Sin red, la app arranca y opera con
+  normalidad (fail-open offline, `NFR-OFF-001`); la comprobación solo ocurre
+  con conectividad y nunca bloquea el uso.
+- **Rollback**: revertir al digest anterior publicado del mismo canal
+  (promoción inversa, sin rebuild), documentando canal afectado y motivo;
+  el digest restaurado ya está firmado y atestado, no se re-firma.
+- **Verificación offline**: `cosign verify-blob --trusted-root trusted_root.json`
+  (sin red). Estado actual: `trusted_root.json` es **placeholder documentado**
+  (T-I11-02); `release.yml` hace SKIP —nunca verde fingido— hasta materializar
+  las raíces reales (procedimiento dentro del propio fichero).
+- **Provenance**: predicado SLSA v1 (`slsa-provenance.json`) generado en
+  `release.yml`; la atestación GitHub (`actions/attest-*`) queda pendiente de
+  pin SHA verificado (Etapa C, ver `docs/09-quality/ci-cd.md`).

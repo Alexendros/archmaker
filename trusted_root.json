@@ -1,0 +1,22 @@
+{
+  "_placeholder": true,
+  "mediaType": "application/vnd.dev.sigstore.trustedroot+json;version=0.1",
+  "status": "PLACEHOLDER — no es material de verificación válido (fase I11, T-I11-02).",
+  "decision": "DEC-006 (Sigstore keyless + verificación offline con raíces fijadas).",
+  "purpose": "Raíces de Fulcio/Rekor fijadas para `cosign verify-blob --trusted-root`. El workflow release.yml omite la verificación offline (SKIP documentado) mientras este fichero sea placeholder; nunca se finge un verificado en verde.",
+  "how_to_materialize": [
+    "1. Obtener la raíz TUF de Sigstore: `cosign trusted-root create --dst trusted_root.json` (o `tuf-client` contra tuf-repo-cdn.sigstore.dev).",
+    "2. Fijar el contenido resultante en este fichero, eliminando la clave `_placeholder` y esta documentación.",
+    "3. Registrar URL, fecha de captura y caducidad como evidencia VAL (ADR-0008: procedencia con caducidad).",
+    "4. El workflow release.yml empezará a verificar offline automáticamente (el grep de `_placeholder` dejará de hacer SKIP)."
+  ],
+  "verify_command": "cosign verify-blob --trusted-root trusted_root.json --certificate <fichero>.pem --signature <fichero>.sig <fichero>",
+  "references": [
+    "docs/00-governance/decision-register.md (DEC-006)",
+    "docs/02-architecture/adr/ADR-0008-catalogos-firmados-y-procedencia.md",
+    "docs/02-architecture/adr/ADR-0009-actualizacion-firmada-mvp.md",
+    "docs/08-security/supply-chain-policy.md",
+    "docs/08-security/updater-threat-model.md",
+    "docs/10-delivery/packaging-release.md (apéndice I11)"
+  ]
+}

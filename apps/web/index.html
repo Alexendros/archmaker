@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'" />
+<title>ArchMaker MVP-0 — Walking Skeleton</title>
+<link rel="stylesheet" href="../../packages/tokens/tokens.css" />
+<link rel="stylesheet" href="./src/styles.css" />
+</head>
+<body>
+<a class="skip-link" href="#main">Saltar al contenido</a>
+<header class="app-header">
+<h1>ArchMaker MVP-0</h1>
+<p class="app-sub">Walking skeleton: crear draft → seleccionar → resolver → validar → manifest → exportar</p>
+<div class="header-actions">
+<button id="theme-toggle" type="button" aria-pressed="false">Tema oscuro</button>
+</div>
+</header>
+<div class="app-shell">
+<nav class="rail" aria-label="Pasos del configurador" id="step-rail"></nav>
+<main id="main" class="workspace" tabindex="-1">
+<section aria-labelledby="s1-h" id="step-create">
+<h2 id="s1-h">1. Crear draft</h2>
+<div class="field-row">
+<label for="target-select">Target</label>
+<select id="target-select">
+<option value="archmaker-profile">archmaker-profile</option>
+<option value="archinstall-profile">archinstall-profile</option>
+<option value="report">report</option>
+</select>
+</div>
+<button id="btn-create" type="button">Crear draft</button>
+</section>
+<section aria-labelledby="s2-h" id="step-select">
+<h2 id="s2-h">2. Seleccionar</h2>
+<div id="options" role="group" aria-label="Opciones del catálogo embebido"></div>
+</section>
+<section aria-labelledby="s3-h" id="step-resolve">
+<h2 id="s3-h">3. Resolver</h2>
+<button id="btn-resolve" type="button">Resolver draft</button>
+<output id="resolve-out" aria-live="off"></output>
+</section>
+<section aria-labelledby="s4-h" id="step-validate">
+<h2 id="s4-h">4. Validar</h2>
+<button id="btn-validate" type="button">Validar draft</button>
+<div id="validation-panel"></div>
+</section>
+<section aria-labelledby="s5-h" id="step-manifest">
+<h2 id="s5-h">5. Manifest</h2>
+<button id="btn-manifest" type="button">Construir manifest</button>
+<pre id="manifest-out" tabindex="0" aria-label="Resumen del manifest"></pre>
+</section>
+<section aria-labelledby="s6-h" id="step-export">
+<h2 id="s6-h">6. Exportar</h2>
+<button id="btn-export" type="button">Exportar artefacto</button>
+<output id="export-out" aria-live="off"></output>
+</section>
+</main>
+<aside class="inspector" aria-label="Inspector" id="inspector">
+<h2>Inspector</h2>
+<p id="inspector-body">Sin selección.</p>
+<button id="inspector-evidence" type="button">Ver evidencia</button>
+<dialog id="evidence-dialog" aria-labelledby="evidence-title">
+<h2 id="evidence-title">Evidencia</h2>
+<p id="evidence-body">Detalle de la selección activa.</p>
+<form method="dialog"><button type="submit">Cerrar</button></form>
+</dialog>
+</aside>
+</div>
+<div id="toast-region" aria-live="polite" role="status"></div>
+<div id="alert-region" aria-live="assertive" role="alert"></div>
+<script type="module" src="./src/main.ts"></script>
+</body>
+</html>

@@ -1,0 +1,252 @@
+# release — Supply chain + SBOM + firmas (fase I11, T-I11-01..03).
+#
+# Entradas: docs/10-delivery/packaging-release.md,
+#           docs/08-security/supply-chain-policy.md, ADR-0008, ADR-0009,
+#           DEC-006 (Sigstore keyless + verificación offline),
+#           DEC-007 (updater Tauri en MVP, canal firmado).
+# Pipeline: build → SBOM CycloneDX → sign (cosign keyless) →
+#           verify offline (trusted_root.json embebido) →
+#           provenance SLSA v1 → publish.
+#
+# Política supply-chain (docs/09-quality/ci-cd.md):
+#   - Solo acciones con SHA ya verificado (checkout, setup-python).
+#     NO se introducen acciones nuevas sin hash verificado: SBOM manual,
+#     firma, verificación y provenance se implementan con herramientas
+#     del runner (cargo/cosign/python/gh) + pasos documentados.
+#   - permissions: contents: read por defecto; id-token: write SOLO en
+#     el job que firma (OIDC keyless, sin secretos de larga duración).
+#   - Promoción sin rebuild: este workflow genera y firma; los canales
+#     nightly/beta/stable promocionan los mismos digests.
+#
+# skip-if-missing: cosign y cargo-sbom pueden no estar instalados.
+# Cada paso opcional detecta la herramienta, hace el trabajo real si
+# existe y emite un SKIP documentado si falta. Nada se finge como
+# verificado: sin cosign no hay firma; sin trusted_root.json real
+# (hoy es placeholder, ver trusted_root.json) no hay verificación
+# offline válida.
+
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build release + checksums (T-I11-01)
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Toolchain pinned (rust-toolchain.toml)
+        run: rustup show active-toolchain
+      - name: cargo build --release
+        run: cargo build --workspace --locked --release
+      - name: SHA256SUMS del build
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          find target/release -maxdepth 1 -type f -executable -printf '%p\n' | sort > dist/artifacts.txt
+          (cd target/release && sha256sum $(cat ../../dist/artifacts.txt 2>/dev/null || true)) > dist/SHA256SUMS || true
+          # Fallback determinista: checksums de los binarios del workspace si el glob falla.
+          if [ ! -s dist/SHA256SUMS ]; then
+            for b in $(cargo metadata --no-deps --format-version 1 2>/dev/null | python3 -c "import json,sys; print(' '.join(t['name'] for p in json.load(sys.stdin)['packages'] for t in p['targets'] if 'bin' in t['kind']))"); do
+              [ -f "target/release/$b" ] && sha256sum "target/release/$b"
+            done > dist/SHA256SUMS || true
+          fi
+          cat dist/SHA256SUMS
+          [ -s dist/SHA256SUMS ]
+
+  sbom:
+    name: SBOM CycloneDX (T-I11-01)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: SBOM con cargo-sbom o manual desde Cargo.lock
+        run: |
+          set -euo pipefail
+          if command -v cargo-sbom >/dev/null 2>&1; then
+            echo "cargo-sbom disponible; generando SBOM desde el workspace..."
+            cargo sbom --output-format cyclone_dx_json --output-file sbom.cdx.json
+          else
+            echo "SKIP cargo-sbom (no instalado); fallback manual: CycloneDX mínimo desde Cargo.lock..."
+            python3 - <<'PY'
+          import json
+          import re
+          from pathlib import Path
+
+          lock = Path("Cargo.lock").read_text(encoding="utf-8")
+          pkgs = []
+          for m in re.finditer(r"\[\[package\]\]\nname = \"([^\"]+)\"\nversion = \"([^\"]+)\"(?:\nsource = \"([^\"]+)\")?", lock):
+              name, version, source = m.groups()
+              pkgs.append({
+                  "type": "library",
+                  "bom-ref": f"{name}@{version}",
+                  "name": name,
+                  "version": version,
+                  "scope": "required" if source else "optional",
+                  "externalReferences": (
+                      [{"type": "distribution", "url": source}] if source else []
+                  ),
+              })
+
+          bom = {
+              "bomFormat": "CycloneDX",
+              "specVersion": "1.6",
+              "version": 1,
+              "metadata": {
+                  "component": {
+                      "type": "application",
+                      "name": "archmaker",
+                      "version": "0.1.0",
+                  },
+                  "tools": [{"name": "manual-fallback", "version": "cargo-lock-reader"}],
+                  "comment": "SBOM manual mínimo desde Cargo.lock (sin cargo-sbom).",
+              },
+              "components": sorted(pkgs, key=lambda c: c["bom-ref"]),
+          }
+          Path("sbom.cdx.json").write_text(json.dumps(bom, indent=2) + "\n", encoding="utf-8")
+          print(f"SBOM manual: {len(pkgs)} componentes desde Cargo.lock")
+          PY
+          fi
+          python3 -m json.tool sbom.cdx.json > /dev/null && echo "SBOM CycloneDX válida (JSON parse OK)."
+
+  sign-verify:
+    name: Firma Sigstore + verificación offline (T-I11-02)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: sbom
+    permissions:
+      contents: read
+      id-token: write # Solo aquí: identidad OIDC para firma keyless (DEC-006).
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Detectar cosign
+        id: detect
+        run: |
+          if command -v cosign >/dev/null 2>&1; then
+            cosign version
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Firmar SBOM + SHA256SUMS (keyless Fulcio/Rekor)
+        # skip-if-missing: sin cosign no hay firma; el job documenta el SKIP.
+        if: steps.detect.outputs.present == 'true'
+        run: |
+          set -euo pipefail
+          cosign sign-blob --yes sbom.cdx.json --output-signature sbom.cdx.json.sig --output-certificate sbom.cdx.json.pem
+          cosign sign-blob --yes dist/SHA256SUMS --output-signature dist/SHA256SUMS.sig --output-certificate dist/SHA256SUMS.pem
+      - name: Aviso firma omitida
+        if: steps.detect.outputs.present != 'true'
+        run: echo 'SKIP firma Sigstore (cosign no instalado en el runner).'
+      - name: Verificar offline con trusted_root.json embebido
+        # Verificación offline (DEC-006): solo válida con raíces reales.
+        # Hoy trusted_root.json es placeholder -> SKIP documentado, nunca verde fingido.
+        if: steps.detect.outputs.present == 'true'
+        run: |
+          set -euo pipefail
+          if grep -q '"_placeholder": *true' trusted_root.json; then
+            echo "SKIP verificación offline: trusted_root.json es placeholder (ver apéndice I11 en packaging-release.md)."
+            exit 0
+          fi
+          cosign verify-blob --trusted-root trusted_root.json \
+            --certificate sbom.cdx.json.pem --signature sbom.cdx.json.sig \
+            sbom.cdx.json
+          cosign verify-blob --trusted-root trusted_root.json \
+            --certificate dist/SHA256SUMS.pem --signature dist/SHA256SUMS.sig \
+            dist/SHA256SUMS
+          echo "Verificación offline OK con raíces fijadas."
+
+  provenance:
+    name: Provenance SLSA v1 + publish (T-I11-03)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: sign-verify
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Setup Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: "3.x"
+      - name: Generar provenance SLSA v1
+        # Predicado https://slsa.dev/provenance/v1 generado localmente (sin
+        # acciones nuevas). La atestación GitHub (actions/attest-*) queda
+        # pendiente de pin SHA verificado (Etapa C, ver ci-cd.md).
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+
+          def sha256(p):
+              return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+
+          materials = []
+          for f in ["sbom.cdx.json", "dist/SHA256SUMS"]:
+              if Path(f).exists():
+                  materials.append({
+                      "uri": f"git+https://github.com/{os.environ.get('GITHUB_REPOSITORY', 'unknown')}@{os.environ.get('GITHUB_SHA', 'unknown')}#{f}",
+                      "digest": {"sha256": sha256(f)},
+                  })
+
+          prov = {
+              "_type": "https://in-toto.io/Statement/v1",
+              "subject": [
+                  {"name": Path(m["uri"].split('#', 1)[1]).name, "digest": m["digest"]}
+                  for m in materials
+              ],
+              "predicateType": "https://slsa.dev/provenance/v1",
+              "predicate": {
+                  "buildDefinition": {
+                      "buildType": "https://github.com/archmaker/release-workflow/v1",
+                      "externalParameters": {
+                          "workflow": {
+                              "ref": os.environ.get("GITHUB_REF", ""),
+                              "sha": os.environ.get("GITHUB_SHA", ""),
+                              "repository": os.environ.get("GITHUB_REPOSITORY", ""),
+                          },
+                      },
+                      "resolvedDependencies": materials,
+                  },
+                  "runDetails": {
+                      "builder": {"id": "https://github.com/archmaker/release-workflow/v1"},
+                      "metadata": {
+                          "invocationId": f"{os.environ.get('GITHUB_RUN_ID', '')}/{os.environ.get('GITHUB_RUN_ATTEMPT', '')}",
+                      },
+                      "byproducts": [],
+                  },
+              },
+          }
+          Path("slsa-provenance.json").write_text(json.dumps(prov, indent=2) + "\n", encoding="utf-8")
+          print(f"Provenance SLSA v1: {len(materials)} materiales.")
+          PY
+          python3 -m json.tool slsa-provenance.json > /dev/null && echo "Provenance válida (JSON parse OK)."
+      - name: Publicar artefactos en el release del tag
+        # skip-if-missing: solo en tags v*; usa gh preinstalado (sin acción nueva).
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          set -euo pipefail
+          if ! command -v gh >/dev/null 2>&1; then
+            echo 'SKIP publish (gh no instalado en el runner).'
+            exit 0
+          fi
+          gh release upload "${GITHUB_REF#refs/tags/}" \
+            sbom.cdx.json slsa-provenance.json dist/SHA256SUMS \
+            --clobber

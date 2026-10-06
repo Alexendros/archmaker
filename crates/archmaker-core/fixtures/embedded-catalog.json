@@ -1,0 +1,49 @@
+{
+  "namespace": "archmaker.core",
+  "id": "minimal",
+  "version": "0.1.0",
+  "documentVersion": "vNext",
+  "schemaVersion": "1",
+  "metadata": {
+    "owner": "archmaker-core",
+    "note": "I6 scaffold T-I6-02: 2 steps, 1 section each. No commands, hooks, shell or pacstrap."
+  },
+  "steps": [
+    {
+      "id": "archmaker.sys.base",
+      "title": "Base system",
+      "mode": "single",
+      "sections": [
+        {
+          "id": "archmaker.sys.kernel",
+          "title": "Kernel",
+          "cardinality": "one",
+          "options": [
+            {
+              "id": "archmaker.kernel.linux",
+              "title": "Linux"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "archmaker.sys.session",
+      "title": "Session",
+      "mode": "single",
+      "sections": [
+        {
+          "id": "archmaker.sys.desktop",
+          "title": "Desktop",
+          "cardinality": "one",
+          "options": [
+            {
+              "id": "archmaker.desktop.gnome",
+              "title": "GNOME"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

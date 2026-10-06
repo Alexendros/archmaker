@@ -1,0 +1,18 @@
+[workspace]
+members = [
+  "crates/archmaker-domain",
+  "crates/archmaker-canonicalization",
+  "crates/archmaker-rules",
+  "crates/archmaker-resolution",
+  "crates/archmaker-core",
+  "crates/archmaker-wasm",
+]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+rust-version = "1.82"
+
+[workspace.dependencies]

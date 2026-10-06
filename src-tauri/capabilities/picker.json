@@ -1,0 +1,8 @@
+{
+  "$schema": "../gen/schemas/capability.schema.json",
+  "identifier": "picker-capability",
+  "description": "Deny-by-default: ventana picker reservada (v1). Sin comandos CorePort en MVP; solo denegaciones explicitas.",
+  "windows": ["picker"],
+  "permissions": [],
+  "denied": ["shell:*", "fs:*", "http:*", "updater:*"]
+}
