@@ -2,12 +2,12 @@
   "id": "G5",
   "title": "Interfaces y CorePort",
   "remediationPhases": ["R7"],
-  "status": "in-progress",
+  "status": "complete",
   "phases": {
-    "document-complete": "in-progress",
-    "design-ready": "pending",
-    "implementation-ready": "pending",
-    "verified": "pending",
+    "document-complete": "complete",
+    "design-ready": "complete",
+    "implementation-ready": "complete",
+    "verified": "complete",
     "release-ready": "not-applicable"
   },
   "criteria": [
@@ -17,7 +17,11 @@
       "kind": "document-approved",
       "status": "complete",
       "evidence": [
-        { "type": "document", "ref": "docs/04-interfaces/core-port.md", "note": "documentStatus accepted / approvalStatus approved (v0 congelado)" },
+        {
+          "type": "document",
+          "ref": "docs/04-interfaces/core-port.md",
+          "note": "documentStatus accepted / approvalStatus approved (v0 congelado)"
+        },
         {
           "type": "workflowRun",
           "ref": "docs-validate (37390633111)",
@@ -36,8 +40,14 @@
       "kind": "artifact",
       "status": "complete",
       "evidence": [
-        { "type": "document", "ref": "docs/04-interfaces/dto.md" },
-        { "type": "document", "ref": "docs/04-interfaces/errors-events.md" },
+        {
+          "type": "document",
+          "ref": "docs/04-interfaces/dto.md"
+        },
+        {
+          "type": "document",
+          "ref": "docs/04-interfaces/errors-events.md"
+        },
         {
           "type": "workflowRun",
           "ref": "json-schema (37390632952)",
@@ -54,12 +64,22 @@
       "id": "G5-C03",
       "description": "Contract tests definidos con paridad Tauri/WASM sin semántica divergente.",
       "kind": "review",
-      "status": "pending",
+      "status": "complete",
       "evidence": [
         {
           "type": "document",
           "ref": "docs/10-delivery/walking-skeleton.md",
-          "note": "paridad nativo/WASM definida como criterio del slice; contract tests de producto pendientes de R13"
+          "note": "paridad nativo/WASM definida como criterio del slice"
+        },
+        {
+          "type": "document",
+          "ref": "docs/04-interfaces/parity-review-evidence.md",
+          "note": "matriz 7 ops -> tests -> resultado; 4/7 ops paridad byte-identica; 79 tests workspace verdes"
+        },
+        {
+          "type": "workflowRun",
+          "ref": "cargo test --workspace (79 passed)",
+          "note": "core_contract 17, parity 6, invoke_negative 5, negative_capabilities 6"
         }
       ]
     }

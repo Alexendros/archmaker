@@ -185,3 +185,55 @@ fn neg_web_has_no_remote_or_shell_surface() {
         assert!(tokens.contains(alias), "alias preservado {alias}");
     }
 }
+
+#[test]
+fn neg_json_depth_limit_aborts() {
+    use archmaker_core::{CatalogRef, CorePort, RealCore};
+    use archmaker_core::{ContentDigest, ContentKind, DigestAlgorithm};
+    use std::io::Write;
+    let core = RealCore::with_embedded().expect("embedded");
+    let tmp = std::env::temp_dir().join(format!("archmaker-depth-{}", std::process::id()));
+    std::fs::create_dir_all(&tmp).expect("tmp dir");
+    let deep_path = tmp.join("deep.json");
+    let mut json = String::from("{\"steps\": [{\"id\": \"s\", \"sections\": [{\"id\": \"sec\", \"options\": [{\"id\": \"o\"}]}");
+    for _ in 0..130 {
+        json.push_str("{\"nested\": ");
+    }
+    json.push_str("\"leaf\"");
+    for _ in 0..130 {
+        json.push('}');
+    }
+    json.push_str("]}]}");
+    let mut file = std::fs::File::create(&deep_path).expect("create deep");
+    file.write_all(json.as_bytes()).expect("write deep");
+    let err = core
+        .load_catalog(archmaker_core::LoadCatalogInput {
+            source: archmaker_core::CatalogSource::File,
+            catalog_ref: Some(CatalogRef {
+                namespace: "archmaker.core".to_string(),
+                id: "minimal".to_string(),
+                version: "0.1.0".to_string(),
+                digest: ContentDigest {
+                    algorithm: DigestAlgorithm::Sha256,
+                    value: "00".to_string(),
+                    kind: Some(ContentKind::Content),
+                },
+            }),
+            expected_digest: None,
+            file_path: Some(deep_path),
+            limits: Some(archmaker_core::Limits {
+                max_bytes: 1_000_000,
+                max_depth: 128,
+                max_string_length: 65_536,
+                max_array_items: 4_096,
+            }),
+            request_id: None,
+        })
+        .expect_err("deep nesting should be rejected");
+    assert_eq!(
+        err.code, "AM-DOC-001",
+        "depth limit should reject with AM-DOC-001: {}",
+        err.code
+    );
+    let _ = std::fs::remove_dir_all(&tmp);
+}

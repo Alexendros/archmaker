@@ -13,7 +13,10 @@
     "@tauri-apps/api": "^2"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^2"
+    "@tauri-apps/cli": "^2",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.6.0",
+    "prettier": "^3.9.9"
   },
   "engines": {
     "node": ">=20"

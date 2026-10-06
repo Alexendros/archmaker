@@ -25,6 +25,43 @@ use crate::io::atomic_write_bytes;
 use crate::limits::DEFAULT_LIMITS;
 use crate::port::{CoreOp, CorePort};
 
+fn check_json_depth(bytes: &[u8], max_depth: u32) -> Result<()> {
+    let mut depth: u32 = 0;
+    let mut in_string = false;
+    let mut escape = false;
+    for &b in bytes {
+        if escape {
+            escape = false;
+            continue;
+        }
+        if in_string {
+            if b == b'\\' {
+                escape = true;
+            } else if b == b'"' {
+                in_string = false;
+            }
+            continue;
+        }
+        match b {
+            b'{' | b'[' => {
+                depth += 1;
+                if depth > max_depth {
+                    return Err(CoreError::doc_limit(CoreOp::LoadCatalog.source()));
+                }
+            }
+            b'}' | b']' => {
+                if depth == 0 {
+                    return Err(CoreError::doc_limit(CoreOp::LoadCatalog.source()));
+                }
+                depth -= 1;
+            }
+            b'"' => in_string = true,
+            _ => {}
+        }
+    }
+    Ok(())
+}
+
 pub const EMBEDDED_CATALOG_JSON: &str = include_str!("../fixtures/embedded-catalog.json");
 
 const DRAFT_DOMAIN: &str = "archmaker:draft:v1";
@@ -634,6 +671,7 @@ impl CorePort for RealCore {
                 if bytes.len() as u64 > limits.max_bytes {
                     return Err(CoreError::doc_limit(source));
                 }
+                check_json_depth(&bytes, limits.max_depth)?;
                 let value: serde_json::Value =
                     serde_json::from_slice(&bytes).map_err(|_| CoreError::doc_limit(source))?;
                 if value

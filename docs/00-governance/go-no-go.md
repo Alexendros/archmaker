@@ -50,25 +50,26 @@ documento conserva únicamente el resultado motivado y deriva la cobertura de ga
 manifiestos.
 
 <!-- BEGIN GATES-DERIVED -->
+
 ## Cobertura de gates (derivada)
 
 Bloque generado desde `contracts/governance/gates/G*.json` por `tools/gates.py`; no editar a mano.
 
-| Gate | Estado | Fases (doc/diseño/impl/verif/release) | Falta para `complete` |
-|---|---|---|---|
-| G0 Fuentes controladas | complete | complete/n/a/complete/complete/n/a | — |
-| G1 Problema y usuarios | in-progress | complete/n/a/n/a/pending/n/a | G1-C03 |
-| G2 Alcance y requisitos | in-progress | complete/n/a/n/a/pending/n/a | G2-C04 |
-| G3 Arquitectura | in-progress | complete/complete/n/a/pending/n/a | — |
-| G4 Datos y contratos | in-progress | in-progress/in-progress/pending/pending/n/a | — |
-| G5 Interfaces y CorePort | in-progress | in-progress/pending/pending/pending/n/a | G5-C03 |
-| G6 UX y design system | in-progress | in-progress/in-progress/pending/pending/n/a | G6-C01, G6-C03 |
-| G7 Validación y corpus | in-progress | in-progress/n/a/in-progress/pending/n/a | — |
-| G8 Seguridad | in-progress | in-progress/in-progress/pending/pending/n/a | G8-C01, G8-C04 |
-| G9 Calidad y CI | in-progress | in-progress/n/a/in-progress/pending/n/a | G9-C03 |
-| G10 Delivery y walking skeleton | in-progress | in-progress/n/a/pending/pending/pending | — |
+| Gate                            | Estado      | Fases (doc/diseño/impl/verif/release)       | Falta para `complete` |
+| ------------------------------- | ----------- | ------------------------------------------- | --------------------- |
+| G0 Fuentes controladas          | complete    | complete/n/a/complete/complete/n/a          | —                     |
+| G1 Problema y usuarios          | in-progress | complete/n/a/n/a/pending/n/a                | G1-C03                |
+| G2 Alcance y requisitos         | in-progress | complete/n/a/n/a/pending/n/a                | G2-C04                |
+| G3 Arquitectura                 | in-progress | complete/complete/n/a/pending/n/a           | —                     |
+| G4 Datos y contratos            | complete    | complete/complete/complete/complete/n/a     | —                     |
+| G5 Interfaces y CorePort        | complete    | complete/complete/complete/complete/n/a     | —                     |
+| G6 UX y design system           | in-progress | in-progress/in-progress/pending/pending/n/a | G6-C01, G6-C03        |
+| G7 Validación y corpus          | complete    | complete/complete/complete/complete/n/a     | —                     |
+| G8 Seguridad                    | complete    | complete/complete/complete/complete/n/a     | —                     |
+| G9 Calidad y CI                 | complete    | complete/complete/complete/complete/n/a     | —                     |
+| G10 Delivery y walking skeleton | complete    | complete/complete/complete/complete/n/a     | —                     |
 
-Resultado derivado: **No-Go** — no todos los gates están `complete` (faltan G1, G2, G3, G4, G5, G6, G7, G8, G9, G10).
+Resultado derivado: **No-Go** — no todos los gates están `complete` (faltan G1, G2, G3, G6).
 <!-- END GATES-DERIVED -->
 
 ## Criterios de salida (para pasar a Go)
@@ -85,3 +86,12 @@ Resultado derivado: **No-Go** — no todos los gates están `complete` (faltan G
 Autorizado: el walking skeleton MVP-0 definido en `docs/10-delivery/walking-skeleton.md`
 (vertical slice, sin runner ni privilegios). **No** autorizado: MVP completo, runner real,
 root, discos, shell arbitraria, catálogos remotos ni Enterprise.
+
+## Decisiones de alcance (C3 — G1-C03)
+
+**G1-C03 — Métricas cuantitativas de usuarios y objetivos verificadas con evidencia**:
+
+- **Estado**: `eximido del walking skeleton MVP-0`.
+- **Justificación**: El walking skeleton MVP-0 (ver `docs/10-delivery/walking-skeleton.md`) cubre la arquitectura técnica ejecutable (CorePort, adapters Tauri/WASM, canonicalización, reglas, resolución, manifest, export, security, CI, supply chain). Las métricas de usuario (adopción, usabilidad cuantitativa, satisfacción) pertenecen al ciclo de vida del producto post-MVP (fase v1+) y requieren instrumentación, telemetría (DEC-010: ninguna en MVP) y recolección de datos reales que están explícitamente fuera del alcance del slice técnico.
+- **Decisión**: G1-C03 no bloquea el tag `implementation-baseline-mvp0`. G1 queda `in-progress` con G1-C01/C02 `complete`; G1-C03 se fechará para la fase de validación de producto (v1 gate G1 complete).
+- **Evidencia**: `docs/01-product/objectives.md` declara "Métrica de éxito verificable" como "no verificado — fuente primaria pendiente"; `docs/01-product/requirements.md` NFR-ACC-001/NNF-OFF-001 definen criterios cualitativos sin métricas cuantitativas de usuarios.

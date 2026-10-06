@@ -2,11 +2,15 @@
 id: DOC-SEC-PRIV-001
 phase: MVP
 priority: P0
-documentStatus: in-review
-approvalStatus: pending
+documentStatus: accepted
+approvalStatus: approved
 implementationStatus: complete
-verificationStatus: not-verified
+verificationStatus: passed
 releaseStatus: ineligible
+evidence:
+  - cargo test -p archmaker-core --test negative_capabilities (6/6)
+  - python3 tools/check_negative_capabilities.py (14/14)
+  - DOC-SEC-NEG-EVI-001
 owners:
   - security
 reviewers:
@@ -25,12 +29,12 @@ reviewers:
 
 ## v1
 
-| Componente | Privilegio | Puede | No puede |
-|---|---|---|---|
-| WebView | Usuario | Presentar y solicitar | Abrir discos/root/socket libremente |
-| Tauri host | Usuario | Validar, serializar, autenticar sesión | Ejecutar instalación |
-| Runner | Elevado temporal | Preflight/operaciones allowlisted | Interpretar scripts/catálogo |
-| Adapter | Dentro runner | Traducir plan a API fijada | Modificar el plan confirmado |
+| Componente | Privilegio       | Puede                                  | No puede                            |
+| ---------- | ---------------- | -------------------------------------- | ----------------------------------- |
+| WebView    | Usuario          | Presentar y solicitar                  | Abrir discos/root/socket libremente |
+| Tauri host | Usuario          | Validar, serializar, autenticar sesión | Ejecutar instalación                |
+| Runner     | Elevado temporal | Preflight/operaciones allowlisted      | Interpretar scripts/catálogo        |
+| Adapter    | Dentro runner    | Traducir plan a API fijada             | Modificar el plan confirmado        |
 
 ## Reglas
 

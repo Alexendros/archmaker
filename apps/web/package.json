@@ -8,12 +8,20 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "check": "tsc --noEmit",
-    "test-a11y": "python3 ./a11y-check.py"
+    "test-a11y": "python3 ./a11y-check.py",
+    "test-a11y:axe": "playwright test a11y-playwright.test.ts",
+    "test-a11y:visual": "playwright test visual-regression.test.ts",
+    "test-a11y:all": "pnpm test-a11y && pnpm test-a11y:axe && pnpm test-a11y:visual"
   },
   "dependencies": {
     "@tauri-apps/api": "^2"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@playwright/test": "^1.63.0",
+    "pixelmatch": "^8.0.0",
+    "playwright": "^1.63.0",
+    "pngjs": "^7.0.0",
     "typescript": "^5.6.0",
     "vite": "^6.0.0"
   }

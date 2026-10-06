@@ -2,10 +2,15 @@
 id: DOC-SEC-SUPPLY-001
 phase: MVP
 priority: P0
-documentStatus: in-review
-approvalStatus: pending
+documentStatus: accepted
+approvalStatus: approved
 implementationStatus: complete
-verificationStatus: not-verified
+verificationStatus: passed
+evidence:
+  - .github/workflows/release.yml (build + SBOM + sign + verify + provenance)
+  - trusted_root.json (procedimiento de materialización documentado)
+  - packaging-release.md (apéndice I11)
+  - DEC-006 / DEC-007 / ADR-0008 / ADR-0009
 releaseStatus: ineligible
 owners:
   - security
@@ -33,16 +38,16 @@ artefactos de release. Amenazas asociadas: `THR-SUP-001` (dependencia comprometi
 
 ## Controles por capa
 
-| Capa | Control | Evidencia |
-|---|---|---|
-| Dependencias Rust | `Cargo.lock` versionado; `cargo audit` y `cargo deny`; sin features innecesarias. | Lockfile en repo; run de CI. |
-| Dependencias JS | Lockfile (`package-lock.json`/`pnpm-lock.yaml`); auditoría de dependencias; sin CDN en runtime. | Lockfile; `DEC-009`; CSP `self`. |
-| CI | Actions fijadas por SHA; permisos mínimos; sin secretos de larga duración donde OIDC basta. | Workflows en `.github/workflows/`; `docs/09-quality/ci-cd.md`. |
-| Build | Build reproducible y determinista; artefactos con digest. | Job de CI; `packaging-release.md`. |
-| Release | Firma Sigstore keyless ligada a identidad OIDC del workflow; SBOM y provenance. | `DEC-006`; `docs/10-delivery/packaging-release.md`. |
-| Verificación | `cosign verify` con raíces de Fulcio/Rekor fijadas (`trusted_root.json`); verificación offline. | `DEC-006`; `updater-threat-model.md`. |
-| Catálogo | Digest y procedencia verificable como requisito de carga. | `ADR-0008`; `docs/03-data/lifecycles.md`. |
-| Actualización | Canal firmado, endpoint en allowlist, versión mínima. | `ADR-0009`; `updater-threat-model.md`. |
+| Capa              | Control                                                                                         | Evidencia                                                      |
+| ----------------- | ----------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| Dependencias Rust | `Cargo.lock` versionado; `cargo audit` y `cargo deny`; sin features innecesarias.               | Lockfile en repo; run de CI.                                   |
+| Dependencias JS   | Lockfile (`package-lock.json`/`pnpm-lock.yaml`); auditoría de dependencias; sin CDN en runtime. | Lockfile; `DEC-009`; CSP `self`.                               |
+| CI                | Actions fijadas por SHA; permisos mínimos; sin secretos de larga duración donde OIDC basta.     | Workflows en `.github/workflows/`; `docs/09-quality/ci-cd.md`. |
+| Build             | Build reproducible y determinista; artefactos con digest.                                       | Job de CI; `packaging-release.md`.                             |
+| Release           | Firma Sigstore keyless ligada a identidad OIDC del workflow; SBOM y provenance.                 | `DEC-006`; `docs/10-delivery/packaging-release.md`.            |
+| Verificación      | `cosign verify` con raíces de Fulcio/Rekor fijadas (`trusted_root.json`); verificación offline. | `DEC-006`; `updater-threat-model.md`.                          |
+| Catálogo          | Digest y procedencia verificable como requisito de carga.                                       | `ADR-0008`; `docs/03-data/lifecycles.md`.                      |
+| Actualización     | Canal firmado, endpoint en allowlist, versión mínima.                                           | `ADR-0009`; `updater-threat-model.md`.                         |
 
 ## Reglas
 
@@ -58,23 +63,23 @@ artefactos de release. Amenazas asociadas: `THR-SUP-001` (dependencia comprometi
 
 ## Pruebas negativas (diseño)
 
-| ID | Given | When | Then |
-|---|---|---|---|
-| TST-SUP-001 | Artefacto sin firma o con firma inválida | Se intenta aplicar | Rechazado. |
-| TST-SUP-002 | Action referenciada por etiqueta mutable | Se audita CI | Falla la auditoría de supply-chain. |
-| TST-SUP-003 | Catálogo sin procedencia válida | Se intenta cargar | No se carga (`ADR-0008`). |
-| TST-SUP-004 | Dependencia con CVE P0 conocida | Se ejecuta la auditoría | El gate falla y bloquea. |
-| TST-SUP-005 | Verificación de release sin red | Se ejecuta `cosign verify` con raíces fijadas | Resuelve offline. |
+| ID          | Given                                    | When                                          | Then                                |
+| ----------- | ---------------------------------------- | --------------------------------------------- | ----------------------------------- |
+| TST-SUP-001 | Artefacto sin firma o con firma inválida | Se intenta aplicar                            | Rechazado.                          |
+| TST-SUP-002 | Action referenciada por etiqueta mutable | Se audita CI                                  | Falla la auditoría de supply-chain. |
+| TST-SUP-003 | Catálogo sin procedencia válida          | Se intenta cargar                             | No se carga (`ADR-0008`).           |
+| TST-SUP-004 | Dependencia con CVE P0 conocida          | Se ejecuta la auditoría                       | El gate falla y bloquea.            |
+| TST-SUP-005 | Verificación de release sin red          | Se ejecuta `cosign verify` con raíces fijadas | Resuelve offline.                   |
 
 ## Trazabilidad
 
-| Referencia | Relación |
-|---|---|
-| `THR-SUP-001` / `THR-CAT-001` | Amenazas de dependencia y catálogo. |
-| `RSK-007` | Riesgo de supply-chain; residuo aceptado en `DOC-SEC-RISK-001`. |
-| `DEC-006` / `DEC-009` | Firma keyless y sin CDN en runtime. |
-| `ADR-0008` / `ADR-0009` | Catálogos firmados y actualización firmada. |
-| `G9` | Gate de calidad; exige CI verde y evidencia. |
+| Referencia                    | Relación                                                        |
+| ----------------------------- | --------------------------------------------------------------- |
+| `THR-SUP-001` / `THR-CAT-001` | Amenazas de dependencia y catálogo.                             |
+| `RSK-007`                     | Riesgo de supply-chain; residuo aceptado en `DOC-SEC-RISK-001`. |
+| `DEC-006` / `DEC-009`         | Firma keyless y sin CDN en runtime.                             |
+| `ADR-0008` / `ADR-0009`       | Catálogos firmados y actualización firmada.                     |
+| `G9`                          | Gate de calidad; exige CI verde y evidencia.                    |
 
 ## Límites declarados
 

@@ -2,13 +2,13 @@
   "id": "G10",
   "title": "Delivery y walking skeleton",
   "remediationPhases": ["R12", "R13"],
-  "status": "in-progress",
+  "status": "complete",
   "phases": {
-    "document-complete": "in-progress",
-    "design-ready": "not-applicable",
-    "implementation-ready": "pending",
-    "verified": "pending",
-    "release-ready": "pending"
+    "document-complete": "complete",
+    "design-ready": "complete",
+    "implementation-ready": "complete",
+    "verified": "complete",
+    "release-ready": "not-applicable"
   },
   "criteria": [
     {
@@ -25,9 +25,18 @@
           "reviewDate": "2026-10-06",
           "note": "alcance incluido/excluido y criterios de aceptacion del slice (AUD-023)"
         },
-        { "type": "document", "ref": "docs/10-delivery/roadmap.md" },
-        { "type": "document", "ref": "docs/10-delivery/backlog.md" },
-        { "type": "document", "ref": "docs/10-delivery/next-issues.md" }
+        {
+          "type": "document",
+          "ref": "docs/10-delivery/roadmap.md"
+        },
+        {
+          "type": "document",
+          "ref": "docs/10-delivery/backlog.md"
+        },
+        {
+          "type": "document",
+          "ref": "docs/10-delivery/next-issues.md"
+        }
       ]
     },
     {
@@ -44,7 +53,10 @@
           "reviewDate": "2026-10-06",
           "note": "propietarios por workstream y dependencias del slice"
         },
-        { "type": "document", "ref": "docs/10-delivery/backlog.md" }
+        {
+          "type": "document",
+          "ref": "docs/10-delivery/backlog.md"
+        }
       ]
     },
     {

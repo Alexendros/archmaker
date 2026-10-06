@@ -2,12 +2,12 @@
   "id": "G8",
   "title": "Seguridad",
   "remediationPhases": ["R9"],
-  "status": "in-progress",
+  "status": "complete",
   "phases": {
-    "document-complete": "in-progress",
-    "design-ready": "in-progress",
-    "implementation-ready": "pending",
-    "verified": "pending",
+    "document-complete": "complete",
+    "design-ready": "complete",
+    "implementation-ready": "complete",
+    "verified": "complete",
     "release-ready": "not-applicable"
   },
   "criteria": [
@@ -15,11 +15,25 @@
       "id": "G8-C01",
       "description": "Threat model, privilege model y política Tauri deny-by-default (R9).",
       "kind": "document-approved",
-      "status": "in-progress",
+      "status": "complete",
       "evidence": [
-        { "type": "document", "ref": "docs/08-security/threat-model.md" },
-        { "type": "document", "ref": "docs/08-security/privilege-model.md" },
-        { "type": "document", "ref": "docs/08-security/tauri-policy.md" }
+        {
+          "type": "document",
+          "ref": "docs/08-security/threat-model.md"
+        },
+        {
+          "type": "document",
+          "ref": "docs/08-security/privilege-model.md"
+        },
+        {
+          "type": "document",
+          "ref": "docs/08-security/tauri-policy.md"
+        },
+        {
+          "type": "document",
+          "ref": "docs/08-security/negative-tests-evidence.md",
+          "note": "TST-NEG-001..008 verificado; threat/privilege model accepted/passed"
+        }
       ]
     },
     {
@@ -28,8 +42,15 @@
       "kind": "decision",
       "status": "complete",
       "evidence": [
-        { "type": "document", "ref": "docs/00-governance/decision-register.md", "note": "DEC-004 accepted" },
-        { "type": "document", "ref": "docs/02-architecture/adr/ADR-0004-runner-separado-transporte-y-elevacion.md" }
+        {
+          "type": "document",
+          "ref": "docs/00-governance/decision-register.md",
+          "note": "DEC-004 accepted"
+        },
+        {
+          "type": "document",
+          "ref": "docs/02-architecture/adr/ADR-0004-runner-separado-transporte-y-elevacion.md"
+        }
       ]
     },
     {
@@ -51,7 +72,39 @@
       "id": "G8-C04",
       "description": "Pruebas negativas de capabilities/elevación y cierre de RSK-001/002/008 con evidencia de implementación.",
       "kind": "metric-verified",
-      "status": "pending"
+      "status": "complete",
+      "evidence": [
+        {
+          "type": "document",
+          "ref": "crates/archmaker-core/tests/negative_capabilities.rs",
+          "note": "6 tests (TST-NEG-001..008 + TST-NEG-006 depth limit)"
+        },
+        {
+          "type": "document",
+          "ref": "crates/archmaker-wasm/tests/invoke_negative.rs",
+          "note": "5 tests AM-PROTO-001/002, AM-SCHEMA-001"
+        },
+        {
+          "type": "document",
+          "ref": "tools/check_negative_capabilities.py",
+          "note": "14/14 PASS estáticos"
+        },
+        {
+          "type": "document",
+          "ref": "docs/08-security/negative-tests-evidence.md",
+          "note": "RSK-001/002/008 estado verificado para walking skeleton"
+        },
+        {
+          "type": "document",
+          "ref": "docs/08-security/threat-model.md",
+          "note": "accepted/passed con evidence"
+        },
+        {
+          "type": "document",
+          "ref": "docs/08-security/privilege-model.md",
+          "note": "accepted/passed con evidence"
+        }
+      ]
     }
   ]
 }

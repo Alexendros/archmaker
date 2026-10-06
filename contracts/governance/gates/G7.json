@@ -2,12 +2,12 @@
   "id": "G7",
   "title": "Validación y corpus",
   "remediationPhases": ["R8"],
-  "status": "in-progress",
+  "status": "complete",
   "phases": {
-    "document-complete": "in-progress",
-    "design-ready": "not-applicable",
-    "implementation-ready": "in-progress",
-    "verified": "pending",
+    "document-complete": "complete",
+    "design-ready": "complete",
+    "implementation-ready": "complete",
+    "verified": "complete",
     "release-ready": "not-applicable"
   },
   "criteria": [
@@ -17,8 +17,14 @@
       "kind": "artifact",
       "status": "complete",
       "evidence": [
-        { "type": "document", "ref": "docs/07-validation/operator-spec.md" },
-        { "type": "document", "ref": "docs/07-validation/operator-corpus.md" },
+        {
+          "type": "document",
+          "ref": "docs/07-validation/operator-spec.md"
+        },
+        {
+          "type": "document",
+          "ref": "docs/07-validation/operator-corpus.md"
+        },
         {
           "type": "workflowRun",
           "ref": "json-schema (37390632952)",
@@ -37,7 +43,11 @@
       "kind": "decision",
       "status": "complete",
       "evidence": [
-        { "type": "commit", "ref": "R8: operadores required y target_is diferido", "commit": "3625889" }
+        {
+          "type": "commit",
+          "ref": "R8: operadores required y target_is diferido",
+          "commit": "3625889"
+        }
       ]
     },
     {

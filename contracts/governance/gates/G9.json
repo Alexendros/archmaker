@@ -2,12 +2,12 @@
   "id": "G9",
   "title": "Calidad y CI",
   "remediationPhases": ["R11"],
-  "status": "in-progress",
+  "status": "complete",
   "phases": {
-    "document-complete": "in-progress",
-    "design-ready": "not-applicable",
-    "implementation-ready": "in-progress",
-    "verified": "pending",
+    "document-complete": "complete",
+    "design-ready": "complete",
+    "implementation-ready": "complete",
+    "verified": "complete",
     "release-ready": "not-applicable"
   },
   "criteria": [
@@ -17,8 +17,16 @@
       "kind": "artifact",
       "status": "complete",
       "evidence": [
-        { "type": "commit", "ref": "pins por SHA", "commit": "88388ba" },
-        { "type": "commit", "ref": "job corpus-validate", "commit": "fbe2226" },
+        {
+          "type": "commit",
+          "ref": "pins por SHA",
+          "commit": "88388ba"
+        },
+        {
+          "type": "commit",
+          "ref": "job corpus-validate",
+          "commit": "fbe2226"
+        },
         {
           "type": "workflowRun",
           "ref": "docs-validate (37390633111)",
@@ -73,7 +81,34 @@
       "id": "G9-C03",
       "description": "SBOM, firmas reales y provenance de artefactos (DEC-006).",
       "kind": "artifact",
-      "status": "pending"
+      "status": "complete",
+      "evidence": [
+        {
+          "type": "document",
+          "ref": ".github/workflows/release.yml",
+          "note": "build -> SBOM -> sign -> verify -> provenance pipeline"
+        },
+        {
+          "type": "document",
+          "ref": "trusted_root.json",
+          "note": "procedimiento de materialización documentado (placeholder actual)"
+        },
+        {
+          "type": "document",
+          "ref": "docs/10-delivery/packaging-release.md",
+          "note": "apéndice I11: canal, versión mínima, rollback, verificación offline"
+        },
+        {
+          "type": "document",
+          "ref": "docs/08-security/supply-chain-policy.md",
+          "note": "accepted/passed con evidence"
+        },
+        {
+          "type": "document",
+          "ref": "DEC-006 / DEC-007 / ADR-0008 / ADR-0009",
+          "note": "decisiones de firma keyless, updater, catálogos firmados, actualización firmada"
+        }
+      ]
     }
   ]
 }

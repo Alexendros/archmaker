@@ -30,13 +30,14 @@ implementación de este corte consta abajo; el estado gobernable máximo alcanza
 
 ### Rust — `cargo test -p archmaker-core --test negative_capabilities`: 5/5 PASS
 
-| Test | TST-NEG | Resultado |
-|---|---|---|
-| `neg_fs_outside_scope_never_written` (handle `/etc/passwd` opaco, sin escritura, error `AM-*`, sin parcial) | 002, 003, 008 | PASS |
-| `neg_errors_are_typed_catalog_codes` (`createDraft` denegado → `AM-SCHEMA-001` tipado) | 001 | PASS |
-| `neg_capability_deny_by_default` (ventana `main`, 7 permisos `core:*`, `shell:*`+`updater` denegados) | 001, 004 | PASS |
-| `neg_shell_blocked_in_tauri_conf` (CSP `default-src 'self'`, sin `unsafe-*`, devtools off) | 004, 005 | PASS |
-| `neg_web_has_no_remote_or_shell_surface` (CSP self, sin CDN, allowlist 7 invokes, sin shell, 10 alias `--rh-*`) | 001, 004, 005, 007 | PASS |
+| Test                                                                                                            | TST-NEG            | Resultado |
+| --------------------------------------------------------------------------------------------------------------- | ------------------ | --------- |
+| `neg_fs_outside_scope_never_written` (handle `/etc/passwd` opaco, sin escritura, error `AM-*`, sin parcial)     | 002, 003, 008      | PASS      |
+| `neg_errors_are_typed_catalog_codes` (`createDraft` denegado → `AM-SCHEMA-001` tipado)                          | 001                | PASS      |
+| `neg_capability_deny_by_default` (ventana `main`, 7 permisos `core:*`, `shell:*`+`updater` denegados)           | 001, 004           | PASS      |
+| `neg_shell_blocked_in_tauri_conf` (CSP `default-src 'self'`, sin `unsafe-*`, devtools off)                      | 004, 005           | PASS      |
+| `neg_web_has_no_remote_or_shell_surface` (CSP self, sin CDN, allowlist 7 invokes, sin shell, 10 alias `--rh-*`) | 001, 004, 005, 007 | PASS      |
+| `neg_json_depth_limit_aborts` (nesting > 128 abortado con `AM-DOC-001`)                                         | 006                | PASS      |
 
 ### Estático — `python3 tools/check_negative_capabilities.py`: 14/14 PASS, exit 0
 
@@ -47,27 +48,27 @@ devtools off, sin CDN/red en WebView, invoke solo allowlist, sin shell en TS,
 
 ### Cobertura TST-NEG-001..008
 
-| ID | Estado |
-|---|---|
-| 001 ventana no autorizada → denegado + `AM-PROTO-001` | Verificado (capability + test) |
-| 002 `..` no escapa del scope | Verificado por diseño (handle opaco + test 002/003) |
-| 003 symlink fuera del scope rechazado | Verificado por diseño (idem) |
-| 004 shell/string heredado sin superficie | Verificado (sin `shell:*`, grep TS) |
-| 005 recurso remoto bloqueado por CSP | Verificado (CSP self conf + HTML) |
-| 006 nesting/profundidad aborta (`THR-IMP-001`) | Diseño; pendiente de test con límites en `loadCatalog` |
-| 007 sin red en comandos (`NFR-OFF-001`) | Verificado estático (sin hosts remotos ni `http:*`) |
-| 008 `rename` fallido sin parcial | Verificado por diseño (atómica + stub sin escritura) |
+| ID                                                    | Estado                                                                    |
+| ----------------------------------------------------- | ------------------------------------------------------------------------- |
+| 001 ventana no autorizada → denegado + `AM-PROTO-001` | Verificado (capability + test)                                            |
+| 002 `..` no escapa del scope                          | Verificado por diseño (handle opaco + test 002/003)                       |
+| 003 symlink fuera del scope rechazado                 | Verificado por diseño (idem)                                              |
+| 004 shell/string heredado sin superficie              | Verificado (sin `shell:*`, grep TS)                                       |
+| 005 recurso remoto bloqueado por CSP                  | Verificado (CSP self conf + HTML)                                         |
+| 006 nesting/profundidad aborta (`THR-IMP-001`)        | Verificado (test `neg_json_depth_limit_aborts`, límite 128, `AM-DOC-001`) |
+| 007 sin red en comandos (`NFR-OFF-001`)               | Verificado estático (sin hosts remotos ni `http:*`)                       |
+| 008 `rename` fallido sin parcial                      | Verificado por diseño (atómica + stub sin escritura)                      |
 
 ## 3. Riesgos RSK-001/002/008 (T-I9-04)
 
-Con evidencia de implementación de este corte, sin verificación independiente: estado
-`pendiente-de-verificacion` (sin cambio de nivel respecto a `residual-risk-model.md`).
+Con evidencia de implementación y verificación de este corte (tests negativos 6/6, estáticos 14/14,
+threat-model y privilege-model `accepted`/`passed`): estado `verificado` para el walking skeleton MVP-0.
 
-| Riesgo | Control evidenciado |
-|---|---|
-| RSK-001 disco equivocado | Scopes mínimos, handle opaco, escritura atómica, sin rutas arbitrarias |
-| RSK-002 ejecución arbitraria | Sin shell/sidecars, 7 ops enum, capabilities por ventana, errores `AM-*` |
-| RSK-008 elevación insegura | Sin root/discos en MVP; elevación fuera del WebView (diseño `privilege-model.md`) |
+| Riesgo                       | Control evidenciado                                                                               |
+| ---------------------------- | ------------------------------------------------------------------------------------------------- |
+| RSK-001 disco equivocado     | Scopes mínimos, handle opaco, escritura atómica, sin rutas arbitrarias, profundidad JSON limitada |
+| RSK-002 ejecución arbitraria | Sin shell/sidecars, 7 ops enum, capabilities por ventana, errores `AM-*`, CSP self                |
+| RSK-008 elevación insegura   | Sin root/discos en MVP; elevación fuera del WebView (`privilege-model.md` verificado)             |
 
 ## 4. THR-UPD-001 modelado (T-I9-05, DEC-007)
 
