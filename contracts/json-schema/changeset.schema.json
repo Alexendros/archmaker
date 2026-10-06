@@ -1,0 +1,250 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://archmaker.dev/schemas/changeset.schema.json",
+  "title": "ArchMaker ChangeSet (v0)",
+  "description": "Discrete changes applicable to a Draft: typed operations with an operation id, a JSON Pointer path and optional before/after SelectionValue. Produced by compareDrafts/applyPreset/migration and applied under the Draft revision (expectedRevision) precondition. Compatible with the digest semantics: only intent values are carried, never derived state. Contract state: v0.",
+  "$comment": "Contract v0 (phase R6, AUD-015). Unknown fields rejected; before/after use common SelectionValue.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "operations"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/schemaVersion"
+    },
+    "baseRevision": {
+      "description": "Draft revision the change set applies to (must match expectedRevision on saveDraft).",
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/revision"
+    },
+    "targetDraftId": {
+      "description": "Draft the change set targets, when known.",
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/uuid"
+    },
+    "origin": {
+      "description": "Producer of the change set.",
+      "enum": [
+        "compare",
+        "preset",
+        "migration",
+        "manual"
+      ]
+    },
+    "operations": {
+      "description": "Ordered discrete operations. Order is semantic and preserved.",
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 4096,
+      "items": {
+        "$ref": "#/$defs/operation"
+      }
+    },
+    "summary": {
+      "$ref": "#/$defs/summary"
+    }
+  },
+  "$defs": {
+    "opId": {
+      "description": "Stable operation identifier within the change set.",
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]*$",
+      "maxLength": 128
+    },
+    "op": {
+      "description": "Typed operation kind.",
+      "enum": [
+        "add",
+        "remove",
+        "replace",
+        "move",
+        "copy",
+        "test"
+      ]
+    },
+    "operation": {
+      "description": "A single discrete change. Required fields depend on the operation kind via if/then; unknown fields are rejected.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "opId",
+        "op",
+        "path"
+      ],
+      "properties": {
+        "opId": {
+          "$ref": "#/$defs/opId"
+        },
+        "op": {
+          "$ref": "#/$defs/op"
+        },
+        "path": {
+          "description": "JSON Pointer to the target location in the draft (addresses /selections/N/value).",
+          "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/jsonPointer"
+        },
+        "selector": {
+          "description": "Optional JSON Pointer selecting the sub-tree the operation is scoped to.",
+          "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/jsonPointer"
+        },
+        "from": {
+          "description": "Source JSON Pointer for move/copy.",
+          "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/jsonPointer"
+        },
+        "before": {
+          "description": "Previous value (null when the entry did not exist). Required by remove/replace/test.",
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/selectionValue"
+            }
+          ]
+        },
+        "after": {
+          "description": "New value (null when the entry is removed). Required by add/replace.",
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/selectionValue"
+            }
+          ]
+        },
+        "note": {
+          "description": "Stable message key explaining the change.",
+          "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/messageKey"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "op": {
+                "const": "add"
+              }
+            },
+            "required": [
+              "op"
+            ]
+          },
+          "then": {
+            "required": [
+              "after"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "op": {
+                "const": "remove"
+              }
+            },
+            "required": [
+              "op"
+            ]
+          },
+          "then": {
+            "required": [
+              "before"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "op": {
+                "const": "replace"
+              }
+            },
+            "required": [
+              "op"
+            ]
+          },
+          "then": {
+            "required": [
+              "before",
+              "after"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "op": {
+                "const": "test"
+              }
+            },
+            "required": [
+              "op"
+            ]
+          },
+          "then": {
+            "required": [
+              "before"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "op": {
+                "const": "move"
+              }
+            },
+            "required": [
+              "op"
+            ]
+          },
+          "then": {
+            "required": [
+              "from"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "op": {
+                "const": "copy"
+              }
+            },
+            "required": [
+              "op"
+            ]
+          },
+          "then": {
+            "required": [
+              "from"
+            ]
+          }
+        }
+      ]
+    },
+    "summary": {
+      "description": "Change counters. Optional; recomputable from operations.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "added": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "removed": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "changed": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    }
+  }
+}

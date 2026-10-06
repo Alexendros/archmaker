@@ -1,0 +1,57 @@
+{
+  "id": "G8",
+  "title": "Seguridad",
+  "remediationPhases": ["R9"],
+  "status": "in-progress",
+  "phases": {
+    "document-complete": "in-progress",
+    "design-ready": "in-progress",
+    "implementation-ready": "pending",
+    "verified": "pending",
+    "release-ready": "not-applicable"
+  },
+  "criteria": [
+    {
+      "id": "G8-C01",
+      "description": "Threat model, privilege model y política Tauri deny-by-default (R9).",
+      "kind": "document-approved",
+      "status": "in-progress",
+      "evidence": [
+        { "type": "document", "ref": "docs/08-security/threat-model.md" },
+        { "type": "document", "ref": "docs/08-security/privilege-model.md" },
+        { "type": "document", "ref": "docs/08-security/tauri-policy.md" }
+      ]
+    },
+    {
+      "id": "G8-C02",
+      "description": "DEC-004: transporte por Unix socket con autenticación de sesión y elevación fuera del WebView.",
+      "kind": "decision",
+      "status": "complete",
+      "evidence": [
+        { "type": "document", "ref": "docs/00-governance/decision-register.md", "note": "DEC-004 accepted" },
+        { "type": "document", "ref": "docs/02-architecture/adr/ADR-0004-runner-separado-transporte-y-elevacion.md" }
+      ]
+    },
+    {
+      "id": "G8-C03",
+      "description": "Sign-off formal de Seguridad registrado.",
+      "kind": "review",
+      "status": "complete",
+      "evidence": [
+        {
+          "type": "review",
+          "ref": "sign-off de Seguridad",
+          "reviewer": "security",
+          "reviewDate": "2026-10-05",
+          "commit": "7e63142"
+        }
+      ]
+    },
+    {
+      "id": "G8-C04",
+      "description": "Pruebas negativas de capabilities/elevación y cierre de RSK-001/002/008 con evidencia de implementación.",
+      "kind": "metric-verified",
+      "status": "pending"
+    }
+  ]
+}

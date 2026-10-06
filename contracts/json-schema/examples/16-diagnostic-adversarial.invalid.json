@@ -1,0 +1,9 @@
+{
+  "schemaVersion": "1",
+  "code": "AM-RULE-001",
+  "severity": "error",
+  "blocking": false,
+  "path": "/selections/2",
+  "messageKey": "diagnostic.compositorCardinalityExceeded",
+  "source": "archmaker-rules"
+}

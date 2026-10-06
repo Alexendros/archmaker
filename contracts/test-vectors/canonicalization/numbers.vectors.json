@@ -1,0 +1,77 @@
+{
+  "profileId": "archmaker-canonicalization-profile@v1",
+  "profileVersion": "1",
+  "category": "numbers",
+  "vectors": [
+    {
+      "id": "n-ints",
+      "description": "Enteros (incl. cero) serializados sin decimal.",
+      "input": {
+        "a": 0,
+        "b": 1,
+        "c": -1,
+        "d": 42
+      },
+      "canonical": "{\"a\":0,\"b\":1,\"c\":-1,\"d\":42}",
+      "digest": "fe8c1564f4470113d94c04a6e81c39e4f98afff51ff9f297658533c567c45ed5"
+    },
+    {
+      "id": "n-negative-zero",
+      "description": "Cero negativo y positivo normalizados a 0.",
+      "input": {
+        "a": -0.0,
+        "b": 0.0
+      },
+      "canonical": "{\"a\":0,\"b\":0}",
+      "digest": "2772fdf7f7eef0231679bea18ffa41fa76cca4faf932b47a7e217c4ae8bf5a5d"
+    },
+    {
+      "id": "n-floats",
+      "description": "Flotantes con la representación decimal más corta que reencoda.",
+      "input": {
+        "a": 0.1,
+        "b": -2.5,
+        "c": 3.14,
+        "d": 0.30000000000000004
+      },
+      "canonical": "{\"a\":0.1,\"b\":-2.5,\"c\":3.14,\"d\":0.30000000000000004}",
+      "digest": "443f53d4f57bc98142d758a34bedcf70afa6df90cecb3db668802e0d500f64c9"
+    },
+    {
+      "id": "n-exp-large",
+      "description": "Notación exponencial para magnitudes grandes; 1e20 en forma plana.",
+      "input": {
+        "a": 1e+20,
+        "b": 1e+21,
+        "c": 1.5e+21,
+        "d": 1.7976931348623157e+308
+      },
+      "canonical": "{\"a\":100000000000000000000,\"b\":1e+21,\"c\":1.5e+21,\"d\":1.7976931348623157e+308}",
+      "digest": "7869e7d363638558cc657f51f97059d6a91a231404476cd24d819874c267117b"
+    },
+    {
+      "id": "n-exp-small",
+      "description": "Notación exponencial bajo 1e-6; 1e-6 aún en forma plana.",
+      "input": {
+        "a": 1e-06,
+        "b": 1e-07,
+        "c": 1.5e-07,
+        "d": 1e-10
+      },
+      "canonical": "{\"a\":0.000001,\"b\":1e-7,\"c\":1.5e-7,\"d\":1e-10}",
+      "digest": "084005a6260168d076b5db7aa344c8c0f919f75da8bac2a887d7741f4b59f91e"
+    },
+    {
+      "id": "n-precision-boundary",
+      "description": "IEEE-754: 2^53 y 2^53+1 convergen al mismo double (conversión documentada).",
+      "input": {
+        "a": 9007199254740991,
+        "b": 9007199254740992,
+        "c": 9007199254740993,
+        "d": -9007199254740993
+      },
+      "canonical": "{\"a\":9007199254740991,\"b\":9007199254740992,\"c\":9007199254740992,\"d\":-9007199254740992}",
+      "digest": "5fddc434b9314bd8ccc6d61f9a82c8bc8f8ff85b48cbe26b083ca936da9935ff"
+    }
+  ]
+}

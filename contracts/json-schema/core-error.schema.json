@@ -1,0 +1,207 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://archmaker.dev/schemas/core-error.schema.json",
+  "title": "ArchMaker CoreError (v0)",
+  "description": "Typed CorePort error catalog entry. Public contract: no free-form strings; code, family, category, severity, messageKey and remedy are stable identifiers (R7). Covers at least validation, review, conflict, IO and canonicalization families. The single source of the AM-* codes is docs/04-interfaces/errors-events.md. Contract state: v0.",
+  "$comment": "Contract v0 (phase R6, AUD-014). Recursive cause chain; unknown fields rejected.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "code",
+    "family",
+    "category",
+    "severity",
+    "messageKey",
+    "source"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/schemaVersion"
+    },
+    "code": {
+      "$ref": "#/$defs/code"
+    },
+    "family": {
+      "$ref": "#/$defs/family"
+    },
+    "category": {
+      "$ref": "#/$defs/category"
+    },
+    "severity": {
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/severity"
+    },
+    "retryable": {
+      "description": "Whether the same request may be retried unchanged.",
+      "type": "boolean"
+    },
+    "messageKey": {
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/messageKey"
+    },
+    "params": {
+      "description": "Scalar parameter map for message interpolation. Documented open map; values are scalars only.",
+      "type": "object",
+      "maxProperties": 64,
+      "additionalProperties": {
+        "type": [
+          "string",
+          "number",
+          "boolean"
+        ]
+      }
+    },
+    "detail": {
+      "$ref": "#/$defs/detail"
+    },
+    "cause": {
+      "description": "Nested cause (chain of typed errors) or null at the end of the chain.",
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#"
+        }
+      ]
+    },
+    "causeCode": {
+      "description": "Code of the immediate cause, when a full cause object is not attached.",
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/code"
+        }
+      ]
+    },
+    "remedy": {
+      "$ref": "#/$defs/remedy"
+    },
+    "source": {
+      "description": "Stable component identifier that emitted the error, e.g. archmaker-canonicalizer.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[a-z0-9][a-z0-9._-]*$"
+    },
+    "correlationId": {
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/uuid"
+    },
+    "occurredAt": {
+      "description": "Ephemeral emission timestamp; excluded from the canonical hash payload.",
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/utcTimestamp"
+    }
+  },
+  "$defs": {
+    "code": {
+      "description": "Stable AM-<FAMILY>-<NNN> code from the single catalog in errors-events.md.",
+      "type": "string",
+      "pattern": "^AM-[A-Z]+-[0-9]{3}$"
+    },
+    "family": {
+      "description": "Error family (prefix of the code).",
+      "enum": [
+        "AM-DOC",
+        "AM-SCHEMA",
+        "AM-CAT",
+        "AM-MIG",
+        "AM-RULE",
+        "AM-RES",
+        "AM-TGT",
+        "AM-IO",
+        "AM-PROTO",
+        "AM-RUN",
+        "AM-POL",
+        "AM-AUTH"
+      ]
+    },
+    "category": {
+      "description": "Coarse error category. validation/review/conflict/io/canonicalization are the CorePort categories required by R6.",
+      "enum": [
+        "validation",
+        "review",
+        "conflict",
+        "io",
+        "canonicalization",
+        "catalog",
+        "migration",
+        "rule",
+        "resolution",
+        "target",
+        "protocol",
+        "policy",
+        "auth",
+        "internal"
+      ]
+    },
+    "detail": {
+      "description": "Structured, machine-readable detail. No free-form prose field is representable.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/jsonPointer"
+        },
+        "field": {
+          "type": "string",
+          "maxLength": 256
+        },
+        "expected": {
+          "type": "string",
+          "maxLength": 256
+        },
+        "actual": {
+          "type": "string",
+          "maxLength": 256
+        },
+        "context": {
+          "description": "Additional scalar context for tooling.",
+          "type": "object",
+          "maxProperties": 64,
+          "additionalProperties": {
+            "type": [
+              "string",
+              "number",
+              "boolean"
+            ]
+          }
+        }
+      }
+    },
+    "remedy": {
+      "description": "Typed remediation hint. messageKey is a stable key, never a free-form string.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "messageKey"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "retry",
+            "fix-input",
+            "reload-catalog",
+            "migrate",
+            "report",
+            "contact-support"
+          ]
+        },
+        "messageKey": {
+          "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/messageKey"
+        },
+        "params": {
+          "type": "object",
+          "maxProperties": 64,
+          "additionalProperties": {
+            "type": [
+              "string",
+              "number",
+              "boolean"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

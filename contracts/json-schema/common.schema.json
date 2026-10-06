@@ -1,0 +1,570 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://archmaker.dev/schemas/common.schema.json",
+  "title": "ArchMaker Common Definitions (v0)",
+  "description": "Reusable $defs shared by the ArchMaker v0 data contracts: DEC-002 global identifiers, version axes, canonical units, digests, UTC timestamps, typed secret references, limits and the unknown-field policy. Semantic authority: docs/03-data/canonicalization-profile-v1.md (ADR-0007) and docs/00-governance/decision-register.md (DEC-002). Contract state: v0. Every using schema keeps additionalProperties:false; this file only contributes $defs and is never validated as a document root. Unknown properties are rejected at every object edge.",
+  "$comment": "Contract v0 (phase R6, AUD-011). Stable $id: resolution is by $id, not by file path. See contracts/json-schema/CHANGELOG.md.",
+  "$defs": {
+    "namespace": {
+      "description": "Global namespace with the DEC-002 vendor.kind shape.",
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]*\\.[a-z0-9][a-z0-9._-]*$",
+      "maxLength": 255
+    },
+    "shortId": {
+      "description": "Single-segment identifier used together with a namespace.",
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]*$",
+      "maxLength": 128
+    },
+    "entityId": {
+      "description": "Global entity identifier with the DEC-002 vendor.kind.id shape.",
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]*\\.[a-z0-9][a-z0-9._-]*\\.[a-z0-9][a-z0-9._-]*$",
+      "maxLength": 387
+    },
+    "capabilityId": {
+      "description": "Capability identifier such as fs.btrfs, gpu.nvidia or boot.uefi.",
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]*\\.[a-z0-9][a-z0-9._-]*$",
+      "maxLength": 255
+    },
+    "uuid": {
+      "description": "Canonical UUID string (any version).",
+      "type": "string",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    },
+    "semver": {
+      "description": "Semantic version 2.0.0 (major.minor.patch, optional prerelease/build).",
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+      "maxLength": 128
+    },
+    "version": {
+      "description": "Generic version axis value (ADR-0006). Non-empty; exact per-axis format is delegated to axis-specific ADRs, so no semver is imposed here.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "schemaVersion": {
+      "description": "JSON Schema contract version (axis schemaVersion).",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[0-9A-Za-z][0-9A-Za-z.+_-]*$"
+    },
+    "documentVersion": {
+      "description": "Domain document contract version (axis documentVersion).",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "protocolVersion": {
+      "description": "Runner protocol version (axis protocolVersion), e.g. v1.",
+      "type": "string",
+      "pattern": "^v[0-9]+(?:\\.[0-9]+)*$",
+      "maxLength": 32
+    },
+    "revision": {
+      "description": "Monotonic, non-negative document revision used as an optimistic-concurrency (ETag) token.",
+      "type": "integer",
+      "minimum": 0
+    },
+    "binary64": {
+      "description": "Finite IEEE-754 binary64 number (canonicalization profile decision 6). NaN, Infinities and values outside binary64 are rejected.",
+      "type": "number",
+      "minimum": -1.7976931348623157e308,
+      "maximum": 1.7976931348623157e308
+    },
+    "unitCode": {
+      "description": "Canonical unit code from the closed MVP vocabulary (canonicalization profile decision 7). Case-sensitive.",
+      "type": "string",
+      "enum": [
+        "B",
+        "KiB",
+        "MiB",
+        "GiB",
+        "TiB",
+        "PiB",
+        "ms",
+        "s",
+        "min",
+        "h",
+        "day",
+        "Hz",
+        "kHz",
+        "MHz",
+        "GHz",
+        "W",
+        "kW",
+        "%",
+        "ratio",
+        "count",
+        "px",
+        "dpi"
+      ]
+    },
+    "quantity": {
+      "description": "Canonical quantity {value, unit} (canonicalization profile decision 7). The unit is part of the hashed payload and is never converted during canonicalization.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "value",
+        "unit"
+      ],
+      "properties": {
+        "value": {
+          "$ref": "#/$defs/binary64"
+        },
+        "unit": {
+          "$ref": "#/$defs/unitCode"
+        }
+      }
+    },
+    "digestValue": {
+      "description": "Lowercase hexadecimal SHA-256 digest (64 characters).",
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "digestKind": {
+      "description": "Digest class: content = semantic payload digest; artifact/binary = exact artifact bytes digest (canonicalization profile decision 11).",
+      "enum": [
+        "content",
+        "artifact",
+        "binary"
+      ]
+    },
+    "digest": {
+      "description": "Digest object. Role is conveyed by the property name; kind, when present, is the explicit class.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "algorithm",
+        "value"
+      ],
+      "properties": {
+        "algorithm": {
+          "description": "Digest algorithm; only sha256 is defined.",
+          "const": "sha256"
+        },
+        "value": {
+          "$ref": "#/$defs/digestValue"
+        },
+        "kind": {
+          "$ref": "#/$defs/digestKind"
+        }
+      }
+    },
+    "contentDigest": {
+      "description": "Semantic content digest: SHA-256 of the canonical payload after profile steps 5 and 8 (canonicalization profile decision 11). Reproducible identity. When kind is present it must be 'content'.",
+      "$ref": "#/$defs/digest",
+      "properties": {
+        "kind": {
+          "const": "content"
+        }
+      }
+    },
+    "artifactDigest": {
+      "description": "Binary artifact digest: SHA-256 of the exact exported bytes (canonicalization profile decision 11). When kind is present it must be 'artifact'.",
+      "$ref": "#/$defs/digest",
+      "properties": {
+        "kind": {
+          "const": "artifact"
+        }
+      }
+    },
+    "binaryDigest": {
+      "description": "Binary digest: SHA-256 of exact bytes, never comparable with a contentDigest (canonicalization profile decision 11). When kind is present it must be 'binary'.",
+      "$ref": "#/$defs/digest",
+      "properties": {
+        "kind": {
+          "const": "binary"
+        }
+      }
+    },
+    "utcTimestamp": {
+      "description": "ISO-8601 UTC timestamp with a trailing Z. Ephemeral fields are excluded from the canonical hash payload (canonicalization profile decision 8).",
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\\.[0-9]+)?Z$"
+    },
+    "ephemeralFieldName": {
+      "description": "Denylist of ephemeral/non-intentional fields removed recursively before canonical serialization (canonicalization profile decision 8). Not a validation keyword; declared for tooling parity.",
+      "type": "string",
+      "enum": [
+        "createdAt",
+        "updatedAt",
+        "loadedAt",
+        "lastAccessedAt",
+        "uiState",
+        "localPath",
+        "sourcePath",
+        "absolutePath",
+        "workingDirectory",
+        "diagnostics",
+        "diagnosticLog"
+      ]
+    },
+    "secretReference": {
+      "description": "Opaque URI-style reference to a secret. The secret value is never serialized (THR-SEC-001); only this reference crosses CorePort.",
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9+.-]*://[^\\s]{1,1024}$",
+      "maxLength": 1088
+    },
+    "secretRef": {
+      "description": "Typed secret reference object. Carries only the opaque reference; an inline secret value is not representable (additionalProperties:false).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ref"
+      ],
+      "properties": {
+        "ref": {
+          "$ref": "#/$defs/secretReference"
+        }
+      }
+    },
+    "jsonPointer": {
+      "description": "RFC 6901 JSON Pointer; the empty string addresses the document root.",
+      "type": "string",
+      "pattern": "^(?:/[^/]*)*$",
+      "maxLength": 4096
+    },
+    "messageKey": {
+      "description": "Stable, localizable message key (not a free-form message).",
+      "type": "string",
+      "pattern": "^[a-z][a-zA-Z0-9]*(\\.[a-zA-Z0-9]+)*$",
+      "maxLength": 256
+    },
+    "severity": {
+      "description": "Canonical severity (errors-events.md is the single source of truth). fatal/debug are reserved and not used by the MVP.",
+      "enum": [
+        "error",
+        "warning",
+        "info"
+      ]
+    },
+    "limits": {
+      "description": "Resource limits applied before and during parsing. All bounds are optional; when a field is present it caps the corresponding dimension.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "maxBytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "maxDepth": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "maxStringLength": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "maxArrayItems": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "unknownFieldPolicy": {
+      "description": "Declared policy for unknown properties. Every ArchMaker v0 object rejects unknown fields (additionalProperties:false); compatibility is additive-only, so new fields require a schemaVersion bump.",
+      "type": "string",
+      "const": "reject"
+    },
+    "catalogRef": {
+      "description": "Reference to an immutable catalog version.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "namespace",
+        "id",
+        "version",
+        "digest"
+      ],
+      "properties": {
+        "namespace": {
+          "$ref": "#/$defs/namespace"
+        },
+        "id": {
+          "$ref": "#/$defs/shortId"
+        },
+        "version": {
+          "$ref": "#/$defs/semver"
+        },
+        "digest": {
+          "$ref": "#/$defs/contentDigest"
+        }
+      }
+    },
+    "targetRef": {
+      "description": "Reference to a versioned export adapter.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/shortId"
+        },
+        "version": {
+          "$ref": "#/$defs/version"
+        }
+      }
+    },
+    "presetRef": {
+      "description": "Reference to an immutable preset patch.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "namespace",
+        "id",
+        "version"
+      ],
+      "properties": {
+        "namespace": {
+          "$ref": "#/$defs/namespace"
+        },
+        "id": {
+          "$ref": "#/$defs/shortId"
+        },
+        "version": {
+          "$ref": "#/$defs/semver"
+        }
+      }
+    },
+    "producer": {
+      "description": "Producer identity and version.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/shortId"
+        },
+        "version": {
+          "$ref": "#/$defs/version"
+        }
+      }
+    },
+    "selectionValue": {
+      "description": "Discriminated union SelectionValue (single, multiple, boolean, number, text, secretRef). The variant is exclusive via oneOf on the kind discriminator; secretRef never carries the secret.",
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "optionId"
+          ],
+          "properties": {
+            "kind": {
+              "const": "single"
+            },
+            "optionId": {
+              "$ref": "#/$defs/entityId"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "optionIds"
+          ],
+          "properties": {
+            "kind": {
+              "const": "multiple"
+            },
+            "optionIds": {
+              "description": "Selected option identifiers; ordered by ID before canonicalization (canonicalization profile decision 5).",
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 4096,
+              "uniqueItems": true,
+              "items": {
+                "$ref": "#/$defs/entityId"
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "value"
+          ],
+          "properties": {
+            "kind": {
+              "const": "boolean"
+            },
+            "value": {
+              "type": "boolean"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "value"
+          ],
+          "properties": {
+            "kind": {
+              "const": "number"
+            },
+            "value": {
+              "$ref": "#/$defs/binary64"
+            },
+            "unit": {
+              "$ref": "#/$defs/unitCode"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "value"
+          ],
+          "properties": {
+            "kind": {
+              "const": "text"
+            },
+            "value": {
+              "type": "string",
+              "maxLength": 4096
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "ref"
+          ],
+          "properties": {
+            "kind": {
+              "const": "secretRef"
+            },
+            "ref": {
+              "$ref": "#/$defs/secretReference"
+            }
+          }
+        }
+      ]
+    },
+    "selection": {
+      "description": "A single manual intent entry. The selected value lives only in value; there is no duplicated top-level optionId.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "stepId",
+        "value"
+      ],
+      "properties": {
+        "stepId": {
+          "description": "Catalog step the selection belongs to.",
+          "$ref": "#/$defs/entityId"
+        },
+        "value": {
+          "$ref": "#/$defs/selectionValue"
+        }
+      }
+    },
+    "resolvedSelection": {
+      "description": "A frozen selection with its origin and lock state.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "stepId",
+        "optionId",
+        "value",
+        "origin",
+        "locked"
+      ],
+      "properties": {
+        "stepId": {
+          "$ref": "#/$defs/entityId"
+        },
+        "optionId": {
+          "$ref": "#/$defs/entityId"
+        },
+        "value": {
+          "$ref": "#/$defs/selectionValue"
+        },
+        "origin": {
+          "description": "Whether the selection was manual or derived.",
+          "enum": [
+            "manual",
+            "derived"
+          ]
+        },
+        "locked": {
+          "description": "Whether the selection is locked by a rule or policy.",
+          "type": "boolean"
+        }
+      }
+    },
+    "capabilityRef": {
+      "description": "Reference to a capability contributed or required.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/capabilityId"
+        },
+        "title": {
+          "type": "string"
+        }
+      }
+    },
+    "conflict": {
+      "description": "A capability or selection conflict attached to a manifest.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "severity",
+        "path",
+        "messageKey",
+        "suggestions"
+      ],
+      "properties": {
+        "severity": {
+          "$ref": "#/$defs/severity"
+        },
+        "capabilityId": {
+          "$ref": "#/$defs/capabilityId"
+        },
+        "path": {
+          "$ref": "#/$defs/jsonPointer"
+        },
+        "messageKey": {
+          "$ref": "#/$defs/messageKey"
+        },
+        "suggestions": {
+          "description": "Ordered remediation suggestions (human-readable, bounded).",
+          "type": "array",
+          "maxItems": 64,
+          "items": {
+            "type": "string",
+            "maxLength": 1024
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "schemaVersion": "1",
+  "code": "AM-SCHEMA-001",
+  "family": "AM-SCHEMA",
+  "category": "validation",
+  "severity": "error",
+  "message": "selections must be an array",
+  "messageKey": "error.schema.invalid",
+  "source": "archmaker-core"
+}

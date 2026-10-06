@@ -1,3 +1,18 @@
+---
+id: DOC-PROD-OBJ-001
+phase: MVP
+priority: P0
+documentStatus: accepted
+approvalStatus: approved
+implementationStatus: complete
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - product
+reviewers:
+  - independent-reviewer
+---
+
 # Objetivos de producto
 
 - ID: DOC-PROD-OBJ-001
@@ -56,7 +71,7 @@
 
 - **Enunciado:** materializar el resultado canónico en uno o más artefactos y un reporte, declarando target, versiones y digests.
 - **Personas:** PER-001, PER-002.
-- **Métrica de éxito verificable:** `TST-EXP-001` pasa; el artefacto expone `digest`, `mediaType` y versiones, y la reexportación del mismo manifest produce digests idénticos. *(Conjunto exacto de targets: DEC-001 pendiente.)*
+- **Métrica de éxito verificable:** `TST-EXP-001` pasa; el artefacto expone `digest`, `mediaType` y versiones, y la reexportación del mismo manifest produce digests idénticos. *(Conjunto de targets según DEC-001.)*
 - **Fase:** MVP.
 - **Journeys:** JNY-001.
 - **Requisitos:** FR-EXPORT-001 (primario), FR-MANIFEST-001; apoya NFR-DET-001, NFR-PORT-001.
@@ -65,7 +80,7 @@
 
 - **Enunciado:** ejecutar un plan de instalación aprobado mediante un runner separado, con preflight, dry-run, confirmación ligada a hash y journal append-only, sin scripts arbitrarios.
 - **Personas:** PER-001, PER-002.
-- **Métrica de éxito verificable:** `TST-RUN-001` pasa; el journal es completo, el hash de confirmación liga la ejecución al plan y el MVP no usa root/disco/shell. *(Transporte del runner: DEC-004 pendiente; motor: DEC-003 pendiente.)*
+- **Métrica de éxito verificable:** `TST-RUN-001` pasa; el journal es completo, el hash de confirmación liga la ejecución al plan y el MVP no usa root/disco/shell. *(Transporte del runner: DEC-004; motor: DEC-003.)*
 - **Fase:** v1.
 - **Journeys:** JNY-003.
 - **Requisitos:** FR-RUN-001 (primario); apoya NFR-SEC-001, NFR-OBS-001.
@@ -74,7 +89,7 @@
 
 - **Enunciado:** gobernar perfiles y policies por organización, con aislamiento de tenant, aprobaciones y auditoría.
 - **Personas:** PER-004.
-- **Métrica de éxito verificable:** `TST-TEN-001` pasa; ninguna operación cruza tenants y toda aplicación de policy queda auditada. *(Firma de catálogo/policy: DEC-006 pendiente.)*
+- **Métrica de éxito verificable:** `TST-TEN-001` pasa; ninguna operación cruza tenants y toda aplicación de policy queda auditada. *(Firma de catálogo/policy: DEC-006.)*
 - **Fase:** Enterprise.
 - **Journeys:** JNY-004.
 - **Requisitos:** FR-ENT-001 (primario); apoya NFR-SEC-001, NFR-OBS-001.

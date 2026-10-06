@@ -1,0 +1,6 @@
+{
+  "maxBytes": 1048576,
+  "maxDepth": 32,
+  "maxStringLength": 65536,
+  "maxArrayItems": 4096
+}

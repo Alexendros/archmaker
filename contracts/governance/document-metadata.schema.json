@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://archmaker.dev/schemas/governance/document-metadata.schema.json",
+  "title": "Metadatos documentales gobernados",
+  "description": "Front matter YAML de todo documento gobernado. Define los ejes independientes de documento, aprobación, implementación, verificación y liberación (fase R1, AUD-002/AUD-003). Autoridad semántica: docs/00-governance/status-model.md.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "phase",
+    "priority",
+    "documentStatus",
+    "approvalStatus",
+    "implementationStatus",
+    "verificationStatus",
+    "releaseStatus",
+    "owners",
+    "reviewers"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Identificador único del documento o entidad gobernada.",
+      "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$"
+    },
+    "phase": {
+      "type": "string",
+      "description": "Fase de producto a la que pertenece la entidad.",
+      "enum": ["planning", "MVP", "v1", "Enterprise"]
+    },
+    "priority": {
+      "type": "string",
+      "description": "Prioridad de gobierno.",
+      "enum": ["P0", "P1", "P2"]
+    },
+    "documentStatus": {
+      "type": "string",
+      "description": "Estado del artefacto documental.",
+      "enum": ["draft", "in-review", "accepted", "superseded"]
+    },
+    "approvalStatus": {
+      "type": "string",
+      "description": "Estado de aprobación por la autoridad competente.",
+      "enum": ["pending", "approved", "rejected"]
+    },
+    "implementationStatus": {
+      "type": "string",
+      "description": "Grado de materialización de lo prescrito.",
+      "enum": ["not-started", "partial", "complete"]
+    },
+    "verificationStatus": {
+      "type": "string",
+      "description": "Grado de verificación con evidencia.",
+      "enum": ["not-verified", "partial", "passed", "failed"]
+    },
+    "releaseStatus": {
+      "type": "string",
+      "description": "Elegibilidad de liberación.",
+      "enum": ["ineligible", "eligible", "released"]
+    },
+    "owners": {
+      "type": "array",
+      "description": "Roles responsables; no vacío.",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/role" }
+    },
+    "reviewers": {
+      "type": "array",
+      "description": "Roles revisores; no vacío y disjunto de owners.",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/role" }
+    },
+    "evidence": {
+      "type": "array",
+      "description": "Referencias de evidencia enlazada (commit, run, artefacto, informe o comando). Obligatoria cuando verificationStatus es passed.",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "dependsOn": {
+      "type": "array",
+      "description": "Dependencias con el estado esperado del documento referenciado.",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$"
+          },
+          "expectedDocumentStatus": {
+            "type": "string",
+            "enum": ["draft", "in-review", "accepted", "superseded"]
+          },
+          "expectedApprovalStatus": {
+            "type": "string",
+            "enum": ["pending", "approved", "rejected"]
+          },
+          "expectedVerificationStatus": {
+            "type": "string",
+            "enum": ["not-verified", "partial", "passed", "failed"]
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "role": {
+      "type": "string",
+      "description": "Rol de la tabla de ROLES de remediation-plan-v1.1.md.",
+      "enum": [
+        "product",
+        "architecture",
+        "data",
+        "security",
+        "ux",
+        "quality",
+        "release",
+        "governance",
+        "independent-reviewer"
+      ]
+    }
+  }
+}

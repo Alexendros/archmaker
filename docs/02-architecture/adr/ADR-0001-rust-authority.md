@@ -1,3 +1,18 @@
+---
+id: ADR-0001
+phase: MVP
+priority: P0
+documentStatus: accepted
+approvalStatus: approved
+implementationStatus: not-started
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - architecture
+reviewers:
+  - independent-reviewer
+---
+
 # ADR-0001: Rust es autoridad semántica
 
 - Estado: accepted

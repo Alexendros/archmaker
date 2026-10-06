@@ -1,6 +1,21 @@
+---
+id: DOC-GOV-IDX-001
+phase: planning
+priority: P0
+documentStatus: in-review
+approvalStatus: pending
+implementationStatus: complete
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - governance
+reviewers:
+  - independent-reviewer
+---
+
 # ArchMaker — Índice documental (planning-v1)
 
-- Estado del plan: in-review · Gate global: **No-Go** · Baseline: planning-v1 · Corte: 2026-10-05
+- Estado del plan: in-review · Gate global: **CONDITIONAL-GO** (walking skeleton MVP-0) · Baseline: planning-v1.1 · Corte: 2026-10-06
 - Autonomía documental: permitida. Código funcional de producto: **bloqueado** hasta aprobar G0–G10.
 - Estados válidos (`docs/00-governance/document-control.md`): `draft`, `in-review`, `accepted`, `superseded`, `deferred`, `rejected`.
 - Regla de reemplazo: copiar por rutas canónicas; `reference/v5.1/` debe permanecer byte a byte.
@@ -12,11 +27,12 @@
 | `plan-status.md` | DOC-GOV-STATUS | in-review |
 | `document-control.md` | DOC-GOV-CONTROL | accepted (política) |
 | `glossary.md` (12 términos canónicos) | DOC-GOV-001 | draft |
-| `decision-register.md` (DEC-001..010) | DOC-GOV-DEC | in-review |
+| `decision-register.md` (DEC-001..010) | DOC-GOV-DEC | accepted |
 | `contradiction-register.md` (CON-001..012) | DOC-GOV-CON | in-review |
 | `risk-register.md` (RSK-001..010) | DOC-GOV-RSK | in-review |
 | `source-register.md` (SRC-001..008) | DOC-GOV-SRC | in-review |
 | `traceability-matrix.md` | DOC-GOV-TRACE | in-review |
+| `final-review-planning-v1.1.md` (revisión R13) | DOC-GOV-REV-001 | in-review |
 | `go-no-go.md` | DOC-GOV-GNG-001 | draft |
 
 ## 01 — Producto
@@ -44,18 +60,19 @@
 |---|---|---|
 | `domain-model.md` (DM-*) | DOC-DATA-DM-001 | draft |
 | `lifecycles.md` | DOC-DATA-LIFE-001 | draft |
-| `canonicalization.md` | DOC-DATA-CANON-001 | draft |
+| `canonicalization.md` (superseded) | DOC-DATA-CANON-000 | superseded |
+| `canonicalization-profile-v1.md` (perfil inmutable v1) | DOC-DATA-CANON-001 | accepted |
 | `versioning-migrations.md` | DOC-DATA-VER-001 | draft |
 
 ## 04 — Interfaces
 
 | Documento | ID | Estado |
 |---|---|---|
-| `core-port.md` (CorePort, 15 métodos) | DOC-IF-CORE-001 | draft |
-| `dto.md` | DOC-IF-DTO-001 | draft |
-| `errors-events.md` (CoreError, Diagnostic, AM-*) | DOC-IF-ERR-001 | draft |
-| `tauri-commands.md` (8 comandos + capabilities) | DOC-IF-TAURI-001 | draft |
-| `tauri-wasm.md` | DOC-IF-WASM-001 | draft |
+| `core-port.md` (CorePort v0, 7 operaciones) | DOC-IF-CORE-001 | accepted |
+| `dto.md` | DOC-IF-DTO-001 | accepted |
+| `errors-events.md` (CoreError, Diagnostic, AM-*) | DOC-IF-ERR-001 | accepted |
+| `tauri-commands.md` (7 comandos + capabilities) | DOC-IF-TAURI-001 | in-review |
+| `tauri-wasm.md` (adaptadores Tauri/WASM) | DOC-IF-WASM-001 | in-review |
 | `runner-protocol.md` (protocolo v1 draft) | DOC-IF-PROTO-001 | draft |
 
 ## 05–06 — UX y diseño
@@ -99,6 +116,7 @@
 | `backlog.md` | DOC-DEL-BACK-001 | draft |
 | `next-issues.md` (10 issues) | DOC-DEL-ISS-001 | draft |
 | `gates.md` (G0–G10) | DOC-DEL-GATE-001 | in-review |
+| `walking-skeleton.md` (slice MVP-0) | DOC-DEL-WSK-001 | in-review |
 | `packaging-release.md` | DOC-DEL-PKG-001 | draft |
 
 ## 11–12 — Operaciones e investigación
@@ -114,7 +132,7 @@
 | Documento | Estado | Nota |
 |---|---|---|
 | `events/README.md` | draft | eventos públicos; sin schemas aún |
-| `json-schema/README.md` | draft | bloqueado hasta aceptar DEC-002 y el modelo |
+| `json-schema/README.md` | draft | pendiente de modelo; DEC-002 aplicada |
 | `openapi/README.md` | draft | Enterprise, no ejecutable en MVP |
 | `protocol/README.md` | draft | runner v1 tras aceptar transporte/elevación |
 

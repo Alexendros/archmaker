@@ -1,3 +1,18 @@
+---
+id: DOC-GOV-CON-001
+phase: planning
+priority: P0
+documentStatus: in-review
+approvalStatus: pending
+implementationStatus: complete
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - governance
+reviewers:
+  - independent-reviewer
+---
+
 # Registro de contradicciones v5.1
 
 | ID | Evidencia | Contradicción | Impacto | Resolución requerida |

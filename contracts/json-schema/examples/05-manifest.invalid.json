@@ -38,7 +38,7 @@
   "providedCapabilities": [],
   "requiredCapabilities": [],
   "conflicts": [],
-  "manifestDigest": {
+  "contentDigest": {
     "algorithm": "sha256",
     "value": "3333333333333333333333333333333333333333333333333333333333333333"
   }

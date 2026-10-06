@@ -1,3 +1,18 @@
+---
+id: ADR-0002
+phase: MVP
+priority: P0
+documentStatus: accepted
+approvalStatus: approved
+implementationStatus: not-started
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - security
+reviewers:
+  - independent-reviewer
+---
+
 # ADR-0002: Tauri deny-by-default
 
 - Estado: accepted

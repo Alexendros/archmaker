@@ -1,3 +1,18 @@
+---
+id: DOC-ARCH-DEP-001
+phase: MVP
+priority: P0
+documentStatus: accepted
+approvalStatus: approved
+implementationStatus: complete
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - architecture
+reviewers:
+  - independent-reviewer
+---
+
 # Reglas de dependencia
 
 - ID: DOC-ARCH-DEP-001

@@ -1,3 +1,18 @@
+---
+id: DOC-DATA-VER-001
+phase: MVP
+priority: P0
+documentStatus: in-review
+approvalStatus: pending
+implementationStatus: complete
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - data
+reviewers:
+  - independent-reviewer
+---
+
 # Versionado y migraciones
 
 ## Versiones independientes

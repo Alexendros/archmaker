@@ -1,0 +1,22 @@
+{
+  "manifestVersion": "1.0.0",
+  "collection": "archmaker-v5.1",
+  "aliases": [
+    {
+      "declaredPath": "neubat_forge_v4_final.html",
+      "canonicalReceivedPath": "forge_v4_final.html",
+      "materializedAliasPath": "aliases/neubat_forge_v4_final.html",
+      "sha256": "02e37d4be7dbb894c7751cc0a2da5f946b755a41a1e58b74363f854661bb1426",
+      "bytes": 35288,
+      "relationship": "byte-identical-copy",
+      "identityStatus": "probable-rename-not-proven",
+      "evidence": [
+        "The received file title is 'NEUBAT FORGE v4.1 - Kernel 7 - Enterprise'.",
+        "The historical README declares neubat_forge_v4_final.html as the original base design.",
+        "No separately received blob or historical checksum exists for the declared filename."
+      ],
+      "allowedUse": "Visual and behavioral legacy reference only",
+      "prohibitedClaim": "Do not claim that the original declared file was received or cryptographically recovered."
+    }
+  ]
+}

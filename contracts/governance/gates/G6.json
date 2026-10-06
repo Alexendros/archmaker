@@ -1,0 +1,41 @@
+{
+  "id": "G6",
+  "title": "UX y design system",
+  "remediationPhases": ["R10"],
+  "status": "in-progress",
+  "phases": {
+    "document-complete": "in-progress",
+    "design-ready": "in-progress",
+    "implementation-ready": "pending",
+    "verified": "pending",
+    "release-ready": "not-applicable"
+  },
+  "criteria": [
+    {
+      "id": "G6-C01",
+      "description": "Design system, matriz de interacción y contratos de componente (R10).",
+      "kind": "document-approved",
+      "status": "in-progress",
+      "evidence": [
+        { "type": "document", "ref": "docs/06-design-system/design-system.md" },
+        { "type": "document", "ref": "docs/05-ux/interaction-matrix.md" }
+      ]
+    },
+    {
+      "id": "G6-C02",
+      "description": "Baseline visual aprobado (golden screenshots y tokens heredados preservados).",
+      "kind": "artifact",
+      "status": "complete",
+      "evidence": [
+        { "type": "document", "ref": "docs/06-design-system/visual-baseline.md" },
+        { "type": "commit", "ref": "R10: baseline visual y a11y", "commit": "0a0e98c" }
+      ]
+    },
+    {
+      "id": "G6-C03",
+      "description": "Matriz WCAG 2.2 AA con evidencia automatizada y manual separada (AUD-021).",
+      "kind": "metric-verified",
+      "status": "pending"
+    }
+  ]
+}

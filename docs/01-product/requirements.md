@@ -1,3 +1,18 @@
+---
+id: DOC-PROD-REQ-001
+phase: MVP
+priority: P0
+documentStatus: accepted
+approvalStatus: approved
+implementationStatus: not-started
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - product
+reviewers:
+  - independent-reviewer
+---
+
 # Requisitos
 
 - ID: DOC-PROD-REQ-001
@@ -138,7 +153,7 @@ El catálogo es la fuente normativa de definiciones y la base de la resolución 
 
 #### Datos e interfaces
 
-`DM-CATALOG`, `CAP-*`, `Rule`, `Evidence`/`Claim`. Mecanismo de firma: DEC-006 pendiente.
+`DM-CATALOG`, `CAP-*`, `Rule`, `Evidence`/`Claim`. Mecanismo de firma: ver DEC-006.
 
 #### Validación y seguridad
 
@@ -150,7 +165,7 @@ Carga válida, digest divergente, firma inválida y definición con contenido pr
 
 #### Exclusiones
 
-No publica catálogos (autoría de PER-003 fuera del alcance de la app); entrega de fuentes sujeta a DEC-009.
+No publica catálogos (autoría de PER-003 fuera del alcance de la app); entrega de fuentes empaquetadas o del sistema (DEC-009).
 
 ### FR-PRESET-001 — Aplicar presets como patches
 
@@ -328,7 +343,7 @@ Entrega el resultado utilizable (OBJ-004).
 
 #### Datos e interfaces
 
-`DM-ARTIFACT`; operación `exportArtifact`; `ExportTarget`. Conjunto exacto de targets: DEC-001 pendiente; el perfil `archinstall` es experimental.
+`DM-ARTIFACT`; operación `exportArtifact`; `ExportTarget`. Conjunto de targets: perfil ArchMaker + reporte, con perfil `archinstall` experimental (DEC-001).
 
 #### Validación y seguridad
 
@@ -366,7 +381,7 @@ Instalación segura (OBJ-005), fuera del MVP.
 
 #### Datos e interfaces
 
-`DM-PLAN`, `DM-SESSION`; `archmaker-plan`/`archmaker-runner`; protocolo tipado. Transporte: DEC-004 pendiente; motor: DEC-003 pendiente.
+`DM-PLAN`, `DM-SESSION`; `archmaker-plan`/`archmaker-runner`; protocolo tipado. Transporte: Unix socket con autenticación de sesión (DEC-004); motor: adapter versionado de `archinstall` (DEC-003).
 
 #### Validación y seguridad
 
@@ -404,7 +419,7 @@ Gobernar flotas (OBJ-006); capacidad Enterprise, no producto local.
 
 #### Datos e interfaces
 
-`PolicyBundle`, `DM-POLICY`, superficie `/api/v1`, RBAC. Firma: DEC-006 pendiente.
+`PolicyBundle`, `DM-POLICY`, superficie `/api/v1`, RBAC. Firma: ver DEC-006.
 
 #### Validación y seguridad
 

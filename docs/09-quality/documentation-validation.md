@@ -1,3 +1,18 @@
+---
+id: DOC-QLT-DOCVAL-001
+phase: MVP
+priority: P0
+documentStatus: in-review
+approvalStatus: pending
+implementationStatus: complete
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - quality
+reviewers:
+  - independent-reviewer
+---
+
 # Validación documental
 
 ## Gates automatizables

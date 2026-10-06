@@ -1,3 +1,18 @@
+---
+id: DOC-SEC-PRIV-001
+phase: MVP
+priority: P0
+documentStatus: in-review
+approvalStatus: pending
+implementationStatus: complete
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - security
+reviewers:
+  - independent-reviewer
+---
+
 # Modelo de privilegios
 
 ## MVP

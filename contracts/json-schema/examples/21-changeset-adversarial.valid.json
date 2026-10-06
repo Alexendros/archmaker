@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "1",
+  "origin": "migration",
+  "operations": [
+    {
+      "opId": "op-move-kernel",
+      "op": "move",
+      "from": "/selections/0",
+      "path": "/selections/2"
+    },
+    {
+      "opId": "op-remove-secure-boot",
+      "op": "remove",
+      "path": "/selections/3",
+      "before": {
+        "kind": "boolean",
+        "value": true
+      }
+    }
+  ]
+}

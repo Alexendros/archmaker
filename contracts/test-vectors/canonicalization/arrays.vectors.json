@@ -1,0 +1,101 @@
+{
+  "profileId": "archmaker-canonicalization-profile@v1",
+  "profileVersion": "1",
+  "category": "arrays",
+  "vectors": [
+    {
+      "id": "a-order-1",
+      "description": "El orden de un array es semántico y se preserva.",
+      "input": {
+        "items": [
+          3,
+          1,
+          2
+        ]
+      },
+      "canonical": "{\"items\":[3,1,2]}",
+      "digest": "af76fcc09bd0c88514f62b4394a37aef083948a793cf21a779a340ca2939e145"
+    },
+    {
+      "id": "a-order-2",
+      "description": "Mismo conjunto que a-order-1 en otro orden: digest distinto.",
+      "input": {
+        "items": [
+          1,
+          2,
+          3
+        ]
+      },
+      "canonical": "{\"items\":[1,2,3]}",
+      "digest": "df385701c87c4384624e0e19122b51123f935d024e0fc26f7d371c1d48024b3d"
+    },
+    {
+      "id": "a-nested",
+      "description": "Arrays anidados de objetos: orden preservado.",
+      "input": {
+        "items": [
+          {
+            "id": "b",
+            "v": 2
+          },
+          {
+            "id": "a",
+            "v": 1
+          }
+        ]
+      },
+      "canonical": "{\"items\":[{\"id\":\"b\",\"v\":2},{\"id\":\"a\",\"v\":1}]}",
+      "digest": "1a50472dd32606330f6209c752fd9341c3350f6fd8bcac8496b03a92b24ca306"
+    },
+    {
+      "id": "s-declared-sort",
+      "description": "Set representado como array: se ordena por id antes de canonicalizar (paso de perfil).",
+      "sortArrays": [
+        {
+          "pointer": "/options",
+          "by": "id"
+        }
+      ],
+      "input": {
+        "options": [
+          {
+            "id": "b",
+            "v": 2
+          },
+          {
+            "id": "a",
+            "v": 1
+          },
+          {
+            "id": "c",
+            "v": 3
+          }
+        ]
+      },
+      "canonical": "{\"options\":[{\"id\":\"a\",\"v\":1},{\"id\":\"b\",\"v\":2},{\"id\":\"c\",\"v\":3}]}",
+      "digest": "7e5bb5eee457ba164e6c3c75a3c4d36dad46637b6ec92ba2b79d3397077c993b"
+    },
+    {
+      "id": "s-pre-sorted",
+      "description": "Mismo set ya ordenado: bytes y digest idénticos a s-declared-sort.",
+      "input": {
+        "options": [
+          {
+            "id": "a",
+            "v": 1
+          },
+          {
+            "id": "b",
+            "v": 2
+          },
+          {
+            "id": "c",
+            "v": 3
+          }
+        ]
+      },
+      "canonical": "{\"options\":[{\"id\":\"a\",\"v\":1},{\"id\":\"b\",\"v\":2},{\"id\":\"c\",\"v\":3}]}",
+      "digest": "7e5bb5eee457ba164e6c3c75a3c4d36dad46637b6ec92ba2b79d3397077c993b"
+    }
+  ]
+}

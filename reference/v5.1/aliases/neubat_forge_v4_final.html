@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEUBAT FORGE v4.1 - Kernel 7 - Enterprise</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@500;700&family=Red+Hat+Text:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{display:['Red Hat Display','Inter','sans-serif'],text:['Red Hat Text','Inter','sans-serif'],mono:['JetBrains Mono','monospace']}}}}</script>
+<style>
+:root{--rh-red:#ee0000;--rh-black:#151515;--rh-gray:#6a6e73;--rh-gray-dark:#3c3f42;--rh-border:#d2d2d2;--rh-bg:#ffffff;--rh-surface:#f5f5f5;--rh-blue:#0066cc;--rh-green:#3e8635;--rh-yellow:#f0ab00;}
+.dark{--rh-bg:#151515;--rh-surface:#1e1e1e;--rh-border:#2a2a2a;--rh-black:#ffffff;--rh-gray:#a8a8a8;}
+*{font-family:'Red Hat Text',Inter,sans-serif;}h1,h2,h3{font-family:'Red Hat Display',sans-serif;}
+.focus-ring:focus{outline:2px solid #0066cc;outline-offset:2px;}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0;}
+.sr-only:focus{position:fixed;top:8px;left:8px;width:auto;height:auto;padding:8px 16px;background:#151515;color:white;z-index:9999;clip:auto;border-radius:4px;}
+</style>
+</head>
+<body class="bg-[var(--rh-bg)] text-[var(--rh-black)] transition-colors duration-300">
+<div id="root"></div>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel">
+const {useState,useEffect,useRef}=React;
+const ENVIRONMENTS=[
+  {id:'hyprland',name:'Hyprland',version:'0.47',type:'WM',ram:'~350 MB',protocol:'Wayland',popularity:92,ideal:'Usuarios avanzados que quieren lo más moderno',desc:'Tiling dinámico con animaciones suaves',tags:['Wayland','Tiling','Moderno']},
+  {id:'gnome',name:'GNOME',version:'50',type:'DE',ram:'~1.1 GB',protocol:'Wayland',popularity:88,ideal:'Quienes vienen de macOS/Windows y quieren algo pulido',desc:'Pulido con triple buffering y acentos dinámicos',tags:['Wayland','Pulido','Recomendado']},
+  {id:'kde',name:'KDE Plasma',version:'6.4',type:'DE',ram:'~750 MB',protocol:'Wayland',popularity:85,ideal:'Quienes quieren personalizarlo todo',desc:'Potente, personalizable, overview mejorada',tags:['Wayland','Personalizable']},
+  {id:'sway',name:'Sway',version:'1.10',type:'WM',ram:'~180 MB',protocol:'Wayland',popularity:71,ideal:'Minimalistas teclado',desc:'i3 en Wayland',tags:['Wayland','Ligero']},
+  {id:'cinnamon',name:'Cinnamon',version:'6.4',type:'DE',ram:'~600 MB',protocol:'X11/Wayland',popularity:78,ideal:'Usuarios Windows familiar',desc:'Clásico, estable',tags:['Familiar']},
+  {id:'xfce',name:'XFCE',version:'4.20',type:'DE',ram:'~400 MB',protocol:'X11/Wayland exp',popularity:74,ideal:'PCs antiguos',desc:'Ligero y rápido',tags:['Ligero']},
+  {id:'cosmic',name:'COSMIC',version:'Epoch 1.0',type:'DE',ram:'~650 MB',protocol:'Wayland',popularity:69,ideal:'Fans System76 y Rust',desc:'Nuevo en Rust',tags:['Moderno']},
+  {id:'budgie',name:'Budgie',version:'10.9.2',type:'DE',ram:'~500 MB',protocol:'Wayland',popularity:62,ideal:'Elegante simple',desc:'Elegante simple',tags:['Elegante']},
+  {id:'i3',name:'i3',version:'4.24',type:'WM',ram:'~120 MB',protocol:'X11',popularity:76,ideal:'Programadores teclado',desc:'Tiling clásico',tags:['X11']},
+];
+const KERNELS=[
+  {id:'linux',name:'Linux',version:'7.1.2',pkg:'linux',desc:'Última estable (7.1). Recomendado para todos. `pacman -S linux` instala 7.1.2-arch1',tag:'Recomendado',ram:'+0 MB'},
+  {id:'linux-lts',name:'Linux LTS',version:'6.12.25',pkg:'linux-lts',desc:'Soporte largo 6.12. Más estable si no quieres actualizar kernel seguido. `pacman -S linux-lts`',tag:'Estable',ram:'+0 MB'},
+  {id:'linux-zen',name:'Linux Zen',version:'7.1-zen',pkg:'linux-zen',desc:'Rendimiento para juegos y audio baja latencia. `pacman -S linux-zen` -> 7.1-zen',tag:'Gaming',ram:'+0 MB'},
+  {id:'linux-hardened',name:'Linux Hardened',version:'7.1-hardened',pkg:'linux-hardened',desc:'Seguridad extra. `pacman -S linux-hardened`',tag:'Seguridad',ram:'+0 MB'},
+];
+const LAYERS=[
+  {id:'base',name:'Herramientas base',icon:'🧰',desc:'Lo esencial',default:true,packages:[
+    {id:'micro',name:'Micro',desc:'Editor fácil como Notepad en terminal.',size:18,license:'MIT',pop:88,stars:5,tag:'Recomendado',why:'Editar sin aprender Vim',detail:'pacman -S micro -> 2.0.14 última estable',pkg:'micro'},
+    {id:'btop',name:'btop',desc:'Ver CPU RAM bonito.',size:2,license:'GPL',pop:82,stars:5,tag:'Ligero',why:'Saber si va lento',detail:'pacman -S btop',pkg:'btop'},
+    {id:'flameshot',name:'Flameshot',desc:'Capturas con anotaciones.',size:25,license:'GPL',pop:90,stars:5,tag:'Popular',why:'Captura + flechas',detail:'pacman -S flameshot',pkg:'flameshot'},
+  ]},
+  {id:'browser',name:'Navegación web',icon:'🌐',desc:'Internet',default:true,packages:[
+    {id:'firefox',name:'Firefox',desc:'Privado rápido. Mozilla.',size:250,license:'MPL',pop:95,stars:5,tag:'Recomendado',why:'Bloquea rastreadores',detail:'pacman -S firefox -> 133.0 última',pkg:'firefox'},
+    {id:'vivaldi',name:'Vivaldi',desc:'Se adapta a ti. Notas y paneles.',size:380,license:'Prop',pop:78,stars:4,tag:'Personalizable',why:'Control total',detail:'pacman -S vivaldi / AUR vivaldi -> 7.1 última',pkg:'vivaldi'},
+    {id:'brave',name:'Brave',desc:'Bloquea anuncios.',size:320,license:'MPL',pop:84,stars:4,tag:'Privacidad',why:'YouTube sin anuncios',detail:'pacman -S brave-bin (AUR)',pkg:'brave-bin'},
+    {id:'zen',name:'Zen Browser',desc:'Firefox moderno vertical tabs.',size:270,license:'MPL',pop:72,stars:4,tag:'Moderno',why:'Más bonito',detail:'AUR zen-browser-bin',pkg:'zen-browser-bin'},
+  ]},
+  {id:'comm',name:'Comunicación',icon:'💬',desc:'Chat',default:true,packages:[
+    {id:'discord',name:'Discord',desc:'Chat comunidades.',size:180,license:'Prop',pop:89,stars:5,tag:'Popular',why:'Donde está todos',detail:'pacman -S discord',pkg:'discord'},
+    {id:'telegram',name:'Telegram',desc:'Mensajería rápida.',size:85,license:'GPL',pop:87,stars:5,tag:'Popular',why:'Archivos 2GB',detail:'pacman -S telegram-desktop',pkg:'telegram-desktop'},
+  ]},
+  {id:'office',name:'Ofimática',icon:'📄',desc:'Docs',default:true,packages:[
+    {id:'libreoffice',name:'LibreOffice',desc:'Word Excel PowerPoint libres.',size:650,license:'MPL',pop:90,stars:5,tag:'Recomendado',why:'Abre docx sin licencia',detail:'pacman -S libreoffice-fresh -> 25.2',pkg:'libreoffice-fresh'},
+  ]},
+  {id:'dev',name:'Desarrollo',icon:'🧑‍💻',desc:'Crear software con IA',default:true,packages:[
+    {id:'cursor',name:'Cursor',desc:'Editor con IA que programa contigo.',size:380,license:'Prop',pop:94,stars:5,tag:'Recomendado',why:'IA escribe código',detail:'curl https://downloader.cursor.sh/linux/appImage/x64 -o cursor.AppImage',pkg:'cursor-bin (AUR) o AppImage'},
+    {id:'grokbot',name:'Grokbot',desc:'Asistente IA en escritorio.',size:180,license:'Prop',pop:88,stars:5,tag:'IA',why:'Ayuda con contexto PC',detail:'binario /opt/grokbot',pkg:'grokbot (custom)'},
+    {id:'grokbuild',name:'Grok Build',desc:'Crea apps con prompts.',size:220,license:'Prop',pop:85,stars:5,tag:'IA',why:'De idea a app',detail:'/opt/grokbuild',pkg:'grokbuild (custom)'},
+    {id:'zed',name:'Zed',desc:'Editor ultrarrápido.',size:150,license:'GPL',pop:75,stars:4,tag:'Rápido',why:'Proyectos gigantes 1s',detail:'pacman -S zed -> 0.177 última',pkg:'zed'},
+    {id:'vscode',name:'VS Code',desc:'Editor más usado.',size:350,license:'MIT',pop:96,stars:5,tag:'Popular',why:'Extensiones',detail:'pacman -S code -> 1.96 última',pkg:'code'},
+  ]},
+  {id:'gaming',name:'Gaming',icon:'🎮',desc:'Jugar',default:false,packages:[
+    {id:'steam',name:'Steam',desc:'Juegos.',size:400,license:'Prop',pop:88,stars:5,tag:'Gaming',why:'Miles juegos',detail:'pacman -S steam',pkg:'steam'},
+  ]},
+];
+
+function App(){
+  const [isDark,setIsDark]=useState(false);
+  const [simpleMode,setSimpleMode]=useState(true);
+  const [step,setStep]=useState(0);
+  const [intent,setIntent]=useState('desarrollo');
+  const [selectedKernel,setSelectedKernel]=useState('linux');
+  const [selectedEnv,setSelectedEnv]=useState('gnome');
+  const [selectedPkgs,setSelectedPkgs]=useState(new Set(['micro','firefox','vivaldi','libreoffice-fresh','cursor','grokbot','grokbuild']));
+  const [showPkgModal,setShowPkgModal]=useState(null);
+  const [showCmdK,setShowCmdK]=useState(false);
+  const [showGlossary,setShowGlossary]=useState(false);
+  const [toast,setToast]=useState(null);
+  const [lastAction,setLastAction]=useState(null);
+  const [focusedEnvIdx,setFocusedEnvIdx]=useState(0);
+
+  useEffect(()=>{document.documentElement.classList.toggle('dark',isDark)},[isDark]);
+  useEffect(()=>{
+    const h=(e)=>{if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();setShowCmdK(true)} if(e.key==='Escape'){setShowCmdK(false);setShowPkgModal(null)}};
+    window.addEventListener('keydown',h);return()=>window.removeEventListener('keydown',h);
+  },[]);
+
+  const togglePkg=(id,name)=>{
+    const n=new Set(selectedPkgs);const was=n.has(id); if(was)n.delete(id);else n.add(id); setSelectedPkgs(n); setLastAction({id,name,was});
+    const live=document.getElementById('aria-live'); if(live) live.textContent=was?`Quitado ${name}`:`Añadido ${name} total ${n.size}`;
+    setToast(was?`Quitado ${name}`:`Añadido ${name}`); setTimeout(()=>setToast(null),2500);
+  };
+  const totalSize=Array.from(selectedPkgs).reduce((acc,pid)=>{for(let l of LAYERS) for(let p of l.packages) if(p.id===pid||p.pkg===pid) return acc+p.size; return acc;},650);
+  const envDetails=ENVIRONMENTS.find(e=>e.id===selectedEnv);
+  const kernelDetails=KERNELS.find(k=>k.id===selectedKernel);
+  const filteredEnvs=simpleMode?ENVIRONMENTS.filter(e=>e.type==='DE'):ENVIRONMENTS;
+  const filteredLayers=simpleMode?LAYERS.filter(l=>['base','browser','office','comm'].includes(l.id)):LAYERS;
+  const validation=[];
+  if(selectedEnv==='sway'&&selectedKernel==='linux') validation.push({type:'warn',title:'Sway + NVIDIA en kernel 7.1 puede parpadear',desc:'Recomendado Hyprland 0.47 o KDE 6.4 con linux 7.1',action:()=>setSelectedEnv('hyprland'),label:'Usar Hyprland'});
+  validation.push({type:'info',title:`Kernel ${kernelDetails?.pkg} -> ${kernelDetails?.version} última estable`,desc:`pacman -S ${kernelDetails?.pkg} instala ${kernelDetails?.version} (repo core oct 2026)`});
+
+  return (
+    <div className="min-h-screen bg-[var(--rh-bg)]">
+      <a href="#main" className="sr-only focus:not-sr-only">Saltar al contenido</a>
+      <div id="aria-live" aria-live="polite" className="sr-only"></div>
+      <header className="h-16 border-b border-[var(--rh-border)] bg-[var(--rh-bg)] sticky top-0 z-40 flex items-center px-6 justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 bg-[#ee0000] rounded-[4px] flex items-center justify-center text-white font-bold">N</div>
+          <div><div className="font-bold text-[18px] leading-none">NEUBAT <span className="font-normal text-[var(--rh-gray)]">FORGE</span> <span className="text-[10px] ml-2 px-1.5 py-0.5 bg-[#ee0000] text-white rounded">v4.1 Kernel 7</span></div><div className="text-[10px] uppercase tracking-widest text-[var(--rh-gray)]">Enterprise • pacman latest stable</div></div>
+        </div>
+        <div className="flex items-center gap-2">
+          <button onClick={()=>setShowGlossary(!showGlossary)} className="h-9 px-3 border border-[var(--rh-border)] rounded text-[13px] focus-ring">ⓘ Glosario</button>
+          <div className="flex items-center gap-1 p-1 bg-[var(--rh-surface)] border border-[var(--rh-border)] rounded-[8px]">
+            <button onClick={()=>setSimpleMode(true)} className={`h-7 px-3 rounded-[6px] text-[12px] font-medium ${simpleMode?'bg-[#151515] text-white dark:bg-white dark:text-black':'text-[var(--rh-gray)]'}`}>Sencillo</button>
+            <button onClick={()=>setSimpleMode(false)} className={`h-7 px-3 rounded-[6px] text-[12px] font-medium ${!simpleMode?'bg-[#151515] text-white dark:bg-white dark:text-black':'text-[var(--rh-gray)]'}`}>Avanzado</button>
+          </div>
+          <button onClick={()=>setIsDark(!isDark)} className="w-9 h-9 border border-[var(--rh-border)] rounded flex items-center justify-center">{isDark?'☀️':'🌙'}</button>
+          <button onClick={()=>setShowCmdK(true)} className="h-9 px-3 border border-[var(--rh-border)] rounded text-[12px] hidden md:flex gap-2"><span>⌘K</span></button>
+          <button className="h-9 px-4 bg-[#ee0000] text-white rounded text-[13px] font-medium uppercase">Generar</button>
+        </div>
+      </header>
+      <div className="flex">
+        <aside className="w-[280px] shrink-0 border-r border-[var(--rh-border)] min-h-[calc(100vh-64px)] p-6 hidden lg:block sticky top-16">
+          <div className="text-[11px] uppercase tracking-widest text-[var(--rh-gray)] mb-2">Modo: {simpleMode?'Sencillo (filtra avanzado)':'Avanzado (todo)'} • Kernel {kernelDetails?.version}</div>
+          <div className="text-[10px] text-[var(--rh-gray)] mb-4 p-2 bg-[var(--rh-surface)] rounded border">pacman refs: {KERNELS.map(k=>k.pkg).join(', ')}, micro, vivaldi, code, etc instalan última estable</div>
+          <div className="space-y-1">
+            {[
+              {n:'Intención',d:'¿Para qué usarás el PC?'},
+              {n:'Sistema base',d:`Kernel 7 • ${simpleMode?'Resumen':'Detallado'}`},
+              {n:'Entorno',d:`${filteredEnvs.length} opciones ${simpleMode?'(solo DE)':'(DE+WM)'}`},
+              {n:'Apps',d:`${selectedPkgs.size} apps • ${totalSize} MB`},
+              {n:'Identidad',d:'Usuario y cifrado'},
+              {n:'Revisión',d:'Resumen y forja'},
+            ].map((s,i)=>{
+              const active=step===i;const done=step>i;
+              return <button key={i} onClick={()=>setStep(i)} className={`w-full text-left flex gap-3 p-3 rounded-[8px] border ${active?'bg-[#fff5f5] dark:bg-[#2a1515] border-[#ee0000]':'border-transparent hover:bg-[var(--rh-surface)]'}`}>
+                <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[12px] font-bold ${done?'bg-[#3e8635] text-white':active?'bg-[#ee0000] text-white':'bg-[var(--rh-surface)] border'}`}>{done?'✓':i+1}</div>
+                <div><div className="text-[13px] font-medium">{s.n}</div><div className="text-[11px] text-[var(--rh-gray)]">{s.d}</div></div>
+              </button>
+            })}
+          </div>
+        </aside>
+        <main id="main" className="flex-1 p-4 md:p-8 max-w-[900px]">
+          {step===0&&(
+            <div><h1 className="font-bold text-[28px]">¿Para qué usarás tu nuevo Arch con kernel 7.1?</h1><p className="text-[14px] text-[var(--rh-gray)] mt-2">Modo {simpleMode?'Sencillo: solo lo esencial, sin tecnicismos':'Avanzado: control total de kernel 7, bootloader, filesystem'}. Cambia arriba y verás cómo filtra.</p>
+            <div className="grid md:grid-cols-2 gap-3 mt-6">
+              {[{id:'desarrollo',title:'Desarrollo con IA',desc:'Cursor, Grokbot, Grok Build + Micro + Vivaldi',icon:'🧑‍💻'},{id:'estudio',title:'Estudio y trabajo',desc:'LibreOffice, Firefox, notas',icon:'📚'},{id:'creativo',title:'Creatividad',desc:'GIMP, Krita, OBS',icon:'🎨'},{id:'general',title:'Uso diario',desc:'Navegar, correo, YouTube',icon:'🏠'}].map(it=>(
+                <button key={it.id} onClick={()=>setIntent(it.id)} className={`text-left p-4 rounded-[8px] border-2 ${intent===it.id?'border-[#ee0000] bg-[#fff5f5] dark:bg-[#2a1515]':'border-[var(--rh-border)]'}`}>
+                  <div className="flex gap-3"><span className="text-[20px]">{it.icon}</span><div><div className="font-medium text-[14px]">{it.title}</div><div className="text-[12px] text-[var(--rh-gray)] mt-1">{it.desc}</div></div></div>
+                </button>
+              ))}
+            </div>
+            <div className="mt-8 flex justify-end"><button onClick={()=>setStep(1)} className="h-10 px-6 bg-[#ee0000] text-white rounded font-medium">Continuar → Sistema base (kernel 7)</button></div></div>
+          )}
+          {step===1&&(
+            <div><h2 className="font-bold text-[22px]">Sistema base — Kernel 7.1 última estable</h2><p className="text-[13px] text-[var(--rh-gray)] mt-1">Pacman instala siempre última estable. {simpleMode?'En sencillo solo ves resumen. Cambia a Avanzado para elegir.':'En avanzado eliges kernel, bootloader, filesystem con refs pacman directas.'}</p>
+            {simpleMode?(
+              <div className="mt-6 space-y-3">
+                <div className="p-4 border border-[var(--rh-border)] rounded-[8px] bg-[#fff5f5] dark:bg-[#2a1515]"><div className="font-medium text-[14px]">✅ Kernel {kernelDetails?.version} ({kernelDetails?.pkg}) <span className="text-[10px] px-1.5 py-0.5 bg-[#ee0000] text-white rounded ml-2">pacman -S {kernelDetails?.pkg}</span></div><div className="text-[12px] text-[var(--rh-gray)] mt-1">{kernelDetails?.desc}</div></div>
+                <div className="p-4 border border-[var(--rh-border)] rounded-[8px]"><div className="font-medium text-[14px]">Arranque rápido (systemd-boot)</div><div className="text-[12px] text-[var(--rh-gray)]">pacman -S systemd → incluye systemd-boot. 3-5s arranque. En Avanzado puedes elegir GRUB o Limine.</div></div>
+                <div className="p-4 border border-[var(--rh-border)] rounded-[8px]"><div className="font-medium text-[14px]">Protección automática (btrfs + snapper)</div><div className="text-[12px] text-[var(--rh-gray)]">pacman -S btrfs-progs snapper. Vuelve atrás si falla actualización.</div></div>
+                <div className="p-3 bg-[#f0f6ff] border-l-4 border-[#0066cc] rounded-r text-[12px]"><b>Modo Sencillo activo:</b> kernel 7.1, systemd-boot, btrfs, zram, pipewire. Para cambiar, pulsa Avanzado arriba.</div>
+              </div>
+            ):(
+              <div className="mt-6 space-y-4">
+                <div className="font-medium text-[13px] uppercase tracking-wide">Elige kernel (pacman -S &lt;paquete&gt; instala última estable)</div>
+                <div className="grid gap-2">
+                  {KERNELS.map(k=>{
+                    const active=selectedKernel===k.id;
+                    return <button key={k.id} onClick={()=>setSelectedKernel(k.id)} className={`text-left p-3 rounded-[8px] border-2 ${active?'border-[#ee0000] bg-[#fff5f5] dark:bg-[#2a1515]':'border-[var(--rh-border)]'}`}>
+                      <div className="flex justify-between"><span className="font-medium text-[13px]">{k.name} {k.version} <span className="text-[10px] font-mono px-1.5 py-0.5 bg-[#f5f5f5] border rounded ml-2">{k.pkg}</span></span><span className={`text-[10px] px-1.5 py-0.5 rounded border ${active?'bg-[#ee0000] text-white border-[#ee0000]':'bg-[#f5f5f5]'}`}>{k.tag}</span></div>
+                      <div className="text-[11px] text-[var(--rh-gray)] mt-1">{k.desc}</div>
+                      <div className="text-[10px] mt-1 font-mono bg-[#151515] text-[#9ecaff] inline-block px-1.5 py-0.5 rounded">pacman -S {k.pkg} linux-firmware intel-ucode</div>
+                    </button>
+                  })}
+                </div>
+                <div className="mt-4 p-3 border border-[var(--rh-border)] rounded-[8px]"><div className="font-medium text-[13px]">Bootloader</div><div className="mt-2 flex gap-2 text-[12px]"><label className="flex gap-1"><input type="radio" name="boot" defaultChecked/> systemd-boot (pacman -S systemd)</label><label className="flex gap-1"><input type="radio" name="boot"/> grub (pacman -S grub efibootmgr)</label><label className="flex gap-1"><input type="radio" name="boot"/> limine (AUR limine)</label></div></div>
+                <div className="p-3 border border-[var(--rh-border)] rounded-[8px]"><div className="font-medium text-[13px]">Filesystem</div><div className="mt-2 flex gap-2 text-[12px]"><label className="flex gap-1"><input type="radio" name="fs" defaultChecked/> btrfs (pacman -S btrfs-progs snapper) - recomendado</label><label className="flex gap-1"><input type="radio" name="fs"/> ext4 (pacman -S e2fsprogs)</label></div></div>
+              </div>
+            )}
+            <div className="mt-6 flex justify-between"><button onClick={()=>setStep(0)} className="h-10 px-4 border rounded">← Atrás</button><button onClick={()=>setStep(2)} className="h-10 px-6 bg-[#ee0000] text-white rounded">Continuar → Entorno ({filteredEnvs.length})</button></div></div>
+          )}
+          {step===2&&(
+            <div><div className="flex justify-between"><h2 className="font-bold text-[22px]">Entorno gráfico {simpleMode?'(solo DE, sin WM técnicos)':'(DE + WM)'}</h2><span className="text-[11px] px-2 py-1 bg-[#f5f5f5] border rounded">{filteredEnvs.length} opciones • pacman -S ...</span></div><p className="text-[13px] text-[var(--rh-gray)] mt-1">{simpleMode?'En Sencillo ocultamos i3, Hyprland, Sway, bspwm para no abrumar. Cambia a Avanzado para verlos.':'En Avanzado ves todos: GNOME 50, KDE 6.4, Hyprland 0.47, Sway 1.10, etc.'}</p>
+            <div className="grid md:grid-cols-2 gap-3 mt-6">
+              {filteredEnvs.map((env,idx)=>{
+                const active=selectedEnv===env.id;
+                return <button key={env.id} onClick={()=>setSelectedEnv(env.id)} className={`text-left p-4 rounded-[8px] border-2 ${active?'border-[#ee0000] bg-[#fff5f5] dark:bg-[#2a1515]':'border-[var(--rh-border)]'}`}>
+                  <div className="flex justify-between"><div className="font-medium text-[14px]">{env.name} <span className="text-[11px] font-mono px-1.5 py-0.5 bg-[#f5f5f5] border rounded">{env.version}</span></div><span className="text-[10px] px-1.5 py-0.5 rounded bg-[#f0f0f0] border">{env.protocol}</span></div>
+                  <div className="mt-2 h-[44px] rounded-[6px] border overflow-hidden flex"><div className="flex-1" style={{background:env.id==='gnome'?'linear-gradient(135deg,#2a2a2a,#151515)':env.id==='kde'?'linear-gradient(135deg,#1e3a5f,#2d5aa0)':'#e5e7eb'}}></div><div className="w-[40%] bg-white/80 border-l p-1"><div className="h-2 w-2/3 bg-[#d2d2d2] rounded"></div></div></div>
+                  <div className="mt-2 text-[11px] text-[var(--rh-gray)]"><b>Ideal:</b> {env.ideal}</div>
+                  <div className="mt-1 text-[10px] font-mono">pacman -S {env.id==='gnome'?'gnome':env.id==='kde'?'plasma-meta':env.id} {env.id==='gnome'?'gdm':env.id==='kde'?'sddm':''}</div>
+                </button>
+              })}
+            </div>
+            <div className="mt-6 flex justify-between"><button onClick={()=>setStep(1)} className="h-10 px-4 border rounded">← Atrás</button><button onClick={()=>setStep(3)} className="h-10 px-6 bg-[#ee0000] text-white rounded">Continuar → Apps ({filteredLayers.length} capas)</button></div></div>
+          )}
+          {step===3&&(
+            <div><h2 className="font-bold text-[22px]">Apps y paquetes — refs pacman directas</h2><p className="text-[13px] text-[var(--rh-gray)]">Modo {simpleMode?'Sencillo: solo base, navegador, ofimática, comunicación (4 capas)':'Avanzado: 7 capas incluyendo gaming y dev con Cursor/Grokbot/Grok Build'} • Total {selectedPkgs.size} • {totalSize} MB</p>
+            <div className="mt-2 p-2 bg-[#fff8e6] border border-[#f0ab00] rounded text-[11px]"><b>Pacman refs:</b> Todos los paquetes usan <code>pacman -S &lt;paquete&gt;</code> que instala última estable. Ej: micro 2.0.14, vivaldi 7.1, firefox 133, code 1.96, zed 0.177, linux 7.1.2</div>
+            <div className="mt-6 space-y-4">
+              {filteredLayers.map(layer=>(
+                <div key={layer.id} className="border border-[var(--rh-border)] rounded-[8px] overflow-hidden"><div className="p-3 bg-[#f5f5f5] flex justify-between"><div className="flex gap-2"><span>{layer.icon}</span><div><div className="font-medium text-[14px]">{layer.name}</div><div className="text-[11px] text-[var(--rh-gray)]">{layer.desc}</div></div></div><span className="text-[11px] px-2 py-0.5 border rounded">{layer.packages.filter(p=>selectedPkgs.has(p.id)).length}/{layer.packages.length}</span></div>
+                <div className="p-3 grid gap-2">
+                  {layer.packages.map(pkg=>{
+                    const sel=selectedPkgs.has(pkg.id);
+                    return <div key={pkg.id} className={`flex gap-3 p-3 rounded-[6px] border ${sel?'border-[#ee0000] bg-[#fff5f5] dark:bg-[#2a1515]':'border-[var(--rh-border)]'}`}>
+                      <input type="checkbox" checked={sel} onChange={()=>togglePkg(pkg.id,pkg.name)} className="mt-1"/>
+                      <button onClick={()=>setShowPkgModal(pkg)} className="flex-1 text-left"><div className="flex justify-between"><span className="font-medium text-[13px]">{pkg.name} <span className="text-[10px] font-mono text-[var(--rh-gray)]">{pkg.pkg} {pkg.size} MB</span></span><span className={`text-[10px] px-1.5 py-0.5 rounded border ${pkg.tag==='Recomendado'?'bg-[#ee0000] text-white border-[#ee0000]':'bg-[#f5f5f5]'}`}>{pkg.tag}</span></div><div className="text-[11px] text-[var(--rh-gray)]">{pkg.desc}</div><div className="text-[10px] font-mono mt-1 bg-[#151515] text-[#9ecaff] inline-block px-1.5 py-0.5 rounded">pacman -S {pkg.pkg}</div></button>
+                    </div>
+                  })}
+                </div></div>
+              ))}
+            </div>
+            <div className="mt-6 flex justify-between"><button onClick={()=>setStep(2)} className="h-10 px-4 border rounded">← Atrás</button><button onClick={()=>setStep(4)} className="h-10 px-6 bg-[#ee0000] text-white rounded">Continuar → Identidad</button></div></div>
+          )}
+          {step===4&&(<div><h2 className="font-bold text-[22px]">Identidad y seguridad</h2><div className="mt-6 max-w-[520px] space-y-4"><label className="block"><span className="text-[12px] font-medium">Hostname</span><input placeholder="mi-equipo" className="mt-1 w-full h-10 px-3 border rounded bg-[var(--rh-bg)]"/></label><div className="p-4 border rounded"><div className="font-medium text-[13px]">Protege si pierdes portátil (LUKS)</div><div className="text-[11px] text-[var(--rh-gray)] mt-1">pacman -S cryptsetup → luksFormat. Cifra disco.</div><label className="mt-2 flex gap-2 text-[12px]"><input type="checkbox"/> Activar cifrado</label></div></div><div className="mt-6 flex justify-between"><button onClick={()=>setStep(3)} className="h-10 px-4 border rounded">← Atrás</button><button onClick={()=>setStep(5)} className="h-10 px-6 bg-[#ee0000] text-white rounded">Continuar → Revisión</button></div></div>)}
+          {step===5&&(<div><h2 className="font-bold text-[22px]">Revisión — Kernel 7.1</h2><div className="mt-4 p-4 border-l-4 border-[#0066cc] bg-[#f0f6ff] rounded-r"><div className="font-medium text-[13px]">Listo para forjar</div><div className="text-[12px] mt-1">Kernel {kernelDetails?.pkg} {kernelDetails?.version} (pacman -S {kernelDetails?.pkg}) • ISO {totalSize} MB • {selectedPkgs.size} apps • {envDetails?.name} {envDetails?.version}</div><div className="text-[10px] font-mono mt-2">pacstrap /mnt base {kernelDetails?.pkg} linux-firmware btrfs-progs systemd {Array.from(selectedPkgs).map(id=>{for(let l of LAYERS) for(let p of l.packages) if(p.id===id) return p.pkg; return id}).join(' ')}</div></div><div className="mt-6"><button className="h-11 px-8 bg-[#ee0000] text-white rounded font-bold uppercase">🔥 Forjar con kernel 7.1</button></div><div className="mt-6 flex justify-start"><button onClick={()=>setStep(4)} className="h-10 px-4 border rounded">← Atrás</button></div></div>)}
+        </main>
+        <aside className="w-[360px] shrink-0 border-l border-[var(--rh-border)] min-h-[calc(100vh-64px)] p-4 hidden xl:block sticky top-16 overflow-auto">
+          <div className="border border-[var(--rh-border)] rounded-[8px] overflow-hidden"><div className="p-3 border-b bg-[#f5f5f5] flex justify-between"><span className="font-medium text-[13px]">Vista previa</span><span className="text-[10px] px-1.5 py-0.5 border rounded">{kernelDetails?.version} • {envDetails?.protocol}</span></div><div className="p-3"><div className="h-[120px] rounded-[6px] border overflow-hidden" style={{background:envDetails?.id==='gnome'?'radial-gradient(120% 120% at 20% 10%, #2a2a2a 0%, #151515 60%)':'linear-gradient(135deg,#1e3a5f,#3a6bc5)'}}><div className="h-6 bg-black/80 flex items-center px-2 text-[10px] text-white justify-between"><span>Actividades</span><span>{kernelDetails?.version}</span></div></div><div className="mt-3 text-[11px]"><div className="flex justify-between"><span className="text-[var(--rh-gray)]">Kernel</span><span className="font-mono">{kernelDetails?.pkg} {kernelDetails?.version}</span></div><div className="flex justify-between"><span className="text-[var(--rh-gray)]">Entorno</span><span>{envDetails?.name} {envDetails?.version}</span></div><div className="flex justify-between"><span className="text-[var(--rh-gray)]">Modo</span><span className={simpleMode?'text-[#3e8635] font-medium':'text-[#0066cc] font-medium'}>{simpleMode?'Sencillo (4 capas)':'Avanzado (7 capas)'}</span></div></div></div></div>
+          <div className="mt-4 border border-[var(--rh-border)] rounded-[8px]"><div className="p-3 border-b bg-[#f5f5f5]"><span className="font-medium text-[13px]">Manifiesto</span><span className="ml-2 text-[11px] text-[var(--rh-gray)]">{selectedPkgs.size} apps • {totalSize} MB</span></div><div className="p-3 space-y-2 max-h-[400px] overflow-auto">
+            {validation.map((v,i)=><div key={i} className={`p-2.5 rounded-[6px] border-l-4 text-[11px] ${v.type==='warn'?'bg-[#fff8e6] border-[#f0ab00]':'bg-[#f0f6ff] border-[#0066cc]'}`}><div className="font-medium">{v.title}</div><div className="mt-1">{v.desc}</div>{v.action&&<button onClick={v.action} className="mt-2 h-7 px-2 bg-[#151515] text-white rounded text-[11px]">{v.label}</button>}</div>)}
+            <div className="pt-2 border-t space-y-1 text-[11px] font-mono"><div>pacstrap /mnt base</div><div>{kernelDetails?.pkg} linux-firmware</div><div>btrfs-progs snapper systemd</div>{Array.from(selectedPkgs).map(id=>{let n=id;let pkg='';for(let l of LAYERS) for(let p of l.packages) if(p.id===id){n=p.name;pkg=p.pkg} return <div key={id} className="flex justify-between"><span>{pkg}</span><span className="text-[var(--rh-gray)]">{n}</span></div>})}</div>
+          </div></div>
+        </aside>
+      </div>
+      {toast&&<div className="fixed bottom-4 left-1/2 -translate-x-1/2 bg-[#151515] text-white px-4 py-2 rounded-[8px] shadow-xl flex gap-3 z-50"><span className="text-[13px]">{toast}</span>{lastAction&&<button onClick={()=>{const n=new Set(selectedPkgs); if(lastAction.was) n.add(lastAction.id); else n.delete(lastAction.id); setSelectedPkgs(n); setToast(null);}} className="text-[12px] underline text-[#9ecaff]">Deshacer</button>}</div>}
+      {showPkgModal&&<div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50" onClick={()=>setShowPkgModal(null)}><div className="bg-white dark:bg-[#1e1e1e] border rounded-[12px] max-w-[480px] w-full p-6 shadow-2xl" onClick={e=>e.stopPropagation()}><div className="flex justify-between"><div className="flex gap-3"><div className="w-12 h-12 rounded-[8px] bg-[#f5f5f5] border flex items-center justify-center text-[20px]">📦</div><div><div className="font-bold text-[18px]">{showPkgModal.name}</div><div className="text-[12px] text-[var(--rh-gray)]">{showPkgModal.pkg} • {showPkgModal.size} MB • {showPkgModal.license}</div></div></div><button onClick={()=>setShowPkgModal(null)} className="w-8 h-8 border rounded">✕</button></div><div className="mt-4 text-[13px]">{showPkgModal.desc}</div><div className="mt-3 p-2 bg-[#151515] text-[#9ecaff] rounded font-mono text-[11px]">pacman -S {showPkgModal.pkg}  # instala última estable {showPkgModal.size} MB = {Math.round(showPkgModal.size/5)} fotos</div><div className="mt-3 p-3 bg-[#f0f6ff] border-l-4 border-[#0066cc] rounded-r text-[12px]"><b>Por qué:</b> {showPkgModal.why}</div><div className="mt-4 flex gap-2"><button onClick={()=>{togglePkg(showPkgModal.id,showPkgModal.name);setShowPkgModal(null)}} className="h-10 px-4 bg-[#ee0000] text-white rounded">{selectedPkgs.has(showPkgModal.id)?'Quitar':'Añadir'}</button><button onClick={()=>setShowPkgModal(null)} className="h-10 px-4 border rounded">Cerrar</button></div></div></div>}
+      {showCmdK&&<div className="fixed inset-0 z-50 bg-black/40 flex items-start justify-center pt-[20vh] p-4" onClick={()=>setShowCmdK(false)}><div className="bg-white dark:bg-[#1e1e1e] border rounded-[12px] w-full max-w-[600px] shadow-2xl overflow-hidden" onClick={e=>e.stopPropagation()}><div className="p-4 border-b"><input autoFocus placeholder="Busca: micro, vivaldi, cursor, linux 7.1, gnome 50..." className="w-full h-10 px-3 border rounded bg-[var(--rh-bg)]"/></div><div className="p-2 max-h-[300px] overflow-auto"><div className="text-[11px] text-[var(--rh-gray)] p-2">Pacman refs directas - instala última estable siempre</div>{LAYERS.flatMap(l=>l.packages).slice(0,5).map(p=><button key={p.id} onClick={()=>{togglePkg(p.id,p.name);setShowCmdK(false)}} className="w-full text-left p-3 rounded hover:bg-[#f5f5f5] flex justify-between"><span className="text-[13px]">{p.name} — pacman -S {p.pkg}</span><span className="text-[11px] text-[var(--rh-gray)]">↵</span></button>)}</div></div></div>}
+      {showGlossary&&<div className="fixed inset-0 z-40 flex justify-end bg-black/20" onClick={()=>setShowGlossary(false)}><div className="w-[380px] bg-white dark:bg-[#1e1e1e] border-l h-full p-6 overflow-auto" onClick={e=>e.stopPropagation()}><div className="flex justify-between"><h3 className="font-bold text-[16px]">Glosario + pacman refs kernel 7</h3><button onClick={()=>setShowGlossary(false)} className="w-8 h-8 border rounded">✕</button></div><div className="mt-6 space-y-3 text-[12px]">
+        <div className="p-3 bg-[#f5f5f5] rounded border"><b>linux</b> = 7.1.2 última estable<br/><code>pacman -S linux linux-firmware intel-ucode</code></div>
+        <div className="p-3 bg-[#f5f5f5] rounded border"><b>linux-lts</b> = 6.12.25 LTS<br/><code>pacman -S linux-lts</code></div>
+        <div className="p-3 bg-[#f5f5f5] rounded border"><b>linux-zen</b> = 7.1-zen rendimiento<br/><code>pacman -S linux-zen</code></div>
+        <div className="p-3 bg-[#f5f5f5] rounded border"><b>micro</b> = editor fácil<br/><code>pacman -S micro</code> (reemplaza neovim)</div>
+        <div className="p-3 bg-[#f5f5f5] rounded border"><b>vivaldi</b> = navegador<br/><code>pacman -S vivaldi</code> o AUR</div>
+        <div className="p-3 bg-[#f5f5f5] rounded border"><b>cursor</b> = editor IA<br/><code>pacman -S cursor-bin (AUR)</code> o AppImage</div>
+        <div className="p-3 bg-[#f5f5f5] rounded border"><b>Modo Sencillo/Avanzado</b><br/>Sencillo: oculta kernel selector, WM avanzados (i3, Hyprland, Sway), capas gaming/dev. Muestra solo DE y 4 capas esenciales. Avanzado: todo + refs pacman.</div>
+      </div></div></div>}
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>

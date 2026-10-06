@@ -1,0 +1,43 @@
+{
+  "profileId": "archmaker-canonicalization-profile@v1",
+  "profileVersion": "1",
+  "category": "unicode",
+  "vectors": [
+    {
+      "id": "u-nfc",
+      "description": "NFC precompuesto (é = U+00E9), preservado sin reinterpretar.",
+      "input": {
+        "s": "café"
+      },
+      "canonical": "{\"s\":\"café\"}",
+      "digest": "e4e47c1d6481cb52a515765dc6361f3d4ba733d9b362b77e31482a799aed744c"
+    },
+    {
+      "id": "u-nfd",
+      "description": "NFD (e + U+0301): no se normaliza; digest distinto de u-nfc.",
+      "input": {
+        "s": "café"
+      },
+      "canonical": "{\"s\":\"café\"}",
+      "digest": "c2bcee69771475dd0cfc919fe9b50bfe8f4a8077a4c798dc14f7ed8fbd91af7c"
+    },
+    {
+      "id": "u-astral",
+      "description": "Caracteres fuera del BMP (U+1F600) preservados como UTF-8.",
+      "input": {
+        "s": "emoji: 😀"
+      },
+      "canonical": "{\"s\":\"emoji: 😀\"}",
+      "digest": "e95e35762aa4d30ad37863fc35a14a6e8dbf6c24eb4f7310af62821301737a30"
+    },
+    {
+      "id": "u-escapes",
+      "description": "Escapes JCS: control, \\n, \\t, comilla, barra invertida, U+001F; la barra / no se escapa.",
+      "input": {
+        "s": "a\u0000b\n\t\"\\\u001f/"
+      },
+      "canonical": "{\"s\":\"a\\u0000b\\n\\t\\\"\\\\\\u001f/\"}",
+      "digest": "a2ee5e2dd4c5afc817aa09e0b8042cd9c474268149838603ed50dcae1938fb74"
+    }
+  ]
+}

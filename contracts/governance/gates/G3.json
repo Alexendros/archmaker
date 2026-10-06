@@ -1,0 +1,68 @@
+{
+  "id": "G3",
+  "title": "Arquitectura",
+  "remediationPhases": ["R4", "R5"],
+  "status": "in-progress",
+  "phases": {
+    "document-complete": "complete",
+    "design-ready": "complete",
+    "implementation-ready": "not-applicable",
+    "verified": "pending",
+    "release-ready": "not-applicable"
+  },
+  "dependsOn": [
+    {
+      "id": "ADR-0007",
+      "expectedDocumentStatus": "accepted",
+      "expectedApprovalStatus": "approved",
+      "note": "AUD-F-01: un ADR proposed no satisface un gate que exige decisión aceptada. R5 acepta ADR-0007."
+    }
+  ],
+  "criteria": [
+    {
+      "id": "G3-C01",
+      "description": "C4 corregido (Rust Core como componente interno) y viewpoints ISO/IEC/IEEE 42010.",
+      "kind": "document-approved",
+      "status": "complete",
+      "evidence": [
+        { "type": "document", "ref": "docs/02-architecture/viewpoints.md" },
+        { "type": "document", "ref": "docs/02-architecture/c4/component-views.md" },
+        { "type": "commit", "ref": "R4: viewpoints y C4 corregido", "commit": "0a0e98c" }
+      ]
+    },
+    {
+      "id": "G3-C02",
+      "description": "Mapa de módulos y reglas de dependencia aprobados.",
+      "kind": "document-approved",
+      "status": "complete",
+      "evidence": [
+        { "type": "document", "ref": "docs/02-architecture/module-map.md" },
+        { "type": "document", "ref": "docs/02-architecture/dependency-rules.md" }
+      ]
+    },
+    {
+      "id": "G3-C03",
+      "description": "ADR-0007 aceptado con las decisiones normativas de canonicalización (R5).",
+      "kind": "decision",
+      "status": "complete",
+      "evidence": [
+        { "type": "document", "ref": "docs/02-architecture/adr/ADR-0007-canonicalizacion-y-hashing.md", "note": "documentStatus accepted / approvalStatus approved (R5)" }
+      ]
+    },
+    {
+      "id": "G3-C04",
+      "description": "Revisión arquitectónica independiente (R13, AUD-024).",
+      "kind": "review",
+      "status": "complete",
+      "evidence": [
+        {
+          "type": "review",
+          "ref": "revisión arquitectónica independiente R13",
+          "reviewer": "independent-reviewer",
+          "reviewDate": "2026-10-06",
+          "note": "docs/00-governance/final-review-planning-v1.1.md: Rust Core como componente interno (sin unidad desplegable), Runner v1 como proceso separado y ADR-0007 accepted"
+        }
+      ]
+    }
+  ]
+}

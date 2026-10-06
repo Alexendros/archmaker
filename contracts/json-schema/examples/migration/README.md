@@ -1,3 +1,18 @@
+---
+id: DOC-CON-MIGRATION-001
+phase: MVP
+priority: P0
+documentStatus: draft
+approvalStatus: pending
+implementationStatus: partial
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - data
+reviewers:
+  - independent-reviewer
+---
+
 # Fixture de migración v5.1 → vNext
 
 Material de corpus para el pipeline de `docs/03-data/versioning-migrations.md`. Estado `draft`.

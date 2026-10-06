@@ -1,3 +1,18 @@
+---
+id: DOC-DATA-DM-001
+phase: MVP
+priority: P0
+documentStatus: accepted
+approvalStatus: approved
+implementationStatus: complete
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - data
+reviewers:
+  - independent-reviewer
+---
+
 # Modelo de dominio
 
 - ID: DOC-DATA-DM-001

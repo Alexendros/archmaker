@@ -1,0 +1,27 @@
+{
+  "profileId": "archmaker-canonicalization-profile@v1",
+  "profileVersion": "1",
+  "category": "domain",
+  "vectors": [
+    {
+      "id": "d-domain-manifest",
+      "description": "Mismo payload con dominio manifest.",
+      "domain": "archmaker:manifest:v1",
+      "input": {
+        "id": "x"
+      },
+      "canonical": "{\"id\":\"x\"}",
+      "digest": "b7596a5c13d95bd3661c91e8946326dd7ba718f57482c99afadc926e6658a37a"
+    },
+    {
+      "id": "d-domain-plan",
+      "description": "Mismo payload con dominio plan: digest distinto (separación de dominio).",
+      "domain": "archmaker:plan:v1",
+      "input": {
+        "id": "x"
+      },
+      "canonical": "{\"id\":\"x\"}",
+      "digest": "fbb6452c51ae50abbfad91324b13e798c1ded5a7b8b9360e73532e1f88b5c209"
+    }
+  ]
+}

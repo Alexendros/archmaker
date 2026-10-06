@@ -1,0 +1,21 @@
+{
+  "code": "AM-IO-001",
+  "family": "AM-IO",
+  "category": "io",
+  "severity": "error",
+  "retryable": true,
+  "messageKey": "error.io.readFailed",
+  "source": "archmaker-core",
+  "remedy": {
+    "kind": "retry",
+    "messageKey": "remedy.retryLater"
+  },
+  "cause": {
+    "code": "AM-IO-001",
+    "family": "AM-IO",
+    "category": "io",
+    "severity": "error",
+    "messageKey": "error.io.readFailed",
+    "source": "archmaker-core"
+  }
+}

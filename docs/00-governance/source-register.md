@@ -1,3 +1,18 @@
+---
+id: DOC-GOV-SRC-001
+phase: planning
+priority: P0
+documentStatus: in-review
+approvalStatus: pending
+implementationStatus: partial
+verificationStatus: partial
+releaseStatus: ineligible
+owners:
+  - governance
+reviewers:
+  - independent-reviewer
+---
+
 # Registro de fuentes
 
 ID `DOC-GOV-SRC-001` · Estado `in-review` · Propietario Gobierno · Última revisión 2026-10-05.
@@ -8,7 +23,7 @@ Toda afirmación mutable (paquetes, versiones, compatibilidad, comportamiento de
 
 | ID | Fuente | Estado | Autoridad | Uso |
 |---|---|---|---|---|
-| SRC-001 | `reference/v5.1/*` | received-partial | Histórica | Migraciones, requisitos y comparación visual. Nunca verdad de producto sin verificación. |
+| SRC-001 | `reference/v5.1/*` | controlled-incomplete | Histórica | Originales recibidos íntegros y controlados; colección declarada incompleta (`docs/00-governance/G0-SOURCE-DISPOSITION.md`). Migraciones, requisitos y comparación visual. Nunca verdad de producto sin verificación. |
 | SRC-002 | ArchWiki — Installation guide | verified | Primaria comunitaria | Instalación, paquetes y compatibilidad Arch. |
 | SRC-003 | archinstall oficial (repositorio) | verified | Primaria | Adapter v1 y profile schema. |
 | SRC-004 | Tauri 2 docs | verified | Primaria | Capabilities, permissions, scopes, CSP y updater. |
@@ -37,6 +52,7 @@ Toda afirmación mutable (paquetes, versiones, compatibilidad, comportamiento de
 - **SRC-005 (Rust):** capturados la documentación estable de Rust (`doc.rust-lang.org/stable/`, con el «Rust Bookshelf») y la RustSec Advisory Database (`rustsec.org/`, herramienta `cargo-audit` sobre `Cargo.lock`) para el core y la supply chain.
 - **SRC-007 (WCAG 2.2):** capturada como W3C Recommendation de 2024-12-12; la matriz de accesibilidad (NFR-ACC-001) se ancla a esta versión. **ARIA APG** capturada en la misma fecha.
 - **SRC-002/SRC-003:** capturadas para desbloquear las afirmaciones de paquetes/instalación marcadas «no verificado — fuente primaria pendiente»; siguen pendientes de conversión a datos concretos de catálogo (ver `docs/12-research/inventory-v5.1.md`).
+- **SRC-001 (disposición):** la colección v5.1 pasa a `controlled-incomplete`: los once originales recibidos permanecen inmutables y cubiertos por `SHA256SUMS`/`PROVENANCE.json`; `archmaker-v10.4-p3.yaml` e `i18n.es.json` quedan `unavailable-declared-only`; `neubat_forge_v4_final.html` se trata como `probable-rename-not-proven` con alias byte a byte en `reference/v5.1/aliases/`. Autoridad: `docs/00-governance/G0-SOURCE-DISPOSITION.md`.
 
 ## Regla
 

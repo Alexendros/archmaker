@@ -1,0 +1,22 @@
+{
+  "manifestVersion": "1.0.0",
+  "collection": "archmaker-v5.1",
+  "sources": [
+    {
+      "declaredPath": "archmaker-v10.4-p3.yaml",
+      "status": "unavailable-declared-only",
+      "contentRecovered": false,
+      "replacement": null,
+      "blockingCondition": "Block only a requirement that depends on information found exclusively in this missing YAML.",
+      "handling": "Do not reconstruct under the historical filename. Create a separately versioned migration fixture if needed."
+    },
+    {
+      "declaredPath": "i18n.es.json",
+      "status": "unavailable-declared-only",
+      "contentRecovered": false,
+      "replacement": null,
+      "blockingCondition": "Block only claims of historical translation preservation or migration completeness.",
+      "handling": "Author a new canonical locale catalog outside reference/ when the i18n contract is approved."
+    }
+  ]
+}

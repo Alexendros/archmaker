@@ -4,7 +4,8 @@
   "version": "1.0.0",
   "documentVersion": "vNext",
   "schemaVersion": "1",
-  "digest": {
+  "revision": 1,
+  "contentDigest": {
     "algorithm": "sha256",
     "value": "1111111111111111111111111111111111111111111111111111111111111111"
   },
