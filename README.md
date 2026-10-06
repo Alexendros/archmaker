@@ -1,17 +1,17 @@
 # ArchMaker
 
-Repositorio documental `planning-v1` para ArchMaker. Este baseline separa producto, arquitectura, datos, contratos, UX, design system, validación, seguridad, calidad, entrega, operaciones e investigación.
+Repositorio de baseline MVP-0.1 — walking skeleton stabilizado. Este repositorio contiene la evidencia reproducible del vertical slice: CorePort, adapters Tauri/WASM, canonicalización, reglas, resolución, manifest, export, security, CI y supply chain. El producto completo, runner v1 y los privilegios se autorizan en fases posteriores sobre la baseline.
 
 ## Estado
 
-- Gate global: **No-Go — planificación en curso**.
-- Desarrollo funcional: bloqueado hasta aprobar G0–G10.
-- Fuentes históricas: `reference/v5.1/`, conservadas por hash.
-- Rust: autoridad de dominio y casos de uso.
-- React: presentación e interacción.
-- Tauri 2: adaptador de escritorio.
-- WASM: adaptador de navegador.
-- Runner privilegiado: v1, proceso separado.
+- Gate global: **CONDITIONAL-GO — walking skeleton MVP-0 únicamente** (baseline firmada, gates del slice completos).
+- Desarrollo funcional: autorizado walking skeleton MVP-0 (rebanada vertical, sin runner ni privilegios).
+- Fuentes históricas: `reference/v5.1/`, conservadas por hash; walking skeleton en `docs/10-delivery/walking-skeleton.md` y `docs/10-delivery/implementation-plan-mvp0.md`.
+- Rust: autoridad de dominio y casos de uso (compilable nativo + WASM).
+- React: presentación e interacción (adapters Tauri y WASM).
+- Tauri 2: adaptador de escritorio (deny-by-default, scopes acotados, sin `shell:*`).
+- WASM: adaptador de navegador (paridad golden nativo/WASM).
+- Runner privilegiado: diferido a fase posterior a baseline MVP-0.1.
 
 ## Documentación
 

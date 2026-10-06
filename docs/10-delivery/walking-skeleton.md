@@ -4,7 +4,7 @@ phase: planning
 priority: P0
 documentStatus: in-review
 approvalStatus: pending
-implementationStatus: not-started
+implementationStatus: partial
 verificationStatus: not-verified
 releaseStatus: ineligible
 owners:
@@ -83,15 +83,15 @@ flowchart LR
 
 ## Propietarios por workstream
 
-| Workstream | Código | Rol propietario |
-|---|---|---|
-| Producto y alcance del slice | WS-01 | product |
-| Arquitectura y CorePort | WS-05 | architecture |
-| Datos, canonicalización y contratos | WS-04 | data |
-| Seguridad, capabilities y riesgo residual | WS-07 | security |
-| UX y baseline visual | WS-08 | ux |
-| Calidad, corpus y CI | WS-09 | quality |
-| Delivery y evidencia | WS-10 | release |
+| Workstream                                | Código | Rol propietario |
+| ----------------------------------------- | ------ | --------------- |
+| Producto y alcance del slice              | WS-01  | product         |
+| Arquitectura y CorePort                   | WS-05  | architecture    |
+| Datos, canonicalización y contratos       | WS-04  | data            |
+| Seguridad, capabilities y riesgo residual | WS-07  | security        |
+| UX y baseline visual                      | WS-08  | ux              |
+| Calidad, corpus y CI                      | WS-09  | quality         |
+| Delivery y evidencia                      | WS-10  | release         |
 
 ## Dependencias
 
