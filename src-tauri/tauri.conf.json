@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "identifier": "dev.archmaker.app",
   "build": {
-    "frontendDist": "../apps/web",
+    "frontendDist": "../apps/web/dist",
     "devUrl": "http://localhost:1420",
     "beforeDevCommand": "",
     "beforeBuildCommand": ""
@@ -19,14 +19,20 @@
       }
     ],
     "security": {
-      "csp": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'",
-      "devtools": false
+      "csp": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'"
     }
   },
   "bundle": {
     "active": true,
     "targets": "all",
-    "resources": ["../packages/tokens/tokens.css"]
+    "resources": ["../packages/tokens/tokens.css"],
+    "icon": [
+      "icons/icon.png",
+      "icons/icon-32.png",
+      "icons/icon-128.png",
+      "icons/icon-256.png",
+      "icons/icon-512.png"
+    ]
   },
   "plugins": {
     "updater": {
