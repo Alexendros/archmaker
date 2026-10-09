@@ -4,8 +4,8 @@ phase: planning
 priority: P0
 documentStatus: in-review
 approvalStatus: pending
-implementationStatus: not-started
-verificationStatus: not-verified
+implementationStatus: complete
+verificationStatus: partial
 releaseStatus: ineligible
 owners:
   - release
@@ -25,6 +25,7 @@ dependsOn:
 
 - Documento: DOC-DEL-WSK-001 · Estado: in-review · Propietario: Delivery · Fecha: 2026-10-06
 - Autoridad de estados: `docs/00-governance/status-model.md`.
+- Implementación del slice: `complete` (baseline `implementation-baseline-mvp0.1`); verificación `partial`.
 - Autoriza únicamente un vertical slice (AUD-023); no autoriza el MVP completo ni el runner.
 
 ## Objetivo y principio de rebanada vertical
@@ -83,15 +84,15 @@ flowchart LR
 
 ## Propietarios por workstream
 
-| Workstream | Código | Rol propietario |
-|---|---|---|
-| Producto y alcance del slice | WS-01 | product |
-| Arquitectura y CorePort | WS-05 | architecture |
-| Datos, canonicalización y contratos | WS-04 | data |
-| Seguridad, capabilities y riesgo residual | WS-07 | security |
-| UX y baseline visual | WS-08 | ux |
-| Calidad, corpus y CI | WS-09 | quality |
-| Delivery y evidencia | WS-10 | release |
+| Workstream                                | Código | Rol propietario |
+| ----------------------------------------- | ------ | --------------- |
+| Producto y alcance del slice              | WS-01  | product         |
+| Arquitectura y CorePort                   | WS-05  | architecture    |
+| Datos, canonicalización y contratos       | WS-04  | data            |
+| Seguridad, capabilities y riesgo residual | WS-07  | security        |
+| UX y baseline visual                      | WS-08  | ux              |
+| Calidad, corpus y CI                      | WS-09  | quality         |
+| Delivery y evidencia                      | WS-10  | release         |
 
 ## Dependencias
 

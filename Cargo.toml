@@ -6,6 +6,7 @@ members = [
   "crates/archmaker-resolution",
   "crates/archmaker-core",
   "crates/archmaker-wasm",
+  "src-tauri",
 ]
 resolver = "2"
 

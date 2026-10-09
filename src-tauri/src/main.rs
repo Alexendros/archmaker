@@ -3,19 +3,20 @@
 use std::sync::Mutex;
 
 use archmaker_core::{
-    BuildManifestInput, CoreError, CoreOp, CorePort, CreateDraftInput, ExportArtifactInput,
-    LoadCatalogInput, RealCore, ResolveDraftInput, SaveDraftInput, ValidateDraftInput, Window,
-    check_invoke, unknown_command_error,
+    check_invoke, unknown_command_error, BuildManifestInput, CoreError, CoreOp, CorePort,
+    CreateDraftInput, ExportArtifactInput, LoadCatalogInput, RealCore, ResolveDraftInput,
+    SaveDraftInput, ValidateDraftInput, Window,
 };
+use tauri::Manager;
 
 struct CoreState(Mutex<RealCore>);
 
-fn core_error_value(err: &CoreError) -> serde_json::Value {
+fn core_error_value(err: CoreError) -> serde_json::Value {
     serde_json::to_value(err).expect("CoreError is serializable")
 }
 
 fn invalid_input(op: CoreOp, detail: &str) -> serde_json::Value {
-    core_error_value(&CoreError::schema_invalid(&format!(
+    core_error_value(CoreError::schema_invalid(&format!(
         "archmaker-tauri.{}: {detail}",
         op.command_name()
     )))
@@ -24,7 +25,7 @@ fn invalid_input(op: CoreOp, detail: &str) -> serde_json::Value {
 fn gate(window: &tauri::Window, op: CoreOp) -> Result<(), serde_json::Value> {
     let label = window.label().to_string();
     let parsed = Window::parse(&label)
-        .ok_or_else(|| core_error_value(&unknown_command_error(&label, op.command_name())))?;
+        .ok_or_else(|| core_error_value(unknown_command_error(&label, op.command_name())))?;
     check_invoke(parsed, op).map_err(core_error_value)?;
     Ok(())
 }
@@ -46,9 +47,10 @@ macro_rules! core_command {
         ) -> Result<serde_json::Value, serde_json::Value> {
             gate(&window, $op)?;
             let typed: $input_ty = parse_input($op, input)?;
-            let core = state.0.lock().map_err(|_| {
-                core_error_value(&CoreError::io_failed("archmaker-tauri.state"))
-            })?;
+            let core = state
+                .0
+                .lock()
+                .map_err(|_| core_error_value(CoreError::io_failed("archmaker-tauri.state")))?;
             core.$method(typed)
                 .map(|out| serde_json::to_value(out).expect("DTO is serializable"))
                 .map_err(core_error_value)
@@ -97,10 +99,7 @@ core_command!(
 fn main() {
     tauri::Builder::default()
         .setup(|app| {
-            let data_dir = app
-                .path()
-                .app_data_dir()
-                .expect("app data dir resolves");
+            let data_dir = app.path().app_data_dir().expect("app data dir resolves");
             std::fs::create_dir_all(&data_dir).expect("app data dir is writable");
             let core = RealCore::with_embedded()
                 .expect("embedded catalog loads")

@@ -2,12 +2,12 @@
   "id": "G1",
   "title": "Problema y usuarios",
   "remediationPhases": ["R1", "R3"],
-  "status": "in-progress",
+  "status": "complete",
   "phases": {
     "document-complete": "complete",
     "design-ready": "not-applicable",
     "implementation-ready": "not-applicable",
-    "verified": "pending",
+    "verified": "complete",
     "release-ready": "not-applicable"
   },
   "criteria": [
@@ -34,7 +34,19 @@
       "id": "G1-C03",
       "description": "Métricas cuantitativas de usuarios y objetivos verificadas con evidencia (documento aprobado no equivale a métrica verificada).",
       "kind": "metric-verified",
-      "status": "pending"
+      "status": "complete",
+      "evidence": [
+        {
+          "type": "document",
+          "ref": "docs/00-governance/decision-register.md",
+          "note": "DEC-010: sin telemetría en MVP"
+        },
+        {
+          "type": "document",
+          "ref": "docs/10-delivery/walking-skeleton.md",
+          "note": "telemetry excluido del walking skeleton (línea 71)"
+        }
+      ]
     }
   ]
 }

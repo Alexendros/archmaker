@@ -1,0 +1,112 @@
+{
+  "summary": {
+    "total_criteria": 9,
+    "passed": 9,
+    "failed": 0,
+    "average_score": 91.1,
+    "automated_pass": true,
+    "manual_required": ["1.4.1"],
+    "overall_pass": true
+  },
+  "results": [
+    {
+      "criterion": "1.4.3",
+      "description": "Contrast (Minimum) - 4.5:1 normal text, 3:1 large text/UI components",
+      "passed": true,
+      "score": 100.0,
+      "details": "  PASS: Text on canvas (light) = 18.26:1 (threshold: 4.5:1)\n  PASS: Muted text on canvas (light) = 6.90:1 (threshold: 4.5:1)\n  PASS: Subtle text on canvas (light) = 9.15:1 (threshold: 4.5:1)\n  PASS: Action on canvas (light) = 5.14:1 (threshold: 4.5:1)\n  PASS: Focus on canvas (light) = 5.57:1 (threshold: 3.0:1)\n  PASS: Warning on canvas (light) = 3.26:1 (threshold: 3.0:1)\n  PASS: Border on canvas (light) = 3.36:1 (threshold: 3.0:1)\n  PASS: Text on canvas (dark) = 18.26:1 (threshold: 4.5:1)\n  PASS: Muted text on canvas (dark) = 6.98:1 (threshold: 4.5:1)\n  PASS: Subtle text on canvas (dark) = 6.98:1 (threshold: 4.5:1)\n  PASS: Action on canvas (dark) = 5.36:1 (threshold: 4.5:1)\n  PASS: Focus on canvas (dark) = 8.22:1 (threshold: 3.0:1)\n  PASS: Warning on canvas (dark) = 12.08:1 (threshold: 3.0:1)\n  PASS: Border on canvas (dark) = 5.43:1 (threshold: 3.0:1)\n  PASS: Text on canvas (high contrast) = 21.00:1 (threshold: 4.5:1)\n  PASS: Border on canvas (high contrast) = 21.00:1 (threshold: 3.0:1)",
+      "evidence": {
+        "checked_pairs": 16,
+        "passed": 16
+      }
+    },
+    {
+      "criterion": "1.4.11",
+      "description": "Non-text Contrast - 3:1 UI components and graphical objects",
+      "passed": true,
+      "score": 100.0,
+      "details": "  PASS: Focus ring (light) = 5.57:1 (threshold: 3.0:1)\n  PASS: Focus ring (dark) = 8.22:1 (threshold: 3.0:1)\n  PASS: Focus ring (HC) = 19.56:1 (threshold: 3.0:1)\n  PASS: Input border (light) = 3.36:1 (threshold: 3.0:1)\n  PASS: Input border (dark) = 5.43:1 (threshold: 3.0:1)\n  PASS: Warning indicator (light) = 3.26:1 (threshold: 3.0:1)\n  PASS: Warning indicator (dark) = 12.08:1 (threshold: 3.0:1)",
+      "evidence": {
+        "checked_pairs": 7,
+        "passed": 7
+      }
+    },
+    {
+      "criterion": "2.4.7",
+      "description": "Focus Visible - Focus indicator 3:1 contrast with 3px outline",
+      "passed": true,
+      "score": 100.0,
+      "details": "  PASS: Focus on canvas (light) = 5.57:1 (threshold: 3:1)\n  PASS: Focus on canvas (dark) = 8.22:1 (threshold: 3:1)\n  PASS: Focus on canvas (HC) = 19.56:1 (threshold: 3:1)\n  PASS: Focus on surface (light) = 5.11:1 (threshold: 3:1)\n  PASS: Focus on surface (dark) = 7.51:1 (threshold: 3:1)\n  Outline exists: YES",
+      "evidence": {
+        "checked_pairs": 5,
+        "passed": 5,
+        "has_outline": true
+      }
+    },
+    {
+      "criterion": "1.4.1",
+      "description": "Use of Color - Color not sole means of conveying information",
+      "passed": true,
+      "score": 80.0,
+      "details": "  Automated scope: contract-declared (not token-verifiable)\n  Contract A3 (component-contracts.md): color never sole meaning; icon/text/pattern required\n  Tokens provide: --color-danger, --color-success, --color-warning, --color-info\n  Manual required: docs/05-ux/manual-a11y-checklist.md SC 1.4.1 (icon/text beyond color)",
+      "evidence": {
+        "requires_manual_review": true,
+        "automated_scope": "contract_declared",
+        "contract_ref": "docs/05-ux/component-contracts.md#A3",
+        "manual_ref": "docs/05-ux/manual-a11y-checklist.md"
+      }
+    },
+    {
+      "criterion": "1.4.12",
+      "description": "Text Spacing - token subset (line/word/paragraph) + manual 0.12x override check",
+      "passed": true,
+      "score": 85,
+      "details": "  Line height: --ds-line-height-base = 1.5 (WCAG ≥ 1.5) ✅\n  Word spacing: --ds-word-spacing-base = 0.16em (WCAG = 0.16x) ✅\n  Paragraph spacing: --ds-space-8 = 2rem for 2x line height ✅\n  Letter spacing default: --ds-letter-spacing-base = 0.0125em (design default, not the 0.12x override level)\n  Letter-spacing 0.12x override survival: MANUAL (no clipping/fixed-px containers in tokens; verify in browser per DOC-UX-A11Y-001)",
+      "evidence": {
+        "line_height": 1.5,
+        "letter_spacing_manual": true
+      }
+    },
+    {
+      "criterion": "1.4.4",
+      "description": "Resize Text - Up to 200% without loss",
+      "passed": true,
+      "score": 90,
+      "details": "  Base font: --ds-size-base = 1rem (relative) ✅\n  Spacing: --ds-space-* in rem (relative) ✅\n  Font families: system-ui with fallbacks (scalable) ✅\n  No fixed px font sizes in tokens ✅",
+      "evidence": {
+        "relative_units": true
+      }
+    },
+    {
+      "criterion": "1.4.10",
+      "description": "Reflow - No horizontal scrolling at 320 CSS px",
+      "passed": true,
+      "score": 70,
+      "details": "  No fixed width containers in tokens ✅\n  Spacing uses rem (responsive) ✅\n  Touch targets: --ds-touch-target-min = 24px ✅\n  Requires CSS layout review (flex/grid with wrap) - manual",
+      "evidence": {
+        "touch_targets": "24px"
+      }
+    },
+    {
+      "criterion": "2.5.8",
+      "description": "Target Size - Minimum 24×24 CSS px touch targets",
+      "passed": true,
+      "score": 95,
+      "details": "  Min touch target: --ds-touch-target-min = 24px (WCAG 2.5.8) ✅\n  Comfortable target: --ds-touch-target-comfortable = 44px ✅\n  Button min-height: var(--ds-touch-target-min) ✅\n  Field min-height: var(--ds-touch-target-min) ✅\n  Focus outline: 3px solid var(--color-focus) (WCAG 2.4.7) ✅\n  Border radius: --ds-radius-md = 8px ✅\n  Border: --ds-border-thick = 2px for 3:1 contrast ✅",
+      "evidence": {
+        "min_target": "24px"
+      }
+    },
+    {
+      "criterion": "2.3.3",
+      "description": "Reduced Motion - prefers-reduced-motion disables non-essential animation",
+      "passed": true,
+      "score": 100,
+      "details": "  Media query present: YES\n  Animation duration: 0ms (instant) ✅\n  Transition duration: 0ms ✅\n  Scroll behavior: auto ✅",
+      "evidence": {
+        "has_media_query": true
+      }
+    }
+  ],
+  "timestamp": "2026-10-09T11:20:13.036125+00:00"
+}

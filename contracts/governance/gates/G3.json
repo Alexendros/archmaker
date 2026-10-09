@@ -2,12 +2,12 @@
   "id": "G3",
   "title": "Arquitectura",
   "remediationPhases": ["R4", "R5"],
-  "status": "in-progress",
+  "status": "complete",
   "phases": {
     "document-complete": "complete",
     "design-ready": "complete",
     "implementation-ready": "not-applicable",
-    "verified": "pending",
+    "verified": "complete",
     "release-ready": "not-applicable"
   },
   "dependsOn": [
@@ -26,8 +26,15 @@
       "status": "complete",
       "evidence": [
         { "type": "document", "ref": "docs/02-architecture/viewpoints.md" },
-        { "type": "document", "ref": "docs/02-architecture/c4/component-views.md" },
-        { "type": "commit", "ref": "R4: viewpoints y C4 corregido", "commit": "0a0e98c" }
+        {
+          "type": "document",
+          "ref": "docs/02-architecture/c4/component-views.md"
+        },
+        {
+          "type": "commit",
+          "ref": "R4: viewpoints y C4 corregido",
+          "commit": "0a0e98c"
+        }
       ]
     },
     {
@@ -37,7 +44,10 @@
       "status": "complete",
       "evidence": [
         { "type": "document", "ref": "docs/02-architecture/module-map.md" },
-        { "type": "document", "ref": "docs/02-architecture/dependency-rules.md" }
+        {
+          "type": "document",
+          "ref": "docs/02-architecture/dependency-rules.md"
+        }
       ]
     },
     {
@@ -46,7 +56,11 @@
       "kind": "decision",
       "status": "complete",
       "evidence": [
-        { "type": "document", "ref": "docs/02-architecture/adr/ADR-0007-canonicalizacion-y-hashing.md", "note": "documentStatus accepted / approvalStatus approved (R5)" }
+        {
+          "type": "document",
+          "ref": "docs/02-architecture/adr/ADR-0007-canonicalizacion-y-hashing.md",
+          "note": "documentStatus accepted / approvalStatus approved (R5)"
+        }
       ]
     },
     {

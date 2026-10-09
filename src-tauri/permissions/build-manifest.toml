@@ -1,0 +1,2 @@
+identifier = "core:build-manifest"
+description = "Allow build_manifest operation"

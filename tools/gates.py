@@ -268,8 +268,8 @@ def render_gng_block(manifests: list[dict]) -> str:
 def global_result(manifests: list[dict]) -> tuple[str, str]:
     incomplete = [m.get("id") for m in manifests if m.get("status") != "complete"]
     if incomplete:
-        return "No-Go", f"no todos los gates están `complete` (faltan {', '.join(map(str, incomplete))})"
-    return "Go", "todos los gates G0–G10 están `complete`"
+        return "Blocked", f"no todos los gates están `complete` (faltan {', '.join(map(str, incomplete))})"
+    return "Clear", "todos los gates G0–G10 están `complete`"
 
 
 def check_docs(manifests: list[dict]) -> list[str]:
