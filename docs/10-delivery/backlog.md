@@ -111,40 +111,6 @@ Los issues AUD-001..AUD-023 están **supersedidos** por la evidencia del walking
 
 Detalle y exclusiones: [`mvp1-scope.md`](mvp1-scope.md).
 
-## Grafo de dependencias
-
-```mermaid
-flowchart LR
-  A1[AUD-001] --> A2[AUD-002] --> A3[AUD-003]
-  A3 --> A4[AUD-004]
-  A3 --> A5[AUD-005] --> A6[AUD-006]
-  A1 --> A7[AUD-007] --> A8[AUD-008]
-  A8 --> A9[AUD-009] --> A10[AUD-010]
-  A9 --> A11[AUD-011] --> A12[AUD-012]
-  A11 --> A13[AUD-013]
-  A11 --> A14[AUD-014]
-  A10 --> A15[AUD-015]
-  A11 --> A15
-  A12 --> A16[AUD-016]
-  A13 --> A16
-  A14 --> A16
-  A15 --> A16
-  A13 --> A17[AUD-017]
-  A8 --> A18[AUD-018] --> A19[AUD-019]
-  A1 --> A20[AUD-020] --> A21[AUD-021]
-  A5 --> A22[AUD-022]
-  A6 --> A22
-  A10 --> A22
-  A16 --> A22
-  A17 --> A22
-  A16 --> A23[AUD-023]
-  A17 --> A23
-  A18 --> A23
-  A20 --> A23
-  A22 --> A24[AUD-024] --> A25[AUD-025]
-  A23 --> A24
-```
-
 ## Reglas
 
 - Cada issue P0 tiene owner, fecha objetivo y criterio de cierre (ver `status-model.md`).
