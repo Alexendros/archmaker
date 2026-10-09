@@ -4,8 +4,9 @@ Repositorio de baseline MVP-0.1 — walking skeleton stabilizado. Este repositor
 
 ## Estado
 
-- Gate global: **CONDITIONAL-GO — walking skeleton MVP-0 únicamente** (baseline firmada, gates del slice completos).
-- Desarrollo funcional: autorizado walking skeleton MVP-0 (rebanada vertical, sin runner ni privilegios).
+- Gate global: **Clear** mecánico (G0–G10 `complete`) / **CONDITIONAL-CLEAR — walking skeleton MVP-0 únicamente**.
+- Desarrollo funcional: autorizado walking skeleton MVP-0.1 (rebanada vertical, sin runner ni privilegios).
+- Siguiente fase planificada: MVP-1 (domain/schema/catalog/migrations) — ver `docs/10-delivery/mvp1-scope.md`.
 - Fuentes históricas: `reference/v5.1/`, conservadas por hash; walking skeleton en `docs/10-delivery/walking-skeleton.md` y `docs/10-delivery/implementation-plan-mvp0.md`.
 - Rust: autoridad de dominio y casos de uso (compilable nativo + WASM).
 - React: presentación e interacción (adapters Tauri y WASM).

@@ -7,7 +7,8 @@
   "scripts": {
     "dev": "tauri dev",
     "build": "tauri build",
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "check": "pnpm --filter @archmaker/web check"
   },
   "dependencies": {
     "@tauri-apps/api": "2.12.1"

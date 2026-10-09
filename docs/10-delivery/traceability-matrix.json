@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "generated_at": "1791283483",
-    "git_sha": "4eb7390c009c23ffad3555bf362ea09f8943fba9",
+    "generated_at": "1791320397",
+    "git_sha": "42a2ad171c4e5380c64cce24eee9ee0d6bc04abb",
     "requirements_file": "docs/01-product/requirements.md",
     "inventory_file": "docs/10-delivery/tests-inventory.json",
     "validators_file": "docs/10-delivery/validators.json"
@@ -65,19 +65,11 @@
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-DIALOG_AND_PICKER_DENY_EVERYTHING_BY_DEFAULT",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_ALLOWLIST_COVERS_ALL_SEVEN_OPS_EXACTLY_ONCE"
       ],
-      "validators": [
-        "VAL-SCHEMA-REFS",
-        "VAL-NEG-CAPABILITIES"
-      ],
+      "validators": ["VAL-SCHEMA-REFS", "VAL-NEG-CAPABILITIES"],
       "evidence_count": 33,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": [
-        "negative",
-        "schema",
-        "unit",
-        "integration"
-      ],
+      "evidence_types": ["negative", "schema", "integration", "unit"],
       "coverage_status": "covered"
     },
     {
@@ -127,19 +119,11 @@
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-DIALOG_AND_PICKER_DENY_EVERYTHING_BY_DEFAULT",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_ALLOWLIST_COVERS_ALL_SEVEN_OPS_EXACTLY_ONCE"
       ],
-      "validators": [
-        "VAL-SCHEMA-REFS",
-        "VAL-NEG-CAPABILITIES"
-      ],
+      "validators": ["VAL-SCHEMA-REFS", "VAL-NEG-CAPABILITIES"],
       "evidence_count": 39,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": [
-        "negative",
-        "schema",
-        "unit",
-        "integration"
-      ],
+      "evidence_types": ["negative", "schema", "integration", "unit"],
       "coverage_status": "covered"
     },
     {
@@ -175,9 +159,7 @@
       "evidence_count": 3,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": [
-        "integration"
-      ],
+      "evidence_types": ["integration"],
       "coverage_status": "covered"
     },
     {
@@ -245,11 +227,11 @@
       "has_executable_evidence": true,
       "passes_ci": true,
       "evidence_types": [
-        "schema",
-        "unit",
+        "negative",
         "integration",
-        "canonicalize",
-        "negative"
+        "unit",
+        "schema",
+        "canonicalize"
       ],
       "coverage_status": "covered"
     },
@@ -289,10 +271,7 @@
       "evidence_count": 6,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": [
-        "negative",
-        "integration"
-      ],
+      "evidence_types": ["negative", "integration"],
       "coverage_status": "covered"
     },
     {
@@ -328,9 +307,7 @@
       "evidence_count": 3,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": [
-        "integration"
-      ],
+      "evidence_types": ["integration"],
       "coverage_status": "covered"
     },
     {
@@ -341,18 +318,12 @@
       "in_scope": true,
       "deferred": false,
       "pending": false,
-      "tests": [
-        "TST-WEB-A11Y-PLAYWRIGHT",
-        "TST-WEB-VISUAL-REGRESSION"
-      ],
+      "tests": ["TST-WEB-A11Y-PLAYWRIGHT", "TST-WEB-VISUAL-REGRESSION"],
       "validators": [],
       "evidence_count": 2,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": [
-        "visual",
-        "a11y"
-      ],
+      "evidence_types": ["visual", "a11y"],
       "coverage_status": "covered"
     },
     {
@@ -377,18 +348,11 @@
         "TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-MALFORMED_JSON_RETURNS_TYPED_SCHEMA_ERROR",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_JSON_DEPTH_LIMIT_ABORTS"
       ],
-      "validators": [
-        "VAL-CANONICALIZE"
-      ],
+      "validators": ["VAL-CANONICALIZE"],
       "evidence_count": 13,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": [
-        "canonicalize",
-        "negative",
-        "unit",
-        "integration"
-      ],
+      "evidence_types": ["negative", "integration", "unit", "canonicalize"],
       "coverage_status": "covered"
     },
     {
@@ -431,16 +395,12 @@
       "in_scope": true,
       "deferred": false,
       "pending": false,
-      "tests": [
-        "TST-WEB-VISUAL-REGRESSION"
-      ],
+      "tests": ["TST-WEB-VISUAL-REGRESSION"],
       "validators": [],
       "evidence_count": 1,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": [
-        "visual"
-      ],
+      "evidence_types": ["visual"],
       "coverage_status": "covered"
     },
     {
@@ -463,9 +423,7 @@
       "evidence_count": 6,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": [
-        "integration"
-      ],
+      "evidence_types": ["integration"],
       "coverage_status": "covered"
     },
     {
@@ -505,16 +463,11 @@
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-DIALOG_AND_PICKER_DENY_EVERYTHING_BY_DEFAULT",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_ALLOWLIST_COVERS_ALL_SEVEN_OPS_EXACTLY_ONCE"
       ],
-      "validators": [
-        "VAL-NEG-CAPABILITIES"
-      ],
+      "validators": ["VAL-NEG-CAPABILITIES"],
       "evidence_count": 28,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": [
-        "negative",
-        "unit"
-      ],
+      "evidence_types": ["negative", "unit"],
       "coverage_status": "covered"
     }
   ],
@@ -538,9 +491,7 @@
     "FR-ENT-001",
     "NFR-MIG-001"
   ],
-  "pending_requirements": [
-    "NFR-OBS-001"
-  ],
+  "pending_requirements": ["NFR-OBS-001"],
   "orphan_details": {
     "tests_without_requirement": [],
     "validators_without_requirement": []

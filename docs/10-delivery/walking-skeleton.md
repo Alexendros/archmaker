@@ -4,8 +4,8 @@ phase: planning
 priority: P0
 documentStatus: in-review
 approvalStatus: pending
-implementationStatus: partial
-verificationStatus: not-verified
+implementationStatus: complete
+verificationStatus: partial
 releaseStatus: ineligible
 owners:
   - release
@@ -25,6 +25,7 @@ dependsOn:
 
 - Documento: DOC-DEL-WSK-001 · Estado: in-review · Propietario: Delivery · Fecha: 2026-10-06
 - Autoridad de estados: `docs/00-governance/status-model.md`.
+- Implementación del slice: `complete` (baseline `implementation-baseline-mvp0.1`); verificación `partial`.
 - Autoriza únicamente un vertical slice (AUD-023); no autoriza el MVP completo ni el runner.
 
 ## Objetivo y principio de rebanada vertical

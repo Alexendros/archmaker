@@ -1,9 +1,8 @@
 use archmaker_core::{
-    atomic_write_bytes, check_invoke, unknown_command_error, BuildManifestInput, CatalogRef,
-    CoreError, CoreOp, CorePort, CreateDraftInput, DestinationHandle, ExportArtifactInput,
-    LoadCatalogInput, RealCore, ResolveDraftInput, SaveDraftInput, ValidateDraftInput, Window,
+    atomic_write_bytes, CatalogRef, CoreOp, CorePort, CreateDraftInput, DestinationHandle,
+    LoadCatalogInput, RealCore, ResolveDraftInput, SaveDraftInput, ValidateDraftInput,
 };
-use archmaker_domain::{ContentDigest, ContentKind, DigestAlgorithm, Draft, PresetRef, Selection};
+use archmaker_domain::{ContentDigest, ContentKind, DigestAlgorithm, Draft};
 use std::io::Write;
 use std::path::PathBuf;
 
@@ -117,7 +116,7 @@ fn neg_capability_deny_by_default() {
         let toml_path = format!("src-tauri/permissions/{}.toml", cmd);
         let raw = read_repo(&toml_path);
         let v: toml::Value =
-            toml::from_str(&raw).expect(&format!("permission TOML {} invalido", cmd));
+            toml::from_str(&raw).unwrap_or_else(|_| panic!("permission TOML {} invalido", cmd));
         let identifier = v["identifier"].as_str().expect("identifier requerido");
         assert_eq!(
             identifier,
@@ -415,7 +414,7 @@ fn neg_allowlist_covers_all_seven_ops_exactly_once() {
         let toml_path = format!("src-tauri/permissions/{}.toml", cmd);
         let raw = read_repo(&toml_path);
         let v: toml::Value =
-            toml::from_str(&raw).expect(&format!("permission TOML {} invalido", cmd));
+            toml::from_str(&raw).unwrap_or_else(|_| panic!("permission TOML {} invalido", cmd));
         let identifier = v["identifier"].as_str().expect("identifier requerido");
         assert_eq!(identifier, format!("core:{}", cmd));
         count += 1;

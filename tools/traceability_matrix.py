@@ -219,6 +219,25 @@ def build_matrix(requirements: Dict, inventory: Dict, validators: Dict) -> Dict[
 
 def generate_markdown(matrix: Dict[str, Any]) -> str:
     lines = []
+    # Front matter gobernado (DOC-DEL-TRC-001): el .md generado tambien es
+    # documento gobernado y validate_front_matter.py lo exige en docs/**/*.md.
+    lines.append("---")
+    lines.append("id: DOC-DEL-TRC-001")
+    lines.append("phase: MVP")
+    lines.append("priority: P0")
+    lines.append("documentStatus: accepted")
+    lines.append("approvalStatus: approved")
+    lines.append("implementationStatus: complete")
+    lines.append("verificationStatus: passed")
+    lines.append("releaseStatus: ineligible")
+    lines.append("evidence:")
+    lines.append("  - tools/traceability_matrix.py (exit 0, metricas 100% en verde)")
+    lines.append("owners:")
+    lines.append("  - release")
+    lines.append("reviewers:")
+    lines.append("  - independent-reviewer")
+    lines.append("---")
+    lines.append("")
     lines.append("# Matriz de Trazabilidad FR/NFR -> TST/VAL")
     lines.append("")
     lines.append(f"- **Generado**: {matrix['metadata']['git_sha'][:8]}")

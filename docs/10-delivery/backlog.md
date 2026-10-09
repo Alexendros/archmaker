@@ -85,16 +85,31 @@ flowchart LR
 
 Los issues AUD-001..AUD-023 están **supersedidos** por la evidencia del walking skeleton y el árbol de gates verificado. Los issues restantes de relevancia para MVP-0.1 son:
 
-| Issue      | Título                                                               | Dueño        | Dependencia | Gate | Criterio Done                                       |
-| ---------- | -------------------------------------------------------------------- | ------------ | ----------- | ---- | --------------------------------------------------- |
-| MVP-0.1-01 | Validar walking skeleton desde checkout limpio (Rust/WASM/web/Tauri) | Architecture | —           | E2   | Dos ejecuciones limpias con digests idénticos       |
-| MVP-0.1-02 | Reconciliar gobernanza: README/plan/gates/tags                       | Delivery     | E1          | E1   | Cero contradicciones P0/P1                          |
-| MVP-0.1-03 | Trazabilidad FR/NFR → TST/VAL 100% para slice                        | Data         | E3          | E3   | Cobertura completa + cero huérfanos                 |
-| MVP-0.1-04 | Paridad Tauri/WASM byte-a-byte en golden outputs                     | Architecture | E4          | E4   | Mismos bytes/digest/diagnósticos                    |
-| MVP-0.1-05 | E2E offline determinista con golden outputs                          | Quality      | E4          | E4   | Flujo completo mism o Core, golden output           |
-| MVP-0.1-06 | WCAG 2.2 AA evidencia auto+manual (G6-C01/C03)                       | UX           | E5          | E5   | Auto + manual sin defectos críticos                 |
-| MVP-0.1-07 | `trusted_root.json` no placeholder + SBOM/provenance/firma           | Security     | E6          | E6   | Raíz materializada + artefactos verificables        |
-| MVP-0.1-08 | Baseline `implementation-baseline-mvp0.1` tag + release verificada   | Release      | E7          | E7   | Tag anotado al commit revisado + release verificada |
+| Issue      | Título                                         | Dueño        | Estado               | Gate | Criterio Done                            |
+| ---------- | ---------------------------------------------- | ------------ | -------------------- | ---- | ---------------------------------------- |
+| MVP-0.1-01 | Validar walking skeleton desde checkout limpio | Architecture | closed               | E2   | Digests idénticos (PR-02)                |
+| MVP-0.1-02 | Reconciliar gobernanza README/plan/gates/tags  | Delivery     | closed               | E1   | CON-013..022 (PR-01)                     |
+| MVP-0.1-03 | Trazabilidad FR/NFR → TST/VAL 100% slice       | Data         | closed               | E3   | PR-03                                    |
+| MVP-0.1-04 | Paridad Tauri/WASM golden outputs              | Architecture | closed               | E4   | PR-04                                    |
+| MVP-0.1-05 | E2E offline determinista                       | Quality      | closed               | E4   | PR-04                                    |
+| MVP-0.1-06 | WCAG 2.2 AA auto+manual                        | UX           | closed               | E5   | PR-05 + `wcag_validate.py`               |
+| MVP-0.1-07 | trusted_root + SBOM/provenance/firma           | Security     | closed-with-residual | E6   | raíz no-placeholder; release en tag push |
+| MVP-0.1-08 | Tag `implementation-baseline-mvp0.1`           | Release      | closed               | E7   | PR-07                                    |
+
+## Issues MVP-1
+
+| Issue    | Título                                 | Dueño        | Estado  | Gate     |
+| -------- | -------------------------------------- | ------------ | ------- | -------- |
+| MVP-1-01 | Aprobar alcance DOC-DEL-MVP1-001       | Product      | planned | G2,G10   |
+| MVP-1-02 | Cerrar CON-001..004 dominio/schemas    | Data         | planned | G4       |
+| MVP-1-03 | Formato ejes de versión (ADR-0006)     | Architecture | planned | G3,G4    |
+| MVP-1-04 | Catálogo local versionado multi-entity | Data         | planned | G4,G5    |
+| MVP-1-05 | importDraft + migración MIG-5.1        | Data         | planned | G4,G7,G9 |
+| MVP-1-06 | Changeset + concurrencia               | Interfaces   | planned | G4,G5    |
+| MVP-1-07 | Trazabilidad ampliada MVP-1            | Quality      | planned | G2,G9    |
+| MVP-1-08 | Tag `implementation-baseline-mvp1`     | Release      | planned | G10      |
+
+Detalle y exclusiones: [`mvp1-scope.md`](mvp1-scope.md).
 
 ## Grafo de dependencias
 

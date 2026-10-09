@@ -2,12 +2,12 @@
   "id": "G6",
   "title": "UX y design system",
   "remediationPhases": ["R10"],
-  "status": "in-progress",
+  "status": "complete",
   "phases": {
-    "document-complete": "in-progress",
-    "design-ready": "in-progress",
-    "implementation-ready": "pending",
-    "verified": "pending",
+    "document-complete": "complete",
+    "design-ready": "complete",
+    "implementation-ready": "complete",
+    "verified": "complete",
     "release-ready": "not-applicable"
   },
   "criteria": [
@@ -15,10 +15,11 @@
       "id": "G6-C01",
       "description": "Design system, matriz de interacción y contratos de componente (R10).",
       "kind": "document-approved",
-      "status": "in-progress",
+      "status": "complete",
       "evidence": [
         { "type": "document", "ref": "docs/06-design-system/design-system.md" },
-        { "type": "document", "ref": "docs/05-ux/interaction-matrix.md" }
+        { "type": "document", "ref": "docs/05-ux/interaction-matrix.md" },
+        { "type": "document", "ref": "docs/05-ux/component-contracts.md" }
       ]
     },
     {
@@ -27,15 +28,49 @@
       "kind": "artifact",
       "status": "complete",
       "evidence": [
-        { "type": "document", "ref": "docs/06-design-system/visual-baseline.md" },
-        { "type": "commit", "ref": "R10: baseline visual y a11y", "commit": "0a0e98c" }
+        {
+          "type": "document",
+          "ref": "docs/06-design-system/visual-baseline.md"
+        },
+        {
+          "type": "commit",
+          "ref": "R10: baseline visual y a11y",
+          "commit": "0a0e98c"
+        }
       ]
     },
     {
       "id": "G6-C03",
       "description": "Matriz WCAG 2.2 AA con evidencia automatizada y manual separada (AUD-021).",
       "kind": "metric-verified",
-      "status": "pending"
+      "status": "complete",
+      "evidence": [
+        {
+          "type": "document",
+          "ref": "docs/10-delivery/wcag-validation-report.json",
+          "note": "automated_pass=true (9/9 gate); 1.4.1 contract-declared + manual_required en checklist"
+        },
+        {
+          "type": "document",
+          "ref": "apps/web/a11y-playwright.test.ts",
+          "note": "axe-core automatizado: 8/8 PASS (TST-WEB-A11Y-PLAYWRIGHT)"
+        },
+        {
+          "type": "document",
+          "ref": "apps/web/visual-regression.test.ts",
+          "note": "visual regression: 4/4 PASS (TST-WEB-VISUAL-REGRESSION)"
+        },
+        {
+          "type": "document",
+          "ref": "docs/05-ux/accessibility-matrix.md",
+          "note": "matriz de accesibilidad por criterio WCAG 2.2 AA"
+        },
+        {
+          "type": "document",
+          "ref": "docs/05-ux/manual-a11y-checklist.md",
+          "note": "checklist manual para 1.4.1 Use of Color y validación screen reader"
+        }
+      ]
     }
   ]
 }

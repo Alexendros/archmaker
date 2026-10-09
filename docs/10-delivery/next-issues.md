@@ -4,13 +4,13 @@ phase: planning
 priority: P0
 documentStatus: draft
 approvalStatus: pending
-implementationStatus: partial
-verificationStatus: not-verified
+implementationStatus: complete
+verificationStatus: partial
 releaseStatus: ineligible
 owners:
   - release
 reviewers:
-  - Alexendros
+  - independent-reviewer
 ---
 
 # Próximos issues (orden por dependencia)
@@ -35,16 +35,31 @@ reviewers:
 | ISSUE-009 | Validación de UX y accesibilidad sin rediseño: `interaction-matrix.md`, `component-contracts.md`, tokens `@layer` y corrección de deuda heredada                                                                            | 003         | G6        | UX/Diseño                       | Contraste/focus/reduced-motion verificados; deuda heredada documentada y trazada      |
 | ISSUE-010 | Seguridad y release: cerrar `threat-model.md`/`privilege-model.md`, `test-matrix.md`, CI, SBOM/firmas/provenance y owners del backlog                                                                                       | 004,006,008 | G8,G9,G10 | Seguridad/Calidad/Delivery      | RSK-001/002/007/008 con tratamiento; CI en verde; SBOM y política de firma definidos  |
 
-| MVP-0.1 Issues (nuevos) | Dueño                                                                | Gate         | Criterio Done |
-| ----------------------- | -------------------------------------------------------------------- | ------------ | ------------- |
-| MVP-0.1-01              | Validar walking skeleton desde checkout limpio (Rust/WASM/web/Tauri) | Architecture | E2            | Dos ejecuciones limpias con digests idénticos       |
-| MVP-0.1-02              | Reconciliar gobernanza: README/plan/gates/tags                       | Delivery     | E1            | Cero contradicciones P0/P1                          |
-| MVP-0.1-03              | Trazabilidad FR/NFR → TST/VAL 100% para slice                        | Data         | E3            | Cobertura completa + cero huérfanos                 |
-| MVP-0.1-04              | Paridad Tauri/WASM byte-a-byte en golden outputs                     | Architecture | E4            | Mismos bytes/digest/diagnósticos                    |
-| MVP-0.1-05              | E2E offline determinista con golden outputs                          | Quality      | E4            | Flujo completo mism o Core, golden output           |
-| MVP-0.1-06              | WCAG 2.2 AA evidencia auto+manual (G6-C01/C03)                       | UX           | E5            | Auto + manual sin defectos críticos                 |
-| MVP-0.1-07              | `trusted_root.json` no placeholder + SBOM/provenance/firma           | Security     | E6            | Raíz materializada + artefactos verificables        |
-| MVP-0.1-08              | Baseline `implementation-baseline-mvp0.1` tag + release verificada   | Release      | E7            | Tag anotado al commit revisado + release verificada |
+| MVP-0.1 Issues | Estado               | Dueño        | Gate | Criterio Done                                 | Evidencia                                        |
+| -------------- | -------------------- | ------------ | ---- | --------------------------------------------- | ------------------------------------------------ |
+| MVP-0.1-01     | closed               | Architecture | E2   | Dos ejecuciones limpias con digests idénticos | PR-02                                            |
+| MVP-0.1-02     | closed               | Delivery     | E1   | Cero contradicciones P0/P1                    | PR-01; CON-013..022                              |
+| MVP-0.1-03     | closed               | Data         | E3   | Cobertura completa + cero huérfanos           | PR-03                                            |
+| MVP-0.1-04     | closed               | Architecture | E4   | Mismos bytes/digest/diagnósticos              | PR-04                                            |
+| MVP-0.1-05     | closed               | Quality      | E4   | Flujo completo mismo Core, golden output      | PR-04                                            |
+| MVP-0.1-06     | closed               | UX           | E5   | Auto + manual sin defectos críticos           | PR-05; `wcag_validate.py`                        |
+| MVP-0.1-07     | closed-with-residual | Security     | E6   | Raíz materializada + artefactos verificables  | `_placeholder:false`; release en primer tag push |
+| MVP-0.1-08     | closed               | Release      | E7   | Tag anotado + release verificada              | PR-07; tag `implementation-baseline-mvp0.1`      |
+
+## Issues MVP-1 (planificados — sin implementación hasta MVP-1-01 `accepted`)
+
+Fuente canónica de alcance: [`mvp1-scope.md`](mvp1-scope.md).
+
+| #        | Issue                                   | Depende de | Gate     | Owner        | Criterio Done                     |
+| -------- | --------------------------------------- | ---------- | -------- | ------------ | --------------------------------- |
+| MVP-1-01 | Aprobar alcance DOC-DEL-MVP1-001        | —          | G2,G10   | Product      | Documento `accepted`              |
+| MVP-1-02 | Cerrar CON-001..004 (dominio + schemas) | 01         | G4       | Data         | Corpus verde                      |
+| MVP-1-03 | Formato ejes de versión (ADR-0006)      | 01         | G3,G4    | Architecture | ADR `accepted`                    |
+| MVP-1-04 | Catálogo local versionado multi-entity  | 02,03      | G4,G5    | Data         | FR-CAT-001 ampliado               |
+| MVP-1-05 | importDraft + migración MIG-5.1         | 02,04      | G4,G7,G9 | Data         | FR-IMPORT-001 / NFR-MIG-001 en CI |
+| MVP-1-06 | Changeset + concurrencia                | 02         | G4,G5    | Interfaces   | Corpus changeset                  |
+| MVP-1-07 | Trazabilidad ampliada MVP-1             | 04,05,06   | G2,G9    | Quality      | Sin huérfanos                     |
+| MVP-1-08 | Tag `implementation-baseline-mvp1`      | 01–07      | G10      | Release      | Tag + CI verde                    |
 
 ## Trazabilidad de los issues
 

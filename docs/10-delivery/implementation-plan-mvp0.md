@@ -2,10 +2,10 @@
 id: DOC-DEL-MVP0-IMP-001
 phase: MVP
 priority: P0
-documentStatus: draft
+documentStatus: in-review
 approvalStatus: pending
-implementationStatus: partial
-verificationStatus: not-verified
+implementationStatus: complete
+verificationStatus: partial
 releaseStatus: ineligible
 owners:
   - release
@@ -22,9 +22,9 @@ dependsOn:
 
 # Plan de implementación MVP-0 — ArchMaker Walking Skeleton
 
-- Documento: DOC-DEL-MVP0-IMP-001 · Estado: draft · Propietario: Delivery · Fecha: 2026-10-06
+- Documento: DOC-DEL-MVP0-IMP-001 · Estado: in-review · Propietario: Delivery · Fecha: 2026-10-06
 - Autoridad de estados: `docs/00-governance/status-model.md`.
-- Veredicto vigente: **CONDITIONAL-GO — walking skeleton MVP-0 únicamente** (`docs/00-governance/final-review-planning-v1.1.md`).
+- Veredicto vigente: **CONDITIONAL-CLEAR — walking skeleton MVP-0 únicamente** (`docs/00-governance/go-no-go.md`).
 - Alcance: autoriza exclusivamente el vertical slice de `docs/10-delivery/walking-skeleton.md`; el MVP completo, runner, privilegios y Enterprise quedan bloqueados.
 
 ## 1. Resumen ejecutivo

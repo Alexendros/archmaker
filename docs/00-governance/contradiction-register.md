@@ -5,7 +5,7 @@ priority: P0
 documentStatus: in-review
 approvalStatus: pending
 implementationStatus: complete
-verificationStatus: not-verified
+verificationStatus: partial
 releaseStatus: ineligible
 owners:
   - governance
@@ -39,3 +39,22 @@ reviewers:
 | CON-020 | `skip-if-missing` en workflows | Workflow raíz omite frontend si falta `check`; scripts raíz no exponen lint/typecheck/E2E.  | D-08                                                  | Prohibir `skip-if-missing` en controles requeridos; script ausente = fallar.                                |
 | CON-021 | build Tauri local              | build Tauri local falló validando `app.security.devtools` con CLI instalada.                | D-09                                                  | Alinear schema/CLI y añadir build a CI; fijar `allowlist` vs `deny-by-default`.                             |
 | CON-022 | tags baseline                  | Tags de baseline 6 commits detrás de HEAD.                                                  | D-10                                                  | NO mover tags; emitir versión sucesora `implementation-baseline-mvp0.1` apuntando al commit revisado.       |
+
+## Cierre CON-013..CON-022 (baseline MVP-0.1)
+
+Estado de las desviaciones D-01..D-10 al estabilizar `stabilization/mvp0.1` y el tag
+`implementation-baseline-mvp0.1`. CON-001..CON-012 permanecen como deuda de migración v5.1
+(fuera del slice walking skeleton).
+
+| ID      | Estado                | Evidencia de cierre                                                                                            | Residual                                                  |
+| ------- | --------------------- | -------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| CON-013 | resuelta              | Metadatos de `walking-skeleton.md` / `implementation-plan-mvp0.md` → `partial`/`complete` alineados con código | —                                                         |
+| CON-014 | resuelta              | PR-07 E7 + tag anotado `implementation-baseline-mvp0.1`                                                        | Sign-off independiente formal sigue en review             |
+| CON-015 | resuelta-con-residual | `trusted_root.json` con `_placeholder: false`; job `sign-verify` en `release.yml`                              | Release público / verificación offline en primer tag push |
+| CON-016 | resuelta              | G2-C04 `complete`; matriz FR/NFR→TST/VAL en CI (`traceability_matrix.py`)                                      | —                                                         |
+| CON-017 | resuelta-con-residual | G6-C01/C03 `complete`; `wcag_validate.py` + axe/visual; checklist manual RC                                    | Firma manual 1.4.1 en release candidate                   |
+| CON-018 | resuelta              | README describe walking skeleton MVP-0.1; runner excluido                                                      | —                                                         |
+| CON-019 | resuelta              | AUD-001..023 `superseded` en `backlog.md`; issues MVP-0.1-01..08                                               | —                                                         |
+| CON-020 | resuelta              | CI exige `scripts.check`; ausencia = fallo; root `package.json` expone `check`                                 | —                                                         |
+| CON-021 | resuelta              | `check_negative_capabilities.py` + ausencia `devtools` en schema Tauri v2                                      | Build Tauri completo sigue fuera del job mínimo           |
+| CON-022 | resuelta              | Tag `implementation-baseline-mvp0.1` emitido (no se movió `implementation-baseline-mvp0`)                      | HEAD puede adelantar el tag hasta el próximo baseline     |

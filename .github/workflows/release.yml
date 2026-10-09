@@ -129,49 +129,41 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - name: Detectar cosign
-        id: detect
+      - name: Instalar cosign (CON-020 — sin skip-if-missing)
         run: |
-          if command -v cosign >/dev/null 2>&1; then
-            cosign version
-            echo "present=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "present=false" >> "$GITHUB_OUTPUT"
-          fi
+          set -euo pipefail
+          COSIGN_VERSION=v2.4.3
+          curl -fsSL -o /tmp/cosign \
+            "https://github.com/sigstore/cosign/releases/download/${COSIGN_VERSION}/cosign-linux-amd64"
+          sudo install -m 0755 /tmp/cosign /usr/local/bin/cosign
+          cosign version
       - name: Materializar trusted_root.json si es placeholder
-        if: steps.detect.outputs.present == 'true'
         run: |
           set -euo pipefail
           if grep -q '"_placeholder": *true' trusted_root.json; then
             echo "Materializando trusted_root.json desde Sigstore..."
             cosign trusted-root create --dst trusted_root.json
             echo "trusted_root.json materializado desde https://tuf-repo-cdn.sigstore.dev"
-            # Registrar metadata de procedencia
-            cat > trusted_root.json.meta << 'META'
-            {
-              "source": "https://tuf-repo-cdn.sigstore.dev",
-              "captured_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
-              "tool": "cosign trusted-root create",
-              "version": "sigstore/trusted-root@v0.1"
-            }
-            META
+            cat > trusted_root.json.meta << META
+          {
+            "source": "https://tuf-repo-cdn.sigstore.dev",
+            "captured_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "tool": "cosign trusted-root create",
+            "version": "sigstore/trusted-root@v0.1"
+          }
+          META
           fi
       - name: Firmar SBOM + SHA256SUMS (keyless Fulcio/Rekor)
-        if: steps.detect.outputs.present == 'true'
         run: |
           set -euo pipefail
           cosign sign-blob --yes sbom.cdx.json --output-signature sbom.cdx.json.sig --output-certificate sbom.cdx.json.pem
           cosign sign-blob --yes dist/SHA256SUMS --output-signature dist/SHA256SUMS.sig --output-certificate dist/SHA256SUMS.pem
-      - name: Aviso firma omitida
-        if: steps.detect.outputs.present != 'true'
-        run: echo 'SKIP firma Sigstore (cosign no instalado en el runner).'
       - name: Verificar offline con trusted_root.json embebido
-        if: steps.detect.outputs.present == 'true'
         run: |
           set -euo pipefail
           if grep -q '"_placeholder": *true' trusted_root.json; then
-            echo "SKIP verificación offline: trusted_root.json aún es placeholder tras intento de materialización."
-            exit 0
+            echo "::error::trusted_root.json sigue siendo placeholder tras materialización (CON-015)"
+            exit 1
           fi
           cosign verify-blob --trusted-root trusted_root.json \
             --certificate sbom.cdx.json.pem --signature sbom.cdx.json.sig \
@@ -269,18 +261,18 @@ jobs:
         run: |
           set -euo pipefail
           echo "Verificando matriz WCAG 2.2 AA en docs/05-ux/accessibility-matrix.md..."
-          
+
           if grep -q '\*\*falla\*\*' docs/05-ux/accessibility-matrix.md; then
             echo "⚠️ Hay correcciones pendientes en la tabla de contraste:"
             grep '\*\*falla\*\*' docs/05-ux/accessibility-matrix.md
             echo ""
             echo "Revisar si son critical/serious según matriz."
           fi
-          
+
           if grep -q 'severity.*critical\|severity.*serious' docs/05-ux/accessibility-matrix.md 2>/dev/null; then
             echo "❌ FALLA: Defectos critical/serious detectados en matriz WCAG."
             exit 1
           fi
-          
+
           echo "✅ No hay defectos critical/serious en matriz WCAG 2.2 AA."
           exit 0
