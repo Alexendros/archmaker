@@ -58,6 +58,13 @@ jobs:
             libayatana-appindicator3-dev \
             librsvg2-dev \
             patchelf
+      # tauri::generate_context! exige que exista frontendDist (apps/web/dist);
+      # en CI no hay build web previo — stub mínimo para compilar el crate.
+      - name: Stub frontendDist para generate_context
+        run: |
+          mkdir -p apps/web/dist
+          printf '%s\n' '<!DOCTYPE html><html><head><meta charset="utf-8"><title>archmaker</title></head><body></body></html>' \
+            > apps/web/dist/index.html
       - name: cargo fmt --check
         run: cargo fmt --all -- --check
       - name: cargo clippy (-D warnings)
@@ -152,9 +159,9 @@ jobs:
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: "20"
-          cache: "pnpm"
       - name: Instalar dependencias web
         run: |
+          corepack enable
           cd apps/web
           pnpm install --frozen-lockfile
       - name: Ejecutar checks a11y estáticos
@@ -183,9 +190,9 @@ jobs:
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: "20"
-          cache: "pnpm"
       - name: Instalar dependencias web
         run: |
+          corepack enable
           cd apps/web
           pnpm install --frozen-lockfile
       - name: Ejecutar regresión visual
