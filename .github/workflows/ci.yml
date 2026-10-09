@@ -164,6 +164,7 @@ jobs:
           corepack enable
           cd apps/web
           pnpm install --frozen-lockfile
+          pnpm exec playwright install --with-deps chromium
       - name: Ejecutar checks a11y estáticos
         run: |
           cd apps/web
@@ -195,6 +196,7 @@ jobs:
           corepack enable
           cd apps/web
           pnpm install --frozen-lockfile
+          pnpm exec playwright install --with-deps chromium
       - name: Ejecutar regresión visual
         run: |
           cd apps/web
