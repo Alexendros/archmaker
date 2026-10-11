@@ -13,47 +13,45 @@ reviewers:
   - independent-reviewer
 ---
 
-# Matriz de trazabilidad
+# Matriz de trazabilidad (Gobernanza)
 
-| Objetivo | Journey/UC | Requisito | Arquitectura/datos | UX/API | Validación/amenaza | Prueba | Release |
-|---|---|---|---|---|---|---|---|
-| OBJ-001 Configurar sin terminal | JNY-001 / UC-001 | FR-DRAFT-001 | DM-DRAFT / ADR-0001 | `/configure`; `createDraft` | VAL-DOC / THR-IMP-001 | TST-DRAFT-001 | MVP |
-| OBJ-002 Resultado válido | JNY-001 / UC-003 | FR-RESOLVE-001 | DM-RESOLUTION | `resolveDraft` | VAL-REF, VAL-RULE | TST-RES-001 | MVP |
-| OBJ-003 Migrar legado | JNY-002 / UC-002 | FR-IMPORT-001 | MIG-5.1 | `importDraft` | VAL-MIG / THR-IMP-001 | TST-MIG-001 | MVP |
-| OBJ-004 Exportar | JNY-001 / UC-005 | FR-EXPORT-001 | DM-MANIFEST/ARTIFACT | `/export`; `exportArtifact` | VAL-TARGET | TST-EXP-001 | MVP |
-| OBJ-005 Instalar seguro | JNY-003 / UC-006 | FR-RUN-001 | DM-PLAN / ADR-0004 | Runner protocol | VAL-PLAN / THR-RUN-001 | TST-RUN-001 | v1 |
-| OBJ-006 Gobernar flotas | JNY-004 / UC-007 | FR-ENT-001 | PolicyBundle | `/api/v1` | VAL-POL / THR-TEN-001 | TST-TEN-001 | Enterprise |
+> **Única fuente de verdad**: La matriz de trazabilidad ejecutable y completa se genera automáticamente en `docs/10-delivery/traceability-matrix.md` y `docs/10-delivery/traceability-matrix.json` por `tools/traceability_matrix.py`.
+>
+> Este documento de gobernanza mantiene únicamente el mapeo de alto nivel **Objetivo → Requisito** para decisiones de alcance y prioridad. La trazabilidad detallada FR/NFR → TST/VAL, métricas C_req/C_pass, huérfanos, cobertura negativa, paridad y veredictos V-TRACE se derivan automáticamente y son la fuente autoritativa.
 
-## Trazabilidad ampliada por requisito
+---
 
-| Requisito | Journey / UC | Arquitectura | Datos | Interfaz | Validación / amenaza | Prueba | Release |
-|---|---|---|---|---|---|---|---|
-| FR-DRAFT-001 | JNY-001 / UC-001 | ADR-0001, ADR-0002 | DM-DRAFT | `createDraft` | VAL-DOC / THR-IMP-001 | TST-DRAFT-001 | MVP |
-| FR-IMPORT-001 | JNY-002 / UC-002 | ADR-0003 | DM-DRAFT (MIG-5.1) | `importDraft`, `planMigration`, `applyMigration` (fuera de `CorePort v0`; reintroducir en fase posterior) | VAL-MIG / THR-IMP-001 | TST-MIG-001 | MVP |
-| FR-CAT-001 | JNY-001 / UC-001 | ADR-0008 | DM-CATALOG | `loadCatalog` | VAL-CAT / THR-CAT-001 | TST-CAT-001 | MVP |
-| FR-PRESET-001 | JNY-001 / UC-001 | ADR-0003 | DM-PRESET / DM-DRAFT | `applyPreset` (fuera de `CorePort v0`; reintroducir en fase posterior) | VAL-REF / THR-IMP-001 | TST-PRESET-001 | MVP |
-| FR-RESOLVE-001 | JNY-001 / UC-003 | ADR-0001 | DM-RESOLUTION | `resolveDraft` | VAL-REF, VAL-RULE | TST-RES-001 | MVP |
-| FR-VALIDATE-001 | JNY-001 / UC-004 | ADR-0001 | DM-RESOLUTION | `validateDraft` | VAL-RULE / THR-IMP-001 | TST-VAL-001 | MVP |
-| FR-MANIFEST-001 | JNY-001 / UC-005 | ADR-0006, ADR-0007 | DM-MANIFEST | `buildManifest` | VAL-DET (digest) | TST-MAN-001 | MVP |
-| FR-EXPORT-001 | JNY-001 / UC-005 | ADR-0003 | DM-MANIFEST / DM-ARTIFACT | `exportArtifact` | VAL-TARGET | TST-EXP-001 | MVP |
-| FR-RUN-001 | JNY-003 / UC-006 | ADR-0004 | DM-PLAN / DM-SESSION | Runner protocol | VAL-PLAN / THR-RUN-001, THR-RUN-002 | TST-RUN-001 | v1 |
-| FR-ENT-001 | JNY-004 / UC-007 | ADR-0008 | DM-POLICY | `/api/v1` | VAL-POL / THR-TEN-001 | TST-TEN-001 | Enterprise |
-| NFR-SEC-001 | JNY-001..004 | ADR-0002, ADR-0004 | — | Tauri capabilities | THR-IPC-001, THR-FS-001 | TST-SEC-001 | MVP |
-| NFR-DET-001 | JNY-001 | ADR-0006, ADR-0007 | DM-MANIFEST | `buildManifest` | VAL-DET | TST-MAN-001 | MVP |
-| NFR-ACC-001 | JNY-001 | — | — | componentes UI | WCAG 2.2 AA | TST-A11Y-001 | MVP |
-| NFR-OFF-001 | JNY-001 | ADR-0008 | DM-CATALOG | `loadCatalog` | VAL-CAT | TST-OFF-001 | MVP |
-| NFR-MIG-001 | JNY-002 / UC-002 | ADR-0003 | MIG-5.1 | `planMigration` | VAL-MIG / THR-IMP-001 | TST-MIG-001 | MVP |
-| NFR-PORT-001 | JNY-001..003 | ADR-0001 | — | CorePort / WASM | paridad corpus | TST-PORT-001 | MVP/v1 |
-| NFR-OBS-001 | JNY-001..004 | ADR-0001 | — | errors-events | VAL-OBS | TST-OBS-001 | MVP |
+## Mapeo Objetivo → Requisito (alto nivel)
 
-## Trazabilidad de reglas y amenazas P0
+| Objetivo                        | Journey/UC       | Requisitos clave                                 | Fase           |
+| ------------------------------- | ---------------- | ------------------------------------------------ | -------------- |
+| OBJ-001 Configurar sin terminal | JNY-001 / UC-001 | FR-DRAFT-001, FR-CAT-001                         | MVP            |
+| OBJ-002 Resultado válido        | JNY-001 / UC-003 | FR-RESOLVE-001, FR-VALIDATE-001, FR-MANIFEST-001 | MVP            |
+| OBJ-003 Migrar legado           | JNY-002 / UC-002 | FR-IMPORT-001                                    | MVP (diferido) |
+| OBJ-004 Exportar                | JNY-001 / UC-005 | FR-MANIFEST-001, FR-EXPORT-001                   | MVP            |
+| OBJ-005 Instalar seguro         | JNY-003 / UC-006 | FR-RUN-001                                       | v1             |
+| OBJ-006 Gobernar flotas         | JNY-004 / UC-007 | FR-ENT-001                                       | Enterprise     |
 
-| Regla | Fuente (SRC/CON) | Diagnóstico | Amenaza | Prueba |
-|---|---|---|---|---|
-| RULE-COMP-001 | v5.1 validation-rules / CON-002 | AM-RULE | THR-IMP-001 | TST-RULE-COMP |
-| RULE-DM-001 | v5.1 | AM-RULE | — | TST-RULE-DM |
-| RULE-GPU-001 | v5.1 | AM-RULE | — | TST-RULE-GPU |
-| RULE-KERNEL-001, RULE-KERNEL-002 | v5.1 | AM-RULE | — | TST-RULE-KERNEL |
-| RULE-BROWSER-001 | v5.1 | AM-RULE | — | TST-RULE-BROWSER |
-| RULE-DUP-001 | CON-004 | AM-DOC | — | TST-RULE-DUP |
-| RULE-PKG-001 | SRC-002/SRC-003 (pendiente) | AM-RULE | THR-SUP-001 | TST-RULE-PKG |
+---
+
+## Referencias
+
+- **Matriz ejecutable completa**: `docs/10-delivery/traceability-matrix.md` (generada por CI)
+- **Fuente máquina (JSON)**: `docs/10-delivery/traceability-matrix.json`
+- **Generador**: `tools/traceability_matrix.py`
+- **Inventario de tests**: `docs/10-delivery/tests-inventory.json`
+- **Validadores**: `docs/10-delivery/validators.json`
+- **Job CI**: `traceability` en `.github/workflows/ci.yml`
+- **Veredictos V-TRACE-01..05**: Evaluados en CI, fallan si métricas < 100%
+
+---
+
+## Nota de gobernanza
+
+Cualquier cambio en la trazabilidad debe hacerse en las fuentes primarias:
+
+1. `docs/01-product/requirements.md` (campo `Scope` en tablas)
+2. `tools/gen_test_inventory.py` (inferencia de cobertura)
+3. `docs/10-delivery/validators.json` (enlaces validador → requisito)
+
+La matriz de gobernanza **no se edita a mano** para trazabilidad detallada; solo se actualiza el mapeo Objetivo → Requisito cuando cambia el alcance del producto.

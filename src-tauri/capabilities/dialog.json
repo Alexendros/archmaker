@@ -1,8 +1,7 @@
 {
-  "$schema": "../gen/schemas/capability.schema.json",
+  "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "dialog-capability",
   "description": "Deny-by-default: ventana dialog reservada (v1). Sin comandos CorePort en MVP; solo denegaciones explicitas.",
   "windows": ["dialog"],
-  "permissions": [],
-  "denied": ["shell:*", "fs:*", "http:*", "updater:*"]
+  "permissions": []
 }

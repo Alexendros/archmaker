@@ -2,12 +2,12 @@
   "id": "G2",
   "title": "Alcance y requisitos",
   "remediationPhases": ["R1", "R2"],
-  "status": "in-progress",
+  "status": "complete",
   "phases": {
     "document-complete": "complete",
     "design-ready": "not-applicable",
     "implementation-ready": "not-applicable",
-    "verified": "pending",
+    "verified": "complete",
     "release-ready": "not-applicable"
   },
   "criteria": [
@@ -36,15 +36,35 @@
       "kind": "decision",
       "status": "complete",
       "evidence": [
-        { "type": "document", "ref": "docs/00-governance/decision-register.md", "note": "DOC-GOV-DEC-001" },
-        { "type": "commit", "ref": "R2: registro de decisiones autoritativo", "commit": "0a0e98c" }
+        {
+          "type": "document",
+          "ref": "docs/00-governance/decision-register.md",
+          "note": "DOC-GOV-DEC-001"
+        },
+        {
+          "type": "commit",
+          "ref": "R2: registro de decisiones autoritativo",
+          "commit": "0a0e98c"
+        }
       ]
     },
     {
       "id": "G2-C04",
       "description": "Cobertura de trazabilidad FR/NFR → prueba materializada (sin referencias TST/VAL sin definir).",
       "kind": "metric-verified",
-      "status": "pending"
+      "status": "complete",
+      "evidence": [
+        {
+          "type": "document",
+          "ref": "docs/10-delivery/traceability-matrix.json",
+          "note": "100% coverage_link_pct, 100% coverage_pass_pct, 0 orphan tests, 0 validators without requirement"
+        },
+        {
+          "type": "document",
+          "ref": "docs/10-delivery/traceability-matrix.md",
+          "note": "matriz generada y verificada por tools/traceability_matrix.py y tools/validate_traceability.py"
+        }
+      ]
     }
   ]
 }

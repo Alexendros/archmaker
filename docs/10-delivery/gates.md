@@ -26,12 +26,12 @@ La semántica de los estados se lee en `docs/00-governance/status-model.md` (DOC
 | Gate | Título | Fases (doc/diseño/impl/verif/release) | Estado | Criterios pendientes |
 |---|---|---|---|---|
 | G0 | Fuentes controladas | complete/n/a/complete/complete/n/a | complete | — |
-| G1 | Problema y usuarios | complete/n/a/n/a/pending/n/a | in-progress | G1-C03 |
-| G2 | Alcance y requisitos | complete/n/a/n/a/pending/n/a | in-progress | G2-C04 |
-| G3 | Arquitectura | complete/complete/n/a/pending/n/a | in-progress | — |
+| G1 | Problema y usuarios | complete/n/a/n/a/complete/n/a | complete | — |
+| G2 | Alcance y requisitos | complete/n/a/n/a/complete/n/a | complete | — |
+| G3 | Arquitectura | complete/complete/n/a/complete/n/a | complete | — |
 | G4 | Datos y contratos | complete/complete/complete/complete/n/a | complete | — |
 | G5 | Interfaces y CorePort | complete/complete/complete/complete/n/a | complete | — |
-| G6 | UX y design system | in-progress/in-progress/pending/pending/n/a | in-progress | G6-C01, G6-C03 |
+| G6 | UX y design system | complete/complete/complete/complete/n/a | complete | — |
 | G7 | Validación y corpus | complete/complete/complete/complete/n/a | complete | — |
 | G8 | Seguridad | complete/complete/complete/complete/n/a | complete | — |
 | G9 | Calidad y CI | complete/complete/complete/complete/n/a | complete | — |
@@ -48,20 +48,20 @@ La semántica de los estados se lee en `docs/00-governance/status-model.md` (DOC
 - `G0-C05` · document-approved · complete — Baseline de auditoría congelada (tag, rama y hito). · 2 evidencia(s)
 - `G0-C06` · artifact · complete — Evaluación de gates reproducible: manifiestos, tabla derivada y validador de trazabilidad. · 2 evidencia(s)
 
-### G1 — Problema y usuarios (`in-progress`)
+### G1 — Problema y usuarios (`complete`)
 
 - `G1-C01` · document-approved · complete — Documentos de personas y objetivos aprobados. · 2 evidencia(s)
 - `G1-C02` · document-approved · complete — Product brief aprobado dentro de requirements.md. · 1 evidencia(s)
-- `G1-C03` · metric-verified · pending — Métricas cuantitativas de usuarios y objetivos verificadas con evidencia (documento aprobado no equivale a métrica verificada).
+- `G1-C03` · metric-verified · complete — Métricas cuantitativas de usuarios y objetivos verificadas con evidencia (documento aprobado no equivale a métrica verificada). · 2 evidencia(s)
 
-### G2 — Alcance y requisitos (`in-progress`)
+### G2 — Alcance y requisitos (`complete`)
 
 - `G2-C01` · document-approved · complete — Requisitos FR/NFR con Given/When/Then aprobados. · 1 evidencia(s)
 - `G2-C02` · document-approved · complete — Casos de uso y journeys aprobados. · 2 evidencia(s)
 - `G2-C03` · decision · complete — Decisiones DEC-001..DEC-010 resueltas en la autoridad única del registro. · 2 evidencia(s)
-- `G2-C04` · metric-verified · pending — Cobertura de trazabilidad FR/NFR → prueba materializada (sin referencias TST/VAL sin definir).
+- `G2-C04` · metric-verified · complete — Cobertura de trazabilidad FR/NFR → prueba materializada (sin referencias TST/VAL sin definir). · 2 evidencia(s)
 
-### G3 — Arquitectura (`in-progress`)
+### G3 — Arquitectura (`complete`)
 
 - `G3-C01` · document-approved · complete — C4 corregido (Rust Core como componente interno) y viewpoints ISO/IEC/IEEE 42010. · 3 evidencia(s)
 - `G3-C02` · document-approved · complete — Mapa de módulos y reglas de dependencia aprobados. · 2 evidencia(s)
@@ -81,11 +81,11 @@ La semántica de los estados se lee en `docs/00-governance/status-model.md` (DOC
 - `G5-C02` · artifact · complete — DTO y catálogo de errores v0 aceptados. · 3 evidencia(s)
 - `G5-C03` · review · complete — Contract tests definidos con paridad Tauri/WASM sin semántica divergente. · 3 evidencia(s)
 
-### G6 — UX y design system (`in-progress`)
+### G6 — UX y design system (`complete`)
 
-- `G6-C01` · document-approved · in-progress — Design system, matriz de interacción y contratos de componente (R10). · 2 evidencia(s)
+- `G6-C01` · document-approved · complete — Design system, matriz de interacción y contratos de componente (R10). · 3 evidencia(s)
 - `G6-C02` · artifact · complete — Baseline visual aprobado (golden screenshots y tokens heredados preservados). · 2 evidencia(s)
-- `G6-C03` · metric-verified · pending — Matriz WCAG 2.2 AA con evidencia automatizada y manual separada (AUD-021).
+- `G6-C03` · metric-verified · complete — Matriz WCAG 2.2 AA con evidencia automatizada y manual separada (AUD-021). · 5 evidencia(s)
 
 ### G7 — Validación y corpus (`complete`)
 
@@ -114,6 +114,6 @@ La semántica de los estados se lee en `docs/00-governance/status-model.md` (DOC
 
 ## Derivación
 
-- Resultado global derivado: **No-Go** — no todos los gates están `complete` (faltan G1, G2, G3, G6).
+- Resultado global derivado: **Clear** — todos los gates G0–G10 están `complete`.
 - `docs/00-governance/go-no-go.md` reproduce esta cobertura desde los mismos manifiestos.
 

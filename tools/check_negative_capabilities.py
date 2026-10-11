@@ -1,8 +1,18 @@
 #!/usr/bin/env python3
-"""Verificador estatico de controles Tauri/CSP/shell (I9, TST-NEG-001..008 diseno->evidencia)."""
+"""Verificador estatico de controles Tauri/CSP/shell (I9, TST-NEG-001..008 diseno->evidencia).
+
+Espejo Python del test Rust `crates/archmaker-core/tests/negative_capabilities.rs`,
+que es la autoridad semantica (AGENTS.md: Rust decide, TS/Python no duplican reglas).
+Cualquier divergencia entre este checker y el test Rust es un bug de este checker.
+Resuelve CON-021/D-09: `app.security.devtools` no existe en el schema Tauri v2
+(`SecurityConfig` = csp, dev_csp, freeze_prototype, ...; `devtools` solo vive en
+`WindowConfig` por ventana) — la CLI 2.x rechaza la clave, PR-02 la elimino y el
+deny-by-default es implicito.
+"""
 import json
 import re
 import sys
+import tomllib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -15,20 +25,59 @@ def check(name: str, ok: bool, detail: str = "") -> None:
         fails.append(name)
 
 
+CORE_CMDS = ["create-draft", "load-catalog", "save-draft", "resolve-draft",
+             "validate-draft", "build-manifest", "export-artifact"]
+
 cap = json.loads((ROOT / "src-tauri/capabilities/main.json").read_text())
 check("NEG-001 deny-by-default por ventana", cap.get("windows") == ["main"])
+# Los 7 permisos viven en permissions/*.toml (identifier core:<cmd>); el JSON de
+# capability queda vacio (auto-descubrimiento). Espejo de neg_capability_deny_by_default.
 check(
-    "NEG-001 solo 7 comandos CorePort v0",
-    len(cap.get("permissions", [])) == 7,
-    str(len(cap.get("permissions", []))),
+    "NEG-001 capability JSON sin permisos inline",
+    cap.get("permissions") == [],
+    str(cap.get("permissions")),
 )
-check("NEG-004 shell denegado", "shell:*" in cap.get("denied", []))
+found = []
+for cmd in CORE_CMDS:
+    with open(ROOT / f"src-tauri/permissions/{cmd}.toml", "rb") as f:
+        ident = tomllib.load(f).get("identifier")
+    if ident == f"core:{cmd}":
+        found.append(cmd)
+check(
+    "NEG-001 solo 7 comandos CorePort v0 (core:*)",
+    found == CORE_CMDS,
+    str(found),
+)
+for reserved in ["dialog", "picker"]:
+    ocap = json.loads((ROOT / f"src-tauri/capabilities/{reserved}.json").read_text())
+    check(
+        f"NEG-001 {reserved} reservado sin permisos (v1)",
+        ocap.get("permissions") == [],
+        str(ocap.get("permissions")),
+    )
 
-conf = json.loads((ROOT / "src-tauri/tauri.conf.json").read_text())
+raw_conf = (ROOT / "src-tauri/tauri.conf.json").read_text()
+conf = json.loads(raw_conf)
 csp = conf["app"]["security"]["csp"]
 check("NEG-005 CSP default-src self", "default-src 'self'" in csp, csp)
 check("NEG-005 sin unsafe-eval/inline", "unsafe-eval" not in csp and "unsafe-inline" not in csp)
-check("devtools off en release", conf["app"]["security"]["devtools"] is False)
+# CON-021/D-09: sin plugin shell salvo denegacion explicita (espejo Rust).
+check(
+    "NEG-004 shell denegado (ausencia estructural)",
+    '"shell"' not in raw_conf or "shell:*" in raw_conf,
+)
+# CON-021/D-09: la clave no existe en SecurityConfig v2; su ausencia ES el control
+# (deny-by-default implicito). Anadirla rompe la validacion de la CLI (PR-02).
+check(
+    "NEG-devtools ausente en app.security (CON-021)",
+    "devtools" not in conf["app"]["security"],
+    "schema v2 sin devtools en SecurityConfig",
+)
+main_rs = (ROOT / "src-tauri/src/main.rs").read_text()
+check(
+    "NEG-devtools sin apertura programatica",
+    "open_devtools" not in main_rs and "tauri_plugin_devtools" not in main_rs,
+)
 
 html = (ROOT / "apps/web/index.html").read_text()
 check("NEG-005 index.html CSP self", "default-src 'self'" in html)

@@ -1,76 +1,161 @@
 :root {
+  /* ===== NEUTRAL PALETTE ===== */
   --ds-color-neutral-0: #ffffff;
   --ds-color-neutral-50: #f5f5f5;
   --ds-color-neutral-100: #f0f0f0;
   --ds-color-neutral-150: #e5e7eb;
-  --ds-color-neutral-200: #d2d2d2;
-  --ds-color-neutral-400: #a8a8a8;
-  --ds-color-neutral-600: #6a6e73;
-  --ds-color-neutral-700: #3c3f42;
-  --ds-color-neutral-800: #2a2a2a;
+  --ds-color-neutral-200: #8c8c8c;       /* Darker for 3:1 border on light */
+  --ds-color-neutral-300: #787878;       /* New step */
+  --ds-color-neutral-350: #a0a0a0;       /* AUD-021: dark muted/subtle 4.5:1 on dark */
+  --ds-color-neutral-400: #6a6a6a;       /* Darker for 4.5:1 subtle text */
+  --ds-color-neutral-500: #5a5a5a;       /* Raised for 4.5:1 muted text */
+  --ds-color-neutral-600: #484848;       /* Raised for 4.5:1 muted text */
+  --ds-color-neutral-700: #383838;       /* Raised for 4.5:1 subtle text */
+  --ds-color-neutral-800: #282828;
   --ds-color-neutral-850: #1e1e1e;
   --ds-color-neutral-900: #151515;
+
+  /* ===== SEMANTIC COLORS ===== */
   --ds-color-red-50: #fff5f5;
-  --ds-color-red-600: #ee0000;
+  --ds-color-red-100: #ffe0e0;
+  --ds-color-red-400: #ff6666;          /* AUD-021: action-hover on dark */
+  --ds-color-red-500: #e03e3e;
+  --ds-color-red-600: #cc3333;          /* 4.5:1 on light */
+  --ds-color-red-650: #ff4444;          /* AUD-021: action/danger 4.5:1 on dark */
+  --ds-color-red-700: #e04444;          /* Brighter red for 4.5:1 on dark */
   --ds-color-red-950: #2a1515;
+
   --ds-color-blue-50: #f0f6ff;
+  --ds-color-blue-100: #dbeafe;
   --ds-color-blue-200: #9ecaff;
+  --ds-color-blue-350: #66b3ff;          /* AUD-021: focus/info 3:1 on dark */
   --ds-color-blue-500: #3a6bc5;
-  --ds-color-blue-600: #0066cc;
-  --ds-color-blue-700: #2d5aa0;
-  --ds-color-blue-900: #1e3a5f;
-  --ds-color-green-600: #3e8635;
+  --ds-color-blue-900: #1e3a5f;          /* rail current on dark (heritage) */
+  --ds-color-blue-600: #0066cc;          /* Light theme focus - 3:1 on white */
+  --ds-color-blue-700: #4da6ff;          /* Bright blue for dark theme focus - 3:1 on dark */
+
+  --ds-color-green-50: #f0fff4;
+  --ds-color-green-100: #dcfce7;
+  --ds-color-green-400: #4ade80;        /* AUD-021: success on dark */
+  --ds-color-green-500: #3e8635;
+  --ds-color-green-600: #2d7a2d;
+  --ds-color-green-900: #1a2e1a;
+
   --ds-color-yellow-50: #fff8e6;
-  --ds-color-yellow-500: #f0ab00;
+  --ds-color-yellow-100: #fff3cd;
+  --ds-color-yellow-300: #ffcc00;        /* AUD-021: warning on dark */
+  --ds-color-yellow-400: #b88600;        /* Darker yellow for 3:1 on light */
+  --ds-color-yellow-500: #b88600;        /* Warning text on light - same as 400 */
+  --ds-color-yellow-600: #996600;
+
+  /* ===== TYPOGRAPHY ===== */
   --ds-font-sans: "Red Hat Text", system-ui, sans-serif;
   --ds-font-mono: "Red Hat Mono", ui-monospace, monospace;
   --ds-size-base: 1rem;
+  --ds-line-height-base: 1.5;
+  --ds-line-height-heading: 1.2;
+  --ds-letter-spacing-base: 0.0125em;
+  --ds-word-spacing-base: 0.16em;
+
+  /* ===== SPACING (8px base) ===== */
+  --ds-space-0: 0;
   --ds-space-1: 0.25rem;
   --ds-space-2: 0.5rem;
   --ds-space-3: 0.75rem;
   --ds-space-4: 1rem;
+  --ds-space-5: 1.25rem;
   --ds-space-6: 1.5rem;
-  --ds-radius-sm: 3px;
-  --ds-radius-md: 6px;
+  --ds-space-8: 2rem;
+  --ds-space-10: 2.5rem;
+  --ds-space-12: 3rem;
+
+  /* ===== BORDERS & RADII ===== */
+  --ds-radius-sm: 4px;
+  --ds-radius-md: 8px;
+  --ds-radius-lg: 12px;
+  --ds-radius-full: 9999px;
   --ds-border-thin: 1px solid;
+  --ds-border-thick: 2px solid;
+  --ds-border-focus: 3px solid;
+
+  /* ===== SHADOWS ===== */
+  --ds-shadow-sm: 0 1px 2px rgba(21, 21, 21, 0.08);
+  --ds-shadow-md: 0 4px 8px rgba(21, 21, 21, 0.12);
+  --ds-shadow-lg: 0 8px 24px rgba(21, 21, 21, 0.16);
   --ds-shadow-dialog: 0 8px 24px rgba(21, 21, 21, 0.24);
+
+  /* ===== MOTION ===== */
   --ds-duration-instant: 0ms;
   --ds-duration-fast: 120ms;
+  --ds-duration-normal: 200ms;
   --ds-easing-standard: ease;
+  --ds-easing-emphasized: ease-out;
+
+  /* ===== Z-INDEX ===== */
+  --ds-z-base: 0;
+  --ds-z-dropdown: 10;
+  --ds-z-sticky: 20;
   --ds-z-toast: 60;
   --ds-z-dialog: 50;
+  --ds-z-modal: 70;
+
+  /* ===== TOUCH TARGETS (WCAG 2.5.8) ===== */
+  --ds-touch-target-min: 24px;
+  --ds-touch-target-comfortable: 44px;
+
+  /* ===== LIGHT THEME SEMANTIC ALIASES ===== */
   --color-canvas: var(--ds-color-neutral-0);
   --color-surface: var(--ds-color-neutral-50);
+  --color-surface-hover: var(--ds-color-neutral-100);
   --color-border: var(--ds-color-neutral-200);
+  --color-border-hover: var(--ds-color-neutral-300);
   --color-text: var(--ds-color-neutral-900);
-  --color-text-muted: var(--ds-color-neutral-600);
-  --color-text-subtle: var(--ds-color-neutral-700);
+  --color-text-muted: var(--ds-color-neutral-500);
+  --color-text-subtle: var(--ds-color-neutral-600);
   --color-action: var(--ds-color-red-600);
+  --color-action-hover: var(--ds-color-red-500);
   --color-danger: var(--ds-color-red-600);
   --color-focus: var(--ds-color-blue-600);
   --color-info: var(--ds-color-blue-600);
   --color-success: var(--ds-color-green-600);
-  --color-warning: var(--ds-color-yellow-500);
+  --color-warning: var(--ds-color-yellow-400);
+  --color-warning-weak: var(--ds-color-yellow-400);
+
+  /* Component-specific (T3: derive from semantics) */
   --button-bg: var(--color-action);
   --button-fg: var(--ds-color-neutral-0);
   --button-border: var(--color-action);
   --button-radius: var(--ds-radius-md);
+  --button-min-height: var(--ds-touch-target-min);
+  --button-padding-x: var(--ds-space-4);
+  --button-padding-y: var(--ds-space-2);
+
   --option-card-bg: var(--color-surface);
   --option-card-border: var(--color-border);
   --option-card-selected-bg: var(--ds-color-red-50);
   --option-card-selected-border: var(--color-action);
+
   --field-bg: var(--color-canvas);
   --field-border: var(--color-border);
+  --field-border-hover: var(--color-border-hover);
   --field-invalid-border: var(--color-danger);
   --field-radius: var(--ds-radius-md);
+  --field-min-height: var(--ds-touch-target-min);
+  --field-padding-x: 0.75rem;
+  --field-padding-y: var(--ds-space-2);
+
   --dialog-bg: var(--color-surface);
   --dialog-border: var(--color-border);
   --dialog-shadow: var(--ds-shadow-dialog);
+
   --rail-bg: var(--color-surface);
-  --rail-item-current-bg: var(--ds-color-blue-50);
+  --rail-item-current-bg: var(--ds-color-blue-100);
   --rail-item-done-fg: var(--color-success);
+
   --inspector-bg: var(--color-surface);
   --inspector-border: var(--color-border);
+
+  /* ===== LEGACY ALIASES (P1: alias -> semantic, no hardcoded hex) ===== */
   --rh-red: var(--color-action);
   --rh-blue: var(--color-focus);
   --rh-green: var(--color-success);
@@ -83,23 +168,29 @@
   --rh-gray-dark: var(--color-text-subtle);
 }
 
+/* ===== DARK THEME (T2: reassign semantics only) ===== */
 .dark {
   --color-canvas: var(--ds-color-neutral-900);
   --color-surface: var(--ds-color-neutral-850);
-  --color-border: var(--ds-color-neutral-800);
+  --color-surface-hover: var(--ds-color-neutral-800);
+  --color-border: var(--ds-color-neutral-200);
+  --color-border-hover: var(--ds-color-neutral-350);
   --color-text: var(--ds-color-neutral-0);
-  --color-text-muted: var(--ds-color-neutral-400);
-  --color-text-subtle: var(--ds-color-neutral-400);
-  --color-action: var(--ds-color-red-600);
-  --color-danger: var(--ds-color-red-600);
-  --color-focus: var(--ds-color-blue-600);
-  --color-info: var(--ds-color-blue-600);
-  --color-success: var(--ds-color-green-600);
-  --color-warning: var(--ds-color-yellow-500);
+  --color-text-muted: var(--ds-color-neutral-350);
+  --color-text-subtle: var(--ds-color-neutral-350);
+  --color-action: var(--ds-color-red-650);
+  --color-action-hover: var(--ds-color-red-400);
+  --color-danger: var(--ds-color-red-650);
+  --color-focus: var(--ds-color-blue-350);
+  --color-info: var(--ds-color-blue-350);
+  --color-success: var(--ds-color-green-400);
+  --color-warning: var(--ds-color-yellow-300);
+
   --option-card-selected-bg: var(--ds-color-red-950);
   --rail-item-current-bg: var(--ds-color-blue-900);
 }
 
+/* ===== HIGH CONTRAST THEME ===== */
 .hc {
   --color-canvas: #000000;
   --color-surface: #000000;
@@ -107,19 +198,86 @@
   --color-text: #ffffff;
   --color-text-muted: #ffffff;
   --color-text-subtle: #ffffff;
+  --color-action: #ffff00;
   --color-focus: #ffff00;
+  --color-success: #00ff00;
+  --color-warning: #ffff00;
 }
 
+/* ===== FOCUS INDICATOR (WCAG 2.4.7) ===== */
 :focus-visible {
   outline: 3px solid var(--color-focus);
   outline-offset: 2px;
 }
 
+/* ===== REDUCED MOTION (WCAG 2.3.3) ===== */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
-    animation-duration: var(--ds-duration-instant);
-    animation-iteration-count: 1;
-    transition-duration: var(--ds-duration-instant);
-    scroll-behavior: auto;
+    animation-duration: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ===== BASE TYPOGRAPHY (WCAG 1.4.12) ===== */
+html {
+  font-size: 100%;
+  line-height: 1.5;
+  letter-spacing: 0.0125em;
+  word-spacing: 0.16em;
+}
+
+body {
+  font-family: "Red Hat Text", system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  letter-spacing: 0.0125em;
+  word-spacing: 0.16em;
+  color: var(--color-text);
+  background-color: var(--color-canvas);
+}
+
+/* ===== TEXT SPACING OVERRIDE SUPPORT (WCAG 1.4.12) ===== */
+@media (prefers-reduced-motion: no-preference) {
+  :root {
+    --ds-paragraph-spacing: calc(1rem * 2);
+  }
+}
+
+/* ===== MINIMUM TOUCH TARGETS (WCAG 2.5.8) ===== */
+button, [role="button"], input, select, textarea, a {
+  min-height: 24px;
+  min-width: 24px;
+}
+
+/* ===== FOCUS VISIBLE FOR INTERACTIVE ELEMENTS ===== */
+button:focus-visible,
+[role="button"]:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+a:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+/* ===== HIGH CONTRAST MODE ADJUSTMENTS ===== */
+@media (forced-colors: active) {
+  :root {
+    --color-canvas: Canvas;
+    --color-surface: Canvas;
+    --color-border: ButtonBorder;
+    --color-text: CanvasText;
+    --color-text-muted: CanvasText;
+    --color-text-subtle: CanvasText;
+    --color-action: Highlight;
+    --color-focus: Highlight;
+    --color-success: Highlight;
+    --color-warning: Highlight;
+  }
+  button, [role="button"], input, select, textarea {
+    forced-color-adjust: none;
+    border-color: ButtonBorder;
   }
 }
