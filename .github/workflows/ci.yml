@@ -191,6 +191,10 @@ jobs:
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: "20"
+      - name: Fuentes métricamente estables (Liberation Sans)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y fonts-liberation
       - name: Instalar dependencias web
         run: |
           corepack enable
@@ -202,10 +206,12 @@ jobs:
           cd apps/web
           pnpm test-a11y:visual
       - name: Subir diffs visuales como artefacto
+        if: failure()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: visual-regression-diffs
           path: apps/web/visual-diffs/
+          if-no-files-found: ignore
           retention-days: 30
 
   markdownlint:

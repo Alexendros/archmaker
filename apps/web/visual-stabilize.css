@@ -1,0 +1,6 @@
+/* Solo para tests visuales (inyectado por Playwright). CSP: style-src 'self'. */
+html,
+body,
+* {
+  font-family: "Liberation Sans", Arial, sans-serif !important;
+}

@@ -11,6 +11,8 @@ export default defineConfig({
   workers: 1,
   use: {
     baseURL,
+    viewport: { width: 1280, height: 720 },
+    deviceScaleFactor: 1,
   },
   webServer: {
     command: `pnpm exec vite --host localhost --port ${port}`,

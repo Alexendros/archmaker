@@ -68,14 +68,23 @@ function compareImages(
   return { match: diffPercent <= 0.1, diffPercent };
 }
 
+async function capture(page: import("@playwright/test").Page) {
+  return page.screenshot({
+    animations: "disabled",
+    caret: "hide",
+  });
+}
+
 test.describe("Visual regression", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto(BASE_URL);
     await page.waitForLoadState("networkidle");
+    // CSS externo (CSP style-src 'self'); fija Liberation Sans en tests.
+    await page.addStyleTag({ url: `${BASE_URL}/visual-stabilize.css` });
   });
 
   test("home page - light theme", async ({ page }) => {
-    const screenshot = await page.screenshot({ fullPage: true });
+    const screenshot = await capture(page);
     const result = compareImages("home-light", screenshot);
     expect(result.match).toBeTruthy();
   });
@@ -83,7 +92,7 @@ test.describe("Visual regression", () => {
   test("home page - dark theme", async ({ page }) => {
     await page.emulateMedia({ colorScheme: "dark" });
     await page.waitForTimeout(100);
-    const screenshot = await page.screenshot({ fullPage: true });
+    const screenshot = await capture(page);
     const result = compareImages("home-dark", screenshot);
     expect(result.match).toBeTruthy();
   });
@@ -91,7 +100,7 @@ test.describe("Visual regression", () => {
   test("home page - high contrast", async ({ page }) => {
     await page.emulateMedia({ forcedColors: "active" });
     await page.waitForTimeout(100);
-    const screenshot = await page.screenshot({ fullPage: true });
+    const screenshot = await capture(page);
     const result = compareImages("home-high-contrast", screenshot);
     expect(result.match).toBeTruthy();
   });
@@ -99,7 +108,7 @@ test.describe("Visual regression", () => {
   test("home page - reduced motion", async ({ page }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.waitForTimeout(100);
-    const screenshot = await page.screenshot({ fullPage: true });
+    const screenshot = await capture(page);
     const result = compareImages("home-reduced-motion", screenshot);
     expect(result.match).toBeTruthy();
   });
