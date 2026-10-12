@@ -118,6 +118,8 @@ jobs:
           # CON-021/D-09 (I9): espejo Python del test Rust de capabilities
           # negativas; solo stdlib (tomllib), sin dependencias extra.
           python3 tools/check_negative_capabilities.py
+          # MVP-1: corpus de migración v5.1 → vNext (VAL-MIG / FR-IMPORT-001).
+          python3 tools/validate_mig.py
           # G6-C03 / AUD-021: contraste y tokens WCAG 2.2 (1.4.1 = contract + manual).
           python3 tools/wcag_validate.py
 

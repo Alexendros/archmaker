@@ -44,20 +44,20 @@ no hay aceptación.
 
 ### Probabilidad (`P`)
 
-| Valor | Ordinal | Significado |
-|---|---:|---|
-| `baja` | 1 | El evento requiere una cadena de fallos improbables o no hay superficie activa. |
-| `media` | 2 | El evento es posible con un fallo único o una condición de entorno habitual. |
-| `alta` | 3 | El evento es esperable en uso normal o ya observado en el prototipo heredado. |
+| Valor   | Ordinal | Significado                                                                     |
+| ------- | ------: | ------------------------------------------------------------------------------- |
+| `baja`  |       1 | El evento requiere una cadena de fallos improbables o no hay superficie activa. |
+| `media` |       2 | El evento es posible con un fallo único o una condición de entorno habitual.    |
+| `alta`  |       3 | El evento es esperable en uso normal o ya observado en el prototipo heredado.   |
 
 ### Impacto (`I`)
 
-| Valor | Ordinal | Significado |
-|---|---:|---|
-| `bajo` | 1 | Molestia recuperable sin pérdida de datos ni privilegios. |
-| `medio` | 2 | Pérdida de trabajo recuperable o degradación funcional acotada. |
-| `alto` | 3 | Pérdida de datos del usuario, determinismo roto o entrega incorrecta. |
-| `critico` | 4 | Compromiso de seguridad, borrado destructivo o control de privilegios. |
+| Valor     | Ordinal | Significado                                                            |
+| --------- | ------: | ---------------------------------------------------------------------- |
+| `bajo`    |       1 | Molestia recuperable sin pérdida de datos ni privilegios.              |
+| `medio`   |       2 | Pérdida de trabajo recuperable o degradación funcional acotada.        |
+| `alto`    |       3 | Pérdida de datos del usuario, determinismo roto o entrega incorrecta.  |
+| `critico` |       4 | Compromiso de seguridad, borrado destructivo o control de privilegios. |
 
 ### Puntuación
 
@@ -72,30 +72,30 @@ control que lo produce.
 
 ## Campos del registro de riesgo residual
 
-| Campo | Tipo | Obligatorio | Descripción |
-|---|---|---|---|
-| `id` | string | sí | Identificador `RSK-*`, coherente con `risk-register.md`. |
-| `riesgo` | string | sí | Descripción breve del riesgo. |
-| `probabilidadInherente` / `impactoInherente` | enum | sí | Ejes inherentes antes del control. |
-| `puntuacionInherente` | entero | sí | Producto de los ejes inherentes. |
-| `control` | string | sí | Control o conjunto de controles que reduce el riesgo. |
-| `evidenciaControl` | string[] | sí | Enlaces a la evidencia que sustenta el control. |
-| `probabilidadResidual` / `impactoResidual` | enum | sí | Ejes tras el control. |
-| `puntuacionResidual` | entero | sí | Producto de los ejes residuales. |
-| `owner` | rol | sí | Rol propietario del control (tabla de roles de `status-model.md`). |
-| `fechaAceptacion` | fecha | condicional | Obligatoria si `estado = aceptado`. Formato `AAAA-MM-DD`. |
-| `autoridadAcepta` | rol | condicional | Obligatoria si `estado = aceptado`; rol competente. |
-| `estado` | enum | sí | Estado del tratamiento residual. |
+| Campo                                        | Tipo     | Obligatorio | Descripción                                                        |
+| -------------------------------------------- | -------- | ----------- | ------------------------------------------------------------------ |
+| `id`                                         | string   | sí          | Identificador `RSK-*`, coherente con `risk-register.md`.           |
+| `riesgo`                                     | string   | sí          | Descripción breve del riesgo.                                      |
+| `probabilidadInherente` / `impactoInherente` | enum     | sí          | Ejes inherentes antes del control.                                 |
+| `puntuacionInherente`                        | entero   | sí          | Producto de los ejes inherentes.                                   |
+| `control`                                    | string   | sí          | Control o conjunto de controles que reduce el riesgo.              |
+| `evidenciaControl`                           | string[] | sí          | Enlaces a la evidencia que sustenta el control.                    |
+| `probabilidadResidual` / `impactoResidual`   | enum     | sí          | Ejes tras el control.                                              |
+| `puntuacionResidual`                         | entero   | sí          | Producto de los ejes residuales.                                   |
+| `owner`                                      | rol      | sí          | Rol propietario del control (tabla de roles de `status-model.md`). |
+| `fechaAceptacion`                            | fecha    | condicional | Obligatoria si `estado = aceptado`. Formato `AAAA-MM-DD`.          |
+| `autoridadAcepta`                            | rol      | condicional | Obligatoria si `estado = aceptado`; rol competente.                |
+| `estado`                                     | enum     | sí          | Estado del tratamiento residual.                                   |
 
 ### Estados del riesgo residual
 
-| Estado | Significado |
-|---|---|
-| `abierto` | Sin control decidido; no admite aceptación. |
-| `mitigado-por-diseno` | Control diseñado pero sin evidencia enlazada. |
-| `pendiente-de-verificacion` | Control con evidencia de diseño, sin verificación de implementación. |
-| `aceptado` | Residuo aceptado por autoridad para el corte, con evidencia del control. |
-| `cerrado` | Control verificado (`verificationStatus: passed`) con evidencia; riesgo no reabierto. |
+| Estado                      | Significado                                                                           |
+| --------------------------- | ------------------------------------------------------------------------------------- |
+| `abierto`                   | Sin control decidido; no admite aceptación.                                           |
+| `mitigado-por-diseno`       | Control diseñado pero sin evidencia enlazada.                                         |
+| `pendiente-de-verificacion` | Control con evidencia de diseño, sin verificación de implementación.                  |
+| `aceptado`                  | Residuo aceptado por autoridad para el corte, con evidencia del control.              |
+| `cerrado`                   | Control verificado (`verificationStatus: passed`) con evidencia; riesgo no reabierto. |
 
 ## Reglas de aceptación
 
@@ -123,14 +123,14 @@ Corte 2026-10-06. `P`/`I` según las escalas anteriores. Ningún P0 queda `cerra
 implementación de producto no está verificada; los riesgos con control y evidencia de diseño se
 aceptan para el corte y los demás quedan `pendiente-de-verificacion`.
 
-| ID | Riesgo | P_inh | I_inh | Score_inh | Control | Evidencia del control | P_res | I_res | Score_res | Owner | Fecha aceptación | Autoridad que acepta | Estado |
-|---|---|---|---:|---:|---|---|---:|---:|---|---|---|---|---|
-| RSK-003 | Divergencia WASM/Tauri. | media | alto | 6 | Core Rust único como autoridad semántica; paridad Rust nativo/WASM por golden parity tests sobre el manifest canónico. | `ADR-0007`; `docs/03-data/canonicalization.md`; `contracts/json-schema/manifest.schema.json`; `contracts/json-schema/examples/05-manifest.valid.json`; `docs/09-quality/test-matrix.md` (fila Tauri/WASM). | baja | alto | 3 | architecture | 2026-10-06 | architecture | aceptado |
-| RSK-004 | Migración pierde selecciones. | alta | alto | 9 | Plan de migración previo, conservación del original y corpus golden de migración; un digest distinto tras migrar es evidencia de cambio, no pérdida silenciosa. | `docs/03-data/versioning-migrations.md`; `contracts/json-schema/examples/migration/v5.1-instance.sample.json`; `contracts/json-schema/examples/migration/vnext-draft.expected.json`; `docs/03-data/canonicalization.md`; `ADR-0007`. | media | alto | 6 | data | 2026-10-06 | data | aceptado |
-| RSK-007 | Supply-chain Rust/JS comprometida. | media | critico | 8 | Lockfiles, auditoría, SBOM, provenance y firmas Sigstore keyless (Fulcio/Rekor) con verificación offline por raíces fijadas; canal de actualización firmado. | `DEC-006`; `ADR-0008`; `ADR-0009`; `docs/10-delivery/packaging-release.md`; `docs/09-quality/ci-cd.md`; `docs/08-security/supply-chain-policy.md`. | baja | critico | 4 | release | 2026-10-06 | security | aceptado |
-| RSK-001 | Borrado del disco equivocado. | media | critico | 8 | Inventario estable, plan hash, doble confirmación y pruebas en VM; elevación fuera del WebView. | `DEC-004`; `ADR-0004`; `docs/08-security/privilege-model.md`; `docs/08-security/mvp-negative-tests.md`. | baja | critico | 4 | security | — | security | pendiente-de-verificacion |
-| RSK-002 | Ejecución arbitraria desde catálogo/UI. | media | critico | 8 | Catálogo sin comandos, operaciones `enum`, ausencia de shell, firmas y capabilities por ventana. | `ADR-0008`; `docs/04-interfaces/tauri-commands.md`; `docs/08-security/tauri-policy.md`; `docs/08-security/mvp-negative-tests.md`. | baja | critico | 4 | security | — | security | pendiente-de-verificacion |
-| RSK-008 | Elevación insegura del runner. | media | critico | 8 | Proceso separado, transporte Unix socket con autenticación de sesión y elevación fuera del WebView. | `DEC-004`; `ADR-0004`; `docs/08-security/privilege-model.md`; `docs/08-security/runner-hazard-analysis.md`. | baja | critico | 4 | security | — | security | pendiente-de-verificacion |
+| ID      | Riesgo                                  | P_inh |   I_inh | Score_inh | Control                                                                                                                                                         | Evidencia del control                                                                                                                                                                                                                | P_res |   I_res | Score_res | Owner        | Fecha aceptación | Autoridad que acepta | Estado                    |
+| ------- | --------------------------------------- | ----- | ------: | --------: | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----: | ------: | --------- | ------------ | ---------------- | -------------------- | ------------------------- |
+| RSK-003 | Divergencia WASM/Tauri.                 | media |    alto |         6 | Core Rust único como autoridad semántica; paridad Rust nativo/WASM por golden parity tests sobre el manifest canónico.                                          | `ADR-0007`; `docs/03-data/canonicalization.md`; `contracts/json-schema/manifest.schema.json`; `contracts/json-schema/examples/05-manifest.valid.json`; `docs/09-quality/test-matrix.md` (fila Tauri/WASM).                           |  baja |    alto | 3         | architecture | 2026-10-06       | architecture         | aceptado                  |
+| RSK-004 | Migración pierde selecciones.           | alta  |    alto |         9 | Plan de migración previo, conservación del original y corpus golden de migración; un digest distinto tras migrar es evidencia de cambio, no pérdida silenciosa. | `docs/03-data/versioning-migrations.md`; `contracts/json-schema/examples/migration/v5.1-instance.sample.json`; `contracts/json-schema/examples/migration/vnext-draft.expected.json`; `docs/03-data/canonicalization.md`; `ADR-0007`. | media |    alto | 6         | data         | 2026-10-06       | data                 | aceptado                  |
+| RSK-007 | Supply-chain Rust/JS comprometida.      | media | critico |         8 | Lockfiles, auditoría, SBOM, provenance y firmas Sigstore keyless (Fulcio/Rekor) con verificación offline por raíces fijadas; canal de actualización firmado.    | `DEC-006`; `ADR-0008`; `ADR-0009`; `docs/10-delivery/packaging-release.md`; `docs/09-quality/ci-cd.md`; `docs/08-security/supply-chain-policy.md`.                                                                                   |  baja | critico | 4         | release      | 2026-10-06       | security             | aceptado                  |
+| RSK-001 | Borrado del disco equivocado.           | media | critico |         8 | Inventario estable, plan hash, doble confirmación y pruebas en VM; elevación fuera del WebView.                                                                 | `DEC-004`; `ADR-0004`; `docs/08-security/privilege-model.md`; `docs/08-security/mvp-negative-tests.md`.                                                                                                                              |  baja | critico | 4         | security     | —                | security             | pendiente-de-verificacion |
+| RSK-002 | Ejecución arbitraria desde catálogo/UI. | media | critico |         8 | Catálogo sin comandos, operaciones `enum`, ausencia de shell, firmas y capabilities por ventana.                                                                | `ADR-0008`; `docs/04-interfaces/tauri-commands.md`; `docs/08-security/tauri-policy.md`; `docs/08-security/mvp-negative-tests.md`.                                                                                                    |  baja | critico | 4         | security     | —                | security             | pendiente-de-verificacion |
+| RSK-008 | Elevación insegura del runner.          | media | critico |         8 | Proceso separado, transporte Unix socket con autenticación de sesión y elevación fuera del WebView.                                                             | `DEC-004`; `ADR-0004`; `docs/08-security/privilege-model.md`; `docs/08-security/runner-hazard-analysis.md`.                                                                                                                          |  baja | critico | 4         | security     | —                | security             | pendiente-de-verificacion |
 
 Los riesgos `RSK-005`, `RSK-006`, `RSK-009` y `RSK-010` no cambian de estado en este corte y
 permanecen según `risk-register.md`.
@@ -146,13 +146,13 @@ permanecen según `risk-register.md`.
 
 ## Trazabilidad
 
-| Referencia | Relación |
-|---|---|
-| `AUD-018` | Issue de origen de este modelo. |
-| `AUD-019` | Consume este modelo; amenaza `THR-UPD-001` y `RSK-007`. |
-| `DOC-GOV-RSK-001` | Registro autoritativo de riesgos y niveles; este documento no los duplica. |
-| `DOC-GOV-STATUS-001` | Vocabulario cerrado de estados y roles. |
-| `G8` | Gate de seguridad; exige riesgo residual P0 aceptado y pruebas negativas diseñadas. |
+| Referencia           | Relación                                                                            |
+| -------------------- | ----------------------------------------------------------------------------------- |
+| `AUD-018`            | Issue de origen de este modelo.                                                     |
+| `AUD-019`            | Consume este modelo; amenaza `THR-UPD-001` y `RSK-007`.                             |
+| `DOC-GOV-RSK-001`    | Registro autoritativo de riesgos y niveles; este documento no los duplica.          |
+| `DOC-GOV-STATUS-001` | Vocabulario cerrado de estados y roles.                                             |
+| `G8`                 | Gate de seguridad; exige riesgo residual P0 aceptado y pruebas negativas diseñadas. |
 
 ## Límites declarados
 

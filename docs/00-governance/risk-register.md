@@ -15,18 +15,18 @@ reviewers:
 
 # Registro de riesgos
 
-| ID | Riesgo | Prob. | Impacto | Nivel | Control | Propietario | Gate |
-|---|---|---:|---:|---|---|---|---|
-| RSK-001 | Borrado del disco equivocado. | M | C | P0 | Inventario estable, plan hash, doble confirmación y VM tests. | Runner | G8 |
-| RSK-002 | Ejecución arbitraria desde catálogo/UI. | M | C | P0 | Sin shell; operaciones enum; firmas y capabilities. | Seguridad | G8 |
-| RSK-003 | Divergencia WASM/Tauri. | M | H | P0 | Core Rust único y golden parity tests. | Core | G9 |
-| RSK-004 | Migración pierde selecciones. | H | H | P0 | Plan previo, copia original y corpus golden. | Datos | G4 |
-| RSK-005 | Paquetes o compatibilidad obsoletos. | H | H | P1 | Evidencia versionada, freshness y verificadores. | Catálogo | G7 |
-| RSK-006 | Dependencia de CDN rompe offline/CSP. | H | M | P1 | Bundling y CSP restrictiva. | Frontend | G6/G8 |
-| RSK-007 | Supply-chain Rust/JS comprometida. | M | C | P0 | Lockfiles, audits, SBOM, provenance y firmas. | Release | G9 |
-| RSK-008 | Elevación insegura del runner. | M | C | P0 | Proceso separado y ADR de autenticación/elevación. | Seguridad | G8 |
-| RSK-009 | Design system se degrada al modularizar. | M | M | P1 | Visual regression y tokens canónicos. | Diseño | G6/G9 |
-| RSK-010 | Enterprise contamina el MVP. | M | H | P1 | Puertos opcionales y módulos separados. | Arquitectura | G3 |
+| ID      | Riesgo                                   | Prob. | Impacto | Nivel | Control                                                       | Propietario  | Gate  |
+| ------- | ---------------------------------------- | ----: | ------: | ----- | ------------------------------------------------------------- | ------------ | ----- |
+| RSK-001 | Borrado del disco equivocado.            |     M |       C | P0    | Inventario estable, plan hash, doble confirmación y VM tests. | Runner       | G8    |
+| RSK-002 | Ejecución arbitraria desde catálogo/UI.  |     M |       C | P0    | Sin shell; operaciones enum; firmas y capabilities.           | Seguridad    | G8    |
+| RSK-003 | Divergencia WASM/Tauri.                  |     M |       H | P0    | Core Rust único y golden parity tests.                        | Core         | G9    |
+| RSK-004 | Migración pierde selecciones.            |     H |       H | P0    | Plan previo, copia original y corpus golden.                  | Datos        | G4    |
+| RSK-005 | Paquetes o compatibilidad obsoletos.     |     H |       H | P1    | Evidencia versionada, freshness y verificadores.              | Catálogo     | G7    |
+| RSK-006 | Dependencia de CDN rompe offline/CSP.    |     H |       M | P1    | Bundling y CSP restrictiva.                                   | Frontend     | G6/G8 |
+| RSK-007 | Supply-chain Rust/JS comprometida.       |     M |       C | P0    | Lockfiles, audits, SBOM, provenance y firmas.                 | Release      | G9    |
+| RSK-008 | Elevación insegura del runner.           |     M |       C | P0    | Proceso separado y ADR de autenticación/elevación.            | Seguridad    | G8    |
+| RSK-009 | Design system se degrada al modularizar. |     M |       M | P1    | Visual regression y tokens canónicos.                         | Diseño       | G6/G9 |
+| RSK-010 | Enterprise contamina el MVP.             |     M |       H | P1    | Puertos opcionales y módulos separados.                       | Arquitectura | G3    |
 
 ## Estado de tratamiento (2026-10-05)
 
@@ -41,14 +41,14 @@ El modelo de puntuación inherente/residual, sus escalas, campos y reglas se lee
 `docs/08-security/residual-risk-model.md` (`DOC-SEC-RISK-001`); este registro no los duplica.
 Resumen del corte:
 
-| ID | Control | Evidencia del control | Residual | Autoridad que acepta | Estado |
-|---|---|---|---|---|---|
-| RSK-003 | Core Rust único; paridad Rust nativo/WASM por golden parity tests. | `ADR-0007`; `canonicalization.md`; `manifest.schema.json`; `examples/05-manifest.valid.json`; `test-matrix.md`. | media×alto → baja×alto (6→3) | architecture | aceptado para el slice |
-| RSK-004 | Plan de migración previo, original conservado y corpus golden de migración; digest distinto = cambio, no pérdida. | `versioning-migrations.md`; `examples/migration/v5.1-instance.sample.json`; `examples/migration/vnext-draft.expected.json`; `ADR-0007`. | alta×alto → media×alto (9→6) | data | aceptado para el slice |
-| RSK-007 | Lockfiles, auditoría, SBOM, provenance y firmas Sigstore keyless con verificación offline; canal firmado. | `DEC-006`; `ADR-0008`; `ADR-0009`; `packaging-release.md`; `ci-cd.md`; `supply-chain-policy.md`. | media×crítico → baja×crítico (8→4) | security | aceptado para el slice |
-| RSK-001 | Inventario estable, plan hash, doble confirmación y VM tests; elevación fuera del WebView. | `DEC-004`; `ADR-0004`; `privilege-model.md`; `mvp-negative-tests.md`. | media×crítico → baja×crítico (8→4) | security | pendiente-de-verificación |
-| RSK-002 | Catálogo sin comandos, operaciones enum, sin shell, firmas y capabilities por ventana. | `ADR-0008`; `tauri-commands.md`; `tauri-policy.md`; `mvp-negative-tests.md`. | media×crítico → baja×crítico (8→4) | security | pendiente-de-verificación |
-| RSK-008 | Proceso separado, Unix socket con autenticación de sesión y elevación fuera del WebView. | `DEC-004`; `ADR-0004`; `privilege-model.md`; `runner-hazard-analysis.md`. | media×crítico → baja×crítico (8→4) | security | pendiente-de-verificación |
+| ID      | Control                                                                                                           | Evidencia del control                                                                                                                   | Residual                           | Autoridad que acepta | Estado                    |
+| ------- | ----------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- | -------------------- | ------------------------- |
+| RSK-003 | Core Rust único; paridad Rust nativo/WASM por golden parity tests.                                                | `ADR-0007`; `canonicalization.md`; `manifest.schema.json`; `examples/05-manifest.valid.json`; `test-matrix.md`.                         | media×alto → baja×alto (6→3)       | architecture         | aceptado para el slice    |
+| RSK-004 | Plan de migración previo, original conservado y corpus golden de migración; digest distinto = cambio, no pérdida. | `versioning-migrations.md`; `examples/migration/v5.1-instance.sample.json`; `examples/migration/vnext-draft.expected.json`; `ADR-0007`. | alta×alto → media×alto (9→6)       | data                 | aceptado para el slice    |
+| RSK-007 | Lockfiles, auditoría, SBOM, provenance y firmas Sigstore keyless con verificación offline; canal firmado.         | `DEC-006`; `ADR-0008`; `ADR-0009`; `packaging-release.md`; `ci-cd.md`; `supply-chain-policy.md`.                                        | media×crítico → baja×crítico (8→4) | security             | aceptado para el slice    |
+| RSK-001 | Inventario estable, plan hash, doble confirmación y VM tests; elevación fuera del WebView.                        | `DEC-004`; `ADR-0004`; `privilege-model.md`; `mvp-negative-tests.md`.                                                                   | media×crítico → baja×crítico (8→4) | security             | pendiente-de-verificación |
+| RSK-002 | Catálogo sin comandos, operaciones enum, sin shell, firmas y capabilities por ventana.                            | `ADR-0008`; `tauri-commands.md`; `tauri-policy.md`; `mvp-negative-tests.md`.                                                            | media×crítico → baja×crítico (8→4) | security             | pendiente-de-verificación |
+| RSK-008 | Proceso separado, Unix socket con autenticación de sesión y elevación fuera del WebView.                          | `DEC-004`; `ADR-0004`; `privilege-model.md`; `runner-hazard-analysis.md`.                                                               | media×crítico → baja×crítico (8→4) | security             | pendiente-de-verificación |
 
 - **RSK-003, RSK-004 y RSK-007** quedan **aceptados para el walking skeleton**: control decidido y
   evidencia de diseño enlazada (vectores golden de canonicalización de R5, corpus de migración y

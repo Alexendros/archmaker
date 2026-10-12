@@ -65,43 +65,43 @@ internos y su mapeo a Tauri queda pendiente de fuente primaria (`SRC-004`).
 
 ## Pruebas negativas por comando
 
-| Comando | Prueba negativa obligatoria |
-|---|---|
-| `product_info` | Ventana sin `PERM-CMD-PRODUCT-INFO` no puede invocarlo. |
-| `create_draft` | Escritura fuera del scope de drafts denegada; sin rutas arbitrarias. |
-| `import_draft` | Scope deniega rutas no elegidas; `..` y symlinks no escapan; límites de tamaño/profundidad. |
-| `resolve_draft` | Invocación sin permiso denegada; sin FS ni red. |
-| `validate_draft` | Invocación sin permiso denegada; sin FS ni red. |
-| `build_manifest` | Invocación sin permiso denegada; sin escritura fuera del directorio de la app. |
-| `check_target` | Invocación sin permiso denegada; sin FS ni red. |
+| Comando           | Prueba negativa obligatoria                                                                                        |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `product_info`    | Ventana sin `PERM-CMD-PRODUCT-INFO` no puede invocarlo.                                                            |
+| `create_draft`    | Escritura fuera del scope de drafts denegada; sin rutas arbitrarias.                                               |
+| `import_draft`    | Scope deniega rutas no elegidas; `..` y symlinks no escapan; límites de tamaño/profundidad.                        |
+| `resolve_draft`   | Invocación sin permiso denegada; sin FS ni red.                                                                    |
+| `validate_draft`  | Invocación sin permiso denegada; sin FS ni red.                                                                    |
+| `build_manifest`  | Invocación sin permiso denegada; sin escritura fuera del directorio de la app.                                     |
+| `check_target`    | Invocación sin permiso denegada; sin FS ni red.                                                                    |
 | `export_artifact` | Escritura fuera del destino elegido denegada; `..`/symlink no escapan; `rename` fallido no deja artefacto parcial. |
 
 ## Pruebas negativas de rutas y comandos (diseño)
 
-| ID | Given | When | Then |
-|---|---|---|---|
-| TST-NEG-001 | Una ventana no autorizada | Intenta invocar cualquier comando | Denegado (capability ausente). |
-| TST-NEG-002 | Ruta con `..` | Se pasa al scope de FS | Rechazada; no escapa del scope. |
-| TST-NEG-003 | Symlink que apunta fuera del scope | Se resuelve la ruta | Rechazada tras canonicalización. |
-| TST-NEG-004 | Comando shell / string heredado | Se intenta ejecutar | No existe superficie; rechazado por diseño. |
-| TST-NEG-005 | Recurso remoto en WebView | Se intenta cargar | Bloqueado por CSP. |
-| TST-NEG-006 | Import con nesting/profundidad excesivos | Se parsea | Abortado por límites (`THR-IMP-001`). |
-| TST-NEG-007 | Cualquier comando | Se ejecuta en entorno sin red | No hay llamada de red (`NFR-OFF-001`). |
-| TST-NEG-008 | Escritura con `rename` fallido | Se exporta | No queda artefacto parcial. |
+| ID          | Given                                    | When                              | Then                                        |
+| ----------- | ---------------------------------------- | --------------------------------- | ------------------------------------------- |
+| TST-NEG-001 | Una ventana no autorizada                | Intenta invocar cualquier comando | Denegado (capability ausente).              |
+| TST-NEG-002 | Ruta con `..`                            | Se pasa al scope de FS            | Rechazada; no escapa del scope.             |
+| TST-NEG-003 | Symlink que apunta fuera del scope       | Se resuelve la ruta               | Rechazada tras canonicalización.            |
+| TST-NEG-004 | Comando shell / string heredado          | Se intenta ejecutar               | No existe superficie; rechazado por diseño. |
+| TST-NEG-005 | Recurso remoto en WebView                | Se intenta cargar                 | Bloqueado por CSP.                          |
+| TST-NEG-006 | Import con nesting/profundidad excesivos | Se parsea                         | Abortado por límites (`THR-IMP-001`).       |
+| TST-NEG-007 | Cualquier comando                        | Se ejecuta en entorno sin red     | No hay llamada de red (`NFR-OFF-001`).      |
+| TST-NEG-008 | Escritura con `rename` fallido           | Se exporta                        | No queda artefacto parcial.                 |
 
 Estas pruebas se apoyan en la fila `Tauri/WASM` de `docs/09-quality/test-matrix.md` y quedan
 **diseñadas**, no implementadas. Su evidencia de implementación es condición de G8.
 
 ## Trazabilidad
 
-| Referencia | Relación |
-|---|---|
-| `THR-IPC-001` / `THR-FS-001` / `THR-IMP-001` | Amenazas mitigadas por estos controles. |
-| `RSK-001` / `RSK-002` / `RSK-008` | Riesgos con verificación pendiente; ver `DOC-SEC-RISK-001`. |
-| `DOC-SEC-TAURI-001` | Política Tauri general. |
-| `DOC-IF-TAURI-001` | Comandos, permisos y scopes. |
-| `DEC-009` | Sin CDN en runtime; CSP `self`. |
-| `G8` | Gate de seguridad; exige pruebas negativas diseñadas. |
+| Referencia                                   | Relación                                                    |
+| -------------------------------------------- | ----------------------------------------------------------- |
+| `THR-IPC-001` / `THR-FS-001` / `THR-IMP-001` | Amenazas mitigadas por estos controles.                     |
+| `RSK-001` / `RSK-002` / `RSK-008`            | Riesgos con verificación pendiente; ver `DOC-SEC-RISK-001`. |
+| `DOC-SEC-TAURI-001`                          | Política Tauri general.                                     |
+| `DOC-IF-TAURI-001`                           | Comandos, permisos y scopes.                                |
+| `DEC-009`                                    | Sin CDN en runtime; CSP `self`.                             |
+| `G8`                                         | Gate de seguridad; exige pruebas negativas diseñadas.       |
 
 ## Límites declarados
 

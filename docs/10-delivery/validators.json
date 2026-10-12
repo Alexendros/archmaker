@@ -1,6 +1,6 @@
 {
-  "generated_at": "1791283483",
-  "git_sha": "4eb7390c009c23ffad3555bf362ea09f8943fba9",
+  "generated_at": "1791825600",
+  "git_sha": "mvp1",
   "validators": [
     {
       "id": "VAL-CANONICALIZE",
@@ -28,8 +28,23 @@
       "location": "tools/check_negative_capabilities.py",
       "command": "python3 tools/check_negative_capabilities.py",
       "workflow": "ci",
-      "covers": ["NFR-SEC-001", "FR-DRAFT-001", "FR-CAT-001", "FR-MANIFEST-001"],
+      "covers": [
+        "NFR-SEC-001",
+        "FR-DRAFT-001",
+        "FR-CAT-001",
+        "FR-MANIFEST-001"
+      ],
       "description": "Comprobacion estatica de capabilities y denegaciones (NFR-SEC-001, FR-DRAFT-001, FR-CAT-001, FR-MANIFEST-001)",
+      "transversal": false
+    },
+    {
+      "id": "VAL-MIG",
+      "type": "schema",
+      "location": "tools/validate_mig.py",
+      "command": "python3 tools/validate_mig.py",
+      "workflow": "ci",
+      "covers": ["FR-IMPORT-001", "NFR-MIG-001"],
+      "description": "Corpus de migracion v5.1 a draft vNext (FR-IMPORT-001, NFR-MIG-001)",
       "transversal": false
     },
     {

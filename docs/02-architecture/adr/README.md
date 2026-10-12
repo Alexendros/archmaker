@@ -26,17 +26,17 @@ Propietario, Requisitos) y las secciones de `templates/adr.md`. Estados posibles
 
 ## ADR vigentes
 
-| ADR | Título | Estado | Fecha |
-|---|---|---|---|
-| [ADR-0001](ADR-0001-rust-authority.md) | Rust como autoridad semántica del dominio | accepted | 2026-10-05 |
-| [ADR-0002](ADR-0002-tauri-security.md) | Seguridad de Tauri: capabilities y deny-by-default | accepted | 2026-10-05 |
-| [ADR-0003](ADR-0003-modelo-canonico-separado-del-target.md) | Modelo canónico de dominio separado del target | accepted | 2026-10-05 |
-| [ADR-0004](ADR-0004-runner-separado-transporte-y-elevacion.md) | Runner separado: transporte y elevación | accepted | 2026-10-05 |
+| ADR                                                                    | Título                                               | Estado   | Fecha      |
+| ---------------------------------------------------------------------- | ---------------------------------------------------- | -------- | ---------- |
+| [ADR-0001](ADR-0001-rust-authority.md)                                 | Rust como autoridad semántica del dominio            | accepted | 2026-10-05 |
+| [ADR-0002](ADR-0002-tauri-security.md)                                 | Seguridad de Tauri: capabilities y deny-by-default   | accepted | 2026-10-05 |
+| [ADR-0003](ADR-0003-modelo-canonico-separado-del-target.md)            | Modelo canónico de dominio separado del target       | accepted | 2026-10-05 |
+| [ADR-0004](ADR-0004-runner-separado-transporte-y-elevacion.md)         | Runner separado: transporte y elevación              | accepted | 2026-10-05 |
 | [ADR-0005](ADR-0005-json-schema-2020-12-additionalProperties-false.md) | JSON Schema 2020-12 con `additionalProperties:false` | accepted | 2026-10-05 |
-| [ADR-0006](ADR-0006-ejes-versionado-independientes.md) | Ejes de versionado independientes | accepted | 2026-10-05 |
-| [ADR-0007](ADR-0007-canonicalizacion-y-hashing.md) | Canonicalización y hashing | accepted | 2026-10-06 |
-| [ADR-0008](ADR-0008-catalogos-firmados-y-procedencia.md) | Catálogos firmados y procedencia | accepted | 2026-10-05 |
-| [ADR-0009](ADR-0009-actualizacion-firmada-mvp.md) | Actualización firmada en MVP | accepted | 2026-10-05 |
+| [ADR-0006](ADR-0006-ejes-versionado-independientes.md)                 | Ejes de versionado independientes                    | accepted | 2026-10-05 |
+| [ADR-0007](ADR-0007-canonicalizacion-y-hashing.md)                     | Canonicalización y hashing                           | accepted | 2026-10-06 |
+| [ADR-0008](ADR-0008-catalogos-firmados-y-procedencia.md)               | Catálogos firmados y procedencia                     | accepted | 2026-10-05 |
+| [ADR-0009](ADR-0009-actualizacion-firmada-mvp.md)                      | Actualización firmada en MVP                         | accepted | 2026-10-05 |
 
 ## Crear un ADR
 

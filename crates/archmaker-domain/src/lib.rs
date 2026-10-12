@@ -81,6 +81,56 @@ pub struct ArtifactDigest {
     pub kind: Option<ArtifactKind>,
 }
 
+/// ADR-0006 MVP-1: `documentVersion` = `vNext` or `vNext.<positive-int>`.
+pub fn is_document_version(value: &str) -> bool {
+    if value == "vNext" {
+        return true;
+    }
+    let Some(rest) = value.strip_prefix("vNext.") else {
+        return false;
+    };
+    !rest.is_empty() && rest.bytes().all(|b| b.is_ascii_digit()) && !rest.starts_with('0')
+}
+
+/// ADR-0006 MVP-1: positive integer string (`schemaVersion`, `protocolVersion`).
+pub fn is_integer_version(value: &str) -> bool {
+    !value.is_empty() && value.bytes().all(|b| b.is_ascii_digit()) && !value.starts_with('0')
+}
+
+/// ADR-0006 MVP-1: SemVer 2.0 core (major.minor.patch, optional pre/build).
+pub fn is_semver(value: &str) -> bool {
+    let (core, rest) = match value.split_once(['-', '+']) {
+        Some((c, r)) => (c, Some(r)),
+        None => (value, None),
+    };
+    let mut parts = core.split('.');
+    let (Some(maj), Some(min), Some(pat), None) =
+        (parts.next(), parts.next(), parts.next(), parts.next())
+    else {
+        return false;
+    };
+    let ok_num = |s: &str| {
+        !s.is_empty() && s.bytes().all(|b| b.is_ascii_digit()) && (s == "0" || !s.starts_with('0'))
+    };
+    if !(ok_num(maj) && ok_num(min) && ok_num(pat)) {
+        return false;
+    }
+    if let Some(r) = rest {
+        if r.is_empty() {
+            return false;
+        }
+    }
+    true
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields, rename_all = "camelCase")]
+pub struct CatalogProvenance {
+    pub source_id: String,
+    pub path: String,
+    pub captured_at: String,
+}
+
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 pub struct CatalogRef {
@@ -341,6 +391,8 @@ pub struct Catalog {
     )]
     pub content_digest: Option<ContentDigest>,
     #[serde(skip_serializing_if = "Option::is_none", default)]
+    pub provenance: Option<CatalogProvenance>,
+    #[serde(skip_serializing_if = "Option::is_none", default)]
     pub metadata: Option<HashMap<String, String>>,
     pub steps: Vec<Step>,
     #[serde(skip_serializing_if = "Option::is_none", default)]
@@ -520,5 +572,18 @@ mod tests {
         let mut value: serde_json::Value = serde_json::from_str(manifest_fixture()).unwrap();
         value["domainLabel"] = serde_json::json!("archmaker:other:v9");
         assert!(serde_json::from_value::<Manifest>(value).is_err());
+    }
+
+    #[test]
+    fn version_axis_formats() {
+        assert!(is_document_version("vNext"));
+        assert!(is_document_version("vNext.1"));
+        assert!(!is_document_version("1.0.0"));
+        assert!(is_integer_version("1"));
+        assert!(!is_integer_version("01"));
+        assert!(!is_integer_version("v1"));
+        assert!(is_semver("1.0.0"));
+        assert!(is_semver("2026.10.0"));
+        assert!(!is_semver("2026.10"));
     }
 }

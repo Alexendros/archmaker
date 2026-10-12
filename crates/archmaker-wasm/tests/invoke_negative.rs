@@ -1,7 +1,7 @@
 use archmaker_wasm::guarded_invoke;
 use serde_json::Value;
 
-const MINIMAL_DRAFT_INPUT: &str = r#"{"draftId":null,"catalogRef":{"namespace":"archmaker.core","id":"minimal","version":"0.1.0","digest":{"algorithm":"sha256","value":"00"}},"targetRef":{"id":"arch-x86_64","version":"1"},"requestId":null}"#;
+const MINIMAL_DRAFT_INPUT: &str = r#"{"draftId":null,"catalogRef":{"namespace":"archmaker.core","id":"minimal","version":"0.1.0","digest":{"algorithm":"sha256","value":"00"}},"targetRef":{"id":"arch-x86_64","version":"0.1.0"},"requestId":null}"#;
 
 fn typed_err(json: &str) -> Value {
     serde_json::from_str(json).expect("invoke errors are typed JSON")
@@ -32,7 +32,7 @@ fn allowed_invoke_passes_capability_gate() {
 
 #[test]
 fn unknown_command_returns_typed_proto_002() {
-    let err = typed_err(&guarded_invoke("main", "import_draft", "{}").expect_err("out of v0"));
+    let err = typed_err(&guarded_invoke("main", "apply_preset", "{}").expect_err("out of mvp-1"));
     assert_eq!(err["code"], "AM-PROTO-002");
     assert_eq!(err["family"], "AM-PROTO");
 }

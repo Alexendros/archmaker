@@ -31,12 +31,12 @@ reafirma.
 
 ## Clasificación
 
-| Clase | Ejemplo | MVP | Manejo |
-|---|---|---|---|
-| Secreto de release | Identidad OIDC del workflow | Sí (CI) | Keyless; sin clave privada persistente (`DEC-006`). |
-| Secreto de usuario | Credencial introducida por el usuario | No | Fuera de alcance del MVP; sin shell ni instalación real. |
-| Secreto de runner | Token de sesión del runner (v1) | No (v1) | Canal temporal, expiración y borrado; ver `runner-hazard-analysis.md`. |
-| Secreto de desarrollo | Tokens locales de prueba | Sí | Nunca versionados; `.env` fuera de git. |
+| Clase                 | Ejemplo                               | MVP     | Manejo                                                                 |
+| --------------------- | ------------------------------------- | ------- | ---------------------------------------------------------------------- |
+| Secreto de release    | Identidad OIDC del workflow           | Sí (CI) | Keyless; sin clave privada persistente (`DEC-006`).                    |
+| Secreto de usuario    | Credencial introducida por el usuario | No      | Fuera de alcance del MVP; sin shell ni instalación real.               |
+| Secreto de runner     | Token de sesión del runner (v1)       | No (v1) | Canal temporal, expiración y borrado; ver `runner-hazard-analysis.md`. |
+| Secreto de desarrollo | Tokens locales de prueba              | Sí      | Nunca versionados; `.env` fuera de git.                                |
 
 ## Reglas
 
@@ -58,20 +58,20 @@ reafirma.
 
 ## Pruebas negativas (diseño)
 
-| ID | Given | When | Then |
-|---|---|---|---|
-| TST-SEC-001 | Un diagnóstico/log con un valor sensible | Se emite | El valor aparece redactado; nunca el original. |
-| TST-SEC-002 | Un `.env` o secreto en el árbol | Se ejecuta el gate de higiene | El gate falla y bloquea el cierre. |
-| TST-SEC-003 | Un secreto de sesión (v1) | La sesión expira | El secreto deja de ser válido y se descarta. |
+| ID          | Given                                    | When                          | Then                                           |
+| ----------- | ---------------------------------------- | ----------------------------- | ---------------------------------------------- |
+| TST-SEC-001 | Un diagnóstico/log con un valor sensible | Se emite                      | El valor aparece redactado; nunca el original. |
+| TST-SEC-002 | Un `.env` o secreto en el árbol          | Se ejecuta el gate de higiene | El gate falla y bloquea el cierre.             |
+| TST-SEC-003 | Un secreto de sesión (v1)                | La sesión expira              | El secreto deja de ser válido y se descarta.   |
 
 ## Trazabilidad
 
-| Referencia | Relación |
-|---|---|
-| `THR-SEC-001` | Amenaza de secreto en logs/draft. |
-| `DEC-006` | Firma keyless sin clave privada persistente. |
-| `DEC-004` | Canal temporal autenticado para el runner (v1). |
-| `DOC-SEC-RISK-001` | Modelo de riesgo residual. |
+| Referencia         | Relación                                        |
+| ------------------ | ----------------------------------------------- |
+| `THR-SEC-001`      | Amenaza de secreto en logs/draft.               |
+| `DEC-006`          | Firma keyless sin clave privada persistente.    |
+| `DEC-004`          | Canal temporal autenticado para el runner (v1). |
+| `DOC-SEC-RISK-001` | Modelo de riesgo residual.                      |
 
 ## Límites declarados
 

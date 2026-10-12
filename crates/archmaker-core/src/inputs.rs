@@ -1,8 +1,8 @@
 use std::path::PathBuf;
 
 use archmaker_domain::{
-    CapabilityRef, CatalogRef, Conflict, ContentDigest, Draft, Manifest, PresetRef,
-    ResolvedSelection, TargetRef,
+    CapabilityRef, CatalogProvenance, CatalogRef, Conflict, ContentDigest, Draft, Manifest,
+    PresetRef, ResolvedSelection, SelectionValue, TargetRef,
 };
 use archmaker_rules::Diagnostic;
 use serde::{Deserialize, Deserializer, Serialize};
@@ -33,8 +33,76 @@ pub struct LoadCatalogInput {
     pub catalog_ref: Option<CatalogRef>,
     pub expected_digest: Option<ContentDigest>,
     pub file_path: Option<PathBuf>,
+    /// Required for `CatalogSource::File` (MVP-1 packaged provenance). Optional for Embedded.
+    pub expected_provenance: Option<CatalogProvenance>,
     pub limits: Option<Limits>,
     pub request_id: Option<String>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum ChangeSetOp {
+    Add,
+    Remove,
+    Replace,
+    Move,
+    Copy,
+    Test,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum ChangeSetOrigin {
+    Compare,
+    Preset,
+    Migration,
+    Manual,
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields, rename_all = "camelCase")]
+pub struct ChangeSetOperation {
+    pub op_id: String,
+    pub op: ChangeSetOp,
+    pub path: String,
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    pub selector: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    pub from: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    pub before: Option<SelectionValue>,
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    pub after: Option<SelectionValue>,
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    pub note: Option<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields, rename_all = "camelCase")]
+pub struct ChangeSetSummary {
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    pub added: Option<u64>,
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    pub removed: Option<u64>,
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    pub changed: Option<u64>,
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    pub total: Option<u64>,
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields, rename_all = "camelCase")]
+pub struct ChangeSet {
+    pub schema_version: String,
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    pub base_revision: Option<u64>,
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    pub target_draft_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    pub origin: Option<ChangeSetOrigin>,
+    pub operations: Vec<ChangeSetOperation>,
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    pub summary: Option<ChangeSetSummary>,
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -42,8 +110,27 @@ pub struct LoadCatalogInput {
 pub struct SaveDraftInput {
     pub draft: Draft,
     pub expected_revision: u64,
+    /// Optional discrete changeset applied under the revision precondition (MVP-1).
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    pub changeset: Option<ChangeSet>,
     pub request_id: Option<String>,
 }
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields, rename_all = "camelCase")]
+pub struct ImportDraftInput {
+    /// Exact bytes of the legacy document. Never written back.
+    pub source_bytes: Vec<u8>,
+    pub catalog_ref: CatalogRef,
+    pub target_ref: TargetRef,
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    pub draft_id: Option<String>,
+    /// When true, blocking losses may still produce a draft (FR-IMPORT-001 confirmation).
+    pub confirm_blocking_losses: bool,
+    pub request_id: Option<String>,
+}
+
+pub use crate::migration::{ImportDraftResult, MigrationEntry, MigrationFate, MigrationReport};
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]

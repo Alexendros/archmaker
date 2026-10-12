@@ -37,18 +37,18 @@ consumidores referencian los identificadores `DEC-*` y **no** reafirman su estad
 
 ## Resumen del registro
 
-| ID | Decisión aceptada | Fecha | Autoridad | Prioridad | Estado | Desviación |
-|---|---|---|---|---|---|---|
-| DEC-001 | Perfil ArchMaker + reporte; `archinstall` experimental | 2026-10-05 | product | P0 | accepted | no |
-| DEC-002 | IDs globales con namespace `vendor.kind.id` | 2026-10-05 | architecture | P0 | accepted | no |
-| DEC-003 | Adapter versionado de `archinstall`, dominio desacoplado | 2026-10-05 | architecture | P0 | accepted | no |
-| DEC-004 | Runner por Unix socket + autenticación de sesión; elevar fuera del WebView | 2026-10-05 | security | P0 | accepted | no |
-| DEC-005 | Licencia **Apache-2.0 únicamente** | 2026-10-05 | product | P0 | accepted | no |
-| DEC-006 | Firma Sigstore (keyless) de releases; verificación offline | 2026-10-05 | security | P1 | accepted | no |
-| DEC-007 | **Tauri updater en MVP** | 2026-10-05 | release | P1 | accepted | sí |
-| DEC-008 | **Solo Arch x86_64** | 2026-10-05 | product | P0 | accepted | sí |
-| DEC-009 | Sin CDN en runtime; recursos empaquetados o del sistema | 2026-10-06 | ux | P1 | accepted | no |
-| DEC-010 | Sin telemetría en MVP | 2026-10-06 | product | P1 | accepted | no |
+| ID      | Decisión aceptada                                                          | Fecha      | Autoridad    | Prioridad | Estado   | Desviación |
+| ------- | -------------------------------------------------------------------------- | ---------- | ------------ | --------- | -------- | ---------- |
+| DEC-001 | Perfil ArchMaker + reporte; `archinstall` experimental                     | 2026-10-05 | product      | P0        | accepted | no         |
+| DEC-002 | IDs globales con namespace `vendor.kind.id`                                | 2026-10-05 | architecture | P0        | accepted | no         |
+| DEC-003 | Adapter versionado de `archinstall`, dominio desacoplado                   | 2026-10-05 | architecture | P0        | accepted | no         |
+| DEC-004 | Runner por Unix socket + autenticación de sesión; elevar fuera del WebView | 2026-10-05 | security     | P0        | accepted | no         |
+| DEC-005 | Licencia **Apache-2.0 únicamente**                                         | 2026-10-05 | product      | P0        | accepted | no         |
+| DEC-006 | Firma Sigstore (keyless) de releases; verificación offline                 | 2026-10-05 | security     | P1        | accepted | no         |
+| DEC-007 | **Tauri updater en MVP**                                                   | 2026-10-05 | release      | P1        | accepted | sí         |
+| DEC-008 | **Solo Arch x86_64**                                                       | 2026-10-05 | product      | P0        | accepted | sí         |
+| DEC-009 | Sin CDN en runtime; recursos empaquetados o del sistema                    | 2026-10-06 | ux           | P1        | accepted | no         |
+| DEC-010 | Sin telemetría en MVP                                                      | 2026-10-06 | product      | P1        | accepted | no         |
 
 ## Registro estructurado
 
@@ -183,20 +183,20 @@ DEC-010).
 
 ## Consecuencias aplicadas y no aplicadas
 
-| ID | Consecuencia | Estado | Issue |
-|---|---|---|---|
-| DEC-001 | Conjunto de `ExportTarget` fijado en contratos y DTO. | aplicada | AUD-016 |
-| DEC-002 | Namespace global `vendor.kind.id`; habilita detección de duplicados. | aplicada | AUD-011 |
-| DEC-003 | Dominio agnóstico del target; sin `pacstrap`/shell en runtime. | aplicada | AUD-016 |
-| DEC-004 | Transporte y elevación fijados; runner v1 diferido a su gate. | aplicada (diseño) | AUD-018 |
-| DEC-005 | Licencia Apache-2.0 única en `LICENSE`. | aplicada | AUD-022 |
-| DEC-006 | Firma keyless y verificación offline definidas. | parcial (política) | AUD-019, AUD-022 |
-| DEC-006 | Pipeline real de build/attest/SBOM y firmas. | no aplicada | AUD-022 |
-| DEC-007 | `THR-UPD-001` cerrado antes de MVP-0. | no aplicada | AUD-019 |
-| DEC-007 | Updater deshabilitado por defecto en builds de desarrollo. | aplicada | AUD-019 |
-| DEC-008 | Matriz de soporte y pruebas reducida a x86_64. | aplicada | AUD-020 |
-| DEC-009 | Sin CDN en runtime; CSP `self` y recursos empaquetados. | aplicada | AUD-020 |
-| DEC-010 | MVP sin telemetría; solo eventos locales redactados. | aplicada | — |
+| ID      | Consecuencia                                                         | Estado             | Issue            |
+| ------- | -------------------------------------------------------------------- | ------------------ | ---------------- |
+| DEC-001 | Conjunto de `ExportTarget` fijado en contratos y DTO.                | aplicada           | AUD-016          |
+| DEC-002 | Namespace global `vendor.kind.id`; habilita detección de duplicados. | aplicada           | AUD-011          |
+| DEC-003 | Dominio agnóstico del target; sin `pacstrap`/shell en runtime.       | aplicada           | AUD-016          |
+| DEC-004 | Transporte y elevación fijados; runner v1 diferido a su gate.        | aplicada (diseño)  | AUD-018          |
+| DEC-005 | Licencia Apache-2.0 única en `LICENSE`.                              | aplicada           | AUD-022          |
+| DEC-006 | Firma keyless y verificación offline definidas.                      | parcial (política) | AUD-019, AUD-022 |
+| DEC-006 | Pipeline real de build/attest/SBOM y firmas.                         | no aplicada        | AUD-022          |
+| DEC-007 | `THR-UPD-001` cerrado antes de MVP-0.                                | no aplicada        | AUD-019          |
+| DEC-007 | Updater deshabilitado por defecto en builds de desarrollo.           | aplicada           | AUD-019          |
+| DEC-008 | Matriz de soporte y pruebas reducida a x86_64.                       | aplicada           | AUD-020          |
+| DEC-009 | Sin CDN en runtime; CSP `self` y recursos empaquetados.              | aplicada           | AUD-020          |
+| DEC-010 | MVP sin telemetría; solo eventos locales redactados.                 | aplicada           | —                |
 
 ## Reglas de validación (R2)
 

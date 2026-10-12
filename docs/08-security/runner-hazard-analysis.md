@@ -37,18 +37,18 @@ y `THR-RUN-002` (TOCTOU tras confirmar). Riesgo: `RSK-008`.
 
 ## Peligros y controles
 
-| ID | Peligro | Consecuencia | Control |
-|---|---|---|---|
-| HZ-RUN-001 | Sesión no autenticada o suplantada. | Un tercero controla el Runner. | Autenticación de sesión y de identidad peer por el transporte (Unix socket, `DEC-004`). |
-| HZ-RUN-002 | Replay de mensajes. | Reejecución de una operación confirmada. | Nonce, expiración y protección anti-replay por mensaje. |
-| HZ-RUN-003 | TOCTOU entre preflight y ejecución. | Se ejecuta sobre un estado distinto del validado. | Re-preflight, snapshot del target y hashes ligados a la confirmación. |
-| HZ-RUN-004 | Confirmación no ligada al plan. | Se ejecuta un plan distinto del mostrado. | Confirmación ligada al **hash de plan y de manifest**. |
-| HZ-RUN-005 | Journal no verificable o alterado. | No hay auditoría fiable. | Journal **append-only** redactado y verificable. |
-| HZ-RUN-006 | Cancelación o recuperación insegura. | Estado inconsistente o daño parcial. | Cancelación solo en **safe points**; recuperación documentada. |
-| HZ-RUN-007 | Operación fuera de allowlist. | Ejecución arbitraria. | **Allowlist tipada** de operaciones compiladas; nada interpretado. |
-| HZ-RUN-008 | Elevación alcanzable desde el WebView. | Escalada de privilegios. | Elevación fuera del WebView y transporte autenticado. |
-| HZ-RUN-009 | Versión de protocolo incompatible. | Comportamiento indefinido. | Negociación de `protocolVersion` antes de aceptar el manifest. |
-| HZ-RUN-010 | Cambio de inventario tras confirmar. | Se opera sobre un target distinto. | Un cambio de inventario **invalida el plan**. |
+| ID         | Peligro                                | Consecuencia                                      | Control                                                                                 |
+| ---------- | -------------------------------------- | ------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| HZ-RUN-001 | Sesión no autenticada o suplantada.    | Un tercero controla el Runner.                    | Autenticación de sesión y de identidad peer por el transporte (Unix socket, `DEC-004`). |
+| HZ-RUN-002 | Replay de mensajes.                    | Reejecución de una operación confirmada.          | Nonce, expiración y protección anti-replay por mensaje.                                 |
+| HZ-RUN-003 | TOCTOU entre preflight y ejecución.    | Se ejecuta sobre un estado distinto del validado. | Re-preflight, snapshot del target y hashes ligados a la confirmación.                   |
+| HZ-RUN-004 | Confirmación no ligada al plan.        | Se ejecuta un plan distinto del mostrado.         | Confirmación ligada al **hash de plan y de manifest**.                                  |
+| HZ-RUN-005 | Journal no verificable o alterado.     | No hay auditoría fiable.                          | Journal **append-only** redactado y verificable.                                        |
+| HZ-RUN-006 | Cancelación o recuperación insegura.   | Estado inconsistente o daño parcial.              | Cancelación solo en **safe points**; recuperación documentada.                          |
+| HZ-RUN-007 | Operación fuera de allowlist.          | Ejecución arbitraria.                             | **Allowlist tipada** de operaciones compiladas; nada interpretado.                      |
+| HZ-RUN-008 | Elevación alcanzable desde el WebView. | Escalada de privilegios.                          | Elevación fuera del WebView y transporte autenticado.                                   |
+| HZ-RUN-009 | Versión de protocolo incompatible.     | Comportamiento indefinido.                        | Negociación de `protocolVersion` antes de aceptar el manifest.                          |
+| HZ-RUN-010 | Cambio de inventario tras confirmar.   | Se opera sobre un target distinto.                | Un cambio de inventario **invalida el plan**.                                           |
 
 ## Controles detallados
 
@@ -95,16 +95,16 @@ y `THR-RUN-002` (TOCTOU tras confirmar). Riesgo: `RSK-008`.
 
 ## Pruebas negativas (diseño)
 
-| ID | Given | When | Then |
-|---|---|---|---|
-| TST-RUN-001 | Plan o inventario cambiado tras confirmar | Se intenta ejecutar | Confirmación inválida; ejecución rechazada. |
-| TST-RUN-002 | Mensaje reenviado con `nonce` ya usado | El Runner lo recibe | Rechazado (anti-replay). |
-| TST-RUN-003 | Confirmación expirada | Se envía | Rechazada; exige nueva confirmación. |
-| TST-RUN-004 | Operación fuera de allowlist | Se envía | Rechazada por diseño. |
-| TST-RUN-005 | WebView sin autorización | Intenta abrir el socket o invocar al Runner | Denegado. |
-| TST-RUN-006 | Cancelación en punto no seguro | Se solicita | Rechazada o diferida a un safe point. |
-| TST-RUN-007 | `protocolVersion` incompatible | Se negocia | Manifest no aceptado. |
-| TST-RUN-008 | Journal manipulado | Se verifica | La alteración se detecta. |
+| ID          | Given                                     | When                                        | Then                                        |
+| ----------- | ----------------------------------------- | ------------------------------------------- | ------------------------------------------- |
+| TST-RUN-001 | Plan o inventario cambiado tras confirmar | Se intenta ejecutar                         | Confirmación inválida; ejecución rechazada. |
+| TST-RUN-002 | Mensaje reenviado con `nonce` ya usado    | El Runner lo recibe                         | Rechazado (anti-replay).                    |
+| TST-RUN-003 | Confirmación expirada                     | Se envía                                    | Rechazada; exige nueva confirmación.        |
+| TST-RUN-004 | Operación fuera de allowlist              | Se envía                                    | Rechazada por diseño.                       |
+| TST-RUN-005 | WebView sin autorización                  | Intenta abrir el socket o invocar al Runner | Denegado.                                   |
+| TST-RUN-006 | Cancelación en punto no seguro            | Se solicita                                 | Rechazada o diferida a un safe point.       |
+| TST-RUN-007 | `protocolVersion` incompatible            | Se negocia                                  | Manifest no aceptado.                       |
+| TST-RUN-008 | Journal manipulado                        | Se verifica                                 | La alteración se detecta.                   |
 
 ## Criterio de desbloqueo
 
@@ -119,14 +119,14 @@ Hasta entonces, `RSK-001`, `RSK-002` y `RSK-008` permanecen con verificación pe
 
 ## Trazabilidad
 
-| Referencia | Relación |
-|---|---|
-| `THR-RUN-001` / `THR-RUN-002` | Amenazas modeladas por este análisis. |
-| `RSK-001` / `RSK-002` / `RSK-008` | Riesgos asociados; verificación pendiente. |
-| `ADR-0004` | Runner separado, transporte y elevación. |
-| `DEC-004` | Transporte Unix socket con autenticación de sesión. |
-| `DOC-IF-RUN-001` | Protocolo y máquina de estados del Runner. |
-| `G8` | Gate de seguridad; el Runner permanece bloqueado hasta los gates de v1. |
+| Referencia                        | Relación                                                                |
+| --------------------------------- | ----------------------------------------------------------------------- |
+| `THR-RUN-001` / `THR-RUN-002`     | Amenazas modeladas por este análisis.                                   |
+| `RSK-001` / `RSK-002` / `RSK-008` | Riesgos asociados; verificación pendiente.                              |
+| `ADR-0004`                        | Runner separado, transporte y elevación.                                |
+| `DEC-004`                         | Transporte Unix socket con autenticación de sesión.                     |
+| `DOC-IF-RUN-001`                  | Protocolo y máquina de estados del Runner.                              |
+| `G8`                              | Gate de seguridad; el Runner permanece bloqueado hasta los gates de v1. |
 
 ## Límites declarados
 

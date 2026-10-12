@@ -1,7 +1,7 @@
 {
   "documentVersion": "vNext",
   "schemaVersion": "1",
-  "protocolVersion": "v1",
+  "protocolVersion": "1",
   "planId": "55555555-5555-4555-8555-555555555555",
   "planHash": {
     "algorithm": "sha256",
@@ -22,7 +22,7 @@
   },
   "targetRef": {
     "id": "arch-x86_64",
-    "version": "2026.10"
+    "version": "2026.10.0"
   },
   "producer": {
     "id": "archmaker-plan",

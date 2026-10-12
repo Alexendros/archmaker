@@ -313,6 +313,54 @@ impl CoreError {
         )
     }
 
+    pub fn cat_provenance_missing(source: &str) -> Self {
+        Self::new(
+            "AM-CAT-004",
+            ErrorFamily::Cat,
+            ErrorCategory::Catalog,
+            Severity::Error,
+            false,
+            "error.catalog.provenanceMissing",
+            source,
+        )
+    }
+
+    pub fn mig_unsupported(source: &str) -> Self {
+        Self::new(
+            "AM-MIG-001",
+            ErrorFamily::Mig,
+            ErrorCategory::Migration,
+            Severity::Error,
+            false,
+            "error.migration.unsupported",
+            source,
+        )
+    }
+
+    pub fn mig_confirmation_required(source: &str) -> Self {
+        Self::new(
+            "AM-MIG-002",
+            ErrorFamily::Mig,
+            ErrorCategory::Migration,
+            Severity::Error,
+            true,
+            "error.migration.confirmationRequired",
+            source,
+        )
+    }
+
+    pub fn mig_executable_rejected(source: &str) -> Self {
+        Self::new(
+            "AM-MIG-003",
+            ErrorFamily::Mig,
+            ErrorCategory::Migration,
+            Severity::Error,
+            false,
+            "error.migration.executableRejected",
+            source,
+        )
+    }
+
     pub fn res_unresolved(source: &str) -> Self {
         Self::new(
             "AM-RES-001",

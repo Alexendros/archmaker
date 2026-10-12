@@ -79,7 +79,7 @@ conflicto de capabilities.
   ejecuciones en entornos distintos coinciden (NFR-DET-001).
 - El motor evalúa sobre el dominio resuelto y nunca sobre estado de UI ni campos efímeros.
 - El vocabulario de operadores es cerrado; un cambio de vocabulario exige subir `schemaVersion` del
-  contrato y registrar *migration note*.
+  contrato y registrar _migration note_.
 
 ## Corpus positivo y negativo en CI
 

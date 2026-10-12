@@ -175,32 +175,32 @@ WebView nunca controla root (ADR-0004, `THR-RUN-001`).
 
 ## Inventario de componentes e interfaces
 
-| View | Componente | Tipo | Puerto/interfaz | No puede depender de |
-|---|---|---|---|---|
-| VW-03 | UI WebView React | Componente de UI | `CorePort` (vía `archmaker-tauri`) | Dominio interno, FS directo |
-| VW-03 | `archmaker-tauri` | Adaptador | IPC + capabilities | Runner internals |
-| VW-03 | `archmaker-api` | Caso de uso y puertos | `CorePort` | Implementaciones concretas |
-| VW-04 | UI React + Web Worker | Componente de UI | `CorePort` (vía `archmaker-wasm`) | FS, red |
-| VW-04 | `archmaker-wasm` | Adaptador | Bindings WASM | Tauri |
-| VW-05 | `archmaker-domain` | Dominio | Value types y entidades | UI, Tauri, WASM, FS, red |
-| VW-05 | `archmaker-schema` | Contratos | Meta-validación | UI/infraestructura |
-| VW-05 | `archmaker-catalog` | Dominio de datos | Carga, índice y procedencia | Tauri/UI |
-| VW-05 | `archmaker-rules` | Dominio | Evaluación pura | Infraestructura |
-| VW-05 | `archmaker-resolver` | Dominio | Capabilities y ChangeSet | UI |
-| VW-05 | `archmaker-validation` | Dominio | Pipeline y diagnósticos | UI |
-| VW-05 | `archmaker-migrations` | Dominio | Transformaciones puras | Infraestructura mutable |
-| VW-05 | `archmaker-export` | Dominio | SPI de targets y artifacts | Tauri |
-| VW-06 | `archmaker-runner-protocol` | Contrato | Mensajes y state machine | UI |
-| VW-06 | `archmaker-plan` | Modelo | Plan tipado | Ejecución |
+| View  | Componente                  | Tipo                  | Puerto/interfaz                    | No puede depender de        |
+| ----- | --------------------------- | --------------------- | ---------------------------------- | --------------------------- |
+| VW-03 | UI WebView React            | Componente de UI      | `CorePort` (vía `archmaker-tauri`) | Dominio interno, FS directo |
+| VW-03 | `archmaker-tauri`           | Adaptador             | IPC + capabilities                 | Runner internals            |
+| VW-03 | `archmaker-api`             | Caso de uso y puertos | `CorePort`                         | Implementaciones concretas  |
+| VW-04 | UI React + Web Worker       | Componente de UI      | `CorePort` (vía `archmaker-wasm`)  | FS, red                     |
+| VW-04 | `archmaker-wasm`            | Adaptador             | Bindings WASM                      | Tauri                       |
+| VW-05 | `archmaker-domain`          | Dominio               | Value types y entidades            | UI, Tauri, WASM, FS, red    |
+| VW-05 | `archmaker-schema`          | Contratos             | Meta-validación                    | UI/infraestructura          |
+| VW-05 | `archmaker-catalog`         | Dominio de datos      | Carga, índice y procedencia        | Tauri/UI                    |
+| VW-05 | `archmaker-rules`           | Dominio               | Evaluación pura                    | Infraestructura             |
+| VW-05 | `archmaker-resolver`        | Dominio               | Capabilities y ChangeSet           | UI                          |
+| VW-05 | `archmaker-validation`      | Dominio               | Pipeline y diagnósticos            | UI                          |
+| VW-05 | `archmaker-migrations`      | Dominio               | Transformaciones puras             | Infraestructura mutable     |
+| VW-05 | `archmaker-export`          | Dominio               | SPI de targets y artifacts         | Tauri                       |
+| VW-06 | `archmaker-runner-protocol` | Contrato              | Mensajes y state machine           | UI                          |
+| VW-06 | `archmaker-plan`            | Modelo                | Plan tipado                        | Ejecución                   |
 
 **Ninguna crate es una unidad desplegable.** Todas son componentes enlazados dentro de los
 contenedores; el detalle de artefactos está en [`deployment-views.md`](deployment-views.md).
 
 ## Boundaries nombrados
 
-| Boundary | Incluye | Excluye |
-|---|---|---|
-| Desktop Application | UI, adaptador Tauri, `Rust Core` nativo | Runner, almacenes |
-| Browser Application | UI, Web Worker, `Rust Core` WASM | Backend, red |
-| Rust Core (componente) | Crates de dominio y `archmaker-api` | Adaptadores e infraestructura |
-| Runner v1 | Protocolo, preflight, allowlist, ejecutor, journal | WebView y UI |
+| Boundary               | Incluye                                            | Excluye                       |
+| ---------------------- | -------------------------------------------------- | ----------------------------- |
+| Desktop Application    | UI, adaptador Tauri, `Rust Core` nativo            | Runner, almacenes             |
+| Browser Application    | UI, Web Worker, `Rust Core` WASM                   | Backend, red                  |
+| Rust Core (componente) | Crates de dominio y `archmaker-api`                | Adaptadores e infraestructura |
+| Runner v1              | Protocolo, preflight, allowlist, ejecutor, journal | WebView y UI                  |

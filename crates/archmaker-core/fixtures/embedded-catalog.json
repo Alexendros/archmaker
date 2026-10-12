@@ -4,6 +4,11 @@
   "version": "0.1.0",
   "documentVersion": "vNext",
   "schemaVersion": "1",
+  "provenance": {
+    "sourceId": "archmaker.repo.fixtures",
+    "path": "crates/archmaker-core/fixtures/embedded-catalog.json",
+    "capturedAt": "2026-10-06T00:00:00Z"
+  },
   "metadata": {
     "owner": "archmaker-core",
     "note": "I6 scaffold T-I6-02: 2 steps, 1 section each. No commands, hooks, shell or pacstrap."

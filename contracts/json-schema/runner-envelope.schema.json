@@ -38,12 +38,7 @@
     },
     "kind": {
       "description": "Message category.",
-      "enum": [
-        "command",
-        "response",
-        "event",
-        "error"
-      ]
+      "enum": ["command", "response", "event", "error"]
     },
     "name": {
       "description": "Message name. Known commands: runner.hello, session.create, manifest.submit, preflight.start, inventory.read, plan.build, plan.validate, dryRun.start, confirmation.submit, execution.start, execution.cancel, journal.export, session.close. Events follow runner.preflight.*, plan.*, execution.* and journal.*.",

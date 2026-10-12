@@ -26,11 +26,11 @@ def check(name: str, ok: bool, detail: str = "") -> None:
 
 
 CORE_CMDS = ["create-draft", "load-catalog", "save-draft", "resolve-draft",
-             "validate-draft", "build-manifest", "export-artifact"]
+             "validate-draft", "build-manifest", "export-artifact", "import-draft"]
 
 cap = json.loads((ROOT / "src-tauri/capabilities/main.json").read_text())
 check("NEG-001 deny-by-default por ventana", cap.get("windows") == ["main"])
-# Los 7 permisos viven en permissions/*.toml (identifier core:<cmd>); el JSON de
+# Los 8 permisos viven en permissions/*.toml (identifier core:<cmd>); el JSON de
 # capability queda vacio (auto-descubrimiento). Espejo de neg_capability_deny_by_default.
 check(
     "NEG-001 capability JSON sin permisos inline",
@@ -44,7 +44,7 @@ for cmd in CORE_CMDS:
     if ident == f"core:{cmd}":
         found.append(cmd)
 check(
-    "NEG-001 solo 7 comandos CorePort v0 (core:*)",
+    "NEG-001 solo 8 comandos CorePort v0+MVP-1 (core:*)",
     found == CORE_CMDS,
     str(found),
 )
@@ -87,9 +87,9 @@ check(
 )
 main_ts = (ROOT / "apps/web/src/main.ts").read_text()
 allowed = {"create_draft", "load_catalog", "save_draft", "resolve_draft",
-           "validate_draft", "build_manifest", "export_artifact"}
+           "validate_draft", "build_manifest", "export_artifact", "import_draft"}
 invokes = set(re.findall(r'"([a-z_]+)"', main_ts)) & allowed
-check("NEG-001 invoke solo allowlist (7)", invokes == allowed, str(sorted(invokes)))
+check("NEG-001 invoke solo allowlist (8)", invokes == allowed, str(sorted(invokes)))
 check(
     "NEG-004 sin superficie shell en TS",
     not re.search(r"pacstrap|sidecar|Command::|\.spawn\(|sh -c", main_ts),

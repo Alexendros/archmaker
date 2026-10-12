@@ -45,7 +45,7 @@ def parse_requirements_md(path: Path) -> Dict[str, Dict[str, Any]]:
             'name': name.strip(),
             'phase': phase.strip(),
             'scope': scope.strip(),
-            'in_scope': scope.strip() == 'mvp0.1',
+            'in_scope': scope.strip() in ('mvp0.1', 'mvp1'),
             'deferred': scope.strip() == 'deferred',
             'pending': scope.strip() == 'pending'
         }
@@ -59,7 +59,7 @@ def parse_requirements_md(path: Path) -> Dict[str, Dict[str, Any]]:
             'name': name.strip(),
             'phase': 'MVP',
             'scope': scope.strip(),
-            'in_scope': scope.strip() == 'mvp0.1',
+            'in_scope': scope.strip() in ('mvp0.1', 'mvp1'),
             'deferred': scope.strip() == 'deferred',
             'pending': scope.strip() == 'pending'
         }

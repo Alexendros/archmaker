@@ -1,8 +1,25 @@
-import type { CatalogRef, Diagnostic, Draft, Selection, TargetRef } from "./coreport.js";
+import type {
+  CatalogRef,
+  Diagnostic,
+  Draft,
+  Selection,
+  TargetRef,
+} from "./coreport.js";
 
-export const STEPS = ["Crear draft", "Seleccionar", "Resolver", "Validar", "Manifest", "Exportar"];
+export const STEPS = [
+  "Crear draft",
+  "Seleccionar",
+  "Resolver",
+  "Validar",
+  "Manifest",
+  "Exportar",
+];
 
-export function renderStepRail(el: HTMLElement, current: number, status: string[]): void {
+export function renderStepRail(
+  el: HTMLElement,
+  current: number,
+  status: string[],
+): void {
   el.innerHTML = "";
   const list = document.createElement("ol");
   STEPS.forEach((label, i) => {
@@ -20,7 +37,12 @@ export function renderStepRail(el: HTMLElement, current: number, status: string[
   el.append(list);
 }
 
-export function renderOptionCard(opt: { id: string; title: string; selected: boolean; locked?: boolean }): HTMLElement {
+export function renderOptionCard(opt: {
+  id: string;
+  title: string;
+  selected: boolean;
+  locked?: boolean;
+}): HTMLElement {
   const btn = document.createElement("button");
   btn.type = "button";
   btn.className = "option-card";
@@ -38,12 +60,21 @@ export function renderOptionCard(opt: { id: string; title: string; selected: boo
   return btn;
 }
 
-export function renderValidationPanel(el: HTMLElement, diagnostics: Diagnostic[], onNavigate: (path: string) => void): void {
+export function renderValidationPanel(
+  el: HTMLElement,
+  diagnostics: Diagnostic[],
+  onNavigate: (path: string) => void,
+): void {
   el.innerHTML = "";
   const summary = document.createElement("p");
   summary.setAttribute("role", "status");
-  const errors = diagnostics.filter((d) => d.code.startsWith("AM-") && d.source !== "").length;
-  summary.textContent = diagnostics.length === 0 ? "Sin incidencias." : `${diagnostics.length} diagnósticos (${errors} con código tipado).`;
+  const errors = diagnostics.filter(
+    (d) => d.code.startsWith("AM-") && d.source !== "",
+  ).length;
+  summary.textContent =
+    diagnostics.length === 0
+      ? "Sin incidencias."
+      : `${diagnostics.length} diagnósticos (${errors} con código tipado).`;
   el.append(summary);
   const list = document.createElement("ul");
   for (const d of diagnostics) {
@@ -63,7 +94,9 @@ export function renderValidationPanel(el: HTMLElement, diagnostics: Diagnostic[]
 }
 
 export function announce(kind: "status" | "alert", message: string): void {
-  const region = document.getElementById(kind === "status" ? "toast-region" : "alert-region");
+  const region = document.getElementById(
+    kind === "status" ? "toast-region" : "alert-region",
+  );
   if (!region) return;
   region.textContent = "";
   const span = document.createElement("span");

@@ -18,7 +18,7 @@
   },
   "targetRef": {
     "id": "arch-x86_64",
-    "version": "2026.10"
+    "version": "2026.10.0"
   },
   "selections": [
     {
@@ -32,10 +32,7 @@
       "stepId": "archmaker.apps.apps-core",
       "value": {
         "kind": "multiple",
-        "optionIds": [
-          "archmaker.app.steam",
-          "archmaker.app.vlc"
-        ]
+        "optionIds": ["archmaker.app.steam", "archmaker.app.vlc"]
       }
     },
     {

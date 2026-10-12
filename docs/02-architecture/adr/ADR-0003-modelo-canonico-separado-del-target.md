@@ -22,7 +22,7 @@ reviewers:
 
 ## Contexto
 
-El prototipo heredado mezcla catálogo, reglas, comandos, estado y UI en un mismo artefacto (`CON-009`), y su pipeline incluye `pacstrap` en la configuración de UI (`CON-012`). La decisión abierta DEC-003 plantea si el motor v1 es `archinstall`, un motor `libalpm` propio o scripts. `archinstall` y cualquier otro consumidor de la instalación son *targets* externos con su propio esquema versionado, no parte de la semántica del dominio. Las reglas de dependencia exigen que el dominio no conozca serialización externa salvo value types necesarios y que los exporters traduzcan el manifest sin alterar el draft.
+El prototipo heredado mezcla catálogo, reglas, comandos, estado y UI en un mismo artefacto (`CON-009`), y su pipeline incluye `pacstrap` en la configuración de UI (`CON-012`). La decisión abierta DEC-003 plantea si el motor v1 es `archinstall`, un motor `libalpm` propio o scripts. `archinstall` y cualquier otro consumidor de la instalación son _targets_ externos con su propio esquema versionado, no parte de la semántica del dominio. Las reglas de dependencia exigen que el dominio no conozca serialización externa salvo value types necesarios y que los exporters traduzcan el manifest sin alterar el draft.
 
 Documentos de apoyo: `docs/03-data/domain-model.md` (`DM-CATALOG`, `DM-MANIFEST`, `DM-ARTIFACT`), `docs/02-architecture/dependency-rules.md`, `docs/00-governance/glossary.md`.
 

@@ -131,20 +131,20 @@ comparables.
 
 ## Cobertura de JCS
 
-| Decisión | ¿Cubierta por JCS? |
-|---|---|
-| 1 Serialización | Sí (es la serialización de JCS) |
-| 2 UTF-8/BOM | Parcial (JCS emite UTF-8; el rechazo de BOM es del perfil) |
-| 3 Unicode | Sí (JCS no normaliza) |
-| 4 Orden de propiedades | Sí |
-| 5 Arrays/sets | No (decisión de archmaker) |
-| 6 Números | Sí |
-| 7 Unidades | No (decisión de archmaker) |
-| 8 Campos excluidos | No (decisión de archmaker) |
-| 9 Separación de dominio | No (decisión de archmaker) |
-| 10 SHA-256/hex | No (elección externa a JCS) |
-| 11 Digest semántico/binario | No (decisión de archmaker) |
-| 12 Versionado del perfil | No (decisión de archmaker) |
+| Decisión                    | ¿Cubierta por JCS?                                         |
+| --------------------------- | ---------------------------------------------------------- |
+| 1 Serialización             | Sí (es la serialización de JCS)                            |
+| 2 UTF-8/BOM                 | Parcial (JCS emite UTF-8; el rechazo de BOM es del perfil) |
+| 3 Unicode                   | Sí (JCS no normaliza)                                      |
+| 4 Orden de propiedades      | Sí                                                         |
+| 5 Arrays/sets               | No (decisión de archmaker)                                 |
+| 6 Números                   | Sí                                                         |
+| 7 Unidades                  | No (decisión de archmaker)                                 |
+| 8 Campos excluidos          | No (decisión de archmaker)                                 |
+| 9 Separación de dominio     | No (decisión de archmaker)                                 |
+| 10 SHA-256/hex              | No (elección externa a JCS)                                |
+| 11 Digest semántico/binario | No (decisión de archmaker)                                 |
+| 12 Versionado del perfil    | No (decisión de archmaker)                                 |
 
 ## Ejemplos normativos
 
@@ -153,12 +153,12 @@ verifica `tools/canonicalize.py`.
 
 Bytes canónicos (texto) con dominio `archmaker:manifest:v1`:
 
-| Vector | Entrada | Bytes canónicos |
-|---|---|---|
-| `m-key-order` | `{"b":1,"a":2,"c":3,"za":0}` | `{"a":2,"b":1,"c":3,"za":0}` |
-| `n-negative-zero` | `{"a":-0.0,"b":0.0}` | `{"a":0,"b":0}` |
-| `t-ephemeral-a` | `{"id":"x","createdAt":"2026-01-01T00:00:00Z",...}` | `{"id":"x"}` |
-| `s-pre-sorted` | set ya ordenado por `id` | igual que `s-declared-sort` |
+| Vector            | Entrada                                             | Bytes canónicos              |
+| ----------------- | --------------------------------------------------- | ---------------------------- |
+| `m-key-order`     | `{"b":1,"a":2,"c":3,"za":0}`                        | `{"a":2,"b":1,"c":3,"za":0}` |
+| `n-negative-zero` | `{"a":-0.0,"b":0.0}`                                | `{"a":0,"b":0}`              |
+| `t-ephemeral-a`   | `{"id":"x","createdAt":"2026-01-01T00:00:00Z",...}` | `{"id":"x"}`                 |
+| `s-pre-sorted`    | set ya ordenado por `id`                            | igual que `s-declared-sort`  |
 
 Los digests completos no se reproducen aquí: la fuente autoritativa es
 `contracts/test-vectors/canonicalization/manifest.json` y sus ficheros de vectores. El verificador

@@ -27,7 +27,7 @@ reviewers:
 | ID              | Requisito                                   | Aceptación                                             | Fase       | Scope    |
 | --------------- | ------------------------------------------- | ------------------------------------------------------ | ---------- | -------- |
 | FR-DRAFT-001    | Crear y guardar drafts locales.             | Round-trip sin pérdida y escritura atómica.            | MVP        | mvp0.1   |
-| FR-IMPORT-001   | Importar y migrar v5.1.                     | Informe previo; original intacto; pérdidas explícitas. | MVP        | deferred |
+| FR-IMPORT-001   | Importar y migrar v5.1.                     | Informe previo; original intacto; pérdidas explícitas. | MVP        | mvp1     |
 | FR-CAT-001      | Cargar catálogo versionado.                 | Digest, procedencia y validación disponibles.          | MVP        | mvp0.1   |
 | FR-PRESET-001   | Aplicar presets como patches.               | ChangeSet muestra cambios manuales y derivados.        | MVP        | deferred |
 | FR-RESOLVE-001  | Resolver capacidades/conflictos.            | Determinista e idempotente.                            | MVP        | mvp0.1   |
@@ -39,15 +39,15 @@ reviewers:
 
 ## No funcionales P0
 
-| ID           | Requisito                                   | Evidencia                               | Scope    |
-| ------------ | ------------------------------------------- | --------------------------------------- | -------- |
-| NFR-SEC-001  | Deny-by-default y mínimo privilegio.        | Capabilities, scopes y tests negativos. | mvp0.1   |
-| NFR-DET-001  | Mismo input/versiones → mismo resultado.    | Golden parity Tauri/WASM.               | mvp0.1   |
-| NFR-ACC-001  | WCAG 2.2 AA.                                | Axe, teclado y revisión manual.         | mvp0.1   |
-| NFR-OFF-001  | MVP usable sin CDN ni servidor.             | E2E offline.                            | mvp0.1   |
-| NFR-MIG-001  | Migraciones explícitas y no destructivas.   | Corpus histórico.                       | deferred |
-| NFR-PORT-001 | Dominio independiente de adaptadores.       | Dependency checks.                      | mvp0.1   |
-| NFR-OBS-001  | Errores/eventos estructurados y redactados. | Contract tests.                         | pending  |
+| ID           | Requisito                                   | Evidencia                               | Scope   |
+| ------------ | ------------------------------------------- | --------------------------------------- | ------- |
+| NFR-SEC-001  | Deny-by-default y mínimo privilegio.        | Capabilities, scopes y tests negativos. | mvp0.1  |
+| NFR-DET-001  | Mismo input/versiones → mismo resultado.    | Golden parity Tauri/WASM.               | mvp0.1  |
+| NFR-ACC-001  | WCAG 2.2 AA.                                | Axe, teclado y revisión manual.         | mvp0.1  |
+| NFR-OFF-001  | MVP usable sin CDN ni servidor.             | E2E offline.                            | mvp0.1  |
+| NFR-MIG-001  | Migraciones explícitas y no destructivas.   | Corpus histórico.                       | mvp1    |
+| NFR-PORT-001 | Dominio independiente de adaptadores.       | Dependency checks.                      | mvp0.1  |
+| NFR-OBS-001  | Errores/eventos estructurados y redactados. | Contract tests.                         | pending |
 
 ## Detalle de requisitos funcionales
 
@@ -97,7 +97,7 @@ No resuelve capacidades (FR-RESOLVE-001); no persiste `Resolution`; no define fo
 - Prioridad: P0
 - Fase: MVP
 - Estado: accepted
-- Scope: deferred
+- Scope: mvp1
 - Journey/UC: JNY-002 / UC-002
 
 #### Enunciado
@@ -607,7 +607,7 @@ No aplica a Enterprise, que dispone de servicio.
 - Prioridad: P0
 - Fase: MVP
 - Estado: accepted
-- Scope: deferred
+- Scope: mvp1
 - Journey/UC: JNY-002 / UC-002
 
 #### Enunciado

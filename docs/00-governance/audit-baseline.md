@@ -26,13 +26,13 @@ Registrar de forma inmutable el estado de partida de la remediación `planning-v
 
 ## Baseline congelada
 
-| Dato | Valor |
-|---|---|
-| Etiqueta de baseline | `planning-v1-audit-baseline` |
-| Commit | `cf2fa70` |
-| Rama de trabajo | `remediation/planning-v1.1` |
-| Hito | `planning-v1.1-remediation` (#1) |
-| Perfil de arranque | P1 (`init-work.sh`) |
+| Dato                 | Valor                                              |
+| -------------------- | -------------------------------------------------- |
+| Etiqueta de baseline | `planning-v1-audit-baseline`                       |
+| Commit               | `cf2fa70`                                          |
+| Rama de trabajo      | `remediation/planning-v1.1`                        |
+| Hito                 | `planning-v1.1-remediation` (#1)                   |
+| Perfil de arranque   | P1 (`init-work.sh`)                                |
 | Semáforo de arranque | rojo (por falso positivo de secreto; ver AUD-F-05) |
 
 ## Declaración de parada (semáforo rojo)
@@ -41,20 +41,20 @@ Registrar de forma inmutable el estado de partida de la remediación `planning-v
 
 ## Hallazgos
 
-| ID | Severidad | Hallazgo | Resolución |
-|---|---|---|---|
-| AUD-F-01 | P0 | Contradicción de estado: `ADR-0007` en `proposed` mientras G3/G4 se declaran `complete`. | R3 (AUD-006) + R5 (AUD-009) |
-| AUD-F-02 | P0 | Estados unidimensionales en gates/decisiones: no separan documento-completo, diseño-listo, implementación-lista, verificado y liberación-lista. | R1 (AUD-002/003) |
-| AUD-F-03 | P0 | Backlog con filas 1–14 sin esquema `AUD-*`, sin owners ni dependencias explícitas. | R0 (AUD-001) |
-| AUD-F-04 | P0 | Integridad de fuentes: 3 fuentes declaradas no recibidas (`archmaker-v10.4-p3.yaml`, `i18n.es.json`, `neubat_forge_v4_final.html`). | Disposición G0 (AUD-007) |
-| AUD-F-05 | P1 | Falso positivo de escaneo de secretos sobre `token:` de diseño en `reference/`. | R11 (AUD-022) |
-| AUD-F-06 | P0 | CI en estado `draft` con guards silenciosos (`PENDIENTE … guard`) y TODOs; sin ejecución verde registrada. | R11 (AUD-022) |
-| AUD-F-07 | P0 | Registro de decisiones: DEC-005 (licencia) y DEC-006 (firma) ambiguas; DEC-009/010 en `proposed`. | R2 (AUD-004) |
-| AUD-F-08 | P0 | Vista C4 muestra Rust Core como contenedor, contradiciendo su propio deployment. | R4 (AUD-007/008) |
-| AUD-F-09 | P0 | Canonicalización sin las 12 decisiones normativas; RFC 8785 (JCS) sin fuente primaria verificada. | R5 (AUD-009/010) |
-| AUD-F-10 | P0 | `RULE-GPU-001` no implementable (depende de SRC-002/003). | R8 (AUD-017) |
-| AUD-F-11 | P0 | Faltan schemas comunes (`common`, `core-error`, `changeset`) y el directorio `contracts/governance/`. | R6 (AUD-011…016) |
-| AUD-F-12 | P1 | `neubat_forge_v4_final.html` con identidad `probable-rename-not-proven`; `PROVENANCE.json` no reflejaba la disposición. | Disposición G0 (AUD-007) |
+| ID       | Severidad | Hallazgo                                                                                                                                        | Resolución                  |
+| -------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- |
+| AUD-F-01 | P0        | Contradicción de estado: `ADR-0007` en `proposed` mientras G3/G4 se declaran `complete`.                                                        | R3 (AUD-006) + R5 (AUD-009) |
+| AUD-F-02 | P0        | Estados unidimensionales en gates/decisiones: no separan documento-completo, diseño-listo, implementación-lista, verificado y liberación-lista. | R1 (AUD-002/003)            |
+| AUD-F-03 | P0        | Backlog con filas 1–14 sin esquema `AUD-*`, sin owners ni dependencias explícitas.                                                              | R0 (AUD-001)                |
+| AUD-F-04 | P0        | Integridad de fuentes: 3 fuentes declaradas no recibidas (`archmaker-v10.4-p3.yaml`, `i18n.es.json`, `neubat_forge_v4_final.html`).             | Disposición G0 (AUD-007)    |
+| AUD-F-05 | P1        | Falso positivo de escaneo de secretos sobre `token:` de diseño en `reference/`.                                                                 | R11 (AUD-022)               |
+| AUD-F-06 | P0        | CI en estado `draft` con guards silenciosos (`PENDIENTE … guard`) y TODOs; sin ejecución verde registrada.                                      | R11 (AUD-022)               |
+| AUD-F-07 | P0        | Registro de decisiones: DEC-005 (licencia) y DEC-006 (firma) ambiguas; DEC-009/010 en `proposed`.                                               | R2 (AUD-004)                |
+| AUD-F-08 | P0        | Vista C4 muestra Rust Core como contenedor, contradiciendo su propio deployment.                                                                | R4 (AUD-007/008)            |
+| AUD-F-09 | P0        | Canonicalización sin las 12 decisiones normativas; RFC 8785 (JCS) sin fuente primaria verificada.                                               | R5 (AUD-009/010)            |
+| AUD-F-10 | P0        | `RULE-GPU-001` no implementable (depende de SRC-002/003).                                                                                       | R8 (AUD-017)                |
+| AUD-F-11 | P0        | Faltan schemas comunes (`common`, `core-error`, `changeset`) y el directorio `contracts/governance/`.                                           | R6 (AUD-011…016)            |
+| AUD-F-12 | P1        | `neubat_forge_v4_final.html` con identidad `probable-rename-not-proven`; `PROVENANCE.json` no reflejaba la disposición.                         | Disposición G0 (AUD-007)    |
 
 ## Disposición G0 de fuentes (resumen)
 

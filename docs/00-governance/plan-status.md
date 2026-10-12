@@ -16,9 +16,9 @@ reviewers:
 # Estado de planificación
 
 - Estado: in-review
-- Gate global: CONDITIONAL-GO — walking skeleton MVP-0 únicamente (baseline `implementation-baseline-mvp0.1`)
-- Baseline: `implementation-baseline-mvp0.1` (sucesor de `implementation-baseline-mvp0`)
-- Fecha de corte: 2026-10-06
+- Gate global: CONDITIONAL-GO — walking skeleton MVP-0 + slice MVP-1 (sin runner)
+- Baseline vigente: `implementation-baseline-mvp0.1`; sucesor planificado `implementation-baseline-mvp1`
+- Fecha de corte: 2026-10-12
 
 ## Bloqueos P0
 
@@ -28,11 +28,10 @@ documento no los repite.
 
 ## Regla de avance
 
-Solo se autoriza el walking skeleton MVP-0 definido en
-`docs/10-delivery/walking-skeleton.md` mientras se cumplen las condiciones fechadas de la
-revisión independiente. El MVP completo, el runner v1 y los privilegios se autorizan únicamente
-cuando G0–G10 tengan evidencia, no existan riesgos P0 sin tratamiento y todos los contratos P0
-posean fixtures válidos e inválidos.
+Se autorizan el walking skeleton MVP-0 y el alcance MVP-1 de
+`docs/10-delivery/mvp1-scope.md` (dominio, catálogo local, migración). El runner v1 y los
+privilegios se autorizan únicamente cuando G0–G10 tengan evidencia específica de esas fases,
+no existan riesgos P0 sin tratamiento y todos los contratos P0 posean fixtures válidos e inválidos.
 
 ## Referencias
 

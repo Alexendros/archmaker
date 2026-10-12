@@ -16,8 +16,18 @@
         "blocking": true,
         "when": {
           "all": [
-            { "eq": ["archmaker.environment.gpu", "archmaker.environment.nvidia"] },
-            { "eq": ["archmaker.environment.compositor", "archmaker.environment.sway"] }
+            {
+              "eq": [
+                "archmaker.environment.gpu",
+                "archmaker.environment.nvidia"
+              ]
+            },
+            {
+              "eq": [
+                "archmaker.environment.compositor",
+                "archmaker.environment.sway"
+              ]
+            }
           ]
         },
         "action": "block",
@@ -74,7 +84,12 @@
         "schemaVersion": "1",
         "when": {
           "any": [
-            { "eq": ["archmaker.environment.gpu", "archmaker.environment.nvidia"] },
+            {
+              "eq": [
+                "archmaker.environment.gpu",
+                "archmaker.environment.nvidia"
+              ]
+            },
             { "eq": ["archmaker.environment.gpu", "archmaker.environment.amd"] }
           ]
         },
@@ -90,7 +105,9 @@
         "id": "RULE-CORPUS-ANY-EDGE",
         "documentVersion": "vNext",
         "schemaVersion": "1",
-        "when": { "any": [{ "selected": "archmaker.environment.pkg.firefox" }] },
+        "when": {
+          "any": [{ "selected": "archmaker.environment.pkg.firefox" }]
+        },
         "action": "suggest"
       }
     },
@@ -156,7 +173,12 @@
         "id": "RULE-CORPUS-EQ",
         "documentVersion": "vNext",
         "schemaVersion": "1",
-        "when": { "eq": ["archmaker.environment.compositor", "archmaker.environment.gnome"] },
+        "when": {
+          "eq": [
+            "archmaker.environment.compositor",
+            "archmaker.environment.gnome"
+          ]
+        },
         "action": "change",
         "target": "archmaker.environment.dm",
         "allowed": ["archmaker.environment.gdm"],
@@ -211,7 +233,12 @@
         "id": "RULE-CORPUS-NE",
         "documentVersion": "vNext",
         "schemaVersion": "1",
-        "when": { "ne": ["archmaker.environment.compositor", "archmaker.environment.gnome"] },
+        "when": {
+          "ne": [
+            "archmaker.environment.compositor",
+            "archmaker.environment.gnome"
+          ]
+        },
         "action": "suggest"
       }
     },
@@ -237,7 +264,11 @@
         "id": "RULE-CORPUS-NE-ADV",
         "documentVersion": "vNext",
         "schemaVersion": "1",
-        "when": { "ne": { "archmaker.environment.compositor": "archmaker.environment.gnome" } },
+        "when": {
+          "ne": {
+            "archmaker.environment.compositor": "archmaker.environment.gnome"
+          }
+        },
         "action": "suggest"
       }
     },
@@ -268,7 +299,12 @@
         "id": "RULE-CORPUS-IN-EDGE",
         "documentVersion": "vNext",
         "schemaVersion": "1",
-        "when": { "in": ["archmaker.environment.compositor", ["archmaker.environment.gnome"]] },
+        "when": {
+          "in": [
+            "archmaker.environment.compositor",
+            ["archmaker.environment.gnome"]
+          ]
+        },
         "action": "suggest"
       }
     },
@@ -294,7 +330,12 @@
         "id": "RULE-CORPUS-IN-ADV",
         "documentVersion": "vNext",
         "schemaVersion": "1",
-        "when": { "in": ["archmaker.environment.compositor", "archmaker.environment.gnome"] },
+        "when": {
+          "in": [
+            "archmaker.environment.compositor",
+            "archmaker.environment.gnome"
+          ]
+        },
         "action": "suggest"
       }
     },
@@ -400,7 +441,9 @@
         "id": "RULE-CORPUS-COUNT-ADV",
         "documentVersion": "vNext",
         "schemaVersion": "1",
-        "when": { "eq": [{ "count": ["archmaker.environment.compositor"] }, 0] },
+        "when": {
+          "eq": [{ "count": ["archmaker.environment.compositor"] }, 0]
+        },
         "action": "suggest"
       }
     },

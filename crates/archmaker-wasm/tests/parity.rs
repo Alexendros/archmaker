@@ -24,7 +24,7 @@ fn create_input_json() -> String {
     serde_json::json!({
         "draftId": FIXED_DRAFT_ID,
         "catalogRef": catalog_ref_json(),
-        "targetRef": {"id": "arch-x86_64", "version": "1"},
+        "targetRef": {"id": "arch-x86_64", "version": "0.1.0"},
         "requestId": null
     })
     .to_string()
@@ -123,7 +123,7 @@ fn parity_validate_diagnostics() {
     let input = serde_json::json!({
         "draft": draft,
         "catalogRef": catalog_ref_json(),
-        "targetRef": {"id": "arch-x86_64", "version": "1"},
+        "targetRef": {"id": "arch-x86_64", "version": "0.1.0"},
         "requestId": null
     })
     .to_string();

@@ -54,7 +54,7 @@ reviewers:
 ## JNY-002 — Importar y migrar
 
 - **Actor:** PER-001, PER-002.
-- **Precondición:** documento local heredado v5.1 disponible; no se requiere red. *(Formato v5.1: no verificado — fuente primaria pendiente.)*
+- **Precondición:** documento local heredado v5.1 disponible; no se requiere red. _(Formato v5.1: no verificado — fuente primaria pendiente.)_
 - **Pasos:**
   1. Seleccionar el documento local heredado.
   2. Detectar formato y versión (UC-002).
@@ -73,7 +73,7 @@ reviewers:
 ## JNY-003 — Instalar (v1)
 
 - **Actor:** PER-001, PER-002.
-- **Precondición:** runner compatible disponible y manifest válido; fuera del MVP (v1). *(Transporte del runner: DEC-004; motor: DEC-003.)*
+- **Precondición:** runner compatible disponible y manifest válido; fuera del MVP (v1). _(Transporte del runner: DEC-004; motor: DEC-003.)_
 - **Pasos:**
   1. Verificar compatibilidad del runner y preflight del entorno (UC-006).
   2. Derivar el `InstallationPlan` inmutable desde el manifest.
@@ -93,7 +93,7 @@ reviewers:
 ## JNY-004 — Gobernar flotas (Enterprise)
 
 - **Actor:** PER-004.
-- **Precondición:** organización con RBAC y `PolicyBundle` firmado; servicio Enterprise, no producto local. *(Firma: DEC-006.)*
+- **Precondición:** organización con RBAC y `PolicyBundle` firmado; servicio Enterprise, no producto local. _(Firma: DEC-006.)_
 - **Pasos:**
   1. Definir o seleccionar perfil y policies de organización (UC-007).
   2. Validar la firma y el ámbito de aplicación.

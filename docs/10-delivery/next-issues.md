@@ -49,20 +49,20 @@ reviewers:
 | MVP-0.1-07     | closed-with-residual | Security     | E6   | Raíz materializada + artefactos verificables  | `_placeholder:false`; release en primer tag push |
 | MVP-0.1-08     | closed               | Release      | E7   | Tag anotado + release verificada              | PR-07; tag `implementation-baseline-mvp0.1`      |
 
-## Issues MVP-1 (planificados — sin implementación hasta MVP-1-01 `accepted`)
+## Issues MVP-1
 
 Fuente canónica de alcance: [`mvp1-scope.md`](mvp1-scope.md).
 
-| #        | Issue                                   | Depende de | Gate     | Owner        | Criterio Done                     |
-| -------- | --------------------------------------- | ---------- | -------- | ------------ | --------------------------------- |
-| MVP-1-01 | Aprobar alcance DOC-DEL-MVP1-001        | —          | G2,G10   | Product      | Documento `accepted`              |
-| MVP-1-02 | Cerrar CON-001..004 (dominio + schemas) | 01         | G4       | Data         | Corpus verde                      |
-| MVP-1-03 | Formato ejes de versión (ADR-0006)      | 01         | G3,G4    | Architecture | ADR `accepted`                    |
-| MVP-1-04 | Catálogo local versionado multi-entity  | 02,03      | G4,G5    | Data         | FR-CAT-001 ampliado               |
-| MVP-1-05 | importDraft + migración MIG-5.1         | 02,04      | G4,G7,G9 | Data         | FR-IMPORT-001 / NFR-MIG-001 en CI |
-| MVP-1-06 | Changeset + concurrencia                | 02         | G4,G5    | Interfaces   | Corpus changeset                  |
-| MVP-1-07 | Trazabilidad ampliada MVP-1             | 04,05,06   | G2,G9    | Quality      | Sin huérfanos                     |
-| MVP-1-08 | Tag `implementation-baseline-mvp1`      | 01–07      | G10      | Release      | Tag + CI verde                    |
+| #        | Issue                                   | Depende de | Gate     | Owner        | Criterio Done                     | Estado  |
+| -------- | --------------------------------------- | ---------- | -------- | ------------ | --------------------------------- | ------- |
+| MVP-1-01 | Aprobar alcance DOC-DEL-MVP1-001        | —          | G2,G10   | Product      | Documento `accepted`              | closed  |
+| MVP-1-02 | Cerrar CON-001..004 (dominio + schemas) | 01         | G4       | Data         | Corpus verde                      | closed  |
+| MVP-1-03 | Formato ejes de versión (ADR-0006)      | 01         | G3,G4    | Architecture | ADR `accepted`                    | closed  |
+| MVP-1-04 | Catálogo local versionado multi-entity  | 02,03      | G4,G5    | Data         | FR-CAT-001 ampliado               | closed  |
+| MVP-1-05 | importDraft + migración MIG-5.1         | 02,04      | G4,G7,G9 | Data         | FR-IMPORT-001 / NFR-MIG-001 en CI | closed  |
+| MVP-1-06 | Changeset + concurrencia                | 02         | G4,G5    | Interfaces   | Corpus changeset                  | closed  |
+| MVP-1-07 | Trazabilidad ampliada MVP-1             | 04,05,06   | G2,G9    | Quality      | Sin huérfanos                     | closed  |
+| MVP-1-08 | Tag `implementation-baseline-mvp1`      | 01–07      | G10      | Release      | Tag + CI verde                    | planned |
 
 ## Trazabilidad de los issues
 

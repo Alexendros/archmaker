@@ -1,7 +1,7 @@
 {
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "main-capability",
-  "description": "Deny-by-default: ventana main, solo los 7 comandos CorePort v0. Sin shell, sin FS global.",
+  "description": "Deny-by-default: ventana main, 8 comandos CorePort v0+MVP-1 (incluye import_draft). Sin shell, sin FS global.",
   "windows": ["main"],
   "permissions": []
 }

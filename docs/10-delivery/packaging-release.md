@@ -36,16 +36,16 @@ Binarios/paquetes, checksums, firmas, SBOM CycloneDX/SPDX, provenance, source ta
 
 Cada release publica, como mínimo:
 
-| Artefacto | Descripción | Estado |
-|---|---|---|
-| Binarios/paquetes | AppImage, `.deb`, `.rpm` y bundle web (ver MVP Linux). | draft |
-| Checksums | `SHA256SUMS` por release; verificación `sha256sum --check`. | draft |
-| Firmas | Firma de artefactos y de `SHA256SUMS` con Sigstore (+ offline evaluada). | Resuelto por DEC-006 |
-| SBOM | CycloneDX y/o SPDX con el inventario de dependencias. | draft |
-| Provenance | Atestación SLSA v1.2/in-toto ligada a commit y workflow. | draft |
-| Source tarball | Código fuente reproducible del commit taggeado. | draft |
-| Changelog | Formato Keep a Changelog; cambios por versión. | draft |
-| Compatibilidad | Matriz target/arquitectura/dependencias por release. | draft |
+| Artefacto         | Descripción                                                              | Estado               |
+| ----------------- | ------------------------------------------------------------------------ | -------------------- |
+| Binarios/paquetes | AppImage, `.deb`, `.rpm` y bundle web (ver MVP Linux).                   | draft                |
+| Checksums         | `SHA256SUMS` por release; verificación `sha256sum --check`.              | draft                |
+| Firmas            | Firma de artefactos y de `SHA256SUMS` con Sigstore (+ offline evaluada). | Resuelto por DEC-006 |
+| SBOM              | CycloneDX y/o SPDX con el inventario de dependencias.                    | draft                |
+| Provenance        | Atestación SLSA v1.2/in-toto ligada a commit y workflow.                 | draft                |
+| Source tarball    | Código fuente reproducible del commit taggeado.                          | draft                |
+| Changelog         | Formato Keep a Changelog; cambios por versión.                           | draft                |
+| Compatibilidad    | Matriz target/arquitectura/dependencias por release.                     | draft                |
 
 - **Checksums**: el digest es la identidad del artefacto y se reutiliza en la promoción (sin rebuild).
 - **Firmas**: la firma se aplica una vez; la verificación es requisito de instalación del updater.
@@ -58,11 +58,11 @@ Cada release publica, como mínimo:
 
 `nightly`, `beta`, `stable`; promoción, no rebuild. Rollback documentado. El updater de Tauri se habilita en MVP (DEC-007): canal firmado, verificación de firma y fail-open offline (ADR-0009).
 
-| Canal | Origen | Estabilidad | Promoción |
-|---|---|---|---|
-| `nightly` | build de `main` | inestable | no promueve directamente |
-| `beta` | nightly promovido | candidata | promoción sin rebuild |
-| `stable` | beta promovido | publicada | promoción sin rebuild |
+| Canal     | Origen            | Estabilidad | Promoción                |
+| --------- | ----------------- | ----------- | ------------------------ |
+| `nightly` | build de `main`   | inestable   | no promueve directamente |
+| `beta`    | nightly promovido | candidata   | promoción sin rebuild    |
+| `stable`  | beta promovido    | publicada   | promoción sin rebuild    |
 
 - **Promoción sin rebuild**: el mismo artefacto (mismos digests y atestación) se etiqueta de canal;
   recompilar invalida provenance y firma.
@@ -77,11 +77,11 @@ Fase I11 (2026-10-06). Decisiones: DEC-006 (Sigstore keyless + verificación off
 DEC-007 (updater en MVP), ADR-0008 (catálogos firmados), ADR-0009 (actualización firmada).
 Pipeline: `.github/workflows/release.yml`; raíces: `trusted_root.json` (raíz del repo).
 
-| Canal | Artefacto | Firma | Requisito de instalación |
-|---|---|---|---|
-| `nightly` | build de `main` (mismos digests) | Sigstore keyless (Fulcio/Rekor) | firma válida o rechazo |
-| `beta` | nightly promovido, sin rebuild | la del nightly promovido | firma válida + versión ≥ mínima |
-| `stable` | beta promovido, sin rebuild | la del beta promovido | firma válida + versión ≥ mínima |
+| Canal     | Artefacto                        | Firma                           | Requisito de instalación        |
+| --------- | -------------------------------- | ------------------------------- | ------------------------------- |
+| `nightly` | build de `main` (mismos digests) | Sigstore keyless (Fulcio/Rekor) | firma válida o rechazo          |
+| `beta`    | nightly promovido, sin rebuild   | la del nightly promovido        | firma válida + versión ≥ mínima |
+| `stable`  | beta promovido, sin rebuild      | la del beta promovido           | firma válida + versión ≥ mínima |
 
 - **Versión mínima**: cada canal declara `minVersion`; el updater rechaza
   `versión < minVersion` (anti-downgrade) y rechaza artefactos con firma

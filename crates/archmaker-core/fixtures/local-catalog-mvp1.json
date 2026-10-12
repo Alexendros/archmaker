@@ -1,0 +1,147 @@
+{
+  "namespace": "archmaker.core",
+  "id": "desktop",
+  "version": "1.0.0",
+  "documentVersion": "vNext",
+  "schemaVersion": "1",
+  "provenance": {
+    "sourceId": "archmaker.repo.fixtures",
+    "path": "crates/archmaker-core/fixtures/local-catalog-mvp1.json",
+    "capturedAt": "2026-10-12T00:00:00Z"
+  },
+  "metadata": {
+    "owner": "archmaker-core",
+    "note": "MVP-1 local multi-entity catalog with packaged provenance. No commands, hooks, shell or pacstrap."
+  },
+  "steps": [
+    {
+      "id": "archmaker.base.kernel",
+      "title": "Kernel",
+      "mode": "single",
+      "sections": [
+        {
+          "id": "archmaker.base.kernel.section",
+          "title": "Kernel",
+          "cardinality": "one",
+          "options": [
+            { "id": "archmaker.kernel.linux", "title": "Linux" },
+            { "id": "archmaker.kernel.zen", "title": "Linux Zen" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "archmaker.base.filesystem",
+      "title": "Filesystem",
+      "mode": "single",
+      "sections": [
+        {
+          "id": "archmaker.base.filesystem.section",
+          "title": "Filesystem",
+          "cardinality": "one",
+          "options": [
+            { "id": "archmaker.filesystem.btrfs", "title": "Btrfs" },
+            { "id": "archmaker.filesystem.ext4", "title": "Ext4" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "archmaker.base.boot",
+      "title": "Bootloader",
+      "mode": "single",
+      "sections": [
+        {
+          "id": "archmaker.base.boot.section",
+          "title": "Bootloader",
+          "cardinality": "one",
+          "options": [
+            { "id": "archmaker.boot.systemd-boot", "title": "systemd-boot" },
+            { "id": "archmaker.boot.grub", "title": "GRUB" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "archmaker.base.base-devel",
+      "title": "Base devel",
+      "mode": "single",
+      "sections": [
+        {
+          "id": "archmaker.base.base-devel.section",
+          "title": "Base devel",
+          "cardinality": "one",
+          "options": [
+            { "id": "archmaker.pkg.base-devel", "title": "base-devel" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "archmaker.environment.compositor",
+      "title": "Compositor",
+      "mode": "single",
+      "sections": [
+        {
+          "id": "archmaker.environment.compositor.section",
+          "title": "Compositor",
+          "cardinality": "one",
+          "options": [
+            { "id": "archmaker.compositor.gnome", "title": "GNOME" },
+            { "id": "archmaker.compositor.hyprland", "title": "Hyprland" },
+            { "id": "archmaker.compositor.sway", "title": "Sway" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "archmaker.environment.dm",
+      "title": "Display manager",
+      "mode": "single",
+      "sections": [
+        {
+          "id": "archmaker.environment.dm.section",
+          "title": "Display manager",
+          "cardinality": "one",
+          "options": [
+            { "id": "archmaker.dm.gdm", "title": "GDM" },
+            { "id": "archmaker.dm.sddm", "title": "SDDM" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "archmaker.apps.browser",
+      "title": "Browser",
+      "mode": "single",
+      "sections": [
+        {
+          "id": "archmaker.apps.browser.section",
+          "title": "Browser",
+          "cardinality": "one",
+          "options": [
+            { "id": "archmaker.browser.firefox", "title": "Firefox" },
+            { "id": "archmaker.browser.vivaldi", "title": "Vivaldi" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "archmaker.apps.apps-core",
+      "title": "Apps",
+      "mode": "flat",
+      "sections": [
+        {
+          "id": "archmaker.apps.apps-core.section",
+          "title": "Apps",
+          "cardinality": "many",
+          "options": [
+            { "id": "archmaker.app.steam", "title": "Steam" },
+            { "id": "archmaker.app.vlc", "title": "VLC" },
+            { "id": "archmaker.app.gimp", "title": "GIMP" }
+          ]
+        }
+      ]
+    }
+  ]
+}
