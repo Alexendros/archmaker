@@ -4,6 +4,7 @@ pub mod error;
 pub mod inputs;
 pub mod io;
 pub mod limits;
+pub mod migration;
 pub mod port;
 
 pub use capability::{
@@ -12,11 +13,12 @@ pub use capability::{
 };
 
 pub use archmaker_domain::{
-    Artifact, ArtifactRef, BinaryDigest, BinaryKind, Capability, CapabilityRef, Catalog,
-    CatalogOption, CatalogRef, Conflict, ContentDigest, ContentKind, DigestAlgorithm, Draft,
-    Libpack, Manifest, ManifestDomainLabel, ManifestRef, PresetRef, Producer, ResolvedSelection,
-    Section, Selection, SelectionOrigin, SelectionValue, Severity as DomainSeverity, Step,
-    TargetRef, MANIFEST_DOMAIN_LABEL,
+    is_document_version, is_integer_version, is_semver, Artifact, ArtifactRef, BinaryDigest,
+    BinaryKind, Capability, CapabilityRef, Catalog, CatalogOption, CatalogProvenance, CatalogRef,
+    Conflict, ContentDigest, ContentKind, DigestAlgorithm, Draft, Libpack, Manifest,
+    ManifestDomainLabel, ManifestRef, PresetRef, Producer, ResolvedSelection, Section, Selection,
+    SelectionOrigin, SelectionValue, Severity as DomainSeverity, Step, TargetRef,
+    MANIFEST_DOMAIN_LABEL,
 };
 pub use archmaker_rules::Diagnostic as RuleDiagnostic;
 pub use core::{
@@ -25,8 +27,10 @@ pub use core::{
 };
 pub use error::{CoreError, ErrorCategory, ErrorFamily, Result, Severity};
 pub use inputs::{
-    sort_diagnostics, BuildManifestInput, CatalogSource, CreateDraftInput, DestinationHandle,
-    ExportArtifactInput, LoadCatalogInput, ResolveDraftInput, ResolveResult, SaveDraftInput,
+    sort_diagnostics, BuildManifestInput, CatalogSource, ChangeSet, ChangeSetOp,
+    ChangeSetOperation, ChangeSetOrigin, ChangeSetSummary, CreateDraftInput, DestinationHandle,
+    ExportArtifactInput, ImportDraftInput, ImportDraftResult, LoadCatalogInput, MigrationEntry,
+    MigrationFate, MigrationReport, ResolveDraftInput, ResolveResult, SaveDraftInput,
     ValidateDraftInput, ValidationResult,
 };
 pub use io::atomic_write_bytes;

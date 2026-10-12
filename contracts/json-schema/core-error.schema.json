@@ -42,11 +42,7 @@
       "type": "object",
       "maxProperties": 64,
       "additionalProperties": {
-        "type": [
-          "string",
-          "number",
-          "boolean"
-        ]
+        "type": ["string", "number", "boolean"]
       }
     },
     "detail": {
@@ -159,11 +155,7 @@
           "type": "object",
           "maxProperties": 64,
           "additionalProperties": {
-            "type": [
-              "string",
-              "number",
-              "boolean"
-            ]
+            "type": ["string", "number", "boolean"]
           }
         }
       }
@@ -172,10 +164,7 @@
       "description": "Typed remediation hint. messageKey is a stable key, never a free-form string.",
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "kind",
-        "messageKey"
-      ],
+      "required": ["kind", "messageKey"],
       "properties": {
         "kind": {
           "enum": [
@@ -194,11 +183,7 @@
           "type": "object",
           "maxProperties": 64,
           "additionalProperties": {
-            "type": [
-              "string",
-              "number",
-              "boolean"
-            ]
+            "type": ["string", "number", "boolean"]
           }
         }
       }

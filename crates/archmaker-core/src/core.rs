@@ -7,22 +7,23 @@ use std::sync::atomic::{AtomicU64, Ordering};
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use archmaker_domain::{
-    Artifact, ArtifactRef, BinaryDigest, BinaryKind, CapabilityRef, Catalog, CatalogRef,
-    ContentDigest, ContentKind, DigestAlgorithm, Draft, Manifest, ManifestDomainLabel, ManifestRef,
-    PresetRef, Producer, ResolvedSelection, SelectionOrigin, SelectionValue, TargetRef,
-    MANIFEST_DOMAIN_LABEL,
+    is_document_version, is_integer_version, is_semver, Artifact, ArtifactRef, BinaryDigest,
+    BinaryKind, CapabilityRef, Catalog, CatalogRef, ContentDigest, ContentKind, DigestAlgorithm,
+    Draft, Manifest, ManifestDomainLabel, ManifestRef, PresetRef, Producer, ResolvedSelection,
+    Selection, SelectionOrigin, SelectionValue, TargetRef, MANIFEST_DOMAIN_LABEL,
 };
 use archmaker_resolution::{Catalog as ResolutionCatalog, CatalogOption};
 use archmaker_rules::{canonical_rules, evaluate_all, Diagnostic, Draft as RulesDraft};
 
 use crate::error::{CoreError, Result};
 use crate::inputs::{
-    sort_diagnostics, BuildManifestInput, CatalogSource, CreateDraftInput, ExportArtifactInput,
-    LoadCatalogInput, ResolveDraftInput, ResolveResult, SaveDraftInput, ValidateDraftInput,
-    ValidationResult,
+    sort_diagnostics, BuildManifestInput, CatalogSource, ChangeSet, ChangeSetOp, CreateDraftInput,
+    ExportArtifactInput, ImportDraftInput, ImportDraftResult, LoadCatalogInput, ResolveDraftInput,
+    ResolveResult, SaveDraftInput, ValidateDraftInput, ValidationResult,
 };
 use crate::io::atomic_write_bytes;
 use crate::limits::DEFAULT_LIMITS;
+use crate::migration::migrate_v51_to_draft;
 use crate::port::{CoreOp, CorePort};
 
 fn check_json_depth(bytes: &[u8], max_depth: u32) -> Result<()> {
@@ -369,11 +370,115 @@ fn ensure_target(target: &TargetRef, allowed: &[&str], source: &str) -> Result<(
     Ok(())
 }
 
+fn apply_changeset(draft: &mut Draft, changeset: &ChangeSet, source: &str) -> Result<()> {
+    if let Some(base) = changeset.base_revision {
+        if base != draft.revision {
+            return Err(CoreError::doc_conflict(source));
+        }
+    }
+    if let Some(target_id) = &changeset.target_draft_id {
+        if target_id != &draft.id {
+            return Err(CoreError::schema_invalid(source));
+        }
+    }
+    for op in &changeset.operations {
+        match op.op {
+            ChangeSetOp::Add => {
+                let Some(after) = &op.after else {
+                    return Err(CoreError::schema_invalid(source));
+                };
+                let step_id = op
+                    .note
+                    .as_deref()
+                    .and_then(|n| n.strip_prefix("stepId:"))
+                    .ok_or_else(|| CoreError::schema_invalid(source))?
+                    .to_string();
+                if step_id.is_empty() {
+                    return Err(CoreError::schema_invalid(source));
+                }
+                draft.selections.push(Selection {
+                    step_id,
+                    value: after.clone(),
+                });
+            }
+            ChangeSetOp::Replace => {
+                let Some(after) = &op.after else {
+                    return Err(CoreError::schema_invalid(source));
+                };
+                let Some(index) = op
+                    .path
+                    .strip_prefix("/selections/")
+                    .and_then(|rest| rest.strip_suffix("/value"))
+                    .and_then(|idx| idx.parse::<usize>().ok())
+                else {
+                    return Err(CoreError::schema_invalid(source));
+                };
+                let Some(selection) = draft.selections.get_mut(index) else {
+                    return Err(CoreError::schema_invalid(source));
+                };
+                if let Some(before) = &op.before {
+                    if &selection.value != before {
+                        return Err(CoreError::doc_conflict(source));
+                    }
+                }
+                selection.value = after.clone();
+            }
+            ChangeSetOp::Remove => {
+                let Some(index) = op
+                    .path
+                    .strip_prefix("/selections/")
+                    .and_then(|idx| idx.parse::<usize>().ok())
+                else {
+                    return Err(CoreError::schema_invalid(source));
+                };
+                if index >= draft.selections.len() {
+                    return Err(CoreError::schema_invalid(source));
+                }
+                if let Some(before) = &op.before {
+                    if &draft.selections[index].value != before {
+                        return Err(CoreError::doc_conflict(source));
+                    }
+                }
+                draft.selections.remove(index);
+            }
+            ChangeSetOp::Test => {
+                let Some(index) = op
+                    .path
+                    .strip_prefix("/selections/")
+                    .and_then(|rest| rest.strip_suffix("/value"))
+                    .and_then(|idx| idx.parse::<usize>().ok())
+                else {
+                    return Err(CoreError::schema_invalid(source));
+                };
+                let Some(selection) = draft.selections.get(index) else {
+                    return Err(CoreError::schema_invalid(source));
+                };
+                if op.before.as_ref() != Some(&selection.value) {
+                    return Err(CoreError::doc_conflict(source));
+                }
+            }
+            ChangeSetOp::Move | ChangeSetOp::Copy => {
+                return Err(CoreError::schema_invalid(source));
+            }
+        }
+    }
+    Ok(())
+}
+
 fn ensure_draft_shape(draft: &Draft, source: &str) -> Result<()> {
     if !is_uuid(&draft.id) {
         return Err(CoreError::schema_invalid(source));
     }
-    if draft.schema_version.is_empty() || draft.document_version.is_empty() {
+    if !is_document_version(&draft.document_version) || !is_integer_version(&draft.schema_version) {
+        return Err(CoreError::schema_invalid(source));
+    }
+    if !is_semver(&draft.catalog_ref.version)
+        || !is_semver(&draft.target_ref.version)
+        || draft
+            .preset_refs
+            .as_ref()
+            .is_some_and(|refs| refs.iter().any(|r| !is_semver(&r.version)))
+    {
         return Err(CoreError::schema_invalid(source));
     }
     if draft.selections.len() > 4096 {
@@ -437,6 +542,12 @@ fn ensure_catalog_shape(catalog: &Catalog, source: &str, max_items: usize) -> Re
         || catalog.version.is_empty()
         || catalog.schema_version.is_empty()
         || catalog.document_version.is_empty()
+    {
+        return Err(CoreError::schema_invalid(source));
+    }
+    if !is_document_version(&catalog.document_version)
+        || !is_integer_version(&catalog.schema_version)
+        || !is_semver(&catalog.version)
     {
         return Err(CoreError::schema_invalid(source));
     }
@@ -659,6 +770,10 @@ impl CorePort for RealCore {
         let catalog = match input.source {
             CatalogSource::Embedded => self.catalog_embedded.clone(),
             CatalogSource::File => {
+                let expected_prov = input
+                    .expected_provenance
+                    .as_ref()
+                    .ok_or_else(|| CoreError::cat_provenance_missing(source))?;
                 let path = input
                     .file_path
                     .as_ref()
@@ -681,7 +796,18 @@ impl CorePort for RealCore {
                 {
                     return Err(CoreError::doc_limit(source));
                 }
-                serde_json::from_value(value).map_err(|_| CoreError::schema_invalid(source))?
+                let catalog: Catalog =
+                    serde_json::from_value(value).map_err(|_| CoreError::schema_invalid(source))?;
+                let Some(actual_prov) = &catalog.provenance else {
+                    return Err(CoreError::cat_provenance_missing(source));
+                };
+                if actual_prov.source_id != expected_prov.source_id
+                    || actual_prov.path != expected_prov.path
+                    || actual_prov.captured_at != expected_prov.captured_at
+                {
+                    return Err(CoreError::cat_provenance_missing(source));
+                }
+                catalog
             }
         };
         ensure_catalog_shape(&catalog, source, limits.max_array_items)?;
@@ -723,6 +849,16 @@ impl CorePort for RealCore {
                     return Err(CoreError::doc_conflict(source));
                 }
             }
+        }
+        if let Some(changeset) = &input.changeset {
+            if changeset
+                .base_revision
+                .is_some_and(|b| b != input.expected_revision)
+            {
+                return Err(CoreError::doc_conflict(source));
+            }
+            apply_changeset(&mut draft, changeset, source)?;
+            ensure_draft_shape(&draft, source)?;
         }
         draft.revision = input.expected_revision + 1;
         draft.updated_at = None;
@@ -869,5 +1005,29 @@ impl CorePort for RealCore {
             experimental: Some(input.manifest.target_ref.id == "archinstall-profile"),
             content: None,
         })
+    }
+
+    fn import_draft(&self, input: ImportDraftInput) -> Result<ImportDraftResult> {
+        let source = CoreOp::ImportDraft.source();
+        self.ensure_catalog_match(&input.catalog_ref, source)?;
+        ensure_target(&input.target_ref, &DRAFT_TARGETS, source)?;
+        let draft_id = match input.draft_id {
+            Some(given) => {
+                if !is_uuid(&given) {
+                    return Err(CoreError::schema_invalid(source));
+                }
+                given
+            }
+            None => new_uuid_v4(),
+        };
+        let result = migrate_v51_to_draft(
+            &input.source_bytes,
+            input.catalog_ref,
+            input.target_ref,
+            draft_id,
+            input.confirm_blocking_losses,
+        )?;
+        ensure_draft_shape(&result.draft, source)?;
+        Ok(result)
     }
 }

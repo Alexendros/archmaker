@@ -20,7 +20,7 @@ fn read_repo(rel: &str) -> String {
 fn make_test_draft() -> Draft {
     Draft {
         id: "test".to_string(),
-        document_version: "1".to_string(),
+        document_version: "vNext".to_string(),
         schema_version: "1".to_string(),
         revision: 0,
         content_digest: None,
@@ -36,7 +36,7 @@ fn make_test_draft() -> Draft {
         },
         target_ref: archmaker_domain::TargetRef {
             id: "report".to_string(),
-            version: "1".to_string(),
+            version: "0.1.0".to_string(),
         },
         selections: vec![],
         preset_refs: None,
@@ -102,7 +102,7 @@ fn neg_errors_are_typed_catalog_codes() {
 
 #[test]
 fn neg_capability_deny_by_default() {
-    // Check permission TOML files define the 7 CorePort commands
+    // Check permission TOML files define the 8 CorePort commands (v0 + importDraft)
     let mut found_permissions = Vec::new();
     for cmd in [
         "create-draft",
@@ -112,6 +112,7 @@ fn neg_capability_deny_by_default() {
         "validate-draft",
         "build-manifest",
         "export-artifact",
+        "import-draft",
     ] {
         let toml_path = format!("src-tauri/permissions/{}.toml", cmd);
         let raw = read_repo(&toml_path);
@@ -128,8 +129,8 @@ fn neg_capability_deny_by_default() {
     }
     assert_eq!(
         found_permissions.len(),
-        7,
-        "solo los 7 comandos CorePort v0"
+        8,
+        "solo los 8 comandos CorePort v0+MVP-1"
     );
 
     // Check main capability has empty permissions (auto-discovered from TOML)
@@ -270,6 +271,11 @@ fn neg_json_depth_limit_aborts() {
             }),
             expected_digest: None,
             file_path: Some(deep_path),
+            expected_provenance: Some(archmaker_core::CatalogProvenance {
+                source_id: "archmaker.repo.fixtures".into(),
+                path: "deep".into(),
+                captured_at: "2026-10-06T00:00:00Z".into(),
+            }),
             limits: Some(archmaker_core::Limits {
                 max_bytes: 1_000_000,
                 max_depth: 128,
@@ -374,6 +380,7 @@ fn neg_unknown_window_yields_typed_proto_error() {
         .save_draft(SaveDraftInput {
             draft: make_test_draft(),
             expected_revision: 0,
+            changeset: None,
             request_id: None,
         })
         .expect_err("nonexistent draft should be rejected");
@@ -399,8 +406,8 @@ fn dialog_and_picker_deny_everything_by_default() {
 }
 
 #[test]
-fn neg_allowlist_covers_all_seven_ops_exactly_once() {
-    // Verify each of the 7 CorePort commands has a corresponding permission TOML
+fn neg_allowlist_covers_all_eight_ops_exactly_once() {
+    // Verify each of the 8 CorePort commands has a corresponding permission TOML
     let mut count = 0;
     for cmd in [
         "create-draft",
@@ -410,6 +417,7 @@ fn neg_allowlist_covers_all_seven_ops_exactly_once() {
         "validate-draft",
         "build-manifest",
         "export-artifact",
+        "import-draft",
     ] {
         let toml_path = format!("src-tauri/permissions/{}.toml", cmd);
         let raw = read_repo(&toml_path);
@@ -419,5 +427,5 @@ fn neg_allowlist_covers_all_seven_ops_exactly_once() {
         assert_eq!(identifier, format!("core:{}", cmd));
         count += 1;
     }
-    assert_eq!(count, 7, "exactamente 7 permisos CorePort v0");
+    assert_eq!(count, 8, "exactamente 8 permisos CorePort v0+MVP-1");
 }

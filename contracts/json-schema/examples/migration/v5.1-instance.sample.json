@@ -3,9 +3,7 @@
     "name": "ArchMaker",
     "version": "5.1.0",
     "date": "2026-10-05",
-    "arch": [
-      "x86_64"
-    ],
+    "arch": ["x86_64"],
     "deploy": "local",
     "iso": {
       "name": "archmaker-forge-v5.1"
@@ -187,10 +185,7 @@
         "type": "error",
         "blocking": true,
         "when": {
-          "count_gt": [
-            "compositor",
-            1
-          ]
+          "count_gt": ["compositor", 1]
         },
         "action": "block",
         "note": "Only one compositor allowed - v5.1 logic"
@@ -199,16 +194,11 @@
         "id": "gdm-gnome",
         "type": "info",
         "when": {
-          "eq": [
-            "compositor",
-            "gnome"
-          ]
+          "eq": ["compositor", "gnome"]
         },
         "action": "change",
         "target": "dm",
-        "allowed": [
-          "gdm"
-        ],
+        "allowed": ["gdm"],
         "note": "GNOME selects and locks GDM"
       }
     ]
@@ -232,10 +222,7 @@
         "compositor": "gnome",
         "dm": "gdm",
         "browser": "firefox",
-        "apps": [
-          "steam",
-          "vlc"
-        ]
+        "apps": ["steam", "vlc"]
       }
     }
   ]

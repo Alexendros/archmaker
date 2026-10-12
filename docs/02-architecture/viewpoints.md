@@ -34,13 +34,13 @@ documento no instancia las views: enlaza a los artefactos que las contienen.
 
 ## Índice de viewpoints
 
-| ID | Viewpoint | Concerns | Vistas que genera | Notación |
-|---|---|---|---|---|
-| VP-01 | Contexto | CN-01, CN-05, CN-07, CN-15 | VW-01 | Mermaid `C4Context` |
-| VP-02 | Contenedores | CN-01, CN-05, CN-07, CN-08, CN-12, CN-14, CN-15 | VW-02 | Mermaid `C4Container` |
-| VP-03 | Componentes | CN-01, CN-02, CN-03, CN-04, CN-05, CN-06, CN-08, CN-09, CN-11, CN-13, CN-14, CN-15, CN-16, CN-17 | VW-03, VW-04, VW-05, VW-06 | Mermaid `flowchart` y diagramas de dependencia |
-| VP-04 | Deployment | CN-01, CN-06, CN-07, CN-08, CN-10, CN-12 | VW-07, VW-08, VW-09, VW-10 | Mermaid `flowchart` con nodos y procesos |
-| VP-05 | Interacción y runtime | CN-01, CN-02, CN-03, CN-04, CN-05, CN-06, CN-11, CN-12, CN-17 | VW-11 | Mermaid `sequenceDiagram` |
+| ID    | Viewpoint             | Concerns                                                                                         | Vistas que genera          | Notación                                       |
+| ----- | --------------------- | ------------------------------------------------------------------------------------------------ | -------------------------- | ---------------------------------------------- |
+| VP-01 | Contexto              | CN-01, CN-05, CN-07, CN-15                                                                       | VW-01                      | Mermaid `C4Context`                            |
+| VP-02 | Contenedores          | CN-01, CN-05, CN-07, CN-08, CN-12, CN-14, CN-15                                                  | VW-02                      | Mermaid `C4Container`                          |
+| VP-03 | Componentes           | CN-01, CN-02, CN-03, CN-04, CN-05, CN-06, CN-08, CN-09, CN-11, CN-13, CN-14, CN-15, CN-16, CN-17 | VW-03, VW-04, VW-05, VW-06 | Mermaid `flowchart` y diagramas de dependencia |
+| VP-04 | Deployment            | CN-01, CN-06, CN-07, CN-08, CN-10, CN-12                                                         | VW-07, VW-08, VW-09, VW-10 | Mermaid `flowchart` con nodos y procesos       |
+| VP-05 | Interacción y runtime | CN-01, CN-02, CN-03, CN-04, CN-05, CN-06, CN-11, CN-12, CN-17                                    | VW-11                      | Mermaid `sequenceDiagram`                      |
 
 ## VP-01 — Contexto
 
@@ -115,13 +115,13 @@ documento no instancia las views: enlaza a los artefactos que las contienen.
 
 ## Correspondencia viewpoint → view → concerns
 
-| Viewpoint | Vistas | Concerns cubiertos |
-|---|---|---|
-| VP-01 Contexto | VW-01 | CN-01, CN-05, CN-07, CN-15 |
-| VP-02 Contenedores | VW-02 | CN-01, CN-05, CN-07, CN-08, CN-12, CN-14, CN-15 |
-| VP-03 Componentes | VW-03, VW-04, VW-05, VW-06 | CN-01, CN-02, CN-03, CN-04, CN-05, CN-06, CN-08, CN-09, CN-11, CN-13, CN-14, CN-15, CN-16, CN-17 |
-| VP-04 Deployment | VW-07, VW-08, VW-09, VW-10 | CN-01, CN-06, CN-07, CN-08, CN-10, CN-12 |
-| VP-05 Interacción y runtime | VW-11 | CN-01, CN-02, CN-03, CN-04, CN-05, CN-06, CN-11, CN-12, CN-17 |
+| Viewpoint                   | Vistas                     | Concerns cubiertos                                                                               |
+| --------------------------- | -------------------------- | ------------------------------------------------------------------------------------------------ |
+| VP-01 Contexto              | VW-01                      | CN-01, CN-05, CN-07, CN-15                                                                       |
+| VP-02 Contenedores          | VW-02                      | CN-01, CN-05, CN-07, CN-08, CN-12, CN-14, CN-15                                                  |
+| VP-03 Componentes           | VW-03, VW-04, VW-05, VW-06 | CN-01, CN-02, CN-03, CN-04, CN-05, CN-06, CN-08, CN-09, CN-11, CN-13, CN-14, CN-15, CN-16, CN-17 |
+| VP-04 Deployment            | VW-07, VW-08, VW-09, VW-10 | CN-01, CN-06, CN-07, CN-08, CN-10, CN-12                                                         |
+| VP-05 Interacción y runtime | VW-11                      | CN-01, CN-02, CN-03, CN-04, CN-05, CN-06, CN-11, CN-12, CN-17                                    |
 
 ## Reglas de gobierno
 

@@ -32,47 +32,47 @@ reviewers:
 
 ## Términos canónicos
 
-| Término | Definición canónica | No confundir con | Productor | Identidad / ciclo |
-|---|---|---|---|---|
-| **Draft** | Intención editable del usuario: referencias a definiciones del catálogo más valores `SelectionValue`. Es el único agregado que la UI muta directamente. Contiene intención manual y referencias, nunca estado derivado. | `Resolution` (derivada, efímera) y `Manifest` (cerrado, hasheado). Un Draft no es una selección resuelta. | UI / `createDraft`, `importDraft` | `DM-DRAFT` · UUID · editable · ver `lifecycles.md` |
-| **Catalog** | Conjunto versionado e inmutable de definiciones (steps, options, capabilities, metadatos, evidencias y reglas). Declara qué se puede elegir y con qué consecuencias. **Nunca** contiene comandos, hooks ni shell ejecutables. | `Preset` (patch sobre el catálogo) y `Artifact` (salida). El catálogo no es "la configuración". | Maintainer de catálogo (PER-003) | `DM-CATALOG` · `namespace/id/version` + digest · inmutable |
-| **Preset** | Patch nombrado y versionado sobre un Draft/Catalog: un conjunto de selecciones y reglas de derivación. Aplicarlo produce un `ChangeSet`; **no** es un Draft ni lo sustituye silenciosamente. | `Draft` (destino del patch) y `Catalog` (fuente de las definiciones). | Maintainer / `applyPreset` | `DM-PRESET` · `namespace/id/version` · inmutable |
-| **Resolution** | Resultado determinista y efímero de resolver un Draft contra un Catalog: selección efectiva, capabilities aportadas/requeridas, derivaciones y conflictos. Recalculable a partir del mismo input; **nunca** se persiste como verdad. | `Manifest` (materialización cerrada) y `Draft` (intención). | `archmaker-resolver` · `resolveDraft` | `DM-RESOLUTION` · digest de input · recalculable |
-| **Manifest** | Documento canónico, cerrado, ordenado y hasheado que materializa una Resolution **sin bloqueos**. Es la entrada de los exporters y del plan de v1. | `Resolution` (abierta, efímera) y `Artifact` (archivo de salida). | `buildManifest` | `DM-MANIFEST` · digest · inmutable |
-| **Artifact** | Salida material de un exporter: p. ej. perfil ArchMaker, perfil `archinstall` (experimental) o reporte de revisión. Declara target, productor, versiones, `mediaType` y digests. | `Manifest` (fuente canónica) y `InstallationPlan` (v1). | `exportArtifact` | `DM-ARTIFACT` · digest/`mediaType` · inmutable |
-| **InstallationPlan** | *(v1)* Secuencia ordenada e inmutable de operaciones **tipadas** (`enum`) derivadas de un Manifest, con prechequeos y precondiciones. **Nunca** es un script ni contiene shell. | `Manifest` (intención canónica) y `RunnerSession` (ejecución). | `archmaker-plan` | `DM-PLAN` · UUID + hash de manifest · inmutable |
-| **Rule** | Expresión declarativa tipada (AST) sobre el dominio que evalúa `condición → efecto` (`block` / `suggest` / `derive` / `change` / `lock`). Se evalúa en el core; la UI no la reimplementa. | `Validator` (ejecuta comprobaciones) y `Policy` (restricción de organización). | Core (`archmaker-rules`) | `RULE-*` · versionada en el catálogo · ver `operator-spec.md` |
-| **Validator** | Componente que ejecuta una etapa o familia de comprobaciones (esquema, integridad referencial, reglas, target, procedencia) y emite `Diagnostic`. Un validator puede envolver muchas Rules. | `Rule` (declaración evaluada dentro de etapas). | Core (`archmaker-validation`) | `VAL-*` · ver `pipeline.md` |
-| **Policy** | *(Enterprise)* Restricción organizacional firmada que el resolver/validator debe respetar (`allow` / `deny` / `require` / `lock`). Es externa al producto local y opcional. | `Rule` (de producto) y `Capability` (habilidad técnica). | Control plane Enterprise | `DM-POLICY` · `namespace/id/version/signature` · inmutable |
-| **Capability** | Habilidad técnica que una selección **aporta** (`provides`) o **requiere** (`requires`): p. ej. `fs.btrfs`, `gpu.nvidia`, `boot.uefi`. El resolver computa el cierre y detecta conflictos. | Una opción (elegible) o un paquete (instalable). La capability es semántica. | Catálogo / resolver | `CAP-*` · referenciada por reglas |
-| **Runner** | *(v1)* Proceso separado, elevado temporalmente, que recibe un `InstallationPlan` inmutable por protocolo tipado y ejecuta operaciones **allowlisted** con journal append-only. Nunca interpreta scripts, catálogo ni HTML. | `Adapter` (traduce plan→API fijada, dentro del runner) y el core (sin privilegios). | `archmaker-runner` | `DM-SESSION` · ver `runner-protocol.md` |
+| Término              | Definición canónica                                                                                                                                                                                                                  | No confundir con                                                                                          | Productor                             | Identidad / ciclo                                             |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------- | ------------------------------------- | ------------------------------------------------------------- |
+| **Draft**            | Intención editable del usuario: referencias a definiciones del catálogo más valores `SelectionValue`. Es el único agregado que la UI muta directamente. Contiene intención manual y referencias, nunca estado derivado.              | `Resolution` (derivada, efímera) y `Manifest` (cerrado, hasheado). Un Draft no es una selección resuelta. | UI / `createDraft`, `importDraft`     | `DM-DRAFT` · UUID · editable · ver `lifecycles.md`            |
+| **Catalog**          | Conjunto versionado e inmutable de definiciones (steps, options, capabilities, metadatos, evidencias y reglas). Declara qué se puede elegir y con qué consecuencias. **Nunca** contiene comandos, hooks ni shell ejecutables.        | `Preset` (patch sobre el catálogo) y `Artifact` (salida). El catálogo no es "la configuración".           | Maintainer de catálogo (PER-003)      | `DM-CATALOG` · `namespace/id/version` + digest · inmutable    |
+| **Preset**           | Patch nombrado y versionado sobre un Draft/Catalog: un conjunto de selecciones y reglas de derivación. Aplicarlo produce un `ChangeSet`; **no** es un Draft ni lo sustituye silenciosamente.                                         | `Draft` (destino del patch) y `Catalog` (fuente de las definiciones).                                     | Maintainer / `applyPreset`            | `DM-PRESET` · `namespace/id/version` · inmutable              |
+| **Resolution**       | Resultado determinista y efímero de resolver un Draft contra un Catalog: selección efectiva, capabilities aportadas/requeridas, derivaciones y conflictos. Recalculable a partir del mismo input; **nunca** se persiste como verdad. | `Manifest` (materialización cerrada) y `Draft` (intención).                                               | `archmaker-resolver` · `resolveDraft` | `DM-RESOLUTION` · digest de input · recalculable              |
+| **Manifest**         | Documento canónico, cerrado, ordenado y hasheado que materializa una Resolution **sin bloqueos**. Es la entrada de los exporters y del plan de v1.                                                                                   | `Resolution` (abierta, efímera) y `Artifact` (archivo de salida).                                         | `buildManifest`                       | `DM-MANIFEST` · digest · inmutable                            |
+| **Artifact**         | Salida material de un exporter: p. ej. perfil ArchMaker, perfil `archinstall` (experimental) o reporte de revisión. Declara target, productor, versiones, `mediaType` y digests.                                                     | `Manifest` (fuente canónica) y `InstallationPlan` (v1).                                                   | `exportArtifact`                      | `DM-ARTIFACT` · digest/`mediaType` · inmutable                |
+| **InstallationPlan** | _(v1)_ Secuencia ordenada e inmutable de operaciones **tipadas** (`enum`) derivadas de un Manifest, con prechequeos y precondiciones. **Nunca** es un script ni contiene shell.                                                      | `Manifest` (intención canónica) y `RunnerSession` (ejecución).                                            | `archmaker-plan`                      | `DM-PLAN` · UUID + hash de manifest · inmutable               |
+| **Rule**             | Expresión declarativa tipada (AST) sobre el dominio que evalúa `condición → efecto` (`block` / `suggest` / `derive` / `change` / `lock`). Se evalúa en el core; la UI no la reimplementa.                                            | `Validator` (ejecuta comprobaciones) y `Policy` (restricción de organización).                            | Core (`archmaker-rules`)              | `RULE-*` · versionada en el catálogo · ver `operator-spec.md` |
+| **Validator**        | Componente que ejecuta una etapa o familia de comprobaciones (esquema, integridad referencial, reglas, target, procedencia) y emite `Diagnostic`. Un validator puede envolver muchas Rules.                                          | `Rule` (declaración evaluada dentro de etapas).                                                           | Core (`archmaker-validation`)         | `VAL-*` · ver `pipeline.md`                                   |
+| **Policy**           | _(Enterprise)_ Restricción organizacional firmada que el resolver/validator debe respetar (`allow` / `deny` / `require` / `lock`). Es externa al producto local y opcional.                                                          | `Rule` (de producto) y `Capability` (habilidad técnica).                                                  | Control plane Enterprise              | `DM-POLICY` · `namespace/id/version/signature` · inmutable    |
+| **Capability**       | Habilidad técnica que una selección **aporta** (`provides`) o **requiere** (`requires`): p. ej. `fs.btrfs`, `gpu.nvidia`, `boot.uefi`. El resolver computa el cierre y detecta conflictos.                                           | Una opción (elegible) o un paquete (instalable). La capability es semántica.                              | Catálogo / resolver                   | `CAP-*` · referenciada por reglas                             |
+| **Runner**           | _(v1)_ Proceso separado, elevado temporalmente, que recibe un `InstallationPlan` inmutable por protocolo tipado y ejecuta operaciones **allowlisted** con journal append-only. Nunca interpreta scripts, catálogo ni HTML.           | `Adapter` (traduce plan→API fijada, dentro del runner) y el core (sin privilegios).                       | `archmaker-runner`                    | `DM-SESSION` · ver `runner-protocol.md`                       |
 
 ## Términos relacionados (no ambiguos, fijados aquí para consistencia)
 
-| Término | Definición |
-|---|---|
-| `SelectionValue` | Unión discriminada `single`/`multiple`/`boolean`/`number`/`text`/`secretRef`. `secretRef` nunca serializa el secreto. |
-| `ChangeSet` | Diferencia explicable entre dos estados de un Draft (manual vs derivado). Producido por `applyPreset`/`compareDrafts`. |
-| `Diagnostic` | Resultado tipado y localizado de una etapa de validación. Ver `errors-events.md`. |
-| `CoreError` | Error estructurado de una operación de `CorePort`. Nunca string libre. Ver `errors-events.md`. |
-| `ExportTarget` | Destino de exportación (`archmaker-profile`, `archinstall-profile`, `report`). Conjunto fijado por **DEC-001**. |
+| Término              | Definición                                                                                                               |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `SelectionValue`     | Unión discriminada `single`/`multiple`/`boolean`/`number`/`text`/`secretRef`. `secretRef` nunca serializa el secreto.    |
+| `ChangeSet`          | Diferencia explicable entre dos estados de un Draft (manual vs derivado). Producido por `applyPreset`/`compareDrafts`.   |
+| `Diagnostic`         | Resultado tipado y localizado de una etapa de validación. Ver `errors-events.md`.                                        |
+| `CoreError`          | Error estructurado de una operación de `CorePort`. Nunca string libre. Ver `errors-events.md`.                           |
+| `ExportTarget`       | Destino de exportación (`archmaker-profile`, `archinstall-profile`, `report`). Conjunto fijado por **DEC-001**.          |
 | `Evidence` / `Claim` | Afirmación mutable de catálogo con fuente primaria, fecha de captura, verificador y caducidad. Ver `source-register.md`. |
-| `Scope` | Conjunto mínimo de rutas/permisos concedidos a una capability de Tauri. Ver `tauri-policy.md`. |
+| `Scope`              | Conjunto mínimo de rutas/permisos concedidos a una capability de Tauri. Ver `tauri-policy.md`.                           |
 
 ## Vínculos con decisiones
 
 El estado y la fecha de cada decisión se leen en `decision-register.md`; aquí solo se fija el
 término afectado.
 
-| Decisión | Término afectado | Efecto sobre el término |
-|---|---|---|
-| DEC-001 | `Artifact`, `ExportTarget` | Perfil ArchMaker + reporte; `archinstall` experimental. |
-| DEC-002 | `Catalog`, `Draft`, `Preset` | IDs globales `vendor.kind.id`; afecta la detección de duplicados (`CON-004`). |
-| DEC-004 | `Runner` | Transporte Unix socket + autenticación de sesión; elevación fuera del WebView. |
-| DEC-006 | `Catalog`, `Policy` | Sigstore para releases + firma offline evaluada. |
-| DEC-008 | `Artifact`, `InstallationPlan` | Solo Arch x86_64; aarch64 fuera de alcance. |
-| DEC-009 | `Artifact`, `Catalog` | Recursos empaquetados o del sistema; sin CDN en runtime. |
-| DEC-010 | `Diagnostic` (observabilidad) | Sin telemetría en MVP; opt-in futuro con ADR. |
+| Decisión | Término afectado               | Efecto sobre el término                                                        |
+| -------- | ------------------------------ | ------------------------------------------------------------------------------ |
+| DEC-001  | `Artifact`, `ExportTarget`     | Perfil ArchMaker + reporte; `archinstall` experimental.                        |
+| DEC-002  | `Catalog`, `Draft`, `Preset`   | IDs globales `vendor.kind.id`; afecta la detección de duplicados (`CON-004`).  |
+| DEC-004  | `Runner`                       | Transporte Unix socket + autenticación de sesión; elevación fuera del WebView. |
+| DEC-006  | `Catalog`, `Policy`            | Sigstore para releases + firma offline evaluada.                               |
+| DEC-008  | `Artifact`, `InstallationPlan` | Solo Arch x86_64; aarch64 fuera de alcance.                                    |
+| DEC-009  | `Artifact`, `Catalog`          | Recursos empaquetados o del sistema; sin CDN en runtime.                       |
+| DEC-010  | `Diagnostic` (observabilidad)  | Sin telemetría en MVP; opt-in futuro con ADR.                                  |
 
 ## Anti-patrones explícitamente prohibidos en el vocabulario
 
@@ -81,4 +81,3 @@ término afectado.
 - Tratar una Resolution como persistible.
 - Introducir comandos (`cmd`), hooks o `pacstrap` como parte de Catalog, Rule o Manifest (`CON-005`, `CON-006`, `CON-012`).
 - Reimplementar reglas en React ("regla de UI") en vez de en el core (`ADR-0001`).
-

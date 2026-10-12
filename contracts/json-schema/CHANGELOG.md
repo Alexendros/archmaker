@@ -19,7 +19,24 @@ Registro por versión de contrato (`schemaVersion` del documento) de los cambios
 inicial de todo schema: `draft`. La fase R6 publica la versión de contrato **v0** (los documentos
 declaran `schemaVersion: "1"`; la etiqueta `v0` es la revisión del contrato, no el eje
 `schemaVersion`). Cambiar la forma de un contrato exige incrementar `schemaVersion` y una
-*migration note* (`docs/03-data/versioning-migrations.md`).
+_migration note_ (`docs/03-data/versioning-migrations.md`).
+
+## v0.1 — MVP-1 (domain / catalog / migration)
+
+### Modificados
+
+- `common.schema.json`: formato congelado ADR-0006 — `documentVersion` (`vNext`/`vNext.N`),
+  `schemaVersion`/`protocolVersion` (entero positivo), `version` alias de SemVer para
+  `targetRef`/`producer`.
+- `catalog.schema.json`: `$defs.provenance` (sourceId/path/capturedAt) para catálogos locales.
+- CorePort: operación aditiva `importDraft` (fuera del congelado estricto de 7 ops; semántica v0
+  de las siete intacta).
+
+### Corpus
+
+- `22-common-documentversion.*`, `23-common-schemaversion.*`.
+- Fixture `crates/archmaker-core/fixtures/local-catalog-mvp1.json` (multi-entity + procedencia).
+- VAL-MIG (`tools/validate_mig.py`) + tests `import_draft_migrates_v51_sample`.
 
 ## v0 — fase R6 (AUD-011…AUD-015)
 

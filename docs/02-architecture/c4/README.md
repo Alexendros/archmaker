@@ -100,29 +100,29 @@ C4Container
 
 ## Contenedores, fronteras y protocolos
 
-| Contenedor | Frontera | Responsabilidad | Se comunica con |
-|---|---|---|---|
-| Desktop Application | Frontera local (proceso Tauri) | UI, adaptador Tauri y `Rust Core` enlazado. | Usuario, Local Draft Store, Local Catalog Store, Runner v1, Canal de actualización, Control Plane. |
-| Browser Application | Frontera local (runtime del navegador) | UI, adaptador WASM y `Rust Core` enlazado. | Usuario, Local Draft Store, Local Catalog Store. |
-| Runner v1 | Frontera privilegiada (proceso separado) | Preflight, dry-run, ejecución allowlisted y journal. | Desktop Application, Control Plane. |
-| Local Draft Store | Frontera de almacenamiento local | Drafts y revisiones con escritura atómica. | Desktop Application, Browser Application. |
-| Local Catalog Store | Frontera de almacenamiento local | Catálogos firmados con digest y procedencia. | Desktop Application, Browser Application. |
-| Enterprise Control Plane | Frontera de servidor (Enterprise) | Policies, RBAC, aprobaciones y auditoría. | Operador, Enterprise Store, Desktop Application, Runner v1. |
-| Enterprise Store | Frontera de datos (Enterprise) | Tenants, policies y auditoría. | Enterprise Control Plane. |
+| Contenedor               | Frontera                                 | Responsabilidad                                      | Se comunica con                                                                                    |
+| ------------------------ | ---------------------------------------- | ---------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| Desktop Application      | Frontera local (proceso Tauri)           | UI, adaptador Tauri y `Rust Core` enlazado.          | Usuario, Local Draft Store, Local Catalog Store, Runner v1, Canal de actualización, Control Plane. |
+| Browser Application      | Frontera local (runtime del navegador)   | UI, adaptador WASM y `Rust Core` enlazado.           | Usuario, Local Draft Store, Local Catalog Store.                                                   |
+| Runner v1                | Frontera privilegiada (proceso separado) | Preflight, dry-run, ejecución allowlisted y journal. | Desktop Application, Control Plane.                                                                |
+| Local Draft Store        | Frontera de almacenamiento local         | Drafts y revisiones con escritura atómica.           | Desktop Application, Browser Application.                                                          |
+| Local Catalog Store      | Frontera de almacenamiento local         | Catálogos firmados con digest y procedencia.         | Desktop Application, Browser Application.                                                          |
+| Enterprise Control Plane | Frontera de servidor (Enterprise)        | Policies, RBAC, aprobaciones y auditoría.            | Operador, Enterprise Store, Desktop Application, Runner v1.                                        |
+| Enterprise Store         | Frontera de datos (Enterprise)           | Tenants, policies y auditoría.                       | Enterprise Control Plane.                                                                          |
 
 Cada frontera se cruza por un protocolo nombrado y deny-by-default:
 
-| Frontera | Protocolo | Contrato | ADR |
-|---|---|---|---|
-| WebView a `Rust Core` en Desktop | Tauri IPC (comandos allowlisted + capability por ventana) | `CorePort` / `tauri-commands` | ADR-0001, ADR-0002 |
-| UI a `Rust Core` en Browser | `postMessage` Web Worker + bindings WASM | `CorePort` / `tauri-wasm` | ADR-0001 |
-| Desktop a Local Draft Store | Filesystem con scope por selección explícita; escritura atómica | `draft.schema.json`, `saveDraft` con `expectedRevision` | ADR-0002 |
-| Desktop a Local Catalog Store | Carga de catálogo firmado y verificación de digest | `catalog.schema.json` | ADR-0008 |
-| Browser a almacenes locales | Almacenamiento del navegador sin red | `draft.schema.json`, `catalog.schema.json` | ADR-0002 |
-| Desktop a Runner v1 | Unix socket con autenticación de sesión; `protocolVersion` negociada | `runner-protocol` | ADR-0004 |
-| Desktop a Canal de actualización | HTTPS/TLS, endpoint en allowlist y firma obligatoria | `updater` | ADR-0009 |
-| Desktop/Runner a Control Plane | HTTPS/mTLS + OIDC, superficie `/api/v1` (Enterprise) | `openapi` | ADR-0003 |
-| Control Plane a Enterprise Store | SQL | — | — |
+| Frontera                         | Protocolo                                                            | Contrato                                                | ADR                |
+| -------------------------------- | -------------------------------------------------------------------- | ------------------------------------------------------- | ------------------ |
+| WebView a `Rust Core` en Desktop | Tauri IPC (comandos allowlisted + capability por ventana)            | `CorePort` / `tauri-commands`                           | ADR-0001, ADR-0002 |
+| UI a `Rust Core` en Browser      | `postMessage` Web Worker + bindings WASM                             | `CorePort` / `tauri-wasm`                               | ADR-0001           |
+| Desktop a Local Draft Store      | Filesystem con scope por selección explícita; escritura atómica      | `draft.schema.json`, `saveDraft` con `expectedRevision` | ADR-0002           |
+| Desktop a Local Catalog Store    | Carga de catálogo firmado y verificación de digest                   | `catalog.schema.json`                                   | ADR-0008           |
+| Browser a almacenes locales      | Almacenamiento del navegador sin red                                 | `draft.schema.json`, `catalog.schema.json`              | ADR-0002           |
+| Desktop a Runner v1              | Unix socket con autenticación de sesión; `protocolVersion` negociada | `runner-protocol`                                       | ADR-0004           |
+| Desktop a Canal de actualización | HTTPS/TLS, endpoint en allowlist y firma obligatoria                 | `updater`                                               | ADR-0009           |
+| Desktop/Runner a Control Plane   | HTTPS/mTLS + OIDC, superficie `/api/v1` (Enterprise)                 | `openapi`                                               | ADR-0003           |
+| Control Plane a Enterprise Store | SQL                                                                  | —                                                       | —                  |
 
 ## Componentes
 

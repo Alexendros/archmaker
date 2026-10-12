@@ -121,6 +121,8 @@ jobs:
               "common-contentdigest": ("common", "/$defs/contentDigest"),
               "common-secretref": ("common", "/$defs/secretRef"),
               "common-limits": ("common", "/$defs/limits"),
+              "common-documentversion": ("common", "/$defs/documentVersion"),
+              "common-schemaversion": ("common", "/$defs/schemaVersion"),
               "draft-savedraft": ("draft", "/$defs/saveDraftRequest"),
           }
 

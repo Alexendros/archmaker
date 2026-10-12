@@ -40,6 +40,12 @@ PYTHON_VALIDATORS = {
     'validate_schema_refs.py': {'id': 'VAL-SCHEMA-REFS', 'covers': ['FR-DRAFT-001', 'FR-CAT-001', 'FR-MANIFEST-001'], 'type': 'schema', 'transversal': False},
     'canonicalize.py': {'id': 'VAL-CANONICALIZE', 'covers': ['NFR-DET-001', 'FR-MANIFEST-001'], 'type': 'canonicalize', 'transversal': False},
     'check_negative_capabilities.py': {'id': 'VAL-NEG-CAPABILITIES', 'covers': ['NFR-SEC-001'], 'type': 'negative', 'transversal': False},
+    'validate_mig.py': {
+        'id': 'VAL-MIG',
+        'covers': ['FR-IMPORT-001', 'NFR-MIG-001'],
+        'type': 'schema',
+        'transversal': False,
+    },
 }
 
 WEB_TEST_TYPES = {

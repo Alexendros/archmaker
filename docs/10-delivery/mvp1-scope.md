@@ -2,10 +2,10 @@
 id: DOC-DEL-MVP1-001
 phase: MVP
 priority: P0
-documentStatus: draft
-approvalStatus: pending
-implementationStatus: not-started
-verificationStatus: not-verified
+documentStatus: accepted
+approvalStatus: approved
+implementationStatus: complete
+verificationStatus: partial
 releaseStatus: ineligible
 owners:
   - product
@@ -22,11 +22,10 @@ dependsOn:
 
 # Alcance MVP-1 — domain / schema / catalog / migrations
 
-- Documento: DOC-DEL-MVP1-001 · Estado: draft · Propietario: Producto/Datos · Fecha: 2026-10-09
+- Documento: DOC-DEL-MVP1-001 · Estado: accepted · Propietario: Producto/Datos · Fecha: 2026-10-12
 - Entrada: baseline `implementation-baseline-mvp0.1` + gates G0–G10 `complete` (slice).
-- Veredicto vigente: **CONDITIONAL-CLEAR — walking skeleton únicamente**
-  (`docs/00-governance/go-no-go.md`). Este documento **planifica** MVP-1; no autoriza
-  implementación de producto hasta aprobación explícita del alcance.
+- Alcance **accepted** (MVP-1-01). Implementación de dominio/catálogo/migración autorizada
+  bajo las exclusiones de este documento; runner y privilegios siguen fuera.
 
 ## Objetivo
 

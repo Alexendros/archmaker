@@ -3,7 +3,8 @@ use std::time::{SystemTime, UNIX_EPOCH};
 
 use archmaker_core::{
     catalog_content_digest, is_uuid, render_artifact_bytes, BuildManifestInput, CatalogSource,
-    CorePort, CreateDraftInput, DestinationHandle, ExportArtifactInput, LoadCatalogInput, RealCore,
+    ChangeSet, ChangeSetOp, ChangeSetOperation, ChangeSetOrigin, CorePort, CreateDraftInput,
+    DestinationHandle, ExportArtifactInput, ImportDraftInput, LoadCatalogInput, RealCore,
     ResolveDraftInput, SaveDraftInput, ValidateDraftInput,
 };
 use archmaker_domain::{
@@ -31,7 +32,7 @@ fn catalog_ref() -> CatalogRef {
 fn draft_target() -> TargetRef {
     TargetRef {
         id: "arch-x86_64".to_string(),
-        version: "2026.10".to_string(),
+        version: "2026.10.0".to_string(),
     }
 }
 
@@ -187,6 +188,7 @@ fn load_catalog_embedded_and_digest() {
             catalog_ref: None,
             expected_digest: None,
             file_path: None,
+            expected_provenance: None,
             limits: None,
             request_id: None,
         })
@@ -199,6 +201,7 @@ fn load_catalog_embedded_and_digest() {
             catalog_ref: Some(catalog_ref()),
             expected_digest: Some(expected),
             file_path: None,
+            expected_provenance: None,
             limits: None,
             request_id: None,
         })
@@ -215,6 +218,7 @@ fn load_catalog_digest_mismatch() {
             catalog_ref: None,
             expected_digest: Some(digest_value(&"f".repeat(64))),
             file_path: None,
+            expected_provenance: None,
             limits: None,
             request_id: None,
         })
@@ -224,26 +228,47 @@ fn load_catalog_digest_mismatch() {
 
 #[test]
 fn load_catalog_file_round_trip_and_missing() {
+    use archmaker_core::CatalogProvenance;
     let (core, dir) = core_with_store("load-file");
     let path = dir.join("catalog.json");
     std::fs::write(&path, archmaker_core::EMBEDDED_CATALOG_JSON).expect("write fixture");
+    let provenance = CatalogProvenance {
+        source_id: "archmaker.repo.fixtures".into(),
+        path: "crates/archmaker-core/fixtures/embedded-catalog.json".into(),
+        captured_at: "2026-10-06T00:00:00Z".into(),
+    };
     let catalog = core
         .load_catalog(LoadCatalogInput {
             source: CatalogSource::File,
             catalog_ref: Some(catalog_ref()),
             expected_digest: None,
             file_path: Some(path),
+            expected_provenance: Some(provenance.clone()),
             limits: None,
             request_id: None,
         })
         .expect("file loads");
     assert_eq!(catalog.namespace, "archmaker.core");
+    assert!(catalog.provenance.is_some());
+    let error = core
+        .load_catalog(LoadCatalogInput {
+            source: CatalogSource::File,
+            catalog_ref: None,
+            expected_digest: None,
+            file_path: Some(dir.join("catalog.json")),
+            expected_provenance: None,
+            limits: None,
+            request_id: None,
+        })
+        .expect_err("file without provenance");
+    assert_eq!(error.code, "AM-CAT-004");
     let error = core
         .load_catalog(LoadCatalogInput {
             source: CatalogSource::File,
             catalog_ref: None,
             expected_digest: None,
             file_path: Some(dir.join("absent.json")),
+            expected_provenance: Some(provenance),
             limits: None,
             request_id: None,
         })
@@ -255,11 +280,12 @@ fn load_catalog_file_round_trip_and_missing() {
             catalog_ref: None,
             expected_digest: None,
             file_path: None,
+            expected_provenance: None,
             limits: None,
             request_id: None,
         })
         .expect_err("file without path");
-    assert_eq!(error.code, "AM-DOC-001");
+    assert_eq!(error.code, "AM-CAT-004");
     let _ = std::fs::remove_dir_all(&dir);
 }
 
@@ -271,6 +297,7 @@ fn save_draft_increments_and_persists() {
         .save_draft(SaveDraftInput {
             draft,
             expected_revision: 0,
+            changeset: None,
             request_id: None,
         })
         .expect("first save");
@@ -288,6 +315,7 @@ fn save_draft_conflict_on_stale_revision() {
         .save_draft(SaveDraftInput {
             draft: draft.clone(),
             expected_revision: 0,
+            changeset: None,
             request_id: None,
         })
         .expect("first save");
@@ -296,6 +324,7 @@ fn save_draft_conflict_on_stale_revision() {
         .save_draft(SaveDraftInput {
             draft,
             expected_revision: 0,
+            changeset: None,
             request_id: None,
         })
         .expect_err("stale retry conflicts");
@@ -304,6 +333,7 @@ fn save_draft_conflict_on_stale_revision() {
         .save_draft(SaveDraftInput {
             draft: saved,
             expected_revision: 7,
+            changeset: None,
             request_id: None,
         })
         .expect_err("unknown future revision conflicts");
@@ -571,6 +601,7 @@ fn end_to_end_create_save_resolve_validate_build_export() {
         .save_draft(SaveDraftInput {
             draft,
             expected_revision: 0,
+            changeset: None,
             request_id: None,
         })
         .expect("saves");
@@ -604,4 +635,114 @@ fn end_to_end_create_save_resolve_validate_build_export() {
     assert!(dir.join("e2e.json").exists());
     assert_eq!(artifact.media_type, "application/json");
     let _ = std::fs::remove_dir_all(&dir);
+}
+
+fn desktop_catalog() -> archmaker_domain::Catalog {
+    serde_json::from_str(include_str!("../fixtures/local-catalog-mvp1.json"))
+        .expect("local catalog deserializes")
+}
+
+fn desktop_catalog_ref() -> CatalogRef {
+    CatalogRef {
+        namespace: "archmaker.core".to_string(),
+        id: "desktop".to_string(),
+        version: "1.0.0".to_string(),
+        digest: digest_value(&"1".repeat(64)),
+    }
+}
+
+#[test]
+fn load_local_catalog_with_provenance() {
+    use archmaker_core::CatalogProvenance;
+    let (core, dir) = core_with_store("local-cat");
+    let path = dir.join("local-catalog-mvp1.json");
+    std::fs::write(&path, include_str!("../fixtures/local-catalog-mvp1.json")).expect("write");
+    let provenance = CatalogProvenance {
+        source_id: "archmaker.repo.fixtures".into(),
+        path: "crates/archmaker-core/fixtures/local-catalog-mvp1.json".into(),
+        captured_at: "2026-10-12T00:00:00Z".into(),
+    };
+    let catalog = core
+        .load_catalog(LoadCatalogInput {
+            source: CatalogSource::File,
+            catalog_ref: Some(desktop_catalog_ref()),
+            expected_digest: None,
+            file_path: Some(path),
+            expected_provenance: Some(provenance),
+            limits: None,
+            request_id: None,
+        })
+        .expect("local catalog loads");
+    assert_eq!(catalog.id, "desktop");
+    assert!(catalog.steps.len() >= 8);
+    assert!(catalog.provenance.is_some());
+    let _ = std::fs::remove_dir_all(&dir);
+}
+
+#[test]
+fn import_draft_migrates_v51_sample() {
+    let core = RealCore::new(desktop_catalog());
+    let bytes = include_bytes!(
+        "../../../contracts/json-schema/examples/migration/v5.1-instance.sample.json"
+    );
+    let result = core
+        .import_draft(ImportDraftInput {
+            source_bytes: bytes.to_vec(),
+            catalog_ref: desktop_catalog_ref(),
+            target_ref: draft_target(),
+            draft_id: Some("99999999-9999-4999-8999-999999999999".into()),
+            confirm_blocking_losses: true,
+            request_id: None,
+        })
+        .expect("import succeeds");
+    assert_eq!(result.draft.document_version, "vNext");
+    assert_eq!(result.changeset.origin, Some(ChangeSetOrigin::Migration));
+    assert!(result
+        .draft
+        .selections
+        .iter()
+        .any(|s| matches!(s.value, SelectionValue::Multiple { .. })));
+    assert_eq!(result.original_digest.len(), 64);
+    // Original bytes remain identical (NFR-MIG-001).
+    assert_eq!(
+        result.original_digest,
+        archmaker_canonicalization::digest(bytes, "archmaker:import:original:v1")
+    );
+}
+
+#[test]
+fn save_draft_applies_changeset_replace() {
+    let core = RealCore::with_embedded().expect("embedded");
+    let mut draft = valid_draft(&core);
+    draft.selections = vec![single("archmaker.sys.kernel", "archmaker.kernel.linux")];
+    let changeset = ChangeSet {
+        schema_version: "1".into(),
+        base_revision: Some(0),
+        target_draft_id: Some(draft.id.clone()),
+        origin: Some(ChangeSetOrigin::Manual),
+        operations: vec![ChangeSetOperation {
+            op_id: "op-1".into(),
+            op: ChangeSetOp::Replace,
+            path: "/selections/0/value".into(),
+            selector: None,
+            from: None,
+            before: Some(SelectionValue::Single {
+                option_id: "archmaker.kernel.linux".into(),
+            }),
+            after: Some(SelectionValue::Single {
+                option_id: "archmaker.kernel.linux".into(),
+            }),
+            note: None,
+        }],
+        summary: None,
+    };
+    let saved = core
+        .save_draft(SaveDraftInput {
+            draft,
+            expected_revision: 0,
+            changeset: Some(changeset),
+            request_id: None,
+        })
+        .expect("save with changeset");
+    assert_eq!(saved.revision, 1);
 }

@@ -1,18 +1,18 @@
 {
   "metadata": {
-    "generated_at": "1791320397",
-    "git_sha": "42a2ad171c4e5380c64cce24eee9ee0d6bc04abb",
+    "generated_at": "1791820748",
+    "git_sha": "bed7e320d20e7edd801eab41793bffbb919cc047",
     "requirements_file": "docs/01-product/requirements.md",
     "inventory_file": "docs/10-delivery/tests-inventory.json",
     "validators_file": "docs/10-delivery/validators.json"
   },
   "summary": {
     "total_requirements": 17,
-    "in_scope": 11,
-    "deferred": 5,
+    "in_scope": 13,
+    "deferred": 3,
     "pending": 1,
-    "linked_requirements": 11,
-    "linked_in_scope": 11,
+    "linked_requirements": 13,
+    "linked_in_scope": 13,
     "coverage_link_pct": 100.0,
     "coverage_pass_pct": 100.0,
     "orphan_tests": 0,
@@ -39,8 +39,8 @@
         "TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-UNKNOWN_COMMAND_RETURNS_TYPED_PROTO_002",
         "TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-UNKNOWN_WINDOW_RETURNS_TYPED_PROTO_002",
         "TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-MALFORMED_JSON_RETURNS_TYPED_SCHEMA_ERROR",
-        "TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-ALLOWLIST_COVERS_ALL_SEVEN_OPS_EXACTLY_ONCE",
-        "TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-MAIN_WINDOW_ALLOWS_ALL_SEVEN_OPS",
+        "TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-ALLOWLIST_COVERS_ALL_EIGHT_OPS_EXACTLY_ONCE",
+        "TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-MAIN_WINDOW_ALLOWS_ALL_EIGHT_OPS",
         "TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-DIALOG_AND_PICKER_DENY_EVERYTHING_BY_DEFAULT",
         "TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-DENIED_ERROR_IS_TYPED_PROTO_001",
         "TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-UNKNOWN_COMMAND_YIELDS_TYPED_PROTO_ERROR",
@@ -52,6 +52,7 @@
         "TST-ARCHMAKER-CORE-CORE_CONTRACT-LOAD_CATALOG_EMBEDDED_AND_DIGEST",
         "TST-ARCHMAKER-CORE-CORE_CONTRACT-LOAD_CATALOG_DIGEST_MISMATCH",
         "TST-ARCHMAKER-CORE-CORE_CONTRACT-LOAD_CATALOG_FILE_ROUND_TRIP_AND_MISSING",
+        "TST-ARCHMAKER-CORE-CORE_CONTRACT-LOAD_LOCAL_CATALOG_WITH_PROVENANCE",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_FS_OUTSIDE_SCOPE_NEVER_WRITTEN",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_ERRORS_ARE_TYPED_CATALOG_CODES",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_CAPABILITY_DENY_BY_DEFAULT",
@@ -63,13 +64,13 @@
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_UNKNOWN_COMMAND_YIELDS_TYPED_PROTO_ERROR",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_UNKNOWN_WINDOW_YIELDS_TYPED_PROTO_ERROR",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-DIALOG_AND_PICKER_DENY_EVERYTHING_BY_DEFAULT",
-        "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_ALLOWLIST_COVERS_ALL_SEVEN_OPS_EXACTLY_ONCE"
+        "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_ALLOWLIST_COVERS_ALL_EIGHT_OPS_EXACTLY_ONCE"
       ],
       "validators": ["VAL-SCHEMA-REFS", "VAL-NEG-CAPABILITIES"],
-      "evidence_count": 33,
+      "evidence_count": 34,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["negative", "schema", "integration", "unit"],
+      "evidence_types": ["schema", "integration", "negative", "unit"],
       "coverage_status": "covered"
     },
     {
@@ -88,8 +89,8 @@
         "TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-UNKNOWN_COMMAND_RETURNS_TYPED_PROTO_002",
         "TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-UNKNOWN_WINDOW_RETURNS_TYPED_PROTO_002",
         "TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-MALFORMED_JSON_RETURNS_TYPED_SCHEMA_ERROR",
-        "TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-ALLOWLIST_COVERS_ALL_SEVEN_OPS_EXACTLY_ONCE",
-        "TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-MAIN_WINDOW_ALLOWS_ALL_SEVEN_OPS",
+        "TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-ALLOWLIST_COVERS_ALL_EIGHT_OPS_EXACTLY_ONCE",
+        "TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-MAIN_WINDOW_ALLOWS_ALL_EIGHT_OPS",
         "TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-DIALOG_AND_PICKER_DENY_EVERYTHING_BY_DEFAULT",
         "TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-DENIED_ERROR_IS_TYPED_PROTO_001",
         "TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-UNKNOWN_COMMAND_YIELDS_TYPED_PROTO_ERROR",
@@ -106,6 +107,8 @@
         "TST-ARCHMAKER-CORE-CORE_CONTRACT-RESOLVE_DRAFT_VALID_AND_DETERMINISTIC",
         "TST-ARCHMAKER-CORE-CORE_CONTRACT-RESOLVE_DRAFT_REJECTS_UNKNOWN_OPTION",
         "TST-ARCHMAKER-CORE-CORE_CONTRACT-VALIDATE_DRAFT_CLEAN_AND_BLOCKING",
+        "TST-ARCHMAKER-CORE-CORE_CONTRACT-IMPORT_DRAFT_MIGRATES_V51_SAMPLE",
+        "TST-ARCHMAKER-CORE-CORE_CONTRACT-SAVE_DRAFT_APPLIES_CHANGESET_REPLACE",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_FS_OUTSIDE_SCOPE_NEVER_WRITTEN",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_ERRORS_ARE_TYPED_CATALOG_CODES",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_CAPABILITY_DENY_BY_DEFAULT",
@@ -117,13 +120,13 @@
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_UNKNOWN_COMMAND_YIELDS_TYPED_PROTO_ERROR",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_UNKNOWN_WINDOW_YIELDS_TYPED_PROTO_ERROR",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-DIALOG_AND_PICKER_DENY_EVERYTHING_BY_DEFAULT",
-        "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_ALLOWLIST_COVERS_ALL_SEVEN_OPS_EXACTLY_ONCE"
+        "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_ALLOWLIST_COVERS_ALL_EIGHT_OPS_EXACTLY_ONCE"
       ],
       "validators": ["VAL-SCHEMA-REFS", "VAL-NEG-CAPABILITIES"],
-      "evidence_count": 39,
+      "evidence_count": 41,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["negative", "schema", "integration", "unit"],
+      "evidence_types": ["schema", "integration", "negative", "unit"],
       "coverage_status": "covered"
     },
     {
@@ -166,17 +169,19 @@
       "requirement": "FR-IMPORT-001",
       "type": "FR",
       "name": "Importar y migrar v5.1.",
-      "scope": "deferred",
-      "in_scope": false,
-      "deferred": true,
+      "scope": "mvp1",
+      "in_scope": true,
+      "deferred": false,
       "pending": false,
-      "tests": [],
-      "validators": [],
-      "evidence_count": 0,
-      "has_executable_evidence": false,
+      "tests": [
+        "TST-ARCHMAKER-CORE-CORE_CONTRACT-IMPORT_DRAFT_MIGRATES_V51_SAMPLE"
+      ],
+      "validators": ["VAL-MIG"],
+      "evidence_count": 2,
+      "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": [],
-      "coverage_status": "deferred"
+      "evidence_types": ["schema", "integration"],
+      "coverage_status": "covered"
     },
     {
       "requirement": "FR-MANIFEST-001",
@@ -194,8 +199,8 @@
         "TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-UNKNOWN_COMMAND_RETURNS_TYPED_PROTO_002",
         "TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-UNKNOWN_WINDOW_RETURNS_TYPED_PROTO_002",
         "TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-MALFORMED_JSON_RETURNS_TYPED_SCHEMA_ERROR",
-        "TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-ALLOWLIST_COVERS_ALL_SEVEN_OPS_EXACTLY_ONCE",
-        "TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-MAIN_WINDOW_ALLOWS_ALL_SEVEN_OPS",
+        "TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-ALLOWLIST_COVERS_ALL_EIGHT_OPS_EXACTLY_ONCE",
+        "TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-MAIN_WINDOW_ALLOWS_ALL_EIGHT_OPS",
         "TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-DIALOG_AND_PICKER_DENY_EVERYTHING_BY_DEFAULT",
         "TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-DENIED_ERROR_IS_TYPED_PROTO_001",
         "TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-UNKNOWN_COMMAND_YIELDS_TYPED_PROTO_ERROR",
@@ -216,7 +221,7 @@
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_UNKNOWN_COMMAND_YIELDS_TYPED_PROTO_ERROR",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_UNKNOWN_WINDOW_YIELDS_TYPED_PROTO_ERROR",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-DIALOG_AND_PICKER_DENY_EVERYTHING_BY_DEFAULT",
-        "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_ALLOWLIST_COVERS_ALL_SEVEN_OPS_EXACTLY_ONCE"
+        "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_ALLOWLIST_COVERS_ALL_EIGHT_OPS_EXACTLY_ONCE"
       ],
       "validators": [
         "VAL-CANONICALIZE",
@@ -227,11 +232,11 @@
       "has_executable_evidence": true,
       "passes_ci": true,
       "evidence_types": [
-        "negative",
+        "schema",
+        "canonicalize",
         "integration",
         "unit",
-        "schema",
-        "canonicalize"
+        "negative"
       ],
       "coverage_status": "covered"
     },
@@ -271,7 +276,7 @@
       "evidence_count": 6,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["negative", "integration"],
+      "evidence_types": ["integration", "negative"],
       "coverage_status": "covered"
     },
     {
@@ -352,24 +357,26 @@
       "evidence_count": 13,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["negative", "integration", "unit", "canonicalize"],
+      "evidence_types": ["canonicalize", "integration", "negative", "unit"],
       "coverage_status": "covered"
     },
     {
       "requirement": "NFR-MIG-001",
       "type": "NFR",
       "name": "Migraciones explícitas y no destructivas.",
-      "scope": "deferred",
-      "in_scope": false,
-      "deferred": true,
+      "scope": "mvp1",
+      "in_scope": true,
+      "deferred": false,
       "pending": false,
-      "tests": [],
-      "validators": [],
-      "evidence_count": 0,
-      "has_executable_evidence": false,
+      "tests": [
+        "TST-ARCHMAKER-CORE-CORE_CONTRACT-IMPORT_DRAFT_MIGRATES_V51_SAMPLE"
+      ],
+      "validators": ["VAL-MIG"],
+      "evidence_count": 2,
+      "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": [],
-      "coverage_status": "deferred"
+      "evidence_types": ["schema", "integration"],
+      "coverage_status": "covered"
     },
     {
       "requirement": "NFR-OBS-001",
@@ -441,8 +448,8 @@
         "TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-UNKNOWN_COMMAND_RETURNS_TYPED_PROTO_002",
         "TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-UNKNOWN_WINDOW_RETURNS_TYPED_PROTO_002",
         "TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-MALFORMED_JSON_RETURNS_TYPED_SCHEMA_ERROR",
-        "TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-ALLOWLIST_COVERS_ALL_SEVEN_OPS_EXACTLY_ONCE",
-        "TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-MAIN_WINDOW_ALLOWS_ALL_SEVEN_OPS",
+        "TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-ALLOWLIST_COVERS_ALL_EIGHT_OPS_EXACTLY_ONCE",
+        "TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-MAIN_WINDOW_ALLOWS_ALL_EIGHT_OPS",
         "TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-DIALOG_AND_PICKER_DENY_EVERYTHING_BY_DEFAULT",
         "TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-DENIED_ERROR_IS_TYPED_PROTO_001",
         "TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-UNKNOWN_COMMAND_YIELDS_TYPED_PROTO_ERROR",
@@ -461,7 +468,7 @@
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_UNKNOWN_COMMAND_YIELDS_TYPED_PROTO_ERROR",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_UNKNOWN_WINDOW_YIELDS_TYPED_PROTO_ERROR",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-DIALOG_AND_PICKER_DENY_EVERYTHING_BY_DEFAULT",
-        "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_ALLOWLIST_COVERS_ALL_SEVEN_OPS_EXACTLY_ONCE"
+        "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_ALLOWLIST_COVERS_ALL_EIGHT_OPS_EXACTLY_ONCE"
       ],
       "validators": ["VAL-NEG-CAPABILITIES"],
       "evidence_count": 28,
@@ -473,6 +480,7 @@
   ],
   "in_scope_requirements": [
     "FR-DRAFT-001",
+    "FR-IMPORT-001",
     "FR-CAT-001",
     "FR-RESOLVE-001",
     "FR-VALIDATE-001",
@@ -482,15 +490,10 @@
     "NFR-DET-001",
     "NFR-ACC-001",
     "NFR-OFF-001",
+    "NFR-MIG-001",
     "NFR-PORT-001"
   ],
-  "deferred_requirements": [
-    "FR-IMPORT-001",
-    "FR-PRESET-001",
-    "FR-RUN-001",
-    "FR-ENT-001",
-    "NFR-MIG-001"
-  ],
+  "deferred_requirements": ["FR-PRESET-001", "FR-RUN-001", "FR-ENT-001"],
   "pending_requirements": ["NFR-OBS-001"],
   "orphan_details": {
     "tests_without_requirement": [],

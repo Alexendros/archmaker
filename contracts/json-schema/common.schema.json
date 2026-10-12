@@ -41,28 +41,27 @@
       "maxLength": 128
     },
     "version": {
-      "description": "Generic version axis value (ADR-0006). Non-empty; exact per-axis format is delegated to axis-specific ADRs, so no semver is imposed here.",
-      "type": "string",
-      "minLength": 1,
-      "maxLength": 128
+      "description": "Generic version axis value (ADR-0006). Alias of semver for axes that share the SemVer 2.0 format (targetRef.version, producer.version).",
+      "$ref": "#/$defs/semver"
     },
     "schemaVersion": {
-      "description": "JSON Schema contract version (axis schemaVersion).",
+      "description": "JSON Schema contract version (axis schemaVersion). Positive integer string (ADR-0006 MVP-1 format freeze).",
       "type": "string",
       "minLength": 1,
       "maxLength": 64,
-      "pattern": "^[0-9A-Za-z][0-9A-Za-z.+_-]*$"
+      "pattern": "^[1-9][0-9]*$"
     },
     "documentVersion": {
-      "description": "Domain document contract version (axis documentVersion).",
+      "description": "Domain document contract version (axis documentVersion). Frozen as vNext with optional minor (ADR-0006 MVP-1 format freeze).",
       "type": "string",
       "minLength": 1,
-      "maxLength": 64
+      "maxLength": 64,
+      "pattern": "^vNext(?:\\.[1-9][0-9]*)?$"
     },
     "protocolVersion": {
-      "description": "Runner protocol version (axis protocolVersion), e.g. v1.",
+      "description": "Runner protocol version (axis protocolVersion). Positive integer string; validated only — no runner negotiation in MVP-1 (ADR-0006 MVP-1 format freeze).",
       "type": "string",
-      "pattern": "^v[0-9]+(?:\\.[0-9]+)*$",
+      "pattern": "^[1-9][0-9]*$",
       "maxLength": 32
     },
     "revision": {
@@ -108,10 +107,7 @@
       "description": "Canonical quantity {value, unit} (canonicalization profile decision 7). The unit is part of the hashed payload and is never converted during canonicalization.",
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "value",
-        "unit"
-      ],
+      "required": ["value", "unit"],
       "properties": {
         "value": {
           "$ref": "#/$defs/binary64"
@@ -128,20 +124,13 @@
     },
     "digestKind": {
       "description": "Digest class: content = semantic payload digest; artifact/binary = exact artifact bytes digest (canonicalization profile decision 11).",
-      "enum": [
-        "content",
-        "artifact",
-        "binary"
-      ]
+      "enum": ["content", "artifact", "binary"]
     },
     "digest": {
       "description": "Digest object. Role is conveyed by the property name; kind, when present, is the explicit class.",
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "algorithm",
-        "value"
-      ],
+      "required": ["algorithm", "value"],
       "properties": {
         "algorithm": {
           "description": "Digest algorithm; only sha256 is defined.",
@@ -215,9 +204,7 @@
       "description": "Typed secret reference object. Carries only the opaque reference; an inline secret value is not representable (additionalProperties:false).",
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "ref"
-      ],
+      "required": ["ref"],
       "properties": {
         "ref": {
           "$ref": "#/$defs/secretReference"
@@ -238,11 +225,7 @@
     },
     "severity": {
       "description": "Canonical severity (errors-events.md is the single source of truth). fatal/debug are reserved and not used by the MVP.",
-      "enum": [
-        "error",
-        "warning",
-        "info"
-      ]
+      "enum": ["error", "warning", "info"]
     },
     "limits": {
       "description": "Resource limits applied before and during parsing. All bounds are optional; when a field is present it caps the corresponding dimension.",
@@ -276,12 +259,7 @@
       "description": "Reference to an immutable catalog version.",
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "namespace",
-        "id",
-        "version",
-        "digest"
-      ],
+      "required": ["namespace", "id", "version", "digest"],
       "properties": {
         "namespace": {
           "$ref": "#/$defs/namespace"
@@ -301,10 +279,7 @@
       "description": "Reference to a versioned export adapter.",
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "id",
-        "version"
-      ],
+      "required": ["id", "version"],
       "properties": {
         "id": {
           "$ref": "#/$defs/shortId"
@@ -318,11 +293,7 @@
       "description": "Reference to an immutable preset patch.",
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "namespace",
-        "id",
-        "version"
-      ],
+      "required": ["namespace", "id", "version"],
       "properties": {
         "namespace": {
           "$ref": "#/$defs/namespace"
@@ -339,10 +310,7 @@
       "description": "Producer identity and version.",
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "id",
-        "version"
-      ],
+      "required": ["id", "version"],
       "properties": {
         "id": {
           "$ref": "#/$defs/shortId"
@@ -358,10 +326,7 @@
         {
           "type": "object",
           "additionalProperties": false,
-          "required": [
-            "kind",
-            "optionId"
-          ],
+          "required": ["kind", "optionId"],
           "properties": {
             "kind": {
               "const": "single"
@@ -374,10 +339,7 @@
         {
           "type": "object",
           "additionalProperties": false,
-          "required": [
-            "kind",
-            "optionIds"
-          ],
+          "required": ["kind", "optionIds"],
           "properties": {
             "kind": {
               "const": "multiple"
@@ -397,10 +359,7 @@
         {
           "type": "object",
           "additionalProperties": false,
-          "required": [
-            "kind",
-            "value"
-          ],
+          "required": ["kind", "value"],
           "properties": {
             "kind": {
               "const": "boolean"
@@ -413,10 +372,7 @@
         {
           "type": "object",
           "additionalProperties": false,
-          "required": [
-            "kind",
-            "value"
-          ],
+          "required": ["kind", "value"],
           "properties": {
             "kind": {
               "const": "number"
@@ -432,10 +388,7 @@
         {
           "type": "object",
           "additionalProperties": false,
-          "required": [
-            "kind",
-            "value"
-          ],
+          "required": ["kind", "value"],
           "properties": {
             "kind": {
               "const": "text"
@@ -449,10 +402,7 @@
         {
           "type": "object",
           "additionalProperties": false,
-          "required": [
-            "kind",
-            "ref"
-          ],
+          "required": ["kind", "ref"],
           "properties": {
             "kind": {
               "const": "secretRef"
@@ -468,10 +418,7 @@
       "description": "A single manual intent entry. The selected value lives only in value; there is no duplicated top-level optionId.",
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "stepId",
-        "value"
-      ],
+      "required": ["stepId", "value"],
       "properties": {
         "stepId": {
           "description": "Catalog step the selection belongs to.",
@@ -486,13 +433,7 @@
       "description": "A frozen selection with its origin and lock state.",
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "stepId",
-        "optionId",
-        "value",
-        "origin",
-        "locked"
-      ],
+      "required": ["stepId", "optionId", "value", "origin", "locked"],
       "properties": {
         "stepId": {
           "$ref": "#/$defs/entityId"
@@ -505,10 +446,7 @@
         },
         "origin": {
           "description": "Whether the selection was manual or derived.",
-          "enum": [
-            "manual",
-            "derived"
-          ]
+          "enum": ["manual", "derived"]
         },
         "locked": {
           "description": "Whether the selection is locked by a rule or policy.",
@@ -520,9 +458,7 @@
       "description": "Reference to a capability contributed or required.",
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "id"
-      ],
+      "required": ["id"],
       "properties": {
         "id": {
           "$ref": "#/$defs/capabilityId"
@@ -536,12 +472,7 @@
       "description": "A capability or selection conflict attached to a manifest.",
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "severity",
-        "path",
-        "messageKey",
-        "suggestions"
-      ],
+      "required": ["severity", "path", "messageKey", "suggestions"],
       "properties": {
         "severity": {
           "$ref": "#/$defs/severity"

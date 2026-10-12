@@ -31,18 +31,11 @@
       "description": "Target that produced the artifact (DEC-001, DEC-008).",
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "id",
-        "version"
-      ],
+      "required": ["id", "version"],
       "properties": {
         "id": {
           "description": "Export target identifier.",
-          "enum": [
-            "archmaker-profile",
-            "archinstall-profile",
-            "report"
-          ]
+          "enum": ["archmaker-profile", "archinstall-profile", "report"]
         },
         "version": {
           "description": "Target adapter version (axis targetRef.version).",
@@ -74,11 +67,7 @@
     },
     "content": {
       "description": "Adapter-defined exported payload, versioned by targetRef.version (ADR-0003). Documented open payload: its shape is fixed by the target adapter, never by this contract. It must not contain executable fields, commands, hooks or shell.",
-      "type": [
-        "object",
-        "array",
-        "string"
-      ]
+      "type": ["object", "array", "string"]
     }
   },
   "$defs": {
@@ -86,10 +75,7 @@
       "description": "Artifact identity: binary digest and media type.",
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "binaryDigest",
-        "mediaType"
-      ],
+      "required": ["binaryDigest", "mediaType"],
       "properties": {
         "binaryDigest": {
           "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/binaryDigest"
@@ -105,9 +91,7 @@
       "description": "Reference to the sealed source manifest.",
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "contentDigest"
-      ],
+      "required": ["contentDigest"],
       "properties": {
         "contentDigest": {
           "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/contentDigest"

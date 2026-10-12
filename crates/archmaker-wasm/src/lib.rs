@@ -1,8 +1,8 @@
 use archmaker_canonicalization as canon;
 use archmaker_core::{
     check_invoke_named, BuildManifestInput, CoreError, CoreOp, CorePort, CreateDraftInput,
-    ExportArtifactInput, LoadCatalogInput, RealCore, ResolveDraftInput, SaveDraftInput,
-    ValidateDraftInput,
+    ExportArtifactInput, ImportDraftInput, LoadCatalogInput, RealCore, ResolveDraftInput,
+    SaveDraftInput, ValidateDraftInput,
 };
 use wasm_bindgen::prelude::*;
 
@@ -68,6 +68,11 @@ fn dispatch(core: &RealCore, op: CoreOp, input: serde_json::Value) -> Result<Str
         CoreOp::ExportArtifact => {
             let typed: ExportArtifactInput = serde_json::from_value(input).map_err(bad)?;
             serde_json::to_value(core.export_artifact(typed).map_err(|e| error_json(&e))?)
+                .expect("DTO is serializable")
+        }
+        CoreOp::ImportDraft => {
+            let typed: ImportDraftInput = serde_json::from_value(input).map_err(bad)?;
+            serde_json::to_value(core.import_draft(typed).map_err(|e| error_json(&e))?)
                 .expect("DTO is serializable")
         }
     };

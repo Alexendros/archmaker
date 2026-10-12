@@ -4,8 +4,8 @@ phase: MVP
 priority: P0
 documentStatus: accepted
 approvalStatus: approved
-implementationStatus: not-started
-verificationStatus: not-verified
+implementationStatus: complete
+verificationStatus: partial
 releaseStatus: ineligible
 owners:
   - architecture
@@ -43,16 +43,27 @@ Documentos de apoyo: `docs/03-data/versioning-migrations.md`, `docs/03-data/doma
 
 Se adoptan **seis ejes independientes**:
 
-| Eje | Ámbito | Compatibilidad propuesta |
-|---|---|---|
-| `documentVersion` | Contrato del documento de dominio | Cambio incompatible incrementa mayor; compatible incrementa menor. |
-| `schemaVersion` | JSON Schema del contrato | Sigue la regla del ADR-0005; cambio de esquema → nueva versión + migration note. |
-| `catalogRef.version` | Catálogo referenciado (`DM-CATALOG`) | Inmutable por versión; el digest fija la identidad exacta. |
-| `targetRef.version` | Target de exportación (adapter) | Versionado por adapter; independiente del dominio (ADR-0003). |
-| `producer.version` | Herramienta que produce el `Artifact` | Informativa/procedencia; no altera la semántica. |
-| `protocolVersion` | Protocolo runner (`runner-protocol.md`) | Negociada antes de aceptar manifest; cambio incompatible rechaza la sesión. |
+| Eje                  | Ámbito                                  | Compatibilidad propuesta                                                         |
+| -------------------- | --------------------------------------- | -------------------------------------------------------------------------------- |
+| `documentVersion`    | Contrato del documento de dominio       | Cambio incompatible incrementa mayor; compatible incrementa menor.               |
+| `schemaVersion`      | JSON Schema del contrato                | Sigue la regla del ADR-0005; cambio de esquema → nueva versión + migration note. |
+| `catalogRef.version` | Catálogo referenciado (`DM-CATALOG`)    | Inmutable por versión; el digest fija la identidad exacta.                       |
+| `targetRef.version`  | Target de exportación (adapter)         | Versionado por adapter; independiente del dominio (ADR-0003).                    |
+| `producer.version`   | Herramienta que produce el `Artifact`   | Informativa/procedencia; no altera la semántica.                                 |
+| `protocolVersion`    | Protocolo runner (`runner-protocol.md`) | Negociada antes de aceptar manifest; cambio incompatible rechaza la sesión.      |
 
 La **política de compatibilidad es por eje**: una salida solo es reproducible si coinciden los ejes que la determinan (`catalogRef.version`, `targetRef.version`, `schemaVersion` y `documentVersion`), mientras `producer.version` se registra para procedencia y `protocolVersion` se negocia en la frontera runner.
+
+## Formato congelado (MVP-1)
+
+| Eje                                                                                | Formato                                                                      | Patrón / regla              |
+| ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | --------------------------- |
+| `documentVersion`                                                                  | `vNext` opcionalmente con menor                                              | `^vNext(?:\.[1-9][0-9]*)?$` |
+| `schemaVersion`                                                                    | Entero positivo en string                                                    | `^[1-9][0-9]*$`             |
+| `protocolVersion`                                                                  | Entero positivo en string (solo validación; sin negociación runner en MVP-1) | `^[1-9][0-9]*$`             |
+| `catalogRef.version`, `presetRef.version`, `targetRef.version`, `producer.version` | SemVer 2.0                                                                   | `common#/$defs/semver`      |
+
+Autoridad de contrato: `contracts/json-schema/common.schema.json`. Validadores Rust: `archmaker_domain::{is_document_version,is_integer_version,is_semver}`.
 
 ## Consecuencias
 

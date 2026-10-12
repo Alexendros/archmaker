@@ -43,8 +43,19 @@ reviewers:
 ## Cierre CON-013..CON-022 (baseline MVP-0.1)
 
 Estado de las desviaciones D-01..D-10 al estabilizar `stabilization/mvp0.1` y el tag
-`implementation-baseline-mvp0.1`. CON-001..CON-012 permanecen como deuda de migración v5.1
-(fuera del slice walking skeleton).
+`implementation-baseline-mvp0.1`. CON-005..CON-012 permanecen como deuda de migración/seguridad
+(fuera del slice MVP-1 de datos); CON-001..CON-004 se cierran en MVP-1.
+
+## Cierre CON-001..CON-004 (baseline MVP-1)
+
+| ID      | Estado   | Evidencia de cierre                                                                                                                                         | Residual |
+| ------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| CON-001 | resuelta | `mode: single` / `sections[].single` → cardinalidad `one` + `SelectionValue.kind=single` en migración (`migration.rs`, fixtures MIG-5.1)                    | —        |
+| CON-002 | resuelta | `count_gt` legacy normalizado a `Gt(Count(..))`; ficha RULE + corpus; nunca ejecutado como token (`archmaker-rules`, `docs/07-validation/operator-spec.md`) | —        |
+| CON-003 | resuelta | Arrays de presets → `SelectionValue.kind=multiple` (`common#/$defs/selectionValue`, migración, corpus)                                                      | —        |
+| CON-004 | resuelta | Identidad duplicada `base-devel` colapsada a `archmaker.pkg.base-devel`; detector `RULE-DUP-001` / `AM-RULE-008`                                            | —        |
+
+## Cierre CON-013..CON-022 (baseline MVP-0.1)
 
 | ID      | Estado                | Evidencia de cierre                                                                                            | Residual                                                  |
 | ------- | --------------------- | -------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |

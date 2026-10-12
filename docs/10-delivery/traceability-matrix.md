@@ -17,10 +17,10 @@ reviewers:
 
 # Matriz de Trazabilidad FR/NFR -> TST/VAL
 
-- **Generado**: 42a2ad17
+- **Generado**: bed7e320
 - **Total requisitos**: 17
-- **En alcance (mvp0.1)**: 11
-- **Diferidos**: 5
+- **En alcance (mvp0.1)**: 13
+- **Diferidos**: 3
 - **Pendientes**: 1
 
 ## Resumen de Metricas
@@ -46,11 +46,11 @@ reviewers:
 
 | Req             | Tipo | Nombre                         | Scope    | Tests                                                                                                                                                                                                                                   | Validators                            | Evidencia | CI  | Estado   |
 | --------------- | ---- | ------------------------------ | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- | --------- | --- | -------- |
-| FR-CAT-001      | FR   | Cargar catálogo versionado.    | mvp0.1   | TST-ARCHMAKER-CANONICALIZATION-VECTORS-N_NEGATIVE_ZERO_BYTE_IDENTITY, TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-DENIED_INVOKE_RETURNS_TYPED_PROTO_001, TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-ALLOWED_INVOKE_PASSES_CAPABILITY_GATE...             | VAL-SCHEMA-REFS, VAL-NEG-CAPABILITIES | 33        | OK  | covered  |
-| FR-DRAFT-001    | FR   | Crear y guardar drafts locales | mvp0.1   | TST-ARCHMAKER-CANONICALIZATION-VECTORS-N_NEGATIVE_ZERO_BYTE_IDENTITY, TST-ARCHMAKER-WASM-PARITY-PARITY_CREATE_DRAFT_DETERMINISTIC_BYTES, TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-DENIED_INVOKE_RETURNS_TYPED_PROTO_001...                    | VAL-SCHEMA-REFS, VAL-NEG-CAPABILITIES | 39        | OK  | covered  |
+| FR-CAT-001      | FR   | Cargar catálogo versionado.    | mvp0.1   | TST-ARCHMAKER-CANONICALIZATION-VECTORS-N_NEGATIVE_ZERO_BYTE_IDENTITY, TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-DENIED_INVOKE_RETURNS_TYPED_PROTO_001, TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-ALLOWED_INVOKE_PASSES_CAPABILITY_GATE...             | VAL-SCHEMA-REFS, VAL-NEG-CAPABILITIES | 34        | OK  | covered  |
+| FR-DRAFT-001    | FR   | Crear y guardar drafts locales | mvp0.1   | TST-ARCHMAKER-CANONICALIZATION-VECTORS-N_NEGATIVE_ZERO_BYTE_IDENTITY, TST-ARCHMAKER-WASM-PARITY-PARITY_CREATE_DRAFT_DETERMINISTIC_BYTES, TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-DENIED_INVOKE_RETURNS_TYPED_PROTO_001...                    | VAL-SCHEMA-REFS, VAL-NEG-CAPABILITIES | 41        | OK  | covered  |
 | FR-ENT-001      | FR   | Aplicar perfiles/policies por  | deferred | --                                                                                                                                                                                                                                      | --                                    | 0         | OK  | deferred |
 | FR-EXPORT-001   | FR   | Exportar artefacto y reporte.  | mvp0.1   | TST-ARCHMAKER-CORE-CORE_CONTRACT-EXPORT_ARTIFACT_BYTE_IDEMPOTENT, TST-ARCHMAKER-CORE-CORE_CONTRACT-EXPORT_ARTIFACT_REJECTS_BAD_TARGET_AND_HANDLE, TST-ARCHMAKER-CORE-CORE_CONTRACT-END_TO_END_CREATE_SAVE_RESOLVE_VALIDATE_BUILD_EXPORT | --                                    | 3         | OK  | covered  |
-| FR-IMPORT-001   | FR   | Importar y migrar v5.1.        | deferred | --                                                                                                                                                                                                                                      | --                                    | 0         | OK  | deferred |
+| FR-IMPORT-001   | FR   | Importar y migrar v5.1.        | mvp1     | TST-ARCHMAKER-CORE-CORE_CONTRACT-IMPORT_DRAFT_MIGRATES_V51_SAMPLE                                                                                                                                                                       | VAL-MIG                               | 2         | OK  | covered  |
 | FR-MANIFEST-001 | FR   | Construir manifest canónico.   | mvp0.1   | TST-ARCHMAKER-CANONICALIZATION-VECTORS-N_NEGATIVE_ZERO_BYTE_IDENTITY, TST-ARCHMAKER-WASM-PARITY-PARITY_RESOLVE_AND_MANIFEST, TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-DENIED_INVOKE_RETURNS_TYPED_PROTO_001...                                | VAL-CANONICALIZE, VAL-SCHEMA-REFS...  | 33        | OK  | covered  |
 | FR-PRESET-001   | FR   | Aplicar presets como patches.  | deferred | --                                                                                                                                                                                                                                      | --                                    | 0         | OK  | deferred |
 | FR-RESOLVE-001  | FR   | Resolver capacidades/conflicto | mvp0.1   | TST-ARCHMAKER-WASM-PARITY-PARITY_RESOLVE_AND_MANIFEST, TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-NAMED_ALLOWED_INVOKE_RESOLVES_OP, TST-ARCHMAKER-CORE-CORE_CONTRACT-RESOLVE_DRAFT_VALID_AND_DETERMINISTIC...                             | --                                    | 6         | OK  | covered  |
@@ -58,7 +58,7 @@ reviewers:
 | FR-VALIDATE-001 | FR   | Ejecutar pipeline de validació | mvp0.1   | TST-ARCHMAKER-WASM-PARITY-PARITY_VALIDATE_DIAGNOSTICS, TST-ARCHMAKER-CORE-CORE_CONTRACT-VALIDATE_DRAFT_CLEAN_AND_BLOCKING, TST-ARCHMAKER-CORE-CORE_CONTRACT-END_TO_END_CREATE_SAVE_RESOLVE_VALIDATE_BUILD_EXPORT                        | --                                    | 3         | OK  | covered  |
 | NFR-ACC-001     | NFR  | WCAG 2.2 AA.                   | mvp0.1   | TST-WEB-A11Y-PLAYWRIGHT, TST-WEB-VISUAL-REGRESSION                                                                                                                                                                                      | --                                    | 2         | OK  | covered  |
 | NFR-DET-001     | NFR  | Mismo input/versiones → mismo  | mvp0.1   | TST-ARCHMAKER-CANONICALIZATION-VECTORS-GOLDEN_CORPUS_BYTE_IDENTITY_AND_DIGEST, TST-ARCHMAKER-CANONICALIZATION-VECTORS-M_KEY_ORDER_BYTE_IDENTITY, TST-ARCHMAKER-CANONICALIZATION-VECTORS-N_NEGATIVE_ZERO_BYTE_IDENTITY...                | VAL-CANONICALIZE                      | 13        | OK  | covered  |
-| NFR-MIG-001     | NFR  | Migraciones explícitas y no de | deferred | --                                                                                                                                                                                                                                      | --                                    | 0         | OK  | deferred |
+| NFR-MIG-001     | NFR  | Migraciones explícitas y no de | mvp1     | TST-ARCHMAKER-CORE-CORE_CONTRACT-IMPORT_DRAFT_MIGRATES_V51_SAMPLE                                                                                                                                                                       | VAL-MIG                               | 2         | OK  | covered  |
 | NFR-OBS-001     | NFR  | Errores/eventos estructurados  | pending  | --                                                                                                                                                                                                                                      | --                                    | 0         | OK  | pending  |
 | NFR-OFF-001     | NFR  | MVP usable sin CDN ni servidor | mvp0.1   | TST-WEB-VISUAL-REGRESSION                                                                                                                                                                                                               | --                                    | 1         | OK  | covered  |
 | NFR-PORT-001    | NFR  | Dominio independiente de adapt | mvp0.1   | TST-ARCHMAKER-WASM-PARITY-PARITY_MAPS_VECTORS, TST-ARCHMAKER-WASM-PARITY-PARITY_DOMAIN_VECTORS, TST-ARCHMAKER-WASM-PARITY-PARITY_UNICODE_VECTORS...                                                                                     | --                                    | 6         | OK  | covered  |
@@ -66,11 +66,9 @@ reviewers:
 
 ## Requisitos Diferidos (fuera de slice MVP-0.1)
 
-- FR-IMPORT-001: excluido por decision aprobada
 - FR-PRESET-001: excluido por decision aprobada
 - FR-RUN-001: excluido por decision aprobada
 - FR-ENT-001: excluido por decision aprobada
-- NFR-MIG-001: excluido por decision aprobada
 
 ## Requisitos Pendientes de Decision
 

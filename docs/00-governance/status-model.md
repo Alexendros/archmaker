@@ -37,20 +37,20 @@ en los consumidores.
 
 El front matter YAML de todo documento gobernado declara los siguientes campos.
 
-| Campo | Tipo | Descripción |
-|---|---|---|
-| `id` | string | Identificador único del documento o entidad. |
-| `phase` | enum | Fase de producto a la que pertenece. |
-| `priority` | enum | Prioridad de gobierno. |
-| `documentStatus` | enum | Estado del artefacto documental. |
-| `approvalStatus` | enum | Estado de aprobación por la autoridad competente. |
-| `implementationStatus` | enum | Grado de materialización de lo que el documento prescribe. |
-| `verificationStatus` | enum | Grado de verificación con evidencia. |
-| `releaseStatus` | enum | Elegibilidad de liberación. |
-| `owners` | array | Roles responsables (no vacío). |
-| `reviewers` | array | Roles revisores (no vacío, disjunto de `owners`). |
-| `evidence` | array (opcional) | Referencias de evidencia enlazada. |
-| `dependsOn` | array (opcional) | Dependencias con el estado esperado del referenciado. |
+| Campo                  | Tipo             | Descripción                                                |
+| ---------------------- | ---------------- | ---------------------------------------------------------- |
+| `id`                   | string           | Identificador único del documento o entidad.               |
+| `phase`                | enum             | Fase de producto a la que pertenece.                       |
+| `priority`             | enum             | Prioridad de gobierno.                                     |
+| `documentStatus`       | enum             | Estado del artefacto documental.                           |
+| `approvalStatus`       | enum             | Estado de aprobación por la autoridad competente.          |
+| `implementationStatus` | enum             | Grado de materialización de lo que el documento prescribe. |
+| `verificationStatus`   | enum             | Grado de verificación con evidencia.                       |
+| `releaseStatus`        | enum             | Elegibilidad de liberación.                                |
+| `owners`               | array            | Roles responsables (no vacío).                             |
+| `reviewers`            | array            | Roles revisores (no vacío, disjunto de `owners`).          |
+| `evidence`             | array (opcional) | Referencias de evidencia enlazada.                         |
+| `dependsOn`            | array (opcional) | Dependencias con el estado esperado del referenciado.      |
 
 `evidence` y `dependsOn` son campos de trazabilidad opcionales; su presencia es obligatoria
 cuando una regla de transición los exige (por ejemplo, `verificationStatus: passed`).
@@ -100,14 +100,14 @@ verificación superadas.
 
 El tipo de entidad se deriva del `id` y de la ruta del documento; no se declara un campo extra.
 
-| Entidad | Derivación de `id` | Eje dominante |
-|---|---|---|
-| Documento | `DOC-*`, `ISSUE-*`, `G0-SOURCE-DISPOSITION` | `documentStatus` |
-| ADR | `ADR-\d{4}` | `approvalStatus` |
-| Requisito (FR/NFR) | `FR-*`, `NFR-*` o documento de requisitos | `implementationStatus` |
-| Riesgo (RSK) | `RSK-*` o registro de riesgos | `implementationStatus` del control |
-| Gate (G0–G10) | `G0`…`G10` o documento de gates | `verificationStatus` |
-| Contrato | `DOC-CON-*` o `contracts/**` | `documentStatus` |
+| Entidad            | Derivación de `id`                          | Eje dominante                      |
+| ------------------ | ------------------------------------------- | ---------------------------------- |
+| Documento          | `DOC-*`, `ISSUE-*`, `G0-SOURCE-DISPOSITION` | `documentStatus`                   |
+| ADR                | `ADR-\d{4}`                                 | `approvalStatus`                   |
+| Requisito (FR/NFR) | `FR-*`, `NFR-*` o documento de requisitos   | `implementationStatus`             |
+| Riesgo (RSK)       | `RSK-*` o registro de riesgos               | `implementationStatus` del control |
+| Gate (G0–G10)      | `G0`…`G10` o documento de gates             | `verificationStatus`               |
+| Contrato           | `DOC-CON-*` o `contracts/**`                | `documentStatus`                   |
 
 ### Documento
 

@@ -67,10 +67,7 @@
       "description": "A typed, allowlisted plan operation. Parameters are a closed set of declarative values; no command or script is representable.",
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "order",
-        "kind"
-      ],
+      "required": ["order", "kind"],
       "properties": {
         "order": {
           "description": "Zero-based position of the operation in the plan.",

@@ -85,8 +85,9 @@ Resultado derivado: **Clear** — todos los gates G0–G10 están `complete`.
 ## Consecuencia inmediata
 
 Autorizado: el walking skeleton MVP-0 definido en `docs/10-delivery/walking-skeleton.md`
-(vertical slice, sin runner ni privilegios). **No** autorizado: MVP completo, runner real,
-root, discos, shell arbitraria, catálogos remotos ni Enterprise.
+y el slice **MVP-1** (dominio / schema / catálogo local / `importDraft`) según
+`docs/10-delivery/mvp1-scope.md`. **No** autorizado: runner real, root, discos, shell
+arbitraria, catálogos remotos, firma criptográfica de catálogo en carga, ni Enterprise.
 
 ## Decisiones de alcance (C3 — G1-C03)
 

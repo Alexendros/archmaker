@@ -30,26 +30,26 @@ run de CI en verde) y reproduce localmente la meta-validación de JSON Schema de
 
 Validadores ejecutados y resultado (exit code):
 
-| Validador | Resultado | Exit |
-|---|---|---|
-| `python3 tools/validate_front_matter.py` | front matter válido, 0 inconsistencias cruzadas | 0 |
-| `python3 tools/validate_front_matter.py --strict` | igual, 0 inconsistencias | 0 |
-| `python3 tools/validate_traceability.py` | IDs/estados/referencias/gates coherentes, 8 advertencias | 0 |
-| `python3 tools/validate_traceability.py --strict` | 8 advertencias promovidas a fallo | 1 (esperado) |
-| `python3 tools/gates.py` | 11 manifiestos válidos y coherentes con `gates.md` y `go-no-go.md` | 0 |
-| `python3 tools/validate_schema_refs.py` | 13 schemas, 121 referencias `$id`/`$defs` resueltas | 0 |
-| `python3 tools/canonicalize.py` | 34 vectores, 33 con paridad Python/JS | 0 |
-| Meta-validación JSON Schema (local, réplica del job CI) | 11 schemas meta-válidos (Draft 2020-12) | 0 |
-| `npx --no-install markdownlint-cli2 "docs/**/*.md" "*.md"` | 0 incidencias | 0 |
-| `sha256sum --check --strict reference/v5.1/SHA256SUMS` | 11/11 OK | 0 |
+| Validador                                                  | Resultado                                                          | Exit         |
+| ---------------------------------------------------------- | ------------------------------------------------------------------ | ------------ |
+| `python3 tools/validate_front_matter.py`                   | front matter válido, 0 inconsistencias cruzadas                    | 0            |
+| `python3 tools/validate_front_matter.py --strict`          | igual, 0 inconsistencias                                           | 0            |
+| `python3 tools/validate_traceability.py`                   | IDs/estados/referencias/gates coherentes, 8 advertencias           | 0            |
+| `python3 tools/validate_traceability.py --strict`          | 8 advertencias promovidas a fallo                                  | 1 (esperado) |
+| `python3 tools/gates.py`                                   | 11 manifiestos válidos y coherentes con `gates.md` y `go-no-go.md` | 0            |
+| `python3 tools/validate_schema_refs.py`                    | 13 schemas, 121 referencias `$id`/`$defs` resueltas                | 0            |
+| `python3 tools/canonicalize.py`                            | 34 vectores, 33 con paridad Python/JS                              | 0            |
+| Meta-validación JSON Schema (local, réplica del job CI)    | 11 schemas meta-válidos (Draft 2020-12)                            | 0            |
+| `npx --no-install markdownlint-cli2 "docs/**/*.md" "*.md"` | 0 incidencias                                                      | 0            |
+| `sha256sum --check --strict reference/v5.1/SHA256SUMS`     | 11/11 OK                                                           | 0            |
 
 Evidencia de CI (API de GitHub, repositorio `Alexendros/archmaker`):
 
-| Workflow | Run | Commit | Conclusión | Jobs |
-|---|---|---:|---|---|
-| `docs-validate` | [37390633111](https://github.com/Alexendros/archmaker/actions/runs/37390633111) | `3e112c0` | success | 7/7 en pass |
-| `json-schema` | [37390632952](https://github.com/Alexendros/archmaker/actions/runs/37390632952) | `3e112c0` | success | 4/4 en pass |
-| `canonicalization` | [37390633429](https://github.com/Alexendros/archmaker/actions/runs/37390633429) | `3e112c0` | success | 1/1 en pass |
+| Workflow           | Run                                                                             |    Commit | Conclusión | Jobs        |
+| ------------------ | ------------------------------------------------------------------------------- | --------: | ---------- | ----------- |
+| `docs-validate`    | [37390633111](https://github.com/Alexendros/archmaker/actions/runs/37390633111) | `3e112c0` | success    | 7/7 en pass |
+| `json-schema`      | [37390632952](https://github.com/Alexendros/archmaker/actions/runs/37390632952) | `3e112c0` | success    | 4/4 en pass |
+| `canonicalization` | [37390633429](https://github.com/Alexendros/archmaker/actions/runs/37390633429) | `3e112c0` | success    | 1/1 en pass |
 
 El PR #29 (`remediation/planning-v1.1` → `main`) reporta 13 checks en verde (12 jobs de CI más
 GitGuardian). Los commits de evidencia citados en los manifiestos (`611e1e7`, `0a0e98c`,
@@ -62,19 +62,19 @@ Estado recalculado tras cerrar `G3-C04` y `G10-C03` por esta revisión. La tabla
 `docs/10-delivery/gates.md` se genera desde `contracts/governance/gates/G*.json` con
 `tools/gates.py`.
 
-| Gate | Estado | Fases (doc/diseño/impl/verif/release) | Criterios pendientes | Evidencia verificada |
-|---|---|---|---|---|
-| G0 | complete | complete/n-a/complete/complete/n-a | — | comandos reproducibles, `cmp` alias y commit `611e1e7`; SHA-256 11/11 |
-| G1 | in-progress | complete/n-a/n-a/pending/n-a | G1-C03 | documentos aprobados; métricas cuantitativas sin evidencia |
-| G2 | in-progress | complete/n-a/n-a/pending/n-a | G2-C04 | requisitos y DEC-001..010 resueltos; cobertura FR/NFR → prueba pendiente |
-| G3 | in-progress | complete/complete/n-a/pending/n-a | — | C4 sin unidades desplegables, viewpoints 42010, ADR-0007 `accepted` |
-| G4 | in-progress | in-progress/in-progress/pending/pending/n-a | — | schemas v0 y corpus en verde en CI (`3e112c0`) |
-| G5 | in-progress | in-progress/pending/pending/pending/n-a | G5-C03 | CorePort v0 congelado; contract tests y paridad Tauri/WASM pendientes |
-| G6 | in-progress | in-progress/in-progress/pending/pending/n-a | G6-C01, G6-C03 | baseline visual y tokens preservados; evidencia WCAG sin ejecutar |
-| G7 | in-progress | in-progress/n-a/in-progress/pending/n-a | — | operadores normalizados y corpus en verde en CI |
-| G8 | in-progress | in-progress/in-progress/pending/pending/n-a | G8-C01, G8-C04 | threat model, sign-off y riesgo residual; negativas pendientes |
-| G9 | in-progress | in-progress/n-a/in-progress/pending/n-a | G9-C03 | CI en verde sobre `3e112c0`; SBOM, firmas y provenance pendientes |
-| G10 | in-progress | in-progress/n-a/pending/pending/pending | — | roadmap, backlog, slice y owners; publicación de AUD-025 por el orquestador |
+| Gate | Estado      | Fases (doc/diseño/impl/verif/release)       | Criterios pendientes | Evidencia verificada                                                        |
+| ---- | ----------- | ------------------------------------------- | -------------------- | --------------------------------------------------------------------------- |
+| G0   | complete    | complete/n-a/complete/complete/n-a          | —                    | comandos reproducibles, `cmp` alias y commit `611e1e7`; SHA-256 11/11       |
+| G1   | in-progress | complete/n-a/n-a/pending/n-a                | G1-C03               | documentos aprobados; métricas cuantitativas sin evidencia                  |
+| G2   | in-progress | complete/n-a/n-a/pending/n-a                | G2-C04               | requisitos y DEC-001..010 resueltos; cobertura FR/NFR → prueba pendiente    |
+| G3   | in-progress | complete/complete/n-a/pending/n-a           | —                    | C4 sin unidades desplegables, viewpoints 42010, ADR-0007 `accepted`         |
+| G4   | in-progress | in-progress/in-progress/pending/pending/n-a | —                    | schemas v0 y corpus en verde en CI (`3e112c0`)                              |
+| G5   | in-progress | in-progress/pending/pending/pending/n-a     | G5-C03               | CorePort v0 congelado; contract tests y paridad Tauri/WASM pendientes       |
+| G6   | in-progress | in-progress/in-progress/pending/pending/n-a | G6-C01, G6-C03       | baseline visual y tokens preservados; evidencia WCAG sin ejecutar           |
+| G7   | in-progress | in-progress/n-a/in-progress/pending/n-a     | —                    | operadores normalizados y corpus en verde en CI                             |
+| G8   | in-progress | in-progress/in-progress/pending/pending/n-a | G8-C01, G8-C04       | threat model, sign-off y riesgo residual; negativas pendientes              |
+| G9   | in-progress | in-progress/n-a/in-progress/pending/n-a     | G9-C03               | CI en verde sobre `3e112c0`; SBOM, firmas y provenance pendientes           |
+| G10  | in-progress | in-progress/n-a/pending/pending/pending     | —                    | roadmap, backlog, slice y owners; publicación de AUD-025 por el orquestador |
 
 Resultado global mecánico derivado de la cobertura: **No-Go** — no todos los gates están
 `complete` (faltan G1, G2, G3, G4, G5, G6, G7, G8, G9, G10). El dictamen de gobierno es
@@ -181,16 +181,16 @@ Enterprise permanecen bloqueados.
 Fecha de reevaluación fijada: **2026-10-20**. Cada condición se cierra antes de la apertura de la
 fase o gate que la gobierna.
 
-| ID | Condición | Criterio | Cierre |
-|---|---|---|---|
-| C1 | Contract tests definidos con paridad Tauri/WASM sin semántica divergente (implementación de producto). | G5-C03 | antes de `implementation-ready` del slice |
-| C2 | SBOM, firmas reales Sigstore (Fulcio/Rekor) y provenance de artefactos (DEC-006). | G9-C03 | antes de la release de MVP-0 |
-| C3 | Métricas cuantitativas de usuarios y objetivos verificadas con evidencia. | G1-C03 | antes de G1 `complete` |
-| C4 | Cobertura FR/NFR → prueba materializada; resolución de las 8 advertencias de materialización de pruebas. | G2-C04 | antes de G2 `complete` |
-| C5 | Contratos de design system cerrados y evidencia WCAG 2.2 AA ejecutada (automatizada y manual). | G6-C01, G6-C03 | antes de G6 `complete` |
-| C6 | Threat model aprobado, pruebas negativas de capabilities/elevación y cierre de RSK-001/002/008. | G8-C01, G8-C04 | antes de G8 `complete` |
-| C7 | Cierre de `THR-UPD-001` con evidencia ejecutable. | DEC-007 / G8 | antes de MVP-0 |
-| C8 | Re-ejecución de CI en verde sobre el commit publicado de `planning-v1.1`. | G9-C02 | al publicar (AUD-025) |
+| ID  | Condición                                                                                                | Criterio       | Cierre                                    |
+| --- | -------------------------------------------------------------------------------------------------------- | -------------- | ----------------------------------------- |
+| C1  | Contract tests definidos con paridad Tauri/WASM sin semántica divergente (implementación de producto).   | G5-C03         | antes de `implementation-ready` del slice |
+| C2  | SBOM, firmas reales Sigstore (Fulcio/Rekor) y provenance de artefactos (DEC-006).                        | G9-C03         | antes de la release de MVP-0              |
+| C3  | Métricas cuantitativas de usuarios y objetivos verificadas con evidencia.                                | G1-C03         | antes de G1 `complete`                    |
+| C4  | Cobertura FR/NFR → prueba materializada; resolución de las 8 advertencias de materialización de pruebas. | G2-C04         | antes de G2 `complete`                    |
+| C5  | Contratos de design system cerrados y evidencia WCAG 2.2 AA ejecutada (automatizada y manual).           | G6-C01, G6-C03 | antes de G6 `complete`                    |
+| C6  | Threat model aprobado, pruebas negativas de capabilities/elevación y cierre de RSK-001/002/008.          | G8-C01, G8-C04 | antes de G8 `complete`                    |
+| C7  | Cierre de `THR-UPD-001` con evidencia ejecutable.                                                        | DEC-007 / G8   | antes de MVP-0                            |
+| C8  | Re-ejecución de CI en verde sobre el commit publicado de `planning-v1.1`.                                | G9-C02         | al publicar (AUD-025)                     |
 
 ## Límites declarados
 
@@ -204,12 +204,12 @@ fase o gate que la gobierna.
 
 ## Trazabilidad
 
-| Elemento | Referencia |
-|---|---|
-| Issue de origen | `AUD-024` (`docs/10-delivery/backlog.md`) |
-| Publicación derivada | `AUD-025` (pendiente, orquestador) |
-| Fases de remediación | R13 (`docs/00-governance/remediation-plan-v1.1.md`) |
-| Gates | G3, G10 (`docs/10-delivery/gates.md`) |
-| Resultado de gobierno | `docs/00-governance/go-no-go.md` (DOC-GOV-GNG-001) |
-| Estado del plan | `docs/00-governance/plan-status.md` (DOC-GOV-STA-001) |
-| Slice autorizado | `docs/10-delivery/walking-skeleton.md` (DOC-DEL-WSK-001) |
+| Elemento              | Referencia                                               |
+| --------------------- | -------------------------------------------------------- |
+| Issue de origen       | `AUD-024` (`docs/10-delivery/backlog.md`)                |
+| Publicación derivada  | `AUD-025` (pendiente, orquestador)                       |
+| Fases de remediación  | R13 (`docs/00-governance/remediation-plan-v1.1.md`)      |
+| Gates                 | G3, G10 (`docs/10-delivery/gates.md`)                    |
+| Resultado de gobierno | `docs/00-governance/go-no-go.md` (DOC-GOV-GNG-001)       |
+| Estado del plan       | `docs/00-governance/plan-status.md` (DOC-GOV-STA-001)    |
+| Slice autorizado      | `docs/10-delivery/walking-skeleton.md` (DOC-DEL-WSK-001) |

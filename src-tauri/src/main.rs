@@ -4,8 +4,8 @@ use std::sync::Mutex;
 
 use archmaker_core::{
     check_invoke, unknown_command_error, BuildManifestInput, CoreError, CoreOp, CorePort,
-    CreateDraftInput, ExportArtifactInput, LoadCatalogInput, RealCore, ResolveDraftInput,
-    SaveDraftInput, ValidateDraftInput, Window,
+    CreateDraftInput, ExportArtifactInput, ImportDraftInput, LoadCatalogInput, RealCore,
+    ResolveDraftInput, SaveDraftInput, ValidateDraftInput, Window,
 };
 use tauri::Manager;
 
@@ -95,6 +95,12 @@ core_command!(
     ExportArtifactInput,
     export_artifact
 );
+core_command!(
+    import_draft,
+    CoreOp::ImportDraft,
+    ImportDraftInput,
+    import_draft
+);
 
 fn main() {
     tauri::Builder::default()
@@ -114,7 +120,8 @@ fn main() {
             resolve_draft,
             validate_draft,
             build_manifest,
-            export_artifact
+            export_artifact,
+            import_draft
         ])
         .run(tauri::generate_context!())
         .expect("error while running ArchMaker");

@@ -37,6 +37,7 @@ impl CoreOp {
             CoreOp::ValidateDraft => "validate_draft",
             CoreOp::BuildManifest => "build_manifest",
             CoreOp::ExportArtifact => "export_artifact",
+            CoreOp::ImportDraft => "import_draft",
         }
     }
 
@@ -49,6 +50,7 @@ impl CoreOp {
             "validate_draft" => Some(CoreOp::ValidateDraft),
             "build_manifest" => Some(CoreOp::BuildManifest),
             "export_artifact" => Some(CoreOp::ExportArtifact),
+            "import_draft" => Some(CoreOp::ImportDraft),
             _ => None,
         }
     }
@@ -62,11 +64,12 @@ impl CoreOp {
             CoreOp::ValidateDraft => "PERM-CMD-VALIDATE-DRAFT",
             CoreOp::BuildManifest => "PERM-CMD-BUILD-MANIFEST",
             CoreOp::ExportArtifact => "PERM-CMD-EXPORT-ARTIFACT",
+            CoreOp::ImportDraft => "PERM-CMD-IMPORT-DRAFT",
         }
     }
 }
 
-pub const ALL_OPS: [CoreOp; 7] = [
+pub const ALL_OPS: [CoreOp; 8] = [
     CoreOp::CreateDraft,
     CoreOp::LoadCatalog,
     CoreOp::SaveDraft,
@@ -74,6 +77,7 @@ pub const ALL_OPS: [CoreOp; 7] = [
     CoreOp::ValidateDraft,
     CoreOp::BuildManifest,
     CoreOp::ExportArtifact,
+    CoreOp::ImportDraft,
 ];
 
 pub fn allowed_ops(window: Window) -> &'static [CoreOp] {
@@ -86,6 +90,7 @@ pub fn allowed_ops(window: Window) -> &'static [CoreOp] {
             CoreOp::ValidateDraft,
             CoreOp::BuildManifest,
             CoreOp::ExportArtifact,
+            CoreOp::ImportDraft,
         ],
         Window::Dialog => &[],
         Window::Picker => &[],

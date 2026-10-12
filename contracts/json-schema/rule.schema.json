@@ -6,13 +6,7 @@
   "$comment": "Contract v0 (phase R8, AUD-017). Duplicated $defs.entityId/$defs.capabilityId extracted to common.schema.json and referenced by $id; local rule-only $defs kept here. $defs.operator is the closed normative vocabulary (canonical, legacy-migration-only and v1-deferred tokens are annotated per operator). count_gt is legacy (migration-only, rewritten to count with a threshold, never executed by the new runtime); target_is is deferred to v1. additionalProperties:false at every object edge; unknown fields rejected.",
   "type": "object",
   "additionalProperties": false,
-  "required": [
-    "id",
-    "documentVersion",
-    "schemaVersion",
-    "when",
-    "action"
-  ],
+  "required": ["id", "documentVersion", "schemaVersion", "when", "action"],
   "properties": {
     "id": {
       "description": "Rule identifier, RULE-<SEGMENT>(-<SEGMENT>)+.",
@@ -75,13 +69,7 @@
     },
     "action": {
       "description": "Closed effect vocabulary. block stops construction; suggest informs; derive computes a value; change may reassign the target within allowed; lock freezes the target.",
-      "enum": [
-        "block",
-        "suggest",
-        "derive",
-        "change",
-        "lock"
-      ]
+      "enum": ["block", "suggest", "derive", "change", "lock"]
     },
     "operator": {
       "description": "Closed normative vocabulary of rule operators (names). Canonical/executable: all, any, not, eq, ne, in, required, selected, count, provides. Legacy (migration-only, never executed by the new runtime): count_gt. v1-deferred (not used by the MVP): target_is. Every condition variant constrains its property names to this enum, so an operator token outside it can never validate.",
@@ -112,9 +100,7 @@
       "propertyNames": {
         "$ref": "#/$defs/operator"
       },
-      "required": [
-        "count"
-      ],
+      "required": ["count"],
       "properties": {
         "count": {
           "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/entityId"
@@ -183,9 +169,7 @@
       "propertyNames": {
         "$ref": "#/$defs/operator"
       },
-      "required": [
-        "all"
-      ],
+      "required": ["all"],
       "properties": {
         "all": {
           "type": "array",
@@ -203,9 +187,7 @@
       "propertyNames": {
         "$ref": "#/$defs/operator"
       },
-      "required": [
-        "any"
-      ],
+      "required": ["any"],
       "properties": {
         "any": {
           "type": "array",
@@ -223,9 +205,7 @@
       "propertyNames": {
         "$ref": "#/$defs/operator"
       },
-      "required": [
-        "not"
-      ],
+      "required": ["not"],
       "properties": {
         "not": {
           "$ref": "#/$defs/condition"
@@ -239,9 +219,7 @@
       "propertyNames": {
         "$ref": "#/$defs/operator"
       },
-      "required": [
-        "eq"
-      ],
+      "required": ["eq"],
       "properties": {
         "eq": {
           "type": "array",
@@ -265,9 +243,7 @@
       "propertyNames": {
         "$ref": "#/$defs/operator"
       },
-      "required": [
-        "ne"
-      ],
+      "required": ["ne"],
       "properties": {
         "ne": {
           "type": "array",
@@ -291,9 +267,7 @@
       "propertyNames": {
         "$ref": "#/$defs/operator"
       },
-      "required": [
-        "in"
-      ],
+      "required": ["in"],
       "properties": {
         "in": {
           "type": "array",
@@ -321,9 +295,7 @@
       "propertyNames": {
         "$ref": "#/$defs/operator"
       },
-      "required": [
-        "required"
-      ],
+      "required": ["required"],
       "properties": {
         "required": {
           "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/entityId"
@@ -337,9 +309,7 @@
       "propertyNames": {
         "$ref": "#/$defs/operator"
       },
-      "required": [
-        "selected"
-      ],
+      "required": ["selected"],
       "properties": {
         "selected": {
           "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/entityId"
@@ -353,9 +323,7 @@
       "propertyNames": {
         "$ref": "#/$defs/operator"
       },
-      "required": [
-        "count_gt"
-      ],
+      "required": ["count_gt"],
       "properties": {
         "count_gt": {
           "type": "array",
@@ -380,9 +348,7 @@
       "propertyNames": {
         "$ref": "#/$defs/operator"
       },
-      "required": [
-        "provides"
-      ],
+      "required": ["provides"],
       "properties": {
         "provides": {
           "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/capabilityId"
@@ -396,9 +362,7 @@
       "propertyNames": {
         "$ref": "#/$defs/operator"
       },
-      "required": [
-        "target_is"
-      ],
+      "required": ["target_is"],
       "properties": {
         "target_is": {
           "$ref": "#/$defs/targetId"

@@ -34,13 +34,13 @@ El updater de Tauri introduce una superficie de red en el MVP y convierte `THR-U
 
 ## Activos y fronteras
 
-| Activo | Frontera | Amenaza |
-|---|---|---|
-| Binario y artefactos de release | Release/CI → canal → cliente | `THR-UPD-001`: artefacto manipulado o suplantado. |
-| Manifiesto de actualización | Canal HTTPS → updater | Versión o digest falsificados; downgrade forzado. |
-| Clave de firma | Identidad del workflow → Fulcio/Rekor | Robo o uso indebido de identidad. |
-| Canal de distribución | Endpoint → cliente | Redirección, canal cruzado o endpoint no autorizado. |
-| Estado de la app instalada | updater → disco | Actualización fallida que deja la app inservible. |
+| Activo                          | Frontera                              | Amenaza                                              |
+| ------------------------------- | ------------------------------------- | ---------------------------------------------------- |
+| Binario y artefactos de release | Release/CI → canal → cliente          | `THR-UPD-001`: artefacto manipulado o suplantado.    |
+| Manifiesto de actualización     | Canal HTTPS → updater                 | Versión o digest falsificados; downgrade forzado.    |
+| Clave de firma                  | Identidad del workflow → Fulcio/Rekor | Robo o uso indebido de identidad.                    |
+| Canal de distribución           | Endpoint → cliente                    | Redirección, canal cruzado o endpoint no autorizado. |
+| Estado de la app instalada      | updater → disco                       | Actualización fallida que deja la app inservible.    |
 
 ## THR-UPD-001 — escenarios
 
@@ -120,30 +120,30 @@ El updater de Tauri introduce una superficie de red en el MVP y convierte `THR-U
 
 ## Pruebas negativas (diseño)
 
-| ID | Given | When | Then |
-|---|---|---|---|
-| TST-UPD-001 | Artefacto con firma inválida o manipulado | El updater verifica | Se rechaza y no se aplica; la app sigue operativa. |
-| TST-UPD-002 | Entorno sin red | La app arranca y se usa | Funciona de extremo a extremo (fail-open, `NFR-OFF-001`). |
-| TST-UPD-003 | Endpoint fuera de allowlist | El updater intenta contactar | No se contacta; se reporta diagnóstico tipado. |
-| TST-UPD-004 | Manifiesto con versión inferior a la mínima | El updater evalúa | Downgrade rechazado (anti-rollback). |
-| TST-UPD-005 | Artefacto de canal beta servido en stable | El updater evalúa canal | Canal cruzado rechazado. |
-| TST-UPD-006 | Instalación interrumpida | El proceso se corta | La versión anterior queda operativa (rollback). |
-| TST-UPD-007 | Ventana sin capability de updater | Intenta invocarlo | Denegado; test negativo de capability (`THR-IPC-001`). |
-| TST-UPD-008 | Verificación offline con `trusted_root.json` fijado | No hay red en la verificación | La verificación de firma de release resuelve sin red. |
+| ID          | Given                                               | When                          | Then                                                      |
+| ----------- | --------------------------------------------------- | ----------------------------- | --------------------------------------------------------- |
+| TST-UPD-001 | Artefacto con firma inválida o manipulado           | El updater verifica           | Se rechaza y no se aplica; la app sigue operativa.        |
+| TST-UPD-002 | Entorno sin red                                     | La app arranca y se usa       | Funciona de extremo a extremo (fail-open, `NFR-OFF-001`). |
+| TST-UPD-003 | Endpoint fuera de allowlist                         | El updater intenta contactar  | No se contacta; se reporta diagnóstico tipado.            |
+| TST-UPD-004 | Manifiesto con versión inferior a la mínima         | El updater evalúa             | Downgrade rechazado (anti-rollback).                      |
+| TST-UPD-005 | Artefacto de canal beta servido en stable           | El updater evalúa canal       | Canal cruzado rechazado.                                  |
+| TST-UPD-006 | Instalación interrumpida                            | El proceso se corta           | La versión anterior queda operativa (rollback).           |
+| TST-UPD-007 | Ventana sin capability de updater                   | Intenta invocarlo             | Denegado; test negativo de capability (`THR-IPC-001`).    |
+| TST-UPD-008 | Verificación offline con `trusted_root.json` fijado | No hay red en la verificación | La verificación de firma de release resuelve sin red.     |
 
 Estas pruebas se apoyan en la fila `Tauri/WASM` y `Runner` de `docs/09-quality/test-matrix.md` y
 quedan **diseñadas**, no implementadas.
 
 ## Trazabilidad
 
-| Referencia | Relación |
-|---|---|
-| `THR-UPD-001` | Amenaza modelada por este documento. |
-| `RSK-007` | Riesgo de supply-chain; residuo aceptado en `DOC-SEC-RISK-001`. |
-| `ADR-0009` | Decisión de actualización firmada en el MVP. |
-| `DEC-006` / `DEC-007` | Firma de releases y decisión de updater; citadas, no reafirmadas. |
-| `NFR-OFF-001` | Operación offline; base del fail-open. |
-| `G8` / `G9` | Gates de seguridad y calidad; `THR-UPD-001` se cierra antes de MVP-0. |
+| Referencia            | Relación                                                              |
+| --------------------- | --------------------------------------------------------------------- |
+| `THR-UPD-001`         | Amenaza modelada por este documento.                                  |
+| `RSK-007`             | Riesgo de supply-chain; residuo aceptado en `DOC-SEC-RISK-001`.       |
+| `ADR-0009`            | Decisión de actualización firmada en el MVP.                          |
+| `DEC-006` / `DEC-007` | Firma de releases y decisión de updater; citadas, no reafirmadas.     |
+| `NFR-OFF-001`         | Operación offline; base del fail-open.                                |
+| `G8` / `G9`           | Gates de seguridad y calidad; `THR-UPD-001` se cierra antes de MVP-0. |
 
 ## Límites declarados
 

@@ -13,7 +13,7 @@
   },
   "targetRef": {
     "id": "arch-x86_64",
-    "version": "2026.10"
+    "version": "2026.10.0"
   },
   "selections": [],
   "derivedSelections": []

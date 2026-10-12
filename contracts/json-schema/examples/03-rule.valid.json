@@ -5,10 +5,7 @@
   "severity": "error",
   "blocking": true,
   "when": {
-    "count_gt": [
-      "archmaker.environment.compositor",
-      1
-    ]
+    "count_gt": ["archmaker.environment.compositor", 1]
   },
   "action": "block",
   "diagnosticCode": "AM-RULE-001",

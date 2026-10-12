@@ -73,10 +73,7 @@
       "description": "saveDraft request contract: persists a draft only if the stored revision matches expectedRevision (optimistic concurrency). A mismatch is a conflict error, not a silent overwrite.",
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "draft",
-        "expectedRevision"
-      ],
+      "required": ["draft", "expectedRevision"],
       "properties": {
         "draft": {
           "description": "Draft to persist. Its revision is the new revision to store.",

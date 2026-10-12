@@ -4,7 +4,7 @@ use archmaker_core::{
 };
 
 #[test]
-fn allowlist_covers_all_seven_ops_exactly_once() {
+fn allowlist_covers_all_eight_ops_exactly_once() {
     let mut seen = Vec::new();
     for window in [Window::Main, Window::Dialog, Window::Picker] {
         seen.extend_from_slice(allowed_ops(window));
@@ -16,7 +16,7 @@ fn allowlist_covers_all_seven_ops_exactly_once() {
 }
 
 #[test]
-fn main_window_allows_all_seven_ops() {
+fn main_window_allows_all_eight_ops() {
     for op in ALL_OPS {
         assert!(
             check_invoke(Window::Main, op).is_ok(),
@@ -51,10 +51,11 @@ fn denied_error_is_typed_proto_001() {
 
 #[test]
 fn unknown_command_yields_typed_proto_error() {
-    let err = check_invoke_named("main", "import_draft").expect_err("must be denied");
+    let err = check_invoke_named("main", "apply_preset").expect_err("must be denied");
     assert_eq!(err.code, "AM-PROTO-002");
     assert_eq!(err.family, ErrorFamily::Proto);
     assert_eq!(err.category, ErrorCategory::Protocol);
+    assert!(check_invoke_named("main", "import_draft").is_ok());
 }
 
 #[test]

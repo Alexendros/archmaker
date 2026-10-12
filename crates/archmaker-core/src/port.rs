@@ -2,8 +2,9 @@ use archmaker_domain::{Artifact, Catalog, Draft, Manifest};
 
 use crate::error::Result;
 use crate::inputs::{
-    BuildManifestInput, CreateDraftInput, ExportArtifactInput, LoadCatalogInput, ResolveDraftInput,
-    ResolveResult, SaveDraftInput, ValidateDraftInput, ValidationResult,
+    BuildManifestInput, CreateDraftInput, ExportArtifactInput, ImportDraftInput, ImportDraftResult,
+    LoadCatalogInput, ResolveDraftInput, ResolveResult, SaveDraftInput, ValidateDraftInput,
+    ValidationResult,
 };
 use crate::limits::IoClass;
 
@@ -15,6 +16,8 @@ pub trait CorePort {
     fn validate_draft(&self, input: ValidateDraftInput) -> Result<ValidationResult>;
     fn build_manifest(&self, input: BuildManifestInput) -> Result<Manifest>;
     fn export_artifact(&self, input: ExportArtifactInput) -> Result<Artifact>;
+    /// MVP-1 additive: import legacy v5.1 bytes into a new draft (FR-IMPORT-001).
+    fn import_draft(&self, input: ImportDraftInput) -> Result<ImportDraftResult>;
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -26,6 +29,7 @@ pub enum CoreOp {
     ValidateDraft,
     BuildManifest,
     ExportArtifact,
+    ImportDraft,
 }
 
 impl CoreOp {
@@ -34,7 +38,8 @@ impl CoreOp {
             CoreOp::CreateDraft
             | CoreOp::ResolveDraft
             | CoreOp::ValidateDraft
-            | CoreOp::BuildManifest => IoClass::Pure,
+            | CoreOp::BuildManifest
+            | CoreOp::ImportDraft => IoClass::Pure,
             CoreOp::LoadCatalog => IoClass::Mixed,
             CoreOp::SaveDraft | CoreOp::ExportArtifact => IoClass::Io,
         }
@@ -49,6 +54,7 @@ impl CoreOp {
             CoreOp::ValidateDraft => "archmaker-core.validate-draft",
             CoreOp::BuildManifest => "archmaker-core.build-manifest",
             CoreOp::ExportArtifact => "archmaker-core.export-artifact",
+            CoreOp::ImportDraft => "archmaker-core.import-draft",
         }
     }
 }

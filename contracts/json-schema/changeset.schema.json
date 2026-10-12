@@ -6,10 +6,7 @@
   "$comment": "Contract v0 (phase R6, AUD-015). Unknown fields rejected; before/after use common SelectionValue.",
   "type": "object",
   "additionalProperties": false,
-  "required": [
-    "schemaVersion",
-    "operations"
-  ],
+  "required": ["schemaVersion", "operations"],
   "properties": {
     "schemaVersion": {
       "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/schemaVersion"
@@ -24,12 +21,7 @@
     },
     "origin": {
       "description": "Producer of the change set.",
-      "enum": [
-        "compare",
-        "preset",
-        "migration",
-        "manual"
-      ]
+      "enum": ["compare", "preset", "migration", "manual"]
     },
     "operations": {
       "description": "Ordered discrete operations. Order is semantic and preserved.",
@@ -53,24 +45,13 @@
     },
     "op": {
       "description": "Typed operation kind.",
-      "enum": [
-        "add",
-        "remove",
-        "replace",
-        "move",
-        "copy",
-        "test"
-      ]
+      "enum": ["add", "remove", "replace", "move", "copy", "test"]
     },
     "operation": {
       "description": "A single discrete change. Required fields depend on the operation kind via if/then; unknown fields are rejected.",
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "opId",
-        "op",
-        "path"
-      ],
+      "required": ["opId", "op", "path"],
       "properties": {
         "opId": {
           "$ref": "#/$defs/opId"
@@ -125,14 +106,10 @@
                 "const": "add"
               }
             },
-            "required": [
-              "op"
-            ]
+            "required": ["op"]
           },
           "then": {
-            "required": [
-              "after"
-            ]
+            "required": ["after"]
           }
         },
         {
@@ -142,14 +119,10 @@
                 "const": "remove"
               }
             },
-            "required": [
-              "op"
-            ]
+            "required": ["op"]
           },
           "then": {
-            "required": [
-              "before"
-            ]
+            "required": ["before"]
           }
         },
         {
@@ -159,15 +132,10 @@
                 "const": "replace"
               }
             },
-            "required": [
-              "op"
-            ]
+            "required": ["op"]
           },
           "then": {
-            "required": [
-              "before",
-              "after"
-            ]
+            "required": ["before", "after"]
           }
         },
         {
@@ -177,14 +145,10 @@
                 "const": "test"
               }
             },
-            "required": [
-              "op"
-            ]
+            "required": ["op"]
           },
           "then": {
-            "required": [
-              "before"
-            ]
+            "required": ["before"]
           }
         },
         {
@@ -194,14 +158,10 @@
                 "const": "move"
               }
             },
-            "required": [
-              "op"
-            ]
+            "required": ["op"]
           },
           "then": {
-            "required": [
-              "from"
-            ]
+            "required": ["from"]
           }
         },
         {
@@ -211,14 +171,10 @@
                 "const": "copy"
               }
             },
-            "required": [
-              "op"
-            ]
+            "required": ["op"]
           },
           "then": {
-            "required": [
-              "from"
-            ]
+            "required": ["from"]
           }
         }
       ]

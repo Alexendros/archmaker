@@ -26,22 +26,23 @@ tipado v1 y nunca un script.
 `$ref` es **por `$id`**, no por ruta de fichero (registro de `$id` en el gate). Los `$defs`
 compartidos viven una sola vez en `common.schema.json`.
 
-| Archivo | Agregado | Ejes de versión | Estado |
-|---|---|---|---|
-| `common.schema.json` | `$defs` compartidos | — | v0 |
-| `draft.schema.json` | DM-DRAFT | `documentVersion`, `schemaVersion`, `revision`, `catalogRef.version`, `targetRef.version` | v0 |
-| `catalog.schema.json` | DM-CATALOG | `documentVersion`, `schemaVersion`, `catalogRef.version` | v0 |
-| `rule.schema.json` | RULE-* | `documentVersion`, `schemaVersion` | v0 (AUD-017) |
-| `diagnostic.schema.json` | Diagnostic (AM-*) | `schemaVersion` | v0 |
-| `core-error.schema.json` | CoreError (AM-*) | `schemaVersion` | v0 |
-| `changeset.schema.json` | ChangeSet | `schemaVersion`, `baseRevision` | v0 |
-| `manifest.schema.json` | DM-MANIFEST | `documentVersion`, `schemaVersion`, `catalogRef.version`, `targetRef.version`, `producer.version` | v0 |
-| `artifact.schema.json` | DM-ARTIFACT | `documentVersion`, `schemaVersion`, `targetRef.version`, `producer.version` | v0 |
-| `installation-plan.schema.json` | DM-PLAN (v1) | `documentVersion`, `schemaVersion`, `protocolVersion` | v0 |
-| `runner-envelope.schema.json` | DM-SESSION (protocolo v1) | `protocolVersion`, `schemaVersion` | v0 |
+| Archivo                         | Agregado                  | Ejes de versión                                                                                   | Estado       |
+| ------------------------------- | ------------------------- | ------------------------------------------------------------------------------------------------- | ------------ |
+| `common.schema.json`            | `$defs` compartidos       | —                                                                                                 | v0           |
+| `draft.schema.json`             | DM-DRAFT                  | `documentVersion`, `schemaVersion`, `revision`, `catalogRef.version`, `targetRef.version`         | v0           |
+| `catalog.schema.json`           | DM-CATALOG                | `documentVersion`, `schemaVersion`, `catalogRef.version`                                          | v0           |
+| `rule.schema.json`              | RULE-*                    | `documentVersion`, `schemaVersion`                                                                | v0 (AUD-017) |
+| `diagnostic.schema.json`        | Diagnostic (AM-*)         | `schemaVersion`                                                                                   | v0           |
+| `core-error.schema.json`        | CoreError (AM-*)          | `schemaVersion`                                                                                   | v0           |
+| `changeset.schema.json`         | ChangeSet                 | `schemaVersion`, `baseRevision`                                                                   | v0           |
+| `manifest.schema.json`          | DM-MANIFEST               | `documentVersion`, `schemaVersion`, `catalogRef.version`, `targetRef.version`, `producer.version` | v0           |
+| `artifact.schema.json`          | DM-ARTIFACT               | `documentVersion`, `schemaVersion`, `targetRef.version`, `producer.version`                       | v0           |
+| `installation-plan.schema.json` | DM-PLAN (v1)              | `documentVersion`, `schemaVersion`, `protocolVersion`                                             | v0           |
+| `runner-envelope.schema.json`   | DM-SESSION (protocolo v1) | `protocolVersion`, `schemaVersion`                                                                | v0           |
 
-Los ejes son independientes (ADR-0006). El formato exacto de cada versión sigue pendiente de ADR;
-`catalogRef.version`/`presetRef.version` usan semver, el resto exige cadena no vacía.
+Los ejes son independientes (ADR-0006). Formato congelado en MVP-1: `documentVersion` =
+`vNext`/`vNext.N`; `schemaVersion` y `protocolVersion` = entero positivo; `catalogRef` /
+`presetRef` / `targetRef` / `producer` = SemVer 2.0 (`common#/$defs/semver`).
 
 ## Identidad, revisión y digests
 
@@ -66,13 +67,13 @@ Todos los schemas nacen con **`additionalProperties: false`** en la raíz y en c
 (ADR-0005): lo no declarado se rechaza en el borde. Las únicas excepciones son mapas abiertos
 **semánticamente necesarios**, documentados en su `description` y acotados en lo posible:
 
-| Mapa abierto | Schema | Motivo |
-|---|---|---|
-| `metadata` | `catalog.schema.json` | Metadatos libres del catálogo; valores `string`. |
-| `params` | `diagnostic.schema.json` | Interpolación de mensajes; solo escalares. |
-| `params` | `core-error.schema.json` | Interpolación de mensajes; solo escalares. |
-| `content` | `artifact.schema.json` | Payload definido por el adapter del target (ADR-0003). |
-| `payload` | `runner-envelope.schema.json` | Payload por mensaje del protocolo runner v1. |
+| Mapa abierto | Schema                        | Motivo                                                 |
+| ------------ | ----------------------------- | ------------------------------------------------------ |
+| `metadata`   | `catalog.schema.json`         | Metadatos libres del catálogo; valores `string`.       |
+| `params`     | `diagnostic.schema.json`      | Interpolación de mensajes; solo escalares.             |
+| `params`     | `core-error.schema.json`      | Interpolación de mensajes; solo escalares.             |
+| `content`    | `artifact.schema.json`        | Payload definido por el adapter del target (ADR-0003). |
+| `payload`    | `runner-envelope.schema.json` | Payload por mensaje del protocolo runner v1.           |
 
 Estos mapas se mantienen **abiertos y documentados** de forma deliberada y su cierre se **difiere a
 v1**: cerrar `artifact.content` por `oneOf` exige fijar el profile `archinstall`, hoy no verificado
@@ -92,29 +93,29 @@ v1**: cerrar `artifact.content` por `oneOf` exige fijar el profile `archinstall`
 `.invalid.json`. El inválido viola una restricción concreta; los casos adversariales cubren bordes
 (precisión numérica, severidad/blocking, secretos, límites, operaciones de changeset).
 
-| Ejemplo | Restricción ejercitada |
-|---|---|
-| `01-draft.invalid.json` | `additionalProperties: false` en la raíz (`derivedSelections`). |
-| `02-catalog.invalid.json` | `enum` en `steps[].mode` (`grid`). |
-| `03-rule.invalid.json` | `oneOf` de condición: operador desconocido `count_gte`. |
-| `04-diagnostic.invalid.json` | `pattern` en `code` (`AM-BROKEN`). |
-| `05-manifest.invalid.json` | `const` de `domainLabel` y `enum` en `origin`. |
-| `06-artifact.invalid.json` | `enum` en `targetRef.id` (`iso`). |
-| `07-installation-plan.invalid.json` | `enum` en `operations[].kind` (`shell.run`). |
-| `08-runner-envelope.invalid.json` | `pattern` en `protocolVersion` (`1.0`). |
-| `09-common-quantity.*` | `enum` cerrado de `unitCode` (`gib` no permitido). |
-| `10-common-contentdigest.*` | `pattern` de digest en minúsculas. |
-| `11-core-error.*` | R7: campo libre `message` rechazado. |
-| `12-changeset.*` | `if/then`: `replace` exige `before` y `after`. |
-| `13-draft-savedraft.*` | `saveDraftRequest` exige `expectedRevision`. |
-| `14-draft-adversarial.*` | binary64: `1e400` fuera de rango. |
-| `15-catalog-adversarial.*` | `revision` negativo. |
-| `16-diagnostic-adversarial.*` | consistencia `error` ⇒ `blocking:true`. |
-| `17-manifest-adversarial.*` | `contentDigest` en minúsculas. |
-| `18-common-secretref.*` | `secretRef` sin valor de secreto. |
-| `19-common-limits.*` | límites no negativos. |
-| `20-core-error-adversarial.*` | severidad canónica (`fatal` reservado). |
-| `21-changeset-adversarial.*` | `if/then`: `move` exige `from`. |
+| Ejemplo                             | Restricción ejercitada                                          |
+| ----------------------------------- | --------------------------------------------------------------- |
+| `01-draft.invalid.json`             | `additionalProperties: false` en la raíz (`derivedSelections`). |
+| `02-catalog.invalid.json`           | `enum` en `steps[].mode` (`grid`).                              |
+| `03-rule.invalid.json`              | `oneOf` de condición: operador desconocido `count_gte`.         |
+| `04-diagnostic.invalid.json`        | `pattern` en `code` (`AM-BROKEN`).                              |
+| `05-manifest.invalid.json`          | `const` de `domainLabel` y `enum` en `origin`.                  |
+| `06-artifact.invalid.json`          | `enum` en `targetRef.id` (`iso`).                               |
+| `07-installation-plan.invalid.json` | `enum` en `operations[].kind` (`shell.run`).                    |
+| `08-runner-envelope.invalid.json`   | `pattern` en `protocolVersion` (`1.0`).                         |
+| `09-common-quantity.*`              | `enum` cerrado de `unitCode` (`gib` no permitido).              |
+| `10-common-contentdigest.*`         | `pattern` de digest en minúsculas.                              |
+| `11-core-error.*`                   | R7: campo libre `message` rechazado.                            |
+| `12-changeset.*`                    | `if/then`: `replace` exige `before` y `after`.                  |
+| `13-draft-savedraft.*`              | `saveDraftRequest` exige `expectedRevision`.                    |
+| `14-draft-adversarial.*`            | binary64: `1e400` fuera de rango.                               |
+| `15-catalog-adversarial.*`          | `revision` negativo.                                            |
+| `16-diagnostic-adversarial.*`       | consistencia `error` ⇒ `blocking:true`.                         |
+| `17-manifest-adversarial.*`         | `contentDigest` en minúsculas.                                  |
+| `18-common-secretref.*`             | `secretRef` sin valor de secreto.                               |
+| `19-common-limits.*`                | límites no negativos.                                           |
+| `20-core-error-adversarial.*`       | severidad canónica (`fatal` reservado).                         |
+| `21-changeset-adversarial.*`        | `if/then`: `move` exige `from`.                                 |
 
 ### Migración v5.1 → vNext
 
@@ -155,7 +156,7 @@ shell, `pacstrap` o campos `cmd`/`hooks`.
 ## Reglas de mantenimiento
 
 - Estado inicial de todo schema nuevo: `draft`; la versión de contrato se registra en `CHANGELOG.md`.
-- Cada cambio de forma incrementa `schemaVersion` y exige *migration note* (`document-control.md`).
+- Cada cambio de forma incrementa `schemaVersion` y exige _migration note_ (`document-control.md`).
 - IDs de entidad con patrón global `vendor.kind.id` (DEC-002); las referencias a `catalogRef`/`presetRef`
   usan `namespace` + `id` + `version`.
 - Sin secretos: solo `secretRef` (`THR-SEC-001`).

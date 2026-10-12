@@ -29,16 +29,12 @@
               "title": "Linux",
               "fixed": true,
               "essentialReason": "Bootable base system.",
-              "provides": [
-                "boot.kernel"
-              ]
+              "provides": ["boot.kernel"]
             },
             {
               "id": "archmaker.kernel.zen",
               "title": "Linux Zen",
-              "tags": [
-                "low-latency"
-              ]
+              "tags": ["low-latency"]
             }
           ]
         },
@@ -50,9 +46,7 @@
             {
               "id": "archmaker.boot.systemd-boot",
               "title": "systemd-boot",
-              "provides": [
-                "boot.uefi"
-              ]
+              "provides": ["boot.uefi"]
             },
             {
               "id": "archmaker.boot.grub",

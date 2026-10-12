@@ -41,6 +41,10 @@
       "description": "Semantic content digest of the catalog payload (ADR-0007), computed externally. Never comparable with a binary digest.",
       "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/contentDigest"
     },
+    "provenance": {
+      "description": "Packaged provenance record for local catalogs (MVP-1). Cryptographic signature verification remains ADR-0008 / AM-CAT-003 (out of this phase).",
+      "$ref": "#/$defs/provenance"
+    },
     "metadata": {
       "description": "Open catalog metadata map (free-form string values, e.g. owner, locale). Documented open map required by the domain; keys are not fixed by this contract.",
       "type": "object",
@@ -85,16 +89,33 @@
     }
   },
   "$defs": {
+    "provenance": {
+      "description": "Typed packaged provenance: source identifier, repository path and capture timestamp (UTC).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sourceId", "path", "capturedAt"],
+      "properties": {
+        "sourceId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-z0-9][a-z0-9._-]*$"
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "capturedAt": {
+          "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/utcTimestamp"
+        }
+      }
+    },
     "step": {
       "description": "A catalog step: a decision point with one or more sections.",
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "id",
-        "title",
-        "mode",
-        "sections"
-      ],
+      "required": ["id", "title", "mode", "sections"],
       "properties": {
         "id": {
           "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/entityId"
@@ -112,11 +133,7 @@
         },
         "mode": {
           "description": "Presentation mode of the step (grouped, flat or single).",
-          "enum": [
-            "grouped",
-            "flat",
-            "single"
-          ]
+          "enum": ["grouped", "flat", "single"]
         },
         "sections": {
           "description": "Sections contained in the step.",
@@ -133,12 +150,7 @@
       "description": "A group of mutually related options within a step.",
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "id",
-        "title",
-        "cardinality",
-        "options"
-      ],
+      "required": ["id", "title", "cardinality", "options"],
       "properties": {
         "id": {
           "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/entityId"
@@ -155,10 +167,7 @@
         },
         "cardinality": {
           "description": "Maximum number of selectable options: one or many.",
-          "enum": [
-            "one",
-            "many"
-          ]
+          "enum": ["one", "many"]
         },
         "options": {
           "description": "Selectable options in the section.",
@@ -175,10 +184,7 @@
       "description": "A selectable option with intent and metadata only. No installable facts (packages or versions) are declared here.",
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "id",
-        "title"
-      ],
+      "required": ["id", "title"],
       "properties": {
         "id": {
           "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/entityId"
@@ -234,12 +240,7 @@
       "description": "A named pack of essential and recommended options.",
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "id",
-        "title",
-        "essential",
-        "recommended"
-      ],
+      "required": ["id", "title", "essential", "recommended"],
       "properties": {
         "id": {
           "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/entityId"
@@ -274,9 +275,7 @@
       "description": "A technical capability declaration.",
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "id"
-      ],
+      "required": ["id"],
       "properties": {
         "id": {
           "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/capabilityId"
@@ -295,9 +294,7 @@
       "description": "Reference to a rule definition that constrains selections.",
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "id"
-      ],
+      "required": ["id"],
       "properties": {
         "id": {
           "description": "Rule identifier.",

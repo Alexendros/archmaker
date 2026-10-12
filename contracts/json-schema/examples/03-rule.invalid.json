@@ -5,10 +5,7 @@
   "severity": "error",
   "blocking": true,
   "when": {
-    "count_gte": [
-      "archmaker.environment.compositor",
-      1
-    ]
+    "count_gte": ["archmaker.environment.compositor", 1]
   },
   "action": "block"
 }

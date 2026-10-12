@@ -32,12 +32,12 @@ documentación y contratos**; no se construye producto. La validación documenta
 
 ## Estrategia de gates
 
-| Disparador | Workflows | Gates | Naturaleza |
-|---|---|---|---|
-| PR / push a `main` | `.github/workflows/docs-validate.yml` | G0, G4, G5, G7, G9 | Bloqueante |
-| PR / push a `main` | `.github/workflows/json-schema.yml` | G4, G5 | Bloqueante |
-| `nightly` | los anteriores + build/attest de artefactos | G8, G9, G10 | No bloqueante (señal) |
-| `release` | promoción de artefactos ya construidos | G8, G9, G10 | Bloqueante |
+| Disparador         | Workflows                                   | Gates              | Naturaleza            |
+| ------------------ | ------------------------------------------- | ------------------ | --------------------- |
+| PR / push a `main` | `.github/workflows/docs-validate.yml`       | G0, G4, G5, G7, G9 | Bloqueante            |
+| PR / push a `main` | `.github/workflows/json-schema.yml`         | G4, G5             | Bloqueante            |
+| `nightly`          | los anteriores + build/attest de artefactos | G8, G9, G10        | No bloqueante (señal) |
+| `release`          | promoción de artefactos ya construidos      | G8, G9, G10        | Bloqueante            |
 
 - **PR**: verificación rápida y determinista. Los checks de documentación no requieren secretos.
 - **Nightly**: re-ejecuta los gates sobre `main` y añade construcción, SBOM, provenance y firma
@@ -80,12 +80,12 @@ No deben introducirse hashes no verificados contra la fuente.
 La política de firma queda fijada por DEC-006 (Sigstore para releases + firma offline evaluada);
 el pipeline de build/attest sigue siendo propuesta `draft` hasta implementarse.
 
-| Elemento | Mecanismo | Estándar | Estado |
-|---|---|---|---|
-| Provenance | GitHub Artifact Attestations (`actions/attest-build-provenance`) | SLSA v1.2 / in-toto | Propuesto |
-| SBOM | Generación CycloneDX y/o SPDX; `actions/attest-sbom` | CycloneDX / SPDX | Propuesto |
-| Firma de artefactos | Sigstore (keyless, ligada a OIDC) + firma offline evaluada | Sigstore | Fijado por DEC-006 |
-| Checksums | `SHA256SUMS` + verificación `sha256sum --check` | SHA-256 | Propuesto |
+| Elemento            | Mecanismo                                                        | Estándar            | Estado             |
+| ------------------- | ---------------------------------------------------------------- | ------------------- | ------------------ |
+| Provenance          | GitHub Artifact Attestations (`actions/attest-build-provenance`) | SLSA v1.2 / in-toto | Propuesto          |
+| SBOM                | Generación CycloneDX y/o SPDX; `actions/attest-sbom`             | CycloneDX / SPDX    | Propuesto          |
+| Firma de artefactos | Sigstore (keyless, ligada a OIDC) + firma offline evaluada       | Sigstore            | Fijado por DEC-006 |
+| Checksums           | `SHA256SUMS` + verificación `sha256sum --check`                  | SHA-256             | Propuesto          |
 
 - **Provenance**: se atesta cada artefacto de build para ligar binario, commit y workflow. La
   fuente institucional (NIST SSDF/SLSA/Sigstore) está registrada como `SRC-008`, con captura
