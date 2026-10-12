@@ -40,12 +40,6 @@ reviewers:
 | CON-021 | build Tauri local              | build Tauri local falló validando `app.security.devtools` con CLI instalada.                | D-09                                                  | Alinear schema/CLI y añadir build a CI; fijar `allowlist` vs `deny-by-default`.                             |
 | CON-022 | tags baseline                  | Tags de baseline 6 commits detrás de HEAD.                                                  | D-10                                                  | NO mover tags; emitir versión sucesora `implementation-baseline-mvp0.1` apuntando al commit revisado.       |
 
-## Cierre CON-013..CON-022 (baseline MVP-0.1)
-
-Estado de las desviaciones D-01..D-10 al estabilizar `stabilization/mvp0.1` y el tag
-`implementation-baseline-mvp0.1`. CON-005..CON-012 permanecen como deuda de migración/seguridad
-(fuera del slice MVP-1 de datos); CON-001..CON-004 se cierran en MVP-1.
-
 ## Cierre CON-001..CON-004 (baseline MVP-1)
 
 | ID      | Estado   | Evidencia de cierre                                                                                                                                         | Residual |
@@ -56,6 +50,10 @@ Estado de las desviaciones D-01..D-10 al estabilizar `stabilization/mvp0.1` y el
 | CON-004 | resuelta | Identidad duplicada `base-devel` colapsada a `archmaker.pkg.base-devel`; detector `RULE-DUP-001` / `AM-RULE-008`                                            | —        |
 
 ## Cierre CON-013..CON-022 (baseline MVP-0.1)
+
+Estado de las desviaciones D-01..D-10 al estabilizar `stabilization/mvp0.1` y el tag
+`implementation-baseline-mvp0.1`. CON-005..CON-012 permanecen como deuda de migración/seguridad
+(fuera del slice MVP-1 de datos); CON-001..CON-004 se cierran en MVP-1.
 
 | ID      | Estado                | Evidencia de cierre                                                                                            | Residual                                                  |
 | ------- | --------------------- | -------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |

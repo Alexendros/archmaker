@@ -16,8 +16,8 @@ reviewers:
 # Estado de planificación
 
 - Estado: in-review
-- Gate global: CONDITIONAL-GO — walking skeleton MVP-0 + slice MVP-1 (sin runner)
-- Baseline vigente: `implementation-baseline-mvp0.1`; sucesor planificado `implementation-baseline-mvp1`
+- Gate global: CONDITIONAL-CLEAR — walking skeleton MVP-0 + slice MVP-1 (sin runner)
+- Baseline vigente: `implementation-baseline-mvp0.1`; sucesor `implementation-baseline-mvp1` (emitir con CI verde)
 - Fecha de corte: 2026-10-12
 
 ## Bloqueos P0

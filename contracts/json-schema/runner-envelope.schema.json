@@ -15,14 +15,12 @@
   "additionalProperties": false,
   "properties": {
     "protocolVersion": {
-      "description": "Runner protocol version (axis protocolVersion), negotiated before accepting a manifest.",
-      "type": "string",
-      "pattern": "^v[0-9]+(?:\\.[0-9]+)*$"
+      "description": "Runner protocol version (axis protocolVersion). Validated only in MVP-1 — no runner negotiation.",
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/protocolVersion"
     },
     "schemaVersion": {
       "description": "JSON Schema contract version of the envelope (axis schemaVersion).",
-      "type": "string",
-      "minLength": 1
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/schemaVersion"
     },
     "messageId": {
       "description": "Unique message identifier (UUID).",
