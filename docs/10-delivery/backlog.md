@@ -98,16 +98,16 @@ Los issues AUD-001..AUD-023 están **supersedidos** por la evidencia del walking
 
 ## Issues MVP-1
 
-| Issue    | Título                                 | Dueño        | Estado  | Gate     |
-| -------- | -------------------------------------- | ------------ | ------- | -------- |
-| MVP-1-01 | Aprobar alcance DOC-DEL-MVP1-001       | Product      | closed  | G2,G10   |
-| MVP-1-02 | Cerrar CON-001..004 dominio/schemas    | Data         | closed  | G4       |
-| MVP-1-03 | Formato ejes de versión (ADR-0006)     | Architecture | closed  | G3,G4    |
-| MVP-1-04 | Catálogo local versionado multi-entity | Data         | closed  | G4,G5    |
-| MVP-1-05 | importDraft + migración MIG-5.1        | Data         | closed  | G4,G7,G9 |
-| MVP-1-06 | Changeset + concurrencia               | Interfaces   | closed  | G4,G5    |
-| MVP-1-07 | Trazabilidad ampliada MVP-1            | Quality      | closed  | G2,G9    |
-| MVP-1-08 | Tag `implementation-baseline-mvp1`     | Release      | planned | G10      |
+| Issue    | Título                                 | Dueño        | Estado | Gate     |
+| -------- | -------------------------------------- | ------------ | ------ | -------- |
+| MVP-1-01 | Aprobar alcance DOC-DEL-MVP1-001       | Product      | closed | G2,G10   |
+| MVP-1-02 | Cerrar CON-001..004 dominio/schemas    | Data         | closed | G4       |
+| MVP-1-03 | Formato ejes de versión (ADR-0006)     | Architecture | closed | G3,G4    |
+| MVP-1-04 | Catálogo local versionado multi-entity | Data         | closed | G4,G5    |
+| MVP-1-05 | importDraft + migración MIG-5.1        | Data         | closed | G4,G7,G9 |
+| MVP-1-06 | Changeset + concurrencia               | Interfaces   | closed | G4,G5    |
+| MVP-1-07 | Trazabilidad ampliada MVP-1            | Quality      | closed | G2,G9    |
+| MVP-1-08 | Tag `implementation-baseline-mvp1`     | Release      | closed | G10      |
 
 Detalle y exclusiones: [`mvp1-scope.md`](mvp1-scope.md).
 
