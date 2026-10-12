@@ -1,6 +1,6 @@
 {
-  "generated_at": "1791827390",
-  "git_sha": "9cef12060127a9a76520c1be4cca1635ab057d0c",
+  "generated_at": "1791830448",
+  "git_sha": "dbf6fe1ce047ef1a552e2e07b18864711934d9ae",
   "tests": [
     {
       "id": "TST-ARCHMAKER-CANONICALIZATION-VECTORS-GOLDEN_CORPUS_BYTE_IDENTITY_AND_DIGEST",
@@ -668,6 +668,23 @@
       "workflow": "ci",
       "covers": ["NFR-ACC-001"],
       "description": "Web test a11y-playwright"
+    },
+    {
+      "id": "TST-WEB-MOCK-FLOW.PLAYWRIGHT",
+      "type": "unit",
+      "location": "apps/web/mock-flow.playwright.test.ts",
+      "command": "cd apps/web && pnpm test mock-flow.playwright",
+      "workflow": "ci",
+      "covers": [
+        "FR-DRAFT-001",
+        "FR-CAT-001",
+        "FR-RESOLVE-001",
+        "FR-VALIDATE-001",
+        "FR-MANIFEST-001",
+        "FR-EXPORT-001",
+        "NFR-OFF-001"
+      ],
+      "description": "Web test mock-flow.playwright"
     },
     {
       "id": "TST-WEB-VISUAL-REGRESSION",

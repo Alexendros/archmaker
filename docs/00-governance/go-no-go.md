@@ -27,11 +27,14 @@ reviewers:
 - Reevaluación slice MVP-3 (MVP-3-06): **CONDITIONAL-CLEAR — walking skeleton MVP-0 + slices MVP-1/MVP-2/MVP-3**
   (adapters de exportación versionados; ADR-0003 parcial). Baseline emitida:
   `implementation-baseline-mvp3` (tags previos intactos).
+- Reevaluación slice MVP-4 (MVP-4-06): **CONDITIONAL-CLEAR — walking skeleton MVP-0 + slices MVP-1..MVP-4**
+  (React + MockCorePort; design system sin rediseño). Baseline emitida:
+  `implementation-baseline-mvp4` (tags previos intactos).
 - Alcance autorizado: `docs/10-delivery/walking-skeleton.md` (DOC-DEL-WSK-001),
   `docs/10-delivery/mvp1-scope.md` (DOC-DEL-MVP1-001), `docs/10-delivery/mvp2-scope.md`
-  (DOC-DEL-MVP2-001) y `docs/10-delivery/mvp3-scope.md` (DOC-DEL-MVP3-001). Bloqueados: runner real,
-  root, discos, shell arbitraria, catálogos remotos, firma criptográfica de catálogo en carga,
-  Enterprise.
+  (DOC-DEL-MVP2-001), `docs/10-delivery/mvp3-scope.md` (DOC-DEL-MVP3-001) y
+  `docs/10-delivery/mvp4-scope.md` (DOC-DEL-MVP4-001). Bloqueados: runner real, root, discos,
+  shell arbitraria, catálogos remotos, firma criptográfica de catálogo en carga, Enterprise.
 
 ## Motivo del resultado mecánico
 
@@ -98,10 +101,10 @@ Resultado derivado: **Clear** — todos los gates G0–G10 están `complete`.
 ## Consecuencia inmediata
 
 Autorizado: el walking skeleton MVP-0 definido en `docs/10-delivery/walking-skeleton.md`,
-el slice **MVP-1** (`mvp1-scope.md`), el slice **MVP-2** (reglas / resolución / validación)
-según `docs/10-delivery/mvp2-scope.md` y el slice **MVP-3** (adapters de exportación) según
-`docs/10-delivery/mvp3-scope.md`. **No** autorizado: runner real, root, discos, shell
-arbitraria, catálogos remotos, firma criptográfica de catálogo en carga, ni Enterprise.
+los slices **MVP-1** (`mvp1-scope.md`), **MVP-2** (`mvp2-scope.md`), **MVP-3**
+(`mvp3-scope.md`) y **MVP-4** (React + MockCorePort, `mvp4-scope.md`). **No** autorizado:
+runner real, root, discos, shell arbitraria, catálogos remotos, firma criptográfica de
+catálogo en carga, ni Enterprise.
 
 ## Decisiones de alcance (C3 — G1-C03)
 

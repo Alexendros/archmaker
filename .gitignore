@@ -15,6 +15,11 @@ target/
 .cargo-target/
 *.log
 
+# Playwright
+apps/web/test-results/
+apps/web/visual-diffs/
+apps/web/a11y-axe-report/
+
 # Entornos y secretos
 .env
 .env.*
