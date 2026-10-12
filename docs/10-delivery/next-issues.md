@@ -78,6 +78,19 @@ Fuente canónica de alcance: [`mvp2-scope.md`](mvp2-scope.md).
 | MVP-2-06 | Trazabilidad MVP-2 sin huérfanos        | 04,05      | G2,G9    | Quality      | Matriz verde                 | closed |
 | MVP-2-07 | Tag `implementation-baseline-mvp2`      | 01–06      | G10      | Release      | Tag + CI verde               | closed |
 
+## Issues MVP-3
+
+Fuente canónica de alcance: [`mvp3-scope.md`](mvp3-scope.md).
+
+| #        | Issue                                            | Depende de | Gate   | Owner        | Criterio Done                      | Estado |
+| -------- | ------------------------------------------------ | ---------- | ------ | ------------ | ---------------------------------- | ------ |
+| MVP-3-01 | Aprobar alcance DOC-DEL-MVP3-001                 | —          | G2,G10 | Product      | Documento `accepted`               | closed |
+| MVP-3-02 | Adapter `archmaker-profile` + `report` + content | 01         | G4,G5  | Architecture | Content relleno; bytes canónicos   | closed |
+| MVP-3-03 | Sobre experimental `archinstall-profile`         | 01,02      | G3,G5  | Architecture | Bytes ≠ ArchMaker; sin ejecutables | closed |
+| MVP-3-04 | Tests divergencia / idempotencia / rechazo       | 02,03      | G5,G9  | Quality      | TST-EXP-001 / VAL-TARGET           | closed |
+| MVP-3-05 | Trazabilidad MVP-3 sin huérfanos                 | 04         | G2,G9  | Quality      | Matriz verde                       | closed |
+| MVP-3-06 | Tag `implementation-baseline-mvp3`               | 01–05      | G10    | Release      | Tag + CI verde                     | closed |
+
 ## Trazabilidad de los issues
 
 - Requisitos: ISSUE-003 (`FR-*`, `NFR-*`), ISSUE-006 (FR-DRAFT/EXPORT, NFR-MIG), ISSUE-007 (FR-VALIDATE/NFR-DET), ISSUE-008 (NFR-PORT/SEC/OBS).
@@ -88,7 +101,8 @@ Fuente canónica de alcance: [`mvp2-scope.md`](mvp2-scope.md).
 
 ## Regla de cierre del plan
 
-El veredicto vigente es **CONDITIONAL-CLEAR — walking skeleton MVP-0 + slices MVP-1/MVP-2**
+El veredicto vigente es **CONDITIONAL-CLEAR — walking skeleton MVP-0 + slices MVP-1/MVP-2/MVP-3**
 (`docs/00-governance/go-no-go.md`), con gates G0–G10 `complete`. MVP-1-01..08 están `closed`;
-MVP-2-01..07 están `closed`; baseline `implementation-baseline-mvp2` emitida (tags previos intactos).
-La autorización del MVP completo y del runner exige su propio gate.
+MVP-2-01..07 están `closed`; MVP-3-01..06 están `closed`; baseline `implementation-baseline-mvp3`
+emitida (tags previos intactos). La autorización del MVP completo y del runner exige su propio
+gate.

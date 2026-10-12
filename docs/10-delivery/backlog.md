@@ -125,6 +125,19 @@ Detalle y exclusiones: [`mvp1-scope.md`](mvp1-scope.md).
 
 Detalle y exclusiones: [`mvp2-scope.md`](mvp2-scope.md).
 
+## Issues MVP-3
+
+| Issue    | Título                                           | Dueño        | Estado | Gate   |
+| -------- | ------------------------------------------------ | ------------ | ------ | ------ |
+| MVP-3-01 | Aprobar alcance DOC-DEL-MVP3-001                 | Product      | closed | G2,G10 |
+| MVP-3-02 | Adapter `archmaker-profile` + `report` + content | Architecture | closed | G4,G5  |
+| MVP-3-03 | Sobre experimental `archinstall-profile`         | Architecture | closed | G3,G5  |
+| MVP-3-04 | Tests divergencia / idempotencia / rechazo       | Quality      | closed | G5,G9  |
+| MVP-3-05 | Trazabilidad ampliada MVP-3                      | Quality      | closed | G2,G9  |
+| MVP-3-06 | Tag `implementation-baseline-mvp3`               | Release      | closed | G10    |
+
+Detalle y exclusiones: [`mvp3-scope.md`](mvp3-scope.md).
+
 ## Reglas
 
 - Cada issue P0 tiene owner, fecha objetivo y criterio de cierre (ver `status-model.md`).

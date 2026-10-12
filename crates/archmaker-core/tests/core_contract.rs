@@ -542,11 +542,128 @@ fn export_artifact_byte_idempotent() {
         .expect("exports again");
     assert_eq!(first.binary_digest, second.binary_digest);
     assert_eq!(first.manifest_ref.content_digest, manifest.content_digest);
+    assert!(first.content.is_some(), "adapter content filled");
     let bytes_a = std::fs::read(dir.join("artifact-a.json")).expect("reads a");
     let bytes_b = std::fs::read(dir.join("artifact-b.json")).expect("reads b");
     assert_eq!(bytes_a, bytes_b);
-    let (rendered, _) = render_artifact_bytes(&manifest, &export_target()).expect("renders");
-    assert_eq!(rendered, bytes_a);
+    let rendered = render_artifact_bytes(&manifest, &export_target()).expect("renders");
+    assert_eq!(rendered.bytes, bytes_a);
+    assert_eq!(rendered.media_type, "application/json");
+    let _ = std::fs::remove_dir_all(&dir);
+}
+
+fn export_target_archinstall() -> TargetRef {
+    TargetRef {
+        id: "archinstall-profile".to_string(),
+        version: "0.1.0".to_string(),
+    }
+}
+
+fn export_target_report() -> TargetRef {
+    TargetRef {
+        id: "report".to_string(),
+        version: "0.1.0".to_string(),
+    }
+}
+
+#[test]
+fn export_adapters_diverge_bytes_and_fill_content() {
+    let (core, dir) = core_with_store("export-adapters");
+    let draft = valid_draft(&core);
+    let manifest_archmaker = core
+        .build_manifest(BuildManifestInput {
+            draft: draft.clone(),
+            catalog_ref: catalog_ref(),
+            target_ref: export_target(),
+            expected_resolution_digest: None,
+            request_id: None,
+        })
+        .expect("builds archmaker");
+    let manifest_archinstall = core
+        .build_manifest(BuildManifestInput {
+            draft: draft.clone(),
+            catalog_ref: catalog_ref(),
+            target_ref: export_target_archinstall(),
+            expected_resolution_digest: None,
+            request_id: None,
+        })
+        .expect("builds archinstall");
+    let manifest_report = core
+        .build_manifest(BuildManifestInput {
+            draft,
+            catalog_ref: catalog_ref(),
+            target_ref: export_target_report(),
+            expected_resolution_digest: None,
+            request_id: None,
+        })
+        .expect("builds report");
+
+    let archmaker = core
+        .export_artifact(ExportArtifactInput {
+            manifest: manifest_archmaker.clone(),
+            target_ref: export_target(),
+            destination: DestinationHandle::new("a.json".to_string()).expect("handle"),
+            request_id: None,
+        })
+        .expect("exports archmaker");
+    let archinstall = core
+        .export_artifact(ExportArtifactInput {
+            manifest: manifest_archinstall.clone(),
+            target_ref: export_target_archinstall(),
+            destination: DestinationHandle::new("b.json".to_string()).expect("handle"),
+            request_id: None,
+        })
+        .expect("exports archinstall");
+    let report = core
+        .export_artifact(ExportArtifactInput {
+            manifest: manifest_report,
+            target_ref: export_target_report(),
+            destination: DestinationHandle::new("c.md".to_string()).expect("handle"),
+            request_id: None,
+        })
+        .expect("exports report");
+
+    assert_ne!(
+        archmaker.binary_digest.value,
+        archinstall.binary_digest.value
+    );
+    assert_ne!(archmaker.binary_digest.value, report.binary_digest.value);
+    assert_ne!(archinstall.binary_digest.value, report.binary_digest.value);
+    assert_eq!(
+        archmaker.manifest_ref.content_digest.value,
+        manifest_archmaker.content_digest.value
+    );
+    assert_eq!(
+        archinstall.manifest_ref.content_digest.value,
+        manifest_archinstall.content_digest.value
+    );
+    assert_eq!(archinstall.experimental, Some(true));
+    assert!(archmaker.experimental.is_none());
+    assert_eq!(report.media_type, "text/markdown");
+    assert!(archmaker.content.is_some());
+    assert!(report.content.as_ref().is_some_and(|v| v.is_string()));
+
+    let envelope = archinstall.content.as_ref().expect("archinstall content");
+    assert_eq!(envelope["adapter"], "archinstall-profile");
+    assert_eq!(envelope["version"], "0.1.0");
+    assert_eq!(
+        envelope["manifestRef"]["contentDigest"]["value"],
+        manifest_archinstall.content_digest.value
+    );
+    assert!(envelope["effectiveSelections"].is_array());
+    for banned in ["cmd", "hooks", "pacstrap", "shell", "script", "commands"] {
+        assert!(
+            envelope.get(banned).is_none(),
+            "envelope must not carry executable key {banned}"
+        );
+    }
+    let bytes_a = std::fs::read(dir.join("a.json")).expect("a");
+    let bytes_b = std::fs::read(dir.join("b.json")).expect("b");
+    assert_ne!(bytes_a, bytes_b);
+    // archinstall envelope must not be a raw re-serialization of the domain Manifest.
+    let parsed_b: serde_json::Value = serde_json::from_slice(&bytes_b).expect("json");
+    assert!(parsed_b.get("domainLabel").is_none());
+    assert_eq!(parsed_b["adapter"], "archinstall-profile");
     let _ = std::fs::remove_dir_all(&dir);
 }
 

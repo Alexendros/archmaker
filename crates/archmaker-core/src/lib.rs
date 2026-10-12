@@ -23,7 +23,7 @@ pub use archmaker_domain::{
 pub use archmaker_rules::Diagnostic as RuleDiagnostic;
 pub use core::{
     catalog_content_digest, draft_content_digest, is_uuid, manifest_content_digest, new_uuid_v4,
-    render_artifact_bytes, RealCore, EMBEDDED_CATALOG_JSON, PIPELINE_VERSION,
+    render_artifact_bytes, RealCore, RenderedArtifact, EMBEDDED_CATALOG_JSON, PIPELINE_VERSION,
 };
 pub use error::{CoreError, ErrorCategory, ErrorFamily, Result, Severity};
 pub use inputs::{
