@@ -113,15 +113,15 @@ Detalle y exclusiones: [`mvp1-scope.md`](mvp1-scope.md).
 
 ## Issues MVP-2
 
-| Issue    | Título                                   | Dueño        | Estado  | Gate     |
-| -------- | ---------------------------------------- | ------------ | ------- | -------- |
-| MVP-2-01 | Aprobar alcance DOC-DEL-MVP2-001         | Product      | closed  | G2,G10   |
-| MVP-2-02 | AST operadores canónicos + AM-RULE-009   | Validation   | closed  | G7       |
-| MVP-2-03 | Reglas desde fichas del catálogo         | Data         | closed  | G4,G7    |
-| MVP-2-04 | Resolver dominio + digest SHA-256        | Architecture | closed  | G4,G5,G7 |
-| MVP-2-05 | validateDraft bloquea como buildManifest | Quality      | closed  | G5,G7,G9 |
-| MVP-2-06 | Trazabilidad ampliada MVP-2              | Quality      | closed  | G2,G9    |
-| MVP-2-07 | Tag `implementation-baseline-mvp2`       | Release      | planned | G10      |
+| Issue    | Título                                   | Dueño        | Estado | Gate     |
+| -------- | ---------------------------------------- | ------------ | ------ | -------- |
+| MVP-2-01 | Aprobar alcance DOC-DEL-MVP2-001         | Product      | closed | G2,G10   |
+| MVP-2-02 | AST operadores canónicos + AM-RULE-009   | Validation   | closed | G7       |
+| MVP-2-03 | Reglas desde fichas del catálogo         | Data         | closed | G4,G7    |
+| MVP-2-04 | Resolver dominio + digest SHA-256        | Architecture | closed | G4,G5,G7 |
+| MVP-2-05 | validateDraft bloquea como buildManifest | Quality      | closed | G5,G7,G9 |
+| MVP-2-06 | Trazabilidad ampliada MVP-2              | Quality      | closed | G2,G9    |
+| MVP-2-07 | Tag `implementation-baseline-mvp2`       | Release      | closed | G10      |
 
 Detalle y exclusiones: [`mvp2-scope.md`](mvp2-scope.md).
 

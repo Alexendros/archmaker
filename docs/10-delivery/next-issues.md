@@ -68,15 +68,15 @@ Fuente canónica de alcance: [`mvp1-scope.md`](mvp1-scope.md).
 
 Fuente canónica de alcance: [`mvp2-scope.md`](mvp2-scope.md).
 
-| #        | Issue                                   | Depende de | Gate     | Owner        | Criterio Done                | Estado  |
-| -------- | --------------------------------------- | ---------- | -------- | ------------ | ---------------------------- | ------- |
-| MVP-2-01 | Aprobar alcance DOC-DEL-MVP2-001        | —          | G2,G10   | Product      | Documento `accepted`         | closed  |
-| MVP-2-02 | AST operadores canónicos + AM-RULE-009  | 01         | G7       | Validation   | Corpus + tests Rust          | closed  |
-| MVP-2-03 | Cargar reglas desde fichas del catálogo | 02         | G4,G7    | Data         | Pack + `catalog.rules`       | closed  |
-| MVP-2-04 | Resolver dominio + digest SHA-256       | 02,03      | G4,G5,G7 | Architecture | FR-RESOLVE-001; FNV retirado | closed  |
-| MVP-2-05 | validateDraft ≡ buildManifest (bloqueo) | 03,04      | G5,G7,G9 | Quality      | FR-VALIDATE-001              | closed  |
-| MVP-2-06 | Trazabilidad MVP-2 sin huérfanos        | 04,05      | G2,G9    | Quality      | Matriz verde                 | closed  |
-| MVP-2-07 | Tag `implementation-baseline-mvp2`      | 01–06      | G10      | Release      | Tag + CI verde               | planned |
+| #        | Issue                                   | Depende de | Gate     | Owner        | Criterio Done                | Estado |
+| -------- | --------------------------------------- | ---------- | -------- | ------------ | ---------------------------- | ------ |
+| MVP-2-01 | Aprobar alcance DOC-DEL-MVP2-001        | —          | G2,G10   | Product      | Documento `accepted`         | closed |
+| MVP-2-02 | AST operadores canónicos + AM-RULE-009  | 01         | G7       | Validation   | Corpus + tests Rust          | closed |
+| MVP-2-03 | Cargar reglas desde fichas del catálogo | 02         | G4,G7    | Data         | Pack + `catalog.rules`       | closed |
+| MVP-2-04 | Resolver dominio + digest SHA-256       | 02,03      | G4,G5,G7 | Architecture | FR-RESOLVE-001; FNV retirado | closed |
+| MVP-2-05 | validateDraft ≡ buildManifest (bloqueo) | 03,04      | G5,G7,G9 | Quality      | FR-VALIDATE-001              | closed |
+| MVP-2-06 | Trazabilidad MVP-2 sin huérfanos        | 04,05      | G2,G9    | Quality      | Matriz verde                 | closed |
+| MVP-2-07 | Tag `implementation-baseline-mvp2`      | 01–06      | G10      | Release      | Tag + CI verde               | closed |
 
 ## Trazabilidad de los issues
 
