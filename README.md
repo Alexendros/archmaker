@@ -1,17 +1,18 @@
 # ArchMaker
 
-Repositorio documental `planning-v1` para ArchMaker. Este baseline separa producto, arquitectura, datos, contratos, UX, design system, validación, seguridad, calidad, entrega, operaciones e investigación.
+Repositorio de baseline ArchMaker: walking skeleton MVP-0 bajo CONDITIONAL-GO, con documentación de producto, arquitectura, datos, contratos, UX, design system, validación, seguridad, calidad, entrega, operaciones e investigación.
 
 ## Estado
 
-- Gate global: **No-Go — planificación en curso**.
-- Desarrollo funcional: bloqueado hasta aprobar G0–G10.
+- Gate global (mecánico): **No-Go** — no todos los gates G0–G10 están `complete` (faltan G1, G2, G3 y G6). Autoridad: [`docs/00-governance/go-no-go.md`](docs/00-governance/go-no-go.md) y [`docs/10-delivery/gates.md`](docs/10-delivery/gates.md).
+- Veredicto de gobierno (R13): **CONDITIONAL-GO — walking skeleton MVP-0 únicamente**. Autoriza el vertical slice de [`docs/10-delivery/walking-skeleton.md`](docs/10-delivery/walking-skeleton.md); el MVP completo, el runner, los privilegios y Enterprise quedan bloqueados.
+- Desarrollo funcional: autorizado solo dentro del walking skeleton; no abre MVP-1.
 - Fuentes históricas: `reference/v5.1/`, conservadas por hash.
 - Rust: autoridad de dominio y casos de uso.
 - React: presentación e interacción.
 - Tauri 2: adaptador de escritorio.
 - WASM: adaptador de navegador.
-- Runner privilegiado: v1, proceso separado.
+- Runner privilegiado: diferido (ADR-0004 / DEC-004).
 
 ## Documentación
 
