@@ -6,3 +6,5 @@ license.workspace = true
 
 [dependencies]
 archmaker-rules = { path = "../archmaker-rules" }
+archmaker-canonicalization = { path = "../archmaker-canonicalization" }
+serde_json = "1"

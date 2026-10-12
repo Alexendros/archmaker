@@ -24,8 +24,16 @@
           "title": "Kernel",
           "cardinality": "one",
           "options": [
-            { "id": "archmaker.kernel.linux", "title": "Linux" },
-            { "id": "archmaker.kernel.zen", "title": "Linux Zen" }
+            {
+              "id": "archmaker.kernel.linux",
+              "title": "Linux",
+              "provides": ["fs.ext4", "fs.btrfs"]
+            },
+            {
+              "id": "archmaker.kernel.zen",
+              "title": "Linux Zen",
+              "provides": ["fs.ext4", "fs.btrfs"]
+            }
           ]
         }
       ]
@@ -40,8 +48,16 @@
           "title": "Filesystem",
           "cardinality": "one",
           "options": [
-            { "id": "archmaker.filesystem.btrfs", "title": "Btrfs" },
-            { "id": "archmaker.filesystem.ext4", "title": "Ext4" }
+            {
+              "id": "archmaker.filesystem.btrfs",
+              "title": "Btrfs",
+              "provides": ["fs.btrfs"]
+            },
+            {
+              "id": "archmaker.filesystem.ext4",
+              "title": "Ext4",
+              "provides": ["fs.ext4"]
+            }
           ]
         }
       ]
@@ -56,8 +72,14 @@
           "title": "Bootloader",
           "cardinality": "one",
           "options": [
-            { "id": "archmaker.boot.systemd-boot", "title": "systemd-boot" },
-            { "id": "archmaker.boot.grub", "title": "GRUB" }
+            {
+              "id": "archmaker.boot.systemd-boot",
+              "title": "systemd-boot"
+            },
+            {
+              "id": "archmaker.boot.grub",
+              "title": "GRUB"
+            }
           ]
         }
       ]
@@ -72,7 +94,10 @@
           "title": "Base devel",
           "cardinality": "one",
           "options": [
-            { "id": "archmaker.pkg.base-devel", "title": "base-devel" }
+            {
+              "id": "archmaker.pkg.base-devel",
+              "title": "base-devel"
+            }
           ]
         }
       ]
@@ -87,9 +112,18 @@
           "title": "Compositor",
           "cardinality": "one",
           "options": [
-            { "id": "archmaker.compositor.gnome", "title": "GNOME" },
-            { "id": "archmaker.compositor.hyprland", "title": "Hyprland" },
-            { "id": "archmaker.compositor.sway", "title": "Sway" }
+            {
+              "id": "archmaker.compositor.gnome",
+              "title": "GNOME"
+            },
+            {
+              "id": "archmaker.compositor.hyprland",
+              "title": "Hyprland"
+            },
+            {
+              "id": "archmaker.compositor.sway",
+              "title": "Sway"
+            }
           ]
         }
       ]
@@ -104,8 +138,14 @@
           "title": "Display manager",
           "cardinality": "one",
           "options": [
-            { "id": "archmaker.dm.gdm", "title": "GDM" },
-            { "id": "archmaker.dm.sddm", "title": "SDDM" }
+            {
+              "id": "archmaker.dm.gdm",
+              "title": "GDM"
+            },
+            {
+              "id": "archmaker.dm.sddm",
+              "title": "SDDM"
+            }
           ]
         }
       ]
@@ -120,8 +160,16 @@
           "title": "Browser",
           "cardinality": "one",
           "options": [
-            { "id": "archmaker.browser.firefox", "title": "Firefox" },
-            { "id": "archmaker.browser.vivaldi", "title": "Vivaldi" }
+            {
+              "id": "archmaker.browser.firefox",
+              "title": "Firefox",
+              "provides": ["pkg.firefox"]
+            },
+            {
+              "id": "archmaker.browser.vivaldi",
+              "title": "Vivaldi",
+              "provides": ["pkg.vivaldi"]
+            }
           ]
         }
       ]
@@ -136,12 +184,47 @@
           "title": "Apps",
           "cardinality": "many",
           "options": [
-            { "id": "archmaker.app.steam", "title": "Steam" },
-            { "id": "archmaker.app.vlc", "title": "VLC" },
-            { "id": "archmaker.app.gimp", "title": "GIMP" }
+            {
+              "id": "archmaker.app.steam",
+              "title": "Steam",
+              "provides": ["pkg.steam"]
+            },
+            {
+              "id": "archmaker.app.vlc",
+              "title": "VLC",
+              "provides": ["pkg.vlc"]
+            },
+            {
+              "id": "archmaker.app.gimp",
+              "title": "GIMP",
+              "provides": ["pkg.gimp"]
+            }
           ]
         }
       ]
+    }
+  ],
+  "rules": [
+    {
+      "id": "RULE-COMP-001"
+    },
+    {
+      "id": "RULE-DM-001"
+    },
+    {
+      "id": "RULE-KERNEL-001"
+    },
+    {
+      "id": "RULE-BROWSER-001"
+    },
+    {
+      "id": "RULE-PKG-001"
+    },
+    {
+      "id": "RULE-KERNEL-002"
+    },
+    {
+      "id": "RULE-DUP-001"
     }
   ]
 }

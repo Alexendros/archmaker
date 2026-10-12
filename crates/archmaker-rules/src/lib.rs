@@ -12,11 +12,18 @@
 //! Notas de alcance:
 //! - `count_gt` es legacy (solo migración): nunca se ejecuta; se normaliza a
 //!   `Gt(Count(..), n)` mediante [`normalize_count_gt`] (CON-002).
+//! - `target_is` está diferido a v1: el parser emite `AM-RULE-009` y nunca lo ejecuta.
 //! - `RULE-GPU-001` (`AM-RULE-003`) es no implementable en MVP: su efecto `change`
 //!   heredado no declara `target` (ver [`RULE_GPU_001_STATUS`]).
-//! - Un operador fuera del vocabulario es irrepresentable en este AST; a nivel de
-//!   documento JSON lo rechaza el schema y el runtime debe emitir `AM-RULE-009`
-//!   bloqueante (nunca evaluarlo como `false` silencioso).
+//! - Un operador fuera del vocabulario produce `AM-RULE-009` bloqueante al parsear
+//!   (nunca se evalúa como `false` silencioso).
+
+mod parse;
+
+pub use parse::{
+    load_rules_by_ids, parse_rule_document, parse_rules_pack, UnsupportedOperatorError,
+    CANONICAL_RULES_PACK_JSON,
+};
 
 use std::collections::{BTreeMap, BTreeSet};
 
@@ -26,17 +33,21 @@ use serde::{Deserialize, Serialize};
 // Operadores y AST
 // ---------------------------------------------------------------------------
 
-/// Vocabulario ejecutable en MVP (subconjunto canónico de `$defs.operator`).
+/// Vocabulario ejecutable canónico de `$defs.operator` (MVP-2).
 ///
 /// `Count` es un término (devuelve entero, no booleano) y por eso solo aparece
 /// como [`Operand`], nunca como [`Condition`] directa. `Gt` es la forma
-/// normalizada del legacy `count_gt`.
+/// normalizada del legacy `count_gt` (nunca se ejecuta el token `count_gt`).
+/// `target_is` no tiene variante: el parser lo rechaza con `AM-RULE-009`.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum Operator {
     Eq,
+    Ne,
+    In,
     Count,
     Gt,
     All,
+    Any,
     Not,
     Required,
     Selected,
@@ -48,9 +59,12 @@ impl Operator {
     pub fn as_str(self) -> &'static str {
         match self {
             Operator::Eq => "eq",
+            Operator::Ne => "ne",
+            Operator::In => "in",
             Operator::Count => "count",
             Operator::Gt => "gt",
             Operator::All => "all",
+            Operator::Any => "any",
             Operator::Not => "not",
             Operator::Required => "required",
             Operator::Selected => "selected",
@@ -73,14 +87,14 @@ pub enum Operand {
 }
 
 /// Condición booleana cerrada (`rule.schema.json#/$defs/condition`).
-///
-/// Variantes `Any`/`Ne`/`In` del schema no las usa ninguna regla MVP del
-/// inventario; se expresan con `All`+`Not`+`Eq` cuando se necesiten.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Condition {
     Eq(Operand, Operand),
+    Ne(Operand, Operand),
+    In(Operand, Vec<Operand>),
     Gt(Operand, Operand),
     All(Vec<Condition>),
+    Any(Vec<Condition>),
     Not(Box<Condition>),
     Required(String),
     Selected(String),
@@ -312,7 +326,7 @@ fn values_equal(left: &Value, right: &Value) -> bool {
 }
 
 /// Evalúa una condición cerrada sobre el draft. Pares heterogéneos en
-/// `Eq`/`Gt` se evalúan como `false` (nunca lanzan).
+/// `Eq`/`Ne`/`Gt`/`In` se evalúan como `false` (nunca lanzan).
 pub fn eval_condition(condition: &Condition, draft: &Draft) -> bool {
     match condition {
         Condition::Eq(left, right) => {
@@ -321,6 +335,18 @@ pub fn eval_condition(condition: &Condition, draft: &Draft) -> bool {
                 _ => false,
             }
         }
+        Condition::Ne(left, right) => {
+            match (resolve_operand(left, draft), resolve_operand(right, draft)) {
+                (Some(l), Some(r)) => !values_equal(&l, &r),
+                _ => false,
+            }
+        }
+        Condition::In(needle, haystack) => match resolve_operand(needle, draft) {
+            Some(value) => haystack.iter().any(|candidate| {
+                resolve_operand(candidate, draft).is_some_and(|other| values_equal(&value, &other))
+            }),
+            None => false,
+        },
         Condition::Gt(left, right) => {
             match (resolve_operand(left, draft), resolve_operand(right, draft)) {
                 (Some(Value::Int(a)), Some(Value::Int(b))) => a > b,
@@ -328,6 +354,7 @@ pub fn eval_condition(condition: &Condition, draft: &Draft) -> bool {
             }
         }
         Condition::All(items) => items.iter().all(|c| eval_condition(c, draft)),
+        Condition::Any(items) => items.iter().any(|c| eval_condition(c, draft)),
         Condition::Not(inner) => !eval_condition(inner, draft),
         Condition::Required(reference) => draft.count_ref(reference) >= 1,
         Condition::Selected(id) => draft.is_selected(id),
@@ -359,11 +386,11 @@ pub fn is_implementable(rule_id: &str) -> bool {
     rule_id != RULE_GPU_001
 }
 
-/// RULE-COMP-001: compositor único. `count_gt(compositor,1)` normalizado.
+/// RULE-COMP-001: compositor único. `count_gt` legacy normalizado.
 pub fn rule_comp_001() -> Rule {
     Rule::new(
         RULE_COMP_001,
-        normalize_count_gt("compositor", 1),
+        normalize_count_gt("archmaker.environment.compositor", 1),
         Effect::Block,
         "AM-RULE-001",
     )
@@ -374,12 +401,12 @@ pub fn rule_dm_001() -> Rule {
     Rule::new(
         RULE_DM_001,
         Condition::Eq(
-            Operand::EntityRef("compositor".to_string()),
-            Operand::EntityRef("gnome".to_string()),
+            Operand::EntityRef("archmaker.environment.compositor".to_string()),
+            Operand::EntityRef("archmaker.compositor.gnome".to_string()),
         ),
         Effect::Derive {
-            target: "dm".to_string(),
-            value: "gdm".to_string(),
+            target: "archmaker.environment.dm".to_string(),
+            value: "archmaker.dm.gdm".to_string(),
         },
         "AM-RULE-002",
     )
@@ -389,7 +416,9 @@ pub fn rule_dm_001() -> Rule {
 pub fn rule_kernel_001() -> Rule {
     Rule::new(
         RULE_KERNEL_001,
-        Condition::Not(Box::new(Condition::Required("kernel".to_string()))),
+        Condition::Not(Box::new(Condition::Required(
+            "archmaker.base.kernel".to_string(),
+        ))),
         Effect::Block,
         "AM-RULE-004",
     )
@@ -399,47 +428,46 @@ pub fn rule_kernel_001() -> Rule {
 pub fn rule_browser_001() -> Rule {
     Rule::new(
         RULE_BROWSER_001,
-        Condition::Eq(Operand::Count("browser".to_string()), Operand::Int(0)),
+        Condition::Eq(
+            Operand::Count("archmaker.apps.browser".to_string()),
+            Operand::Int(0),
+        ),
         Effect::Suggest,
         "AM-RULE-005",
     )
 }
 
-/// RULE-PKG-001: `all([selected(pkg), not(provides(pkg.<id>))])` por cada
-/// paquete del grupo `pkg`. La condición almacenada es el esquema del
-/// inventario; [`evaluate`] la expande por elemento.
+/// RULE-PKG-001: disponibilidad de paquetes; [`evaluate`] expande por elemento.
 pub fn rule_pkg_001() -> Rule {
     Rule::new(
         RULE_PKG_001,
         Condition::All(vec![
-            Condition::Selected("pkg".to_string()),
-            Condition::Not(Box::new(Condition::Provides("pkg".to_string()))),
+            Condition::Selected("archmaker.apps.apps-core".to_string()),
+            Condition::Not(Box::new(Condition::Provides("pkg.placeholder".to_string()))),
         ]),
         Effect::Suggest,
         "AM-RULE-006",
     )
 }
 
-/// RULE-KERNEL-002: conflicto kernel/filesystem por cada `fs` seleccionado
-/// cuya capability `fs.<id>` no aporta el kernel.
+/// RULE-KERNEL-002: conflicto kernel/filesystem; [`evaluate`] expande por `fs`.
 pub fn rule_kernel_002() -> Rule {
     Rule::new(
         RULE_KERNEL_002,
         Condition::All(vec![
-            Condition::Selected("fs".to_string()),
-            Condition::Not(Box::new(Condition::Provides("fs".to_string()))),
+            Condition::Selected("archmaker.base.filesystem".to_string()),
+            Condition::Not(Box::new(Condition::Provides("fs.placeholder".to_string()))),
         ]),
         Effect::Block,
         "AM-RULE-007",
     )
 }
 
-/// RULE-DUP-001: identidad de paquete duplicada. `count_gt(packageId,1)`
-/// normalizado; el runtime comprueba toda identidad repetida (DEC-002).
+/// RULE-DUP-001: identidad duplicada; el runtime comprueba toda identidad.
 pub fn rule_dup_001() -> Rule {
     Rule::new(
         RULE_DUP_001,
-        normalize_count_gt("package", 1),
+        normalize_count_gt("archmaker.pkg.package", 1),
         Effect::Block,
         "AM-RULE-008",
     )
@@ -536,22 +564,36 @@ fn diagnostic_for(rule: &Rule) -> Diagnostic {
     }
 }
 
-/// RULE-PKG-001 expandida: dispara si algún paquete del grupo `pkg` no tiene
+fn group_options_any(draft: &Draft, keys: &[&str]) -> Vec<String> {
+    for key in keys {
+        let options = draft.group_options(key);
+        if !options.is_empty() {
+            return options;
+        }
+    }
+    Vec::new()
+}
+
+/// RULE-PKG-001 expandida: dispara si algún paquete del grupo apps/pkg no tiene
 /// su capability `pkg.<id>` en lo aportado.
 fn eval_pkg_availability(draft: &Draft) -> bool {
-    draft.group_options("pkg").iter().any(|option| {
-        let capability = format!("pkg.{}", short_id(option));
-        !draft.provided.contains(&capability)
-    })
+    group_options_any(draft, &["pkg", "archmaker.apps.apps-core", "apps-core"])
+        .iter()
+        .any(|option| {
+            let capability = format!("pkg.{}", short_id(option));
+            !draft.provided.contains(&capability)
+        })
 }
 
 /// RULE-KERNEL-002 expandida: dispara si algún `fs` seleccionado no tiene su
 /// capability `fs.<id>` en lo aportado por el kernel.
 fn eval_kernel_fs_conflict(draft: &Draft) -> bool {
-    draft.group_options("fs").iter().any(|option| {
-        let capability = format!("fs.{}", short_id(option));
-        !draft.provided.contains(&capability)
-    })
+    group_options_any(draft, &["fs", "archmaker.base.filesystem", "filesystem"])
+        .iter()
+        .any(|option| {
+            let capability = format!("fs.{}", short_id(option));
+            !draft.provided.contains(&capability)
+        })
 }
 
 /// RULE-DUP-001 expandida: dispara si alguna identidad de opción aparece más
@@ -732,9 +774,12 @@ mod tests {
     fn operator_vocabulary_tokens() {
         let tokens: Vec<&str> = [
             Operator::Eq,
+            Operator::Ne,
+            Operator::In,
             Operator::Count,
             Operator::Gt,
             Operator::All,
+            Operator::Any,
             Operator::Not,
             Operator::Required,
             Operator::Selected,
@@ -745,8 +790,46 @@ mod tests {
         .collect();
         assert_eq!(
             tokens,
-            vec!["eq", "count", "gt", "all", "not", "required", "selected", "provides"]
+            vec![
+                "eq", "ne", "in", "count", "gt", "all", "any", "not", "required", "selected",
+                "provides"
+            ]
         );
+    }
+
+    #[test]
+    fn any_ne_in_operators_evaluate() {
+        let draft = draft_with("compositor", &["gnome"]);
+        assert!(eval_condition(
+            &Condition::Any(vec![
+                Condition::Eq(
+                    Operand::EntityRef("compositor".into()),
+                    Operand::EntityRef("sway".into()),
+                ),
+                Condition::Eq(
+                    Operand::EntityRef("compositor".into()),
+                    Operand::EntityRef("gnome".into()),
+                ),
+            ]),
+            &draft
+        ));
+        assert!(eval_condition(
+            &Condition::Ne(
+                Operand::EntityRef("compositor".into()),
+                Operand::EntityRef("sway".into()),
+            ),
+            &draft
+        ));
+        assert!(eval_condition(
+            &Condition::In(
+                Operand::EntityRef("compositor".into()),
+                vec![
+                    Operand::EntityRef("sway".into()),
+                    Operand::EntityRef("gnome".into()),
+                ],
+            ),
+            &draft
+        ));
     }
 
     #[test]
@@ -754,5 +837,80 @@ mod tests {
         let draft = draft_with("compositor", &["gnome", "sway"]);
         let rule = rule_comp_001();
         assert_eq!(evaluate(&rule, &draft), evaluate(&rule, &draft));
+    }
+
+    #[test]
+    fn catalog_pack_matches_oracle_canonical_rules() {
+        let loaded = load_rules_by_ids(
+            CANONICAL_RULES_PACK_JSON,
+            &[
+                RULE_COMP_001,
+                RULE_DM_001,
+                RULE_KERNEL_001,
+                RULE_BROWSER_001,
+                RULE_PKG_001,
+                RULE_KERNEL_002,
+                RULE_DUP_001,
+            ],
+        )
+        .expect("pack loads");
+        let oracle = canonical_rules();
+        assert_eq!(loaded.len(), oracle.len());
+        for (sheet, fixed) in loaded.iter().zip(oracle.iter()) {
+            assert_eq!(sheet.id, fixed.id);
+            assert_eq!(sheet.code, fixed.code);
+            assert_eq!(sheet.effect, fixed.effect);
+            let draft = draft_with("compositor", &["gnome", "sway"]);
+            assert_eq!(
+                evaluate(sheet, &draft).map(|d| d.code),
+                evaluate(fixed, &draft).map(|d| d.code),
+                "oracle mismatch for {}",
+                sheet.id
+            );
+        }
+    }
+
+    #[test]
+    fn unknown_and_target_is_emit_am_rule_009() {
+        let unknown = serde_json::json!({
+            "id": "RULE-TEST-001",
+            "documentVersion": "vNext",
+            "schemaVersion": "1",
+            "when": { "bogus": true },
+            "action": "block",
+            "diagnosticCode": "AM-RULE-001"
+        });
+        let err = parse_rule_document(&unknown).expect_err("unknown op");
+        assert_eq!(err.code, "AM-RULE-009");
+        let target_is = serde_json::json!({
+            "id": "RULE-TEST-002",
+            "documentVersion": "vNext",
+            "schemaVersion": "1",
+            "when": { "target_is": "archinstall" },
+            "action": "block",
+            "diagnosticCode": "AM-RULE-001"
+        });
+        let err = parse_rule_document(&target_is).expect_err("target_is deferred");
+        assert_eq!(err.code, "AM-RULE-009");
+    }
+
+    #[test]
+    fn count_gt_normalizes_and_never_stays_raw() {
+        let doc = serde_json::json!({
+            "id": "RULE-COMP-001",
+            "documentVersion": "vNext",
+            "schemaVersion": "1",
+            "when": { "count_gt": ["archmaker.environment.compositor", 1] },
+            "action": "block",
+            "diagnosticCode": "AM-RULE-001"
+        });
+        let rule = parse_rule_document(&doc).expect("legacy normalizes");
+        assert_eq!(
+            rule.condition,
+            Condition::Gt(
+                Operand::Count("archmaker.environment.compositor".into()),
+                Operand::Int(1)
+            )
+        );
     }
 }

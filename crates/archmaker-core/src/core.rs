@@ -13,7 +13,9 @@ use archmaker_domain::{
     Selection, SelectionOrigin, SelectionValue, TargetRef, MANIFEST_DOMAIN_LABEL,
 };
 use archmaker_resolution::{Catalog as ResolutionCatalog, CatalogOption};
-use archmaker_rules::{canonical_rules, evaluate_all, Diagnostic, Draft as RulesDraft};
+use archmaker_rules::{
+    load_rules_by_ids, Diagnostic, Draft as RulesDraft, Rule, CANONICAL_RULES_PACK_JSON,
+};
 
 use crate::error::{CoreError, Result};
 use crate::inputs::{
@@ -80,14 +82,31 @@ static UUID_COUNTER: AtomicU64 = AtomicU64::new(0);
 
 pub struct RealCore {
     pub catalog_embedded: Catalog,
+    /// Reglas activas cargadas desde fichas del catálogo (nunca inventadas en silencio).
+    pub active_rules: Vec<Rule>,
     store_dir: Option<PathBuf>,
     drafts: RefCell<HashMap<String, Draft>>,
 }
 
+fn rules_from_catalog(catalog: &Catalog) -> Result<Vec<Rule>> {
+    let source = CoreOp::LoadCatalog.source();
+    let Some(refs) = catalog.rules.as_ref() else {
+        return Ok(Vec::new());
+    };
+    if refs.is_empty() {
+        return Ok(Vec::new());
+    }
+    let ids: Vec<&str> = refs.iter().map(|rule_ref| rule_ref.id.as_str()).collect();
+    load_rules_by_ids(CANONICAL_RULES_PACK_JSON, &ids)
+        .map_err(|_| CoreError::schema_invalid(source))
+}
+
 impl RealCore {
     pub fn new(catalog_embedded: Catalog) -> Self {
+        let active_rules = rules_from_catalog(&catalog_embedded).unwrap_or_default();
         Self {
             catalog_embedded,
+            active_rules,
             store_dir: None,
             drafts: RefCell::new(HashMap::new()),
         }
@@ -99,7 +118,13 @@ impl RealCore {
             .map_err(|_| CoreError::schema_invalid(source))?;
         let catalog: Catalog =
             serde_json::from_value(value).map_err(|_| CoreError::schema_invalid(source))?;
-        Ok(Self::new(catalog))
+        let active_rules = rules_from_catalog(&catalog)?;
+        Ok(Self {
+            catalog_embedded: catalog,
+            active_rules,
+            store_dir: None,
+            drafts: RefCell::new(HashMap::new()),
+        })
     }
 
     pub fn with_store_dir(mut self, dir: PathBuf) -> Self {
@@ -613,13 +638,20 @@ fn resolve_internal(
     }
     let (provided, _) = provided_required(&view, &catalog);
     view.provided = provided.into_iter().collect();
-    let resolved = archmaker_resolution::resolve(&view, &catalog);
-    let digest = resolution_content_digest(
+    let resolved = archmaker_resolution::resolve(&view, &catalog, &core.active_rules);
+    let digest = ContentDigest {
+        algorithm: DigestAlgorithm::Sha256,
+        value: resolved.resolution_digest.clone(),
+        kind: Some(ContentKind::Content),
+    };
+    // Parity check: core digest helper must match resolution crate (NFR-DET-001).
+    let expected = resolution_content_digest(
         &resolved.effective_selections,
         &resolved.provided_capabilities,
         &resolved.required_capabilities,
         &resolved.diagnostics,
     );
+    debug_assert_eq!(digest.value, expected.value);
     let input_pairs: BTreeSet<(String, String)> = draft
         .selections
         .iter()
@@ -890,18 +922,15 @@ impl CorePort for RealCore {
 
     fn validate_draft(&self, input: ValidateDraftInput) -> Result<ValidationResult> {
         let source = CoreOp::ValidateDraft.source();
-        self.ensure_catalog_match(&input.catalog_ref, source)?;
-        ensure_draft_shape(&input.draft, source)?;
         if let Some(target) = &input.target_ref {
             ensure_target(target, &union_targets(), source)?;
         }
-        let catalog = resolution_catalog(&self.catalog_embedded);
-        let mut view = rules_view(&input.draft);
-        let (provided, _) = provided_required(&view, &catalog);
-        view.provided = provided.into_iter().collect();
-        let mut diagnostics = evaluate_all(&canonical_rules(), &view);
+        // Same pipeline as resolve/buildManifest (stages 6–9): integrity, rules, resolution.
+        let internal = resolve_internal(self, &input.draft, &input.catalog_ref, source)?;
+        let mut diagnostics = internal.diagnostics;
         sort_diagnostics(&mut diagnostics);
-        let blocking = diagnostics.iter().any(|diagnostic| diagnostic.blocking);
+        let blocking = !internal.conflicts.is_empty()
+            || diagnostics.iter().any(|diagnostic| diagnostic.blocking);
         Ok(ValidationResult {
             diagnostics,
             blocking,

@@ -64,6 +64,20 @@ Fuente canónica de alcance: [`mvp1-scope.md`](mvp1-scope.md).
 | MVP-1-07 | Trazabilidad ampliada MVP-1             | 04,05,06   | G2,G9    | Quality      | Sin huérfanos                     | closed |
 | MVP-1-08 | Tag `implementation-baseline-mvp1`      | 01–07      | G10      | Release      | Tag + CI verde                    | closed |
 
+## Issues MVP-2
+
+Fuente canónica de alcance: [`mvp2-scope.md`](mvp2-scope.md).
+
+| #        | Issue                                   | Depende de | Gate     | Owner        | Criterio Done                | Estado  |
+| -------- | --------------------------------------- | ---------- | -------- | ------------ | ---------------------------- | ------- |
+| MVP-2-01 | Aprobar alcance DOC-DEL-MVP2-001        | —          | G2,G10   | Product      | Documento `accepted`         | closed  |
+| MVP-2-02 | AST operadores canónicos + AM-RULE-009  | 01         | G7       | Validation   | Corpus + tests Rust          | closed  |
+| MVP-2-03 | Cargar reglas desde fichas del catálogo | 02         | G4,G7    | Data         | Pack + `catalog.rules`       | closed  |
+| MVP-2-04 | Resolver dominio + digest SHA-256       | 02,03      | G4,G5,G7 | Architecture | FR-RESOLVE-001; FNV retirado | closed  |
+| MVP-2-05 | validateDraft ≡ buildManifest (bloqueo) | 03,04      | G5,G7,G9 | Quality      | FR-VALIDATE-001              | closed  |
+| MVP-2-06 | Trazabilidad MVP-2 sin huérfanos        | 04,05      | G2,G9    | Quality      | Matriz verde                 | closed  |
+| MVP-2-07 | Tag `implementation-baseline-mvp2`      | 01–06      | G10      | Release      | Tag + CI verde               | planned |
+
 ## Trazabilidad de los issues
 
 - Requisitos: ISSUE-003 (`FR-*`, `NFR-*`), ISSUE-006 (FR-DRAFT/EXPORT, NFR-MIG), ISSUE-007 (FR-VALIDATE/NFR-DET), ISSUE-008 (NFR-PORT/SEC/OBS).
@@ -74,7 +88,7 @@ Fuente canónica de alcance: [`mvp1-scope.md`](mvp1-scope.md).
 
 ## Regla de cierre del plan
 
-El veredicto vigente es **CONDITIONAL-CLEAR — walking skeleton MVP-0 + slice MVP-1**
+El veredicto vigente es **CONDITIONAL-CLEAR — walking skeleton MVP-0 + slices MVP-1/MVP-2**
 (`docs/00-governance/go-no-go.md`), con gates G0–G10 `complete`. MVP-1-01..08 están `closed`;
-baseline `implementation-baseline-mvp1` emitida (no se movió `implementation-baseline-mvp0.1`).
+MVP-2-01..06 están `closed`; MVP-2-07 cierra al emitir `implementation-baseline-mvp2` con CI verde.
 La autorización del MVP completo y del runner exige su propio gate.

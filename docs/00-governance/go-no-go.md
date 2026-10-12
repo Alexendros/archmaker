@@ -21,9 +21,13 @@ reviewers:
 - Reevaluación slice MVP-1 (MVP-1-08): **CONDITIONAL-CLEAR — walking skeleton MVP-0 + slice MVP-1**
   (dominio, catálogo local, `importDraft` / MIG-5.1). Baseline emitida:
   `implementation-baseline-mvp1` (el tag `implementation-baseline-mvp0.1` no se movió).
-- Alcance autorizado: `docs/10-delivery/walking-skeleton.md` (DOC-DEL-WSK-001) y
-  `docs/10-delivery/mvp1-scope.md` (DOC-DEL-MVP1-001). Bloqueados: runner real, root, discos,
-  shell arbitraria, catálogos remotos, firma criptográfica de catálogo en carga, Enterprise.
+- Reevaluación slice MVP-2 (MVP-2-07): **CONDITIONAL-CLEAR — walking skeleton MVP-0 + slices MVP-1/MVP-2**
+  (reglas de catálogo, resolución de dominio, validación que bloquea manifiesto). Baseline objetivo:
+  `implementation-baseline-mvp2` (tags previos intactos).
+- Alcance autorizado: `docs/10-delivery/walking-skeleton.md` (DOC-DEL-WSK-001),
+  `docs/10-delivery/mvp1-scope.md` (DOC-DEL-MVP1-001) y `docs/10-delivery/mvp2-scope.md`
+  (DOC-DEL-MVP2-001). Bloqueados: runner real, root, discos, shell arbitraria, catálogos remotos,
+  firma criptográfica de catálogo en carga, Enterprise.
 
 ## Motivo del resultado mecánico
 
@@ -89,10 +93,11 @@ Resultado derivado: **Clear** — todos los gates G0–G10 están `complete`.
 
 ## Consecuencia inmediata
 
-Autorizado: el walking skeleton MVP-0 definido en `docs/10-delivery/walking-skeleton.md`
-y el slice **MVP-1** (dominio / schema / catálogo local / `importDraft`) según
-`docs/10-delivery/mvp1-scope.md`. **No** autorizado: runner real, root, discos, shell
-arbitraria, catálogos remotos, firma criptográfica de catálogo en carga, ni Enterprise.
+Autorizado: el walking skeleton MVP-0 definido en `docs/10-delivery/walking-skeleton.md`,
+el slice **MVP-1** (`mvp1-scope.md`) y el slice **MVP-2** (reglas de catálogo / resolución /
+validación) según `docs/10-delivery/mvp2-scope.md`. **No** autorizado: runner real, root,
+discos, shell arbitraria, catálogos remotos, firma criptográfica de catálogo en carga, ni
+Enterprise.
 
 ## Decisiones de alcance (C3 — G1-C03)
 

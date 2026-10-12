@@ -5,7 +5,7 @@ priority: P0
 documentStatus: in-review
 approvalStatus: pending
 implementationStatus: complete
-verificationStatus: not-verified
+verificationStatus: partial
 releaseStatus: ineligible
 owners:
   - quality

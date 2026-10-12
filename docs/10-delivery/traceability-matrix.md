@@ -17,7 +17,7 @@ reviewers:
 
 # Matriz de Trazabilidad FR/NFR -> TST/VAL
 
-- **Generado**: bed7e320
+- **Generado**: 773487e5
 - **Total requisitos**: 17
 - **En alcance (mvp0.1)**: 13
 - **Diferidos**: 3
