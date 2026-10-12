@@ -19,33 +19,33 @@ Programa `planning-v1 → planning-v1.1`. Esquema de issues `AUD-*` (GitHub #4�
 
 ## Issues
 
-| Issue   | GH  | Prioridad | Depende de          | Estado     | Entregable                                                           | Gate   |
-| ------- | --- | --------- | ------------------- | ---------- | -------------------------------------------------------------------- | ------ |
-| AUD-001 | #4  | P0        | —                   | superseded | Validated by tree/gates                                              | G0     |
-| AUD-002 | #5  | P0        | AUD-001             | superseded | Validated by tree/gates                                              | G1     |
-| AUD-003 | #6  | P0        | AUD-002             | superseded | Validated by tree/gates                                              | G1     |
-| AUD-004 | #7  | P0        | AUD-003             | superseded | Validated by tree/gates                                              | G2     |
-| AUD-005 | #8  | P0        | AUD-003             | superseded | Validated by tree/gates                                              | G0–G10 |
-| AUD-006 | #9  | P0        | AUD-003, AUD-005    | superseded | Validated by tree/gates                                              | G0–G10 |
-| AUD-007 | #10 | P0        | AUD-001             | superseded | Validated by tree/gates                                              | G3     |
-| AUD-008 | #11 | P0        | AUD-007             | superseded | Validated by tree/gates                                              | G3     |
-| AUD-009 | #12 | P0        | AUD-008             | superseded | Validated by tree/gates                                              | G3/G4  |
-| AUD-010 | #13 | P0        | AUD-009             | superseded | Validated by tree/gates                                              | G4     |
-| AUD-011 | #14 | P0        | AUD-011             | superseded | Validated by tree/gates                                              | G4     |
-| AUD-012 | #15 | P0        | AUD-011             | superseded | Validated by tree/gates                                              | G4     |
-| AUD-013 | #16 | P0        | AUD-013             | superseded | Validated by tree/gates                                              | G4     |
-| AUD-014 | #17 | P0        | AUD-011             | superseded | Validated by tree/gates                                              | G4/G5  |
-| AUD-015 | #18 | P0        | AUD-010, AUD-011    | superseded | Validated by tree/gates                                              | G4     |
-| AUD-016 | #19 | P0        | AUD-012…015         | superseded | Validated by tree/gates                                              | G5     |
-| AUD-017 | #20 | P0        | AUD-013             | superseded | Validated by tree/gates                                              | G7     |
-| AUD-018 | #21 | P0        | AUD-008             | superseded | Validated by tree/gates                                              | G8     |
-| AUD-019 | #22 | P0        | AUD-018             | superseded | Validado por árbol/gates                                             | G8     |
-| AUD-020 | #23 | P1        | AUD-001             | superseded | Validado por árbol/gates                                             | G6     |
-| AUD-021 | #24 | P1        | AUD-020             | superseded | Validado por árbol/gates                                             | G6     |
-| AUD-022 | #25 | P0        | AUD-005/006/010…017 | superseded | Ejecución verde + evidencia                                          | G9     |
-| AUD-023 | #26 | P0        | AUD-016/017/018/020 | superseded | Alcance incluido/excluido + criterios                                | G10    |
-| AUD-024 | #27 | P0        | AUD-022, AUD-023    | in-review  | Revisión independiente (AUD-024 bis); recálculo G0–G10               | G10    |
-| AUD-025 | #28 | P0        | AUD-024             | pending    | Baseline `planning-v1.1` con veredicto (publicación por orquestador) | G10    |
+| Issue   | GH  | Prioridad | Depende de          | Estado     | Entregable                                               | Gate   |
+| ------- | --- | --------- | ------------------- | ---------- | -------------------------------------------------------- | ------ |
+| AUD-001 | #4  | P0        | —                   | superseded | Validated by tree/gates                                  | G0     |
+| AUD-002 | #5  | P0        | AUD-001             | superseded | Validated by tree/gates                                  | G1     |
+| AUD-003 | #6  | P0        | AUD-002             | superseded | Validated by tree/gates                                  | G1     |
+| AUD-004 | #7  | P0        | AUD-003             | superseded | Validated by tree/gates                                  | G2     |
+| AUD-005 | #8  | P0        | AUD-003             | superseded | Validated by tree/gates                                  | G0–G10 |
+| AUD-006 | #9  | P0        | AUD-003, AUD-005    | superseded | Validated by tree/gates                                  | G0–G10 |
+| AUD-007 | #10 | P0        | AUD-001             | superseded | Validated by tree/gates                                  | G3     |
+| AUD-008 | #11 | P0        | AUD-007             | superseded | Validated by tree/gates                                  | G3     |
+| AUD-009 | #12 | P0        | AUD-008             | superseded | Validated by tree/gates                                  | G3/G4  |
+| AUD-010 | #13 | P0        | AUD-009             | superseded | Validated by tree/gates                                  | G4     |
+| AUD-011 | #14 | P0        | AUD-011             | superseded | Validated by tree/gates                                  | G4     |
+| AUD-012 | #15 | P0        | AUD-011             | superseded | Validated by tree/gates                                  | G4     |
+| AUD-013 | #16 | P0        | AUD-013             | superseded | Validated by tree/gates                                  | G4     |
+| AUD-014 | #17 | P0        | AUD-011             | superseded | Validated by tree/gates                                  | G4/G5  |
+| AUD-015 | #18 | P0        | AUD-010, AUD-011    | superseded | Validated by tree/gates                                  | G4     |
+| AUD-016 | #19 | P0        | AUD-012…015         | superseded | Validated by tree/gates                                  | G5     |
+| AUD-017 | #20 | P0        | AUD-013             | superseded | Validated by tree/gates                                  | G7     |
+| AUD-018 | #21 | P0        | AUD-008             | superseded | Validated by tree/gates                                  | G8     |
+| AUD-019 | #22 | P0        | AUD-018             | superseded | Validado por árbol/gates                                 | G8     |
+| AUD-020 | #23 | P1        | AUD-001             | superseded | Validado por árbol/gates                                 | G6     |
+| AUD-021 | #24 | P1        | AUD-020             | superseded | Validado por árbol/gates                                 | G6     |
+| AUD-022 | #25 | P0        | AUD-005/006/010…017 | superseded | Ejecución verde + evidencia                              | G9     |
+| AUD-023 | #26 | P0        | AUD-016/017/018/020 | superseded | Alcance incluido/excluido + criterios                    | G10    |
+| AUD-024 | #27 | P0        | AUD-022, AUD-023    | closed     | Revisión independiente; recálculo G0–G10 (GH #27 closed) | G10    |
+| AUD-025 | #28 | P0        | AUD-024             | closed     | Baseline `planning-v1.1` con veredicto (GH #28 closed)   | G10    |
 
 ## Grafo de dependencias
 
