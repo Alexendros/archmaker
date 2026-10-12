@@ -157,6 +157,7 @@ export type BuildManifestInput = {
 export type ExportArtifactInput = {
   manifest: Manifest;
   targetRef: TargetRef;
+  /** Opaque destinationHandle from the picker; never an arbitrary filesystem path. */
   destination: { token: string };
   requestId?: string;
 };

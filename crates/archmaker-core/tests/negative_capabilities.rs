@@ -197,7 +197,8 @@ fn neg_web_has_no_remote_or_shell_surface() {
             "recurso remoto prohibido (DEC-009): {blocked}"
         );
     }
-    let main = read_repo("apps/web/src/main.ts");
+    // MVP-4: allowlist de invoke en TauriCorePort; superficie web = apps/web/src/*
+    let tauri_port = read_repo("apps/web/src/tauri-core-port.ts");
     for cmd in [
         "create_draft",
         "load_catalog",
@@ -206,9 +207,23 @@ fn neg_web_has_no_remote_or_shell_surface() {
         "validate_draft",
         "build_manifest",
         "export_artifact",
+        "import_draft",
     ] {
-        assert!(main.contains(cmd), "invoke allowlist debe incluir {cmd}");
+        assert!(
+            tauri_port.contains(cmd),
+            "invoke allowlist debe incluir {cmd}"
+        );
     }
+    let web_src = [
+        "apps/web/src/tauri-core-port.ts",
+        "apps/web/src/App.tsx",
+        "apps/web/src/main.tsx",
+        "apps/web/src/mock-core-port.ts",
+        "apps/web/src/coreport.ts",
+    ]
+    .into_iter()
+    .map(read_repo)
+    .collect::<String>();
     for evil in [
         "pacstrap",
         "sidecar",
@@ -218,10 +233,14 @@ fn neg_web_has_no_remote_or_shell_surface() {
         "sh -c",
     ] {
         assert!(
-            !main.contains(evil),
+            !web_src.contains(evil),
             "superficie shell prohibida en TS (TST-NEG-004): {evil}"
         );
     }
+    assert!(
+        web_src.contains("destination: { token") && web_src.to_lowercase().contains("opaque"),
+        "destinationHandle opaco (NEG-002/003)"
+    );
     let tokens = read_repo("packages/tokens/tokens.css");
     for alias in [
         "--rh-red",

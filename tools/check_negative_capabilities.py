@@ -85,16 +85,23 @@ check(
     "NEG-005/007 sin CDN ni red en WebView",
     not re.search(r"https://(unpkg|cdn\.|fonts\.google)", html),
 )
-main_ts = (ROOT / "apps/web/src/main.ts").read_text()
+# MVP-4: invokes viven en TauriCorePort; el flujo React usa MockCorePort offline.
+tauri_port = (ROOT / "apps/web/src/tauri-core-port.ts").read_text()
+web_src = "".join(
+    p.read_text() for p in sorted((ROOT / "apps/web/src").glob("*.ts*"))
+)
 allowed = {"create_draft", "load_catalog", "save_draft", "resolve_draft",
            "validate_draft", "build_manifest", "export_artifact", "import_draft"}
-invokes = set(re.findall(r'"([a-z_]+)"', main_ts)) & allowed
+invokes = set(re.findall(r'"([a-z_]+)"', tauri_port)) & allowed
 check("NEG-001 invoke solo allowlist (8)", invokes == allowed, str(sorted(invokes)))
 check(
     "NEG-004 sin superficie shell en TS",
-    not re.search(r"pacstrap|sidecar|Command::|\.spawn\(|sh -c", main_ts),
+    not re.search(r"pacstrap|sidecar|Command::|\.spawn\(|sh -c", web_src),
 )
-check("NEG-002/003 destinationHandle opaco", "picker:opaque-handle" in main_ts or "opaque" in main_ts.lower())
+check(
+    "NEG-002/003 destinationHandle opaco",
+    "destination: { token" in web_src and "opaque" in web_src.lower(),
+)
 
 tokens = (ROOT / "packages/tokens/tokens.css").read_text()
 check(
