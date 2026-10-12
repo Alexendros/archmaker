@@ -223,7 +223,7 @@ export function App({ port }: Props) {
     const res: Result<unknown> = await port.exportArtifact({
       manifest: man,
       targetRef: exportTarget(exportTargetId),
-      destination: { token: "artifact.json" },
+      destination: { token: "opaque-handle.json" },
     });
     if (!res.ok) {
       setExportOut(`${res.error.code} ${res.error.messageKey}`);
