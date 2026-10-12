@@ -142,7 +142,7 @@ jobs:
           python3 tools/gen_test_inventory.py
           python3 tools/traceability_matrix.py
       - name: Subir matriz como artefacto
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: traceability-matrix
           path: |
@@ -180,7 +180,7 @@ jobs:
           cd apps/web
           pnpm test-a11y:flow
       - name: Subir informe axe como artefacto
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: a11y-axe-report
           path: apps/web/a11y-axe-report/
@@ -213,7 +213,7 @@ jobs:
           pnpm test-a11y:visual
       - name: Subir diffs visuales como artefacto
         if: failure()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: visual-regression-diffs
           path: apps/web/visual-diffs/
