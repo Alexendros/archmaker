@@ -22,7 +22,7 @@ reviewers:
   (dominio, catálogo local, `importDraft` / MIG-5.1). Baseline emitida:
   `implementation-baseline-mvp1` (el tag `implementation-baseline-mvp0.1` no se movió).
 - Reevaluación slice MVP-2 (MVP-2-07): **CONDITIONAL-CLEAR — walking skeleton MVP-0 + slices MVP-1/MVP-2**
-  (reglas de catálogo, resolución de dominio, validación que bloquea manifiesto). Baseline objetivo:
+  (reglas de catálogo, resolución de dominio, validación que bloquea manifiesto). Baseline emitida:
   `implementation-baseline-mvp2` (tags previos intactos).
 - Alcance autorizado: `docs/10-delivery/walking-skeleton.md` (DOC-DEL-WSK-001),
   `docs/10-delivery/mvp1-scope.md` (DOC-DEL-MVP1-001) y `docs/10-delivery/mvp2-scope.md`
