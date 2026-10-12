@@ -4,15 +4,16 @@ Repositorio de baseline MVP-0.1 — walking skeleton stabilizado. Este repositor
 
 ## Estado
 
-- Gate global: **Clear** mecánico (G0–G10 `complete`) / **CONDITIONAL-CLEAR — walking skeleton MVP-0 únicamente**.
+- Gate global (mecánico): **Clear** — todos los gates G0–G10 están `complete`. Autoridad: [`docs/00-governance/go-no-go.md`](docs/00-governance/go-no-go.md) y [`docs/10-delivery/gates.md`](docs/10-delivery/gates.md).
+- Veredicto de gobierno (R13): **CONDITIONAL-CLEAR — walking skeleton MVP-0 únicamente**. Autoriza el vertical slice de [`docs/10-delivery/walking-skeleton.md`](docs/10-delivery/walking-skeleton.md); el MVP completo, el runner, los privilegios y Enterprise quedan bloqueados.
 - Desarrollo funcional: autorizado walking skeleton MVP-0.1 (rebanada vertical, sin runner ni privilegios).
-- Siguiente fase planificada: MVP-1 (domain/schema/catalog/migrations) — ver `docs/10-delivery/mvp1-scope.md`.
-- Fuentes históricas: `reference/v5.1/`, conservadas por hash; walking skeleton en `docs/10-delivery/walking-skeleton.md` y `docs/10-delivery/implementation-plan-mvp0.md`.
+- Siguiente fase planificada: MVP-1 (domain/schema/catalog/migrations) — ver [`docs/10-delivery/mvp1-scope.md`](docs/10-delivery/mvp1-scope.md).
+- Fuentes históricas: `reference/v5.1/`, conservadas por hash; walking skeleton en [`docs/10-delivery/walking-skeleton.md`](docs/10-delivery/walking-skeleton.md) y [`docs/10-delivery/implementation-plan-mvp0.md`](docs/10-delivery/implementation-plan-mvp0.md).
 - Rust: autoridad de dominio y casos de uso (compilable nativo + WASM).
 - React: presentación e interacción (adapters Tauri y WASM).
 - Tauri 2: adaptador de escritorio (deny-by-default, scopes acotados, sin `shell:*`).
 - WASM: adaptador de navegador (paridad golden nativo/WASM).
-- Runner privilegiado: diferido a fase posterior a baseline MVP-0.1.
+- Runner privilegiado: diferido a fase posterior a baseline MVP-0.1 (ADR-0004 / DEC-004).
 
 ## Documentación
 
