@@ -2,10 +2,10 @@
 id: DOC-VAL-RULES-001
 phase: MVP
 priority: P0
-documentStatus: draft
+documentStatus: in-review
 approvalStatus: pending
-implementationStatus: partial
-verificationStatus: not-verified
+implementationStatus: complete
+verificationStatus: partial
 releaseStatus: ineligible
 owners:
   - quality
@@ -15,13 +15,14 @@ reviewers:
 
 # Inventario de reglas
 
-ID `DOC-VAL-RULES-001` · Estado `draft` · Propietario Calidad · Última revisión 2026-10-06.
+ID `DOC-VAL-RULES-001` · Estado `in-review` · Propietario Calidad · Última revisión 2026-10-12.
 Requisitos relacionados: FR-CAT-001, FR-RESOLVE-001, FR-VALIDATE-001; NFR-DET-001, NFR-MIG-001.
 
-> Documento `draft`. Ninguna ficha está `accepted`. Las fichas heredadas conservan su fila original;
-> lo nuevo se marca explícitamente. Cada condición usa **solo** operadores del vocabulario cerrado de
-> `contracts/json-schema/rule.schema.json#/$defs.operator` (ver `docs/07-validation/operator-spec.md`);
-> no hay operadores indefinidos.
+> Las **7 reglas implementables** viven como fichas en
+> `crates/archmaker-rules/fixtures/canonical-rules.json` y se cargan vía `catalog.rules`
+> (MVP-2). El código fijo `canonical_rules()` es oráculo de paridad. `RULE-GPU-001` sigue
+> no implementable. Cada condición usa **solo** operadores del vocabulario cerrado de
+> `contracts/json-schema/rule.schema.json#/$defs.operator` (ver `docs/07-validation/operator-spec.md`).
 
 ## Resumen
 

@@ -1,19 +1,16 @@
-//! Crate `archmaker-resolution` — fase I5 (T-I5-02 del plan MVP-0).
+//! Crate `archmaker-resolution` — resolución determinista (etapas 8–9).
 //!
-//! Resolución determinista de selecciones efectivas, capabilities y conflictos
-//! (etapa 9 del pipeline) más diagnósticos de reglas (etapa 8). Sin shell,
-//! sin filesystem, sin red: solo std más `archmaker-rules`.
-//!
-//! - [`resolve`] es pura y determinista: mismo `(draft, catalog)` → mismo
-//!   [`ResolveResult`] byte a byte, incluido [`ResolveResult::resolution_digest`].
-//! - Los diagnósticos se emiten ordenados por `(path, code, source)`
-//!   (`diagnostic.schema.json#/$defs/diagnosticList`).
-//! - El digest es FNV-1a de 64 bits sobre la serialización canónica interna;
-//!   identidad estable para MVP (el `contentDigest` SHA-256 llega con I6/core).
+//! - [`resolve`] es pura: mismo `(draft, catalog, rules)` → mismo [`ResolveResult`].
+//! - Diagnósticos ordenados por `(path, code, source)`.
+//! - Digest SHA-256 canónico (`archmaker:resolution:v1`), alineado con core.
 
 use std::collections::{BTreeMap, BTreeSet};
 
-use archmaker_rules::{canonical_rules, evaluate, rule_dm_001, Diagnostic, Draft, Severity};
+use archmaker_rules::{
+    evaluate, evaluate_all, rule_dm_001, Diagnostic, Draft, Effect, Rule, Severity, RULE_DM_001,
+};
+
+const RESOLUTION_DOMAIN: &str = "archmaker:resolution:v1";
 
 // ---------------------------------------------------------------------------
 // Catálogo mínimo (vista de resolución)
@@ -89,6 +86,7 @@ pub struct ResolveResult {
     pub required_capabilities: BTreeSet<String>,
     pub conflicts: Vec<Conflict>,
     pub diagnostics: Vec<Diagnostic>,
+    /// Hex SHA-256 del payload canónico de resolución.
     pub resolution_digest: String,
 }
 
@@ -116,15 +114,21 @@ fn sorted_diagnostics(mut diagnostics: Vec<Diagnostic>) -> Vec<Diagnostic> {
     diagnostics
 }
 
-/// FNV-1a de 64 bits, hex minúscula. Determinista entre procesos y
-/// plataformas para la misma entrada.
-fn fnv1a64_hex(input: &str) -> String {
-    let mut hash: u64 = 0xcbf2_9ce4_8422_2325;
-    for byte in input.bytes() {
-        hash ^= byte as u64;
-        hash = hash.wrapping_mul(0x0100_0000_01b3);
+fn id_matches(stored: &str, wanted: &str) -> bool {
+    if stored == wanted {
+        return true;
     }
-    format!("{hash:016x}")
+    if stored.rsplit('.').next() == Some(wanted) {
+        return true;
+    }
+    if wanted.rsplit('.').next() == Some(stored) {
+        return true;
+    }
+    false
+}
+
+fn step_matches(step: &str, wanted: &str) -> bool {
+    id_matches(step, wanted)
 }
 
 fn digest_input(
@@ -133,39 +137,106 @@ fn digest_input(
     required: &BTreeSet<String>,
     diagnostics: &[Diagnostic],
 ) -> String {
-    let mut out = String::new();
-    for (step, options) in effective {
-        out.push_str(step);
-        out.push('=');
-        out.push_str(&options.join(","));
-        out.push(';');
-    }
-    out.push('|');
-    out.push_str(&provided.iter().cloned().collect::<Vec<_>>().join(","));
-    out.push('|');
-    out.push_str(&required.iter().cloned().collect::<Vec<_>>().join(","));
-    out.push('|');
-    out.push_str(
-        &diagnostics
-            .iter()
-            .map(|d| d.code.as_str())
-            .collect::<Vec<_>>()
-            .join(","),
+    let mut root = serde_json::Map::new();
+    let effective_value: serde_json::Map<String, serde_json::Value> = effective
+        .iter()
+        .map(|(step, options)| {
+            (
+                step.clone(),
+                serde_json::Value::Array(
+                    options
+                        .iter()
+                        .map(|option| serde_json::Value::String(option.clone()))
+                        .collect(),
+                ),
+            )
+        })
+        .collect();
+    root.insert(
+        "effective".to_string(),
+        serde_json::Value::Object(effective_value),
     );
-    out
+    let set_to_json = |set: &BTreeSet<String>| {
+        serde_json::Value::Array(
+            set.iter()
+                .map(|item| serde_json::Value::String(item.clone()))
+                .collect(),
+        )
+    };
+    root.insert("provided".to_string(), set_to_json(provided));
+    root.insert("required".to_string(), set_to_json(required));
+    root.insert(
+        "diagnostics".to_string(),
+        serde_json::Value::Array(
+            diagnostics
+                .iter()
+                .map(|diagnostic| serde_json::Value::String(diagnostic.code.clone()))
+                .collect(),
+        ),
+    );
+    let value = serde_json::Value::Object(root);
+    let canonical = archmaker_canonicalization::canonicalize(&value);
+    archmaker_canonicalization::digest(&canonical, RESOLUTION_DOMAIN)
 }
 
-/// Resuelve el draft contra el catálogo.
+fn apply_dm_derivation(
+    effective: &mut BTreeMap<String, Vec<String>>,
+    conflicts: &mut Vec<Conflict>,
+    provided: &mut BTreeSet<String>,
+    required: &mut BTreeSet<String>,
+    catalog: &Catalog,
+    rules: &[Rule],
+) {
+    let dm_rule = rules
+        .iter()
+        .find(|rule| rule.id == RULE_DM_001)
+        .cloned()
+        .unwrap_or_else(rule_dm_001);
+    let Effect::Derive { target, value } = &dm_rule.effect else {
+        return;
+    };
+    let view = Draft {
+        selections: effective.clone(),
+        provided: provided.clone(),
+    };
+    if evaluate(&dm_rule, &view).is_none() {
+        return;
+    }
+    let existing = effective
+        .iter()
+        .find(|(step, _)| step_matches(step, target))
+        .map(|(step, options)| (step.clone(), options.clone()));
+    match existing {
+        None => {
+            effective.insert(target.clone(), vec![value.clone()]);
+            let recomputed = capabilities_of(effective, catalog);
+            *provided = recomputed.0;
+            *required = recomputed.1;
+        }
+        Some((_, current)) if current.iter().any(|v| id_matches(v, value)) => {}
+        Some((step, _)) => {
+            conflicts.push(Conflict {
+                severity: Severity::Error,
+                path: format!("/selections/{step}"),
+                message_key: "diagnostic.dmDerived".to_string(),
+                capability_id: None,
+                suggestions: vec![format!(
+                    "Set {target} to {value} or change the compositor selection."
+                )],
+            });
+        }
+    }
+}
+
+/// Resuelve el draft contra el catálogo aplicando las reglas dadas.
 ///
-/// 1. Congela selecciones efectivas (ordenadas por paso; opciones ordenadas).
-/// 2. Calcula capabilities aportadas/requeridas desde el catálogo.
-/// 3. Aplica la derivación RULE-DM-001 (`compositor == gnome` → `dm = gdm`)
-///    solo si `dm` no está fijado manualmente; ante fijación manual distinta
-///    registra conflicto sin mutación silenciosa.
-/// 4. Evalúa las 7 reglas canónicas sobre la vista enriquecida.
+/// 1. Congela selecciones efectivas.
+/// 2. Calcula capabilities aportadas/requeridas.
+/// 3. Aplica RULE-DM-001 si está en `rules` (derivación explicable).
+/// 4. Evalúa las reglas sobre la vista enriquecida.
 /// 5. Registra conflictos por `requires` insatisfechos.
-/// 6. Ordena diagnósticos por `(path, code, source)` y calcula el digest.
-pub fn resolve(draft: &Draft, catalog: &Catalog) -> ResolveResult {
+/// 6. Ordena diagnósticos y calcula el digest SHA-256.
+pub fn resolve(draft: &Draft, catalog: &Catalog, rules: &[Rule]) -> ResolveResult {
     let mut effective: BTreeMap<String, Vec<String>> = draft
         .selections
         .iter()
@@ -177,46 +248,23 @@ pub fn resolve(draft: &Draft, catalog: &Catalog) -> ResolveResult {
         .collect();
 
     let mut conflicts: Vec<Conflict> = Vec::new();
-
     let (mut provided, mut required) = capabilities_of(&effective, catalog);
 
-    // Derivación RULE-DM-001 (explicable y reversible, nunca silenciosa).
-    let dm_rule = rule_dm_001();
-    let dm_view = Draft {
-        selections: effective.clone(),
-        provided: provided.clone(),
-    };
-    if evaluate(&dm_rule, &dm_view).is_some() {
-        match effective.get("dm") {
-            None => {
-                effective.insert("dm".to_string(), vec!["gdm".to_string()]);
-                let recomputed = capabilities_of(&effective, catalog);
-                provided = recomputed.0;
-                required = recomputed.1;
-            }
-            Some(current) if current.iter().any(|v| v == "gdm" || v.ends_with(".gdm")) => {}
-            Some(_) => {
-                conflicts.push(Conflict {
-                    severity: Severity::Error,
-                    path: "/selections/dm".to_string(),
-                    message_key: "diagnostic.dmDerived".to_string(),
-                    capability_id: None,
-                    suggestions: vec![
-                        "Set dm to gdm or change the compositor selection.".to_string()
-                    ],
-                });
-            }
-        }
-    }
+    apply_dm_derivation(
+        &mut effective,
+        &mut conflicts,
+        &mut provided,
+        &mut required,
+        catalog,
+        rules,
+    );
 
-    // Vista enriquecida para la etapa 8 (provides evaluado en la etapa 9).
     let enriched = Draft {
         selections: effective.clone(),
         provided: provided.clone(),
     };
-    let diagnostics = evaluate_all_sorted(&enriched);
+    let diagnostics = sorted_diagnostics(evaluate_all(rules, &enriched));
 
-    // Conflictos por requires insatisfechos.
     for option_id in effective.values().flatten() {
         if let Some(option) = catalog.find(option_id) {
             for requirement in &option.requires {
@@ -236,12 +284,7 @@ pub fn resolve(draft: &Draft, catalog: &Catalog) -> ResolveResult {
     }
     conflicts.sort_by(|a, b| (&a.path, &a.message_key).cmp(&(&b.path, &b.message_key)));
 
-    let resolution_digest = fnv1a64_hex(&digest_input(
-        &effective,
-        &provided,
-        &required,
-        &diagnostics,
-    ));
+    let resolution_digest = digest_input(&effective, &provided, &required, &diagnostics);
 
     ResolveResult {
         effective_selections: effective,
@@ -253,13 +296,10 @@ pub fn resolve(draft: &Draft, catalog: &Catalog) -> ResolveResult {
     }
 }
 
-fn evaluate_all_sorted(draft: &Draft) -> Vec<Diagnostic> {
-    sorted_diagnostics(archmaker_rules::evaluate_all(&canonical_rules(), draft))
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
+    use archmaker_rules::canonical_rules;
 
     fn option(id: &str, provides: &[&str], requires: &[&str]) -> CatalogOption {
         CatalogOption::new(
@@ -289,16 +329,23 @@ mod tests {
         d
     }
 
+    fn rules() -> Vec<Rule> {
+        canonical_rules()
+    }
+
     #[test]
     fn gnome_derives_gdm_with_info_diagnostic() {
         let result = resolve(
             &draft(&[("compositor", &["gnome"]), ("kernel", &["linux"])]),
             &fixture_catalog(),
+            &rules(),
         );
-        assert_eq!(
-            result.effective_selections.get("dm"),
-            Some(&vec!["gdm".to_string()])
-        );
+        let dm = result.effective_selections.iter().find(|(step, _)| {
+            step_matches(step, "dm") || step_matches(step, "archmaker.environment.dm")
+        });
+        assert!(dm.is_some());
+        let (_, values) = dm.unwrap();
+        assert!(values.iter().any(|v| id_matches(v, "gdm")));
         assert!(result.diagnostics.iter().any(|d| d.code == "AM-RULE-002"));
         assert!(result.conflicts.is_empty());
     }
@@ -312,6 +359,7 @@ mod tests {
                 ("kernel", &["linux"]),
             ]),
             &fixture_catalog(),
+            &rules(),
         );
         assert_eq!(
             result.effective_selections.get("dm"),
@@ -322,10 +370,10 @@ mod tests {
 
     #[test]
     fn kernel_fs_conflict_end_to_end() {
-        // btrfs seleccionado pero el catálogo solo aporta fs.ext4.
         let result = resolve(
             &draft(&[("kernel", &["linux"]), ("fs", &["btrfs"])]),
             &fixture_catalog(),
+            &rules(),
         );
         assert!(result
             .diagnostics
@@ -339,6 +387,7 @@ mod tests {
         let result = resolve(
             &draft(&[("kernel", &["linux"]), ("pkg", &["zfs-module"])]),
             &catalog,
+            &rules(),
         );
         assert!(result
             .conflicts
@@ -355,6 +404,7 @@ mod tests {
         let result = resolve(
             &draft(&[("compositor", &["gnome", "sway"])]),
             &fixture_catalog(),
+            &rules(),
         );
         let keys: Vec<(&str, &str, &str)> = result
             .diagnostics
@@ -377,17 +427,18 @@ mod tests {
             ("fs", &["ext4"]),
         ]);
         let catalog = fixture_catalog();
-        let first = resolve(&draft, &catalog);
-        let second = resolve(&draft, &catalog);
+        let first = resolve(&draft, &catalog, &rules());
+        let second = resolve(&draft, &catalog, &rules());
         assert_eq!(first, second);
         assert_eq!(first.resolution_digest, second.resolution_digest);
+        assert_eq!(first.resolution_digest.len(), 64);
     }
 
     #[test]
     fn digest_changes_with_input() {
         let catalog = fixture_catalog();
-        let a = resolve(&draft(&[("kernel", &["linux"])]), &catalog);
-        let b = resolve(&draft(&[("kernel", &["linux-lts"])]), &catalog);
+        let a = resolve(&draft(&[("kernel", &["linux"])]), &catalog, &rules());
+        let b = resolve(&draft(&[("kernel", &["linux-lts"])]), &catalog, &rules());
         assert_ne!(a.resolution_digest, b.resolution_digest);
     }
 
@@ -400,11 +451,21 @@ mod tests {
                 ("fs", &["ext4"]),
             ]),
             &fixture_catalog(),
+            &rules(),
         );
         assert!(result.provided_capabilities.contains("fs.ext4"));
         assert!(result.provided_capabilities.contains("pkg.firefox"));
-        // fs.ext4 aportado ⇒ sin AM-RULE-007; pkg.firefox aportado ⇒ sin AM-RULE-006.
         assert!(!result.diagnostics.iter().any(|d| d.code == "AM-RULE-007"));
         assert!(!result.diagnostics.iter().any(|d| d.code == "AM-RULE-006"));
+    }
+
+    #[test]
+    fn empty_rules_do_not_invent_canonical_set() {
+        let result = resolve(
+            &draft(&[("compositor", &["gnome", "sway"])]),
+            &fixture_catalog(),
+            &[],
+        );
+        assert!(result.diagnostics.is_empty());
     }
 }

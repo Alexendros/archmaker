@@ -1,0 +1,101 @@
+[
+  {
+    "id": "RULE-COMP-001",
+    "documentVersion": "vNext",
+    "schemaVersion": "1",
+    "severity": "error",
+    "blocking": true,
+    "when": {
+      "count_gt": ["archmaker.environment.compositor", 1]
+    },
+    "action": "block",
+    "diagnosticCode": "AM-RULE-001",
+    "note": "Only one compositor is allowed."
+  },
+  {
+    "id": "RULE-DM-001",
+    "documentVersion": "vNext",
+    "schemaVersion": "1",
+    "severity": "info",
+    "blocking": false,
+    "when": {
+      "eq": ["archmaker.environment.compositor", "archmaker.compositor.gnome"]
+    },
+    "action": "derive",
+    "target": "archmaker.environment.dm",
+    "allowed": ["archmaker.dm.gdm"],
+    "diagnosticCode": "AM-RULE-002",
+    "note": "GNOME compositor derives GDM."
+  },
+  {
+    "id": "RULE-KERNEL-001",
+    "documentVersion": "vNext",
+    "schemaVersion": "1",
+    "severity": "error",
+    "blocking": true,
+    "when": {
+      "not": { "required": "archmaker.base.kernel" }
+    },
+    "action": "block",
+    "diagnosticCode": "AM-RULE-004",
+    "note": "Exactly one kernel is required."
+  },
+  {
+    "id": "RULE-BROWSER-001",
+    "documentVersion": "vNext",
+    "schemaVersion": "1",
+    "severity": "warning",
+    "blocking": false,
+    "when": {
+      "eq": [{ "count": "archmaker.apps.browser" }, 0]
+    },
+    "action": "suggest",
+    "diagnosticCode": "AM-RULE-005",
+    "note": "A browser is suggested but optional."
+  },
+  {
+    "id": "RULE-PKG-001",
+    "documentVersion": "vNext",
+    "schemaVersion": "1",
+    "severity": "warning",
+    "blocking": false,
+    "when": {
+      "all": [
+        { "selected": "archmaker.apps.apps-core" },
+        { "not": { "provides": "pkg.placeholder" } }
+      ]
+    },
+    "action": "suggest",
+    "diagnosticCode": "AM-RULE-006",
+    "note": "Package availability is expanded per selected pkg option at evaluate time."
+  },
+  {
+    "id": "RULE-KERNEL-002",
+    "documentVersion": "vNext",
+    "schemaVersion": "1",
+    "severity": "error",
+    "blocking": true,
+    "when": {
+      "all": [
+        { "selected": "archmaker.base.filesystem" },
+        { "not": { "provides": "fs.placeholder" } }
+      ]
+    },
+    "action": "block",
+    "diagnosticCode": "AM-RULE-007",
+    "note": "Filesystem capability conflict is expanded per selected fs option at evaluate time."
+  },
+  {
+    "id": "RULE-DUP-001",
+    "documentVersion": "vNext",
+    "schemaVersion": "1",
+    "severity": "error",
+    "blocking": true,
+    "when": {
+      "count_gt": ["archmaker.pkg.package", 1]
+    },
+    "action": "block",
+    "diagnosticCode": "AM-RULE-008",
+    "note": "Duplicate option identity is detected across selections at evaluate time."
+  }
+]

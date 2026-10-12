@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "generated_at": "1791820748",
-    "git_sha": "bed7e320d20e7edd801eab41793bffbb919cc047",
+    "generated_at": "1791822953",
+    "git_sha": "773487e554710eb1e536d824f0a1002bae1c2688",
     "requirements_file": "docs/01-product/requirements.md",
     "inventory_file": "docs/10-delivery/tests-inventory.json",
     "validators_file": "docs/10-delivery/validators.json"
@@ -70,7 +70,7 @@
       "evidence_count": 34,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["schema", "integration", "negative", "unit"],
+      "evidence_types": ["negative", "unit", "schema", "integration"],
       "coverage_status": "covered"
     },
     {
@@ -126,7 +126,7 @@
       "evidence_count": 41,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["schema", "integration", "negative", "unit"],
+      "evidence_types": ["negative", "unit", "schema", "integration"],
       "coverage_status": "covered"
     },
     {
@@ -232,11 +232,11 @@
       "has_executable_evidence": true,
       "passes_ci": true,
       "evidence_types": [
-        "schema",
-        "canonicalize",
-        "integration",
         "unit",
-        "negative"
+        "integration",
+        "negative",
+        "schema",
+        "canonicalize"
       ],
       "coverage_status": "covered"
     },
@@ -276,7 +276,7 @@
       "evidence_count": 6,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["integration", "negative"],
+      "evidence_types": ["negative", "integration"],
       "coverage_status": "covered"
     },
     {
@@ -357,7 +357,7 @@
       "evidence_count": 13,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["canonicalize", "integration", "negative", "unit"],
+      "evidence_types": ["negative", "unit", "integration", "canonicalize"],
       "coverage_status": "covered"
     },
     {

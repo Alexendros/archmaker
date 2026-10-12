@@ -26,7 +26,8 @@
           "options": [
             {
               "id": "archmaker.kernel.linux",
-              "title": "Linux"
+              "title": "Linux",
+              "provides": ["fs.ext4"]
             }
           ]
         }
@@ -49,6 +50,29 @@
           ]
         }
       ]
+    }
+  ],
+  "rules": [
+    {
+      "id": "RULE-COMP-001"
+    },
+    {
+      "id": "RULE-DM-001"
+    },
+    {
+      "id": "RULE-KERNEL-001"
+    },
+    {
+      "id": "RULE-BROWSER-001"
+    },
+    {
+      "id": "RULE-PKG-001"
+    },
+    {
+      "id": "RULE-KERNEL-002"
+    },
+    {
+      "id": "RULE-DUP-001"
     }
   ]
 }
