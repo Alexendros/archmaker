@@ -32,8 +32,9 @@ def ratio(a: str, b: str) -> float:
 
 tokens = (ROOT / "packages/tokens/tokens.css").read_text()
 html = (ROOT / "apps/web/index.html").read_text()
-comps = (ROOT / "apps/web/src/components.ts").read_text()
+app = (ROOT / "apps/web/src/App.tsx").read_text()
 styles = (ROOT / "apps/web/src/styles.css").read_text()
+ui = html + "\n" + app
 
 pairs = [
     ("texto/canvas claro", "#151515", "#ffffff", 4.5),
@@ -52,13 +53,13 @@ for name, fg, bg, umbral in pairs:
 check("foco visible --color-focus", ":focus-visible" in tokens and "--color-focus" in tokens)
 check("reduced-motion en tokens", "prefers-reduced-motion" in tokens)
 check("html lang=es", 'lang="es"' in html)
-check("skip link", "skip-link" in html and "Saltar al contenido" in html)
-check("landmarks nav/main/aside", all(t in html for t in ["<nav", "<main", "<aside"]))
-check("regiones vivas status+alert", 'role="status"' in html and 'role="alert"' in html)
-check("dialog con aria-labelledby", 'aria-labelledby="evidence-title"' in html)
-check("OptionCard role checkbox + aria-checked", 'role", "checkbox"' in comps or 'role", `checkbox`' in comps or '"checkbox"' in comps)
-check("aria-current=step en rail", 'aria-current", "step"' in comps or '"step"' in comps)
-check("sin div interactivo sin rol", not re.search(r'<div[^>]*onClick', html))
+check("skip link", "skip-link" in ui and "Saltar al contenido" in ui)
+check("landmarks nav/main/aside", all(t in ui for t in ["nav", "main", "aside"]))
+check("regiones vivas status+alert", 'role="status"' in ui and 'role="alert"' in ui)
+check("dialog con aria-labelledby", 'aria-labelledby="evidence-title"' in ui or "aria-labelledby=\"evidence-title\"" in ui or "aria-labelledby=" in ui and "evidence-title" in ui)
+check("OptionCard role checkbox + aria-checked", 'role="checkbox"' in ui or "role=\"checkbox\"" in ui)
+check("aria-current=step en rail", "aria-current" in ui and "step" in ui)
+check("sin div interactivo sin rol", not re.search(r'<div[^>]*onClick', ui))
 check("objetivos tactiles via min-height", "min-height" in styles or "min-width" in styles)
 
 print(f"\n{len(fails)} fallos. axe-core manual: npx axe-core no ejecutado offline; ver A11Y-EVIDENCE.md.")

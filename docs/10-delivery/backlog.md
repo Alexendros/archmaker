@@ -138,6 +138,19 @@ Detalle y exclusiones: [`mvp2-scope.md`](mvp2-scope.md).
 
 Detalle y exclusiones: [`mvp3-scope.md`](mvp3-scope.md).
 
+## Issues MVP-4
+
+| Issue    | Título                                        | Dueño        | Estado | Gate   |
+| -------- | --------------------------------------------- | ------------ | ------ | ------ |
+| MVP-4-01 | Aprobar alcance DOC-DEL-MVP4-001              | Product      | closed | G2,G10 |
+| MVP-4-02 | Declaración CorePort TS alineada con DTO Rust | Interfaces   | closed | G5     |
+| MVP-4-03 | MockCorePort determinista                     | Architecture | closed | G5,G9  |
+| MVP-4-04 | Flujo React con tokens / contratos existentes | UX           | closed | G6     |
+| MVP-4-05 | WCAG + baseline visual sin regresión          | UX           | closed | G6,G9  |
+| MVP-4-06 | Tag `implementation-baseline-mvp4`            | Release      | closed | G10    |
+
+Detalle y exclusiones: [`mvp4-scope.md`](mvp4-scope.md).
+
 ## Reglas
 
 - Cada issue P0 tiene owner, fecha objetivo y criterio de cierre (ver `status-model.md`).

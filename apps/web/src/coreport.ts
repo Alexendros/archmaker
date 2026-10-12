@@ -1,3 +1,5 @@
+/** Frontier types for CorePort v0 + importDraft. Rust owns semantics (ADR-0001). */
+
 export type CoreError = {
   code: string;
   family: string;
@@ -10,68 +12,173 @@ export type CoreError = {
 export type Result<T> =
   { ok: true; value: T } | { ok: false; error: CoreError };
 
+export type ContentDigest = {
+  algorithm: "sha256";
+  value: string;
+  kind?: "content";
+};
+
+export type BinaryDigest = {
+  algorithm: "sha256";
+  value: string;
+  kind?: "binary";
+};
+
 export type CatalogRef = {
   namespace: string;
   id: string;
   version: string;
-  digest: { algorithm: string; value: string };
+  digest: ContentDigest;
 };
+
 export type TargetRef = { id: string; version: string };
-export type Selection = { step_id: string; option_id: string };
+
+export type SelectionValue =
+  | { kind: "single"; optionId: string }
+  | { kind: "multiple"; optionIds: string[] }
+  | { kind: "boolean"; value: boolean }
+  | { kind: "number"; value: number; unit?: string }
+  | { kind: "text"; value: string }
+  | { kind: "secretRef"; ref: string };
+
+export type Selection = { stepId: string; value: SelectionValue };
+
 export type Draft = {
   id: string;
-  schema_version: string;
-  document_version: string;
+  schemaVersion: string;
+  documentVersion: string;
   revision: number;
-  catalog_ref: CatalogRef;
-  target_ref: TargetRef;
+  catalogRef: CatalogRef;
+  targetRef: TargetRef;
   selections: Selection[];
+  contentDigest?: ContentDigest;
 };
+
 export type Diagnostic = {
   code: string;
   path: string;
   messageKey: string;
   source: string;
+  blocking?: boolean;
+  severity?: "error" | "warning" | "info";
+};
+
+export type ResolvedSelection = {
+  stepId: string;
+  optionId: string;
+  value: SelectionValue;
+  origin: "manual" | "derived";
+  locked: boolean;
+};
+
+export type ResolveResult = {
+  resolutionDigest: ContentDigest;
+  effectiveSelections: ResolvedSelection[];
+  providedCapabilities: { id: string }[];
+  requiredCapabilities: { id: string }[];
+  conflicts: unknown[];
+  diagnostics: Diagnostic[];
+};
+
+export type ValidationResult = {
+  diagnostics: Diagnostic[];
+  blocking: boolean;
+  pipelineVersion: string;
+};
+
+export type Manifest = {
+  documentVersion: string;
+  schemaVersion: string;
+  domainLabel: string;
+  catalogRef: CatalogRef;
+  targetRef: TargetRef;
+  producer: { id: string; version: string };
+  resolutionDigest: ContentDigest;
+  effectiveSelections: ResolvedSelection[];
+  providedCapabilities: { id: string }[];
+  requiredCapabilities: { id: string }[];
+  conflicts: unknown[];
+  contentDigest: ContentDigest;
+};
+
+export type Artifact = {
+  documentVersion: string;
+  schemaVersion: string;
+  artifactRef: { binaryDigest: BinaryDigest; mediaType: string };
+  targetRef: TargetRef;
+  producer: { id: string; version: string };
+  mediaType: string;
+  binaryDigest: BinaryDigest;
+  manifestRef: { contentDigest: ContentDigest };
+  experimental?: boolean;
+  content?: unknown;
+};
+
+export type CreateDraftInput = {
+  draftId?: string;
+  catalogRef: CatalogRef;
+  targetRef: TargetRef;
+  requestId?: string;
+};
+
+export type LoadCatalogInput = {
+  source: "embedded" | "file";
+  catalogRef?: CatalogRef;
+  requestId?: string;
+};
+
+export type SaveDraftInput = {
+  draft: Draft;
+  expectedRevision: number;
+  requestId?: string;
+};
+
+export type ResolveDraftInput = {
+  draft: Draft;
+  catalogRef: CatalogRef;
+  requestId?: string;
+};
+
+export type ValidateDraftInput = {
+  draft: Draft;
+  catalogRef: CatalogRef;
+  targetRef?: TargetRef;
+  requestId?: string;
+};
+
+export type BuildManifestInput = {
+  draft: Draft;
+  catalogRef: CatalogRef;
+  targetRef: TargetRef;
+  expectedResolutionDigest?: ContentDigest;
+  requestId?: string;
+};
+
+export type ExportArtifactInput = {
+  manifest: Manifest;
+  targetRef: TargetRef;
+  destination: { token: string };
+  requestId?: string;
+};
+
+export type ImportDraftInput = {
+  sourceBytes: number[];
+  catalogRef: CatalogRef;
+  targetRef: TargetRef;
+  draftId?: string;
+  confirmBlockingLosses: boolean;
+  requestId?: string;
 };
 
 export interface CorePort {
-  createDraft(input: {
-    draftId?: string;
-    catalogRef: CatalogRef;
-    targetRef: TargetRef;
-  }): Promise<Result<Draft>>;
-  loadCatalog(input: { source: "embedded" | "file" }): Promise<Result<unknown>>;
-  saveDraft(input: {
-    draft: Draft;
-    expectedRevision: number;
-  }): Promise<Result<Draft>>;
-  resolveDraft(input: {
-    draft: Draft;
-    catalogRef: CatalogRef;
-  }): Promise<
-    Result<{ resolutionDigest: unknown; effectiveSelections: Selection[] }>
-  >;
-  validateDraft(input: {
-    draft: Draft;
-    catalogRef: CatalogRef;
-  }): Promise<Result<{ blocking: boolean; diagnostics: Diagnostic[] }>>;
-  buildManifest(input: {
-    draft: Draft;
-    catalogRef: CatalogRef;
-    targetRef: TargetRef;
-  }): Promise<Result<unknown>>;
-  exportArtifact(input: {
-    manifestDigest: unknown;
-    targetRef: TargetRef;
-    destination: string;
-  }): Promise<Result<unknown>>;
-  importDraft(input: {
-    sourceBytes: number[];
-    catalogRef: CatalogRef;
-    targetRef: TargetRef;
-    draftId?: string;
-    confirmBlockingLosses: boolean;
-  }): Promise<Result<unknown>>;
+  createDraft(input: CreateDraftInput): Promise<Result<Draft>>;
+  loadCatalog(input: LoadCatalogInput): Promise<Result<unknown>>;
+  saveDraft(input: SaveDraftInput): Promise<Result<Draft>>;
+  resolveDraft(input: ResolveDraftInput): Promise<Result<ResolveResult>>;
+  validateDraft(input: ValidateDraftInput): Promise<Result<ValidationResult>>;
+  buildManifest(input: BuildManifestInput): Promise<Result<Manifest>>;
+  exportArtifact(input: ExportArtifactInput): Promise<Result<Artifact>>;
+  importDraft(input: ImportDraftInput): Promise<Result<unknown>>;
 }
 
 export function typedError(
@@ -79,13 +186,40 @@ export function typedError(
   source: string,
   messageKey: string,
 ): CoreError {
-  const family = code.split("-").slice(0, 2).join("-");
   return {
     code,
-    family,
-    category: "Protocol",
+    family: code.split("-")[1] ?? "DOC",
+    category: "contract",
     severity: "error",
     messageKey,
     source,
   };
+}
+
+export const FIXED_CATALOG_REF: CatalogRef = {
+  namespace: "archmaker.core",
+  id: "minimal",
+  version: "0.1.0",
+  digest: {
+    algorithm: "sha256",
+    value: "0000000000000000000000000000000000000000000000000000000000000000",
+  },
+};
+
+export const DRAFT_TARGET: TargetRef = {
+  id: "arch-x86_64",
+  version: "2026.10.0",
+};
+
+export function exportTarget(id: string): TargetRef {
+  return { id, version: "0.1.0" };
+}
+
+export function singleSelection(stepId: string, optionId: string): Selection {
+  return { stepId, value: { kind: "single", optionId } };
+}
+
+export function withSelection(draft: Draft, sel: Selection): Draft {
+  const rest = draft.selections.filter((s) => s.stepId !== sel.stepId);
+  return { ...draft, selections: [...rest, sel] };
 }
