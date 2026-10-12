@@ -26,3 +26,15 @@
 - No modificar el diseño visual heredado salvo corrección trazable de accesibilidad, consistencia o mantenibilidad.
 - No añadir dependencias o contratos sin FR/NFR y ADR cuando proceda.
 - Cada PR declara IDs de requisitos, riesgos, amenazas, validadores y pruebas afectados.
+
+## Learned User Preferences
+
+- Formular preguntas y opciones en español llano, con los beneficios y las consecuencias de cada opción.
+- La siguiente fase se ancla al último plan ya implementado, al roadmap de `docs/` y a los issues o al milestone de GitHub, sin inventar alcance.
+
+## Learned Workspace Facts
+
+- `reference/v5.1/` no se edita; debe coincidir byte a byte con sus sumas SHA-256.
+- El dominio vive en `crates/archmaker-core` (nativo y WASM con paridad golden) y se expone por CorePort; React solo en `apps/web/`; `src-tauri/` es el adapter de escritorio, sin lógica de dominio y sin capabilities `shell:*`.
+- `contracts/` es la fuente de verdad de los contratos; si falta uno, se genera desde los crates.
+- La huella de la resolución es SHA-256 y las comprobaciones de reglas se leen del catálogo local.
