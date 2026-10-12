@@ -15,24 +15,29 @@ reviewers:
 
 # Checkpoint de misión — planning-v1.1
 
-- Documento: DOC-GOV-GNG-001 · Propietario: Arquitectura · Fecha: 2026-10-06
+- Documento: DOC-GOV-GNG-001 · Propietario: Arquitectura · Fecha: 2026-10-12
 - Resultado: **Clear** (checkpoint superado: todos los gates G0–G10 están `complete`; el hilo de la misión puede continuar).
-- Veredicto de gobierno (R13): **CONDITIONAL-CLEAR — walking skeleton MVP-0 únicamente**.
-- Alcance: autorizar únicamente el vertical slice de `docs/10-delivery/walking-skeleton.md`
-  (DOC-DEL-WSK-001); el MVP completo, el runner, los privilegios y Enterprise quedan bloqueados.
+- Veredicto de gobierno (R13): **CONDITIONAL-CLEAR — walking skeleton MVP-0**.
+- Reevaluación slice MVP-1 (MVP-1-08): **CONDITIONAL-CLEAR — walking skeleton MVP-0 + slice MVP-1**
+  (dominio, catálogo local, `importDraft` / MIG-5.1). Baseline objetivo:
+  `implementation-baseline-mvp1` (el tag `implementation-baseline-mvp0.1` no se mueve).
+- Alcance autorizado: `docs/10-delivery/walking-skeleton.md` (DOC-DEL-WSK-001) y
+  `docs/10-delivery/mvp1-scope.md` (DOC-DEL-MVP1-001). Bloqueados: runner real, root, discos,
+  shell arbitraria, catálogos remotos, firma criptográfica de catálogo en carga, Enterprise.
 
 ## Motivo del resultado mecánico
 
 El resultado `Clear` es la lectura literal de la cobertura de gates: G0–G10 están todos
 `complete` (bloque derivado más abajo). El dictamen de gobierno permanece condicionado
-(**CONDITIONAL-CLEAR**) y se emite por separado para el walking skeleton MVP-0.
+(**CONDITIONAL-CLEAR**) al walking skeleton MVP-0 y al slice MVP-1 de datos/migración;
+no autoriza runner ni privilegios.
 
 ## Veredicto y condiciones
 
-El informe `docs/00-governance/final-review-planning-v1.1.md` (DOC-GOV-REV-001) emite
-**CONDITIONAL-CLEAR** limitado al walking skeleton MVP-0, sin ningún P0 abierto sin tratamiento.
-Las condiciones fechadas (`C1`–`C8`), su criterio y su cierre se leen en ese informe y no se
-repiten aquí.
+El informe `docs/00-governance/final-review-planning-v1.1.md` (DOC-GOV-REV-001) emitió
+**CONDITIONAL-CLEAR** para el walking skeleton MVP-0. La reevaluación MVP-1-08 amplía ese
+veredicto al slice MVP-1 (`mvp1-scope.md`) sin abrir runner ni privilegios, y sin P0 abiertos
+sin tratamiento. Las condiciones fechadas (`C1`–`C8`) se leen en ese informe y no se repiten aquí.
 
 ## Por qué el Clear es condicionado al walking skeleton
 

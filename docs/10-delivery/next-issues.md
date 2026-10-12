@@ -74,7 +74,7 @@ Fuente canónica de alcance: [`mvp1-scope.md`](mvp1-scope.md).
 
 ## Regla de cierre del plan
 
-El veredicto vigente para el slice es **CONDITIONAL-CLEAR — walking skeleton MVP-0**
-(`docs/00-governance/go-no-go.md`), con gates G0–G10 `complete` en el walking skeleton. La autorización
-del MVP completo (más allá del slice) y del runner exige su propio gate; MVP-1 permanece planificado en
-`mvp1-scope.md` hasta que MVP-1-01 esté `accepted`.
+El veredicto vigente es **CONDITIONAL-CLEAR — walking skeleton MVP-0 + slice MVP-1**
+(`docs/00-governance/go-no-go.md`), con gates G0–G10 `complete`. MVP-1-01..07 están `closed`;
+MVP-1-08 cierra al emitir `implementation-baseline-mvp1` con CI verde. La autorización del
+MVP completo y del runner exige su propio gate.
