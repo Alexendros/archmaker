@@ -13,9 +13,9 @@ Comprueba, sobre el repositorio completo:
       RULE/THR/SRC/CON/AM/RSK/DEC) se resuelven contra el índice global de tokens y su ausencia se
       reporta como ADVERTENCIA de materialización (deuda existente);
   (d) grafo de trazabilidad: filas bien formadas y referencias que resuelven;
-  (e) coherencia de gates: manifiestos válidos, gates.md y el bloque derivado de go-no-go.md sin
-      contradicción, dependencias de gate satisfechas cuando el gate está `complete`, y resultado
-      Go/No-Go de go-no-go.md derivado de los gates.
+(e) coherencia de gates: manifiestos válidos, gates.md y el bloque derivado de go-no-go.md sin
+       contradicción, dependencias de gate satisfechas cuando el gate está `complete`, y resultado
+       Clear/Blocked de go-no-go.md derivado de los gates.
 
 Las ADVERTENCIAS no fuerzan el fallo; los ERRORES sí (código distinto de cero). Con --strict las
 advertencias también devuelven código distinto de cero.

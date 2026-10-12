@@ -44,16 +44,16 @@ Al finalizar deben existir:
 
 ### Roles
 
-| Rol | Responsabilidad | Autoridad de aprobación |
-|---|---|---|
-| Product owner | Alcance, journeys y prioridad | Objetivos, requisitos y releases |
-| Arquitectura | C4, viewpoints, ADR, módulos | Arquitectura y contratos transversales |
-| Data/contracts owner | Schemas, migraciones, canonicalización | Contratos y compatibilidad |
-| Security owner | Threat/hazard model, capabilities, updater | Riesgo residual y excepciones |
-| UX/design owner | Design system, componentes, accesibilidad | Baseline visual y UX |
-| Quality owner | Corpus, tests, CI y evidencia | Gates de verificación |
-| Release owner | Packaging, firma, provenance y rollback | Release readiness |
-| Revisor independiente | Revisión sin autoría directa | Conformidad y No-Go/Go recomendado |
+| Rol                   | Responsabilidad                            | Autoridad de aprobación                |
+| --------------------- | ------------------------------------------ | -------------------------------------- |
+| Product owner         | Alcance, journeys y prioridad              | Objetivos, requisitos y releases       |
+| Arquitectura          | C4, viewpoints, ADR, módulos               | Arquitectura y contratos transversales |
+| Data/contracts owner  | Schemas, migraciones, canonicalización     | Contratos y compatibilidad             |
+| Security owner        | Threat/hazard model, capabilities, updater | Riesgo residual y excepciones          |
+| UX/design owner       | Design system, componentes, accesibilidad  | Baseline visual y UX                   |
+| Quality owner         | Corpus, tests, CI y evidencia              | Gates de verificación                  |
+| Release owner         | Packaging, firma, provenance y rollback    | Release readiness                      |
+| Revisor independiente | Revisión sin autoría directa               | Conformidad y No-Go/Go recomendado     |
 
 NIST SSDF recomienda que el diseño sea revisado por personal cualificado no implicado en él o mediante procesos automatizados adecuados, y que los criterios de seguridad se rastreen durante el SDLC (refs. 1–2).
 
@@ -68,20 +68,20 @@ NIST SSDF recomienda que el diseño sea revisado por personal cualificado no imp
 
 ## Workstreams
 
-| Código | Workstream | Prioridad | Gate principal |
-|---|---|---:|---|
-| WS-01 | Gobierno y estados | P0 | G0–G2 |
-| WS-02 | Trazabilidad y evidencia | P0 | G0–G10 |
-| WS-03 | Arquitectura y C4 | P0 | G3 |
-| WS-04 | Canonicalización y datos | P0 | G4 |
-| WS-05 | Interfaces y CorePort | P0 | G5 |
-| WS-06 | Validación y corpus | P0 | G7/G9 |
-| WS-07 | Seguridad y updater | P0/P1 | G8/G9 |
-| WS-08 | UX y design system | P1 | G6 |
-| WS-09 | Calidad y CI | P0 | G9 |
-| WS-10 | Delivery y walking skeleton | P0 | G10 |
-| WS-11 | Runner v1 | Diferido | v1 |
-| WS-12 | Enterprise | Diferido | Enterprise |
+| Código | Workstream                  | Prioridad | Gate principal |
+| ------ | --------------------------- | --------: | -------------- |
+| WS-01  | Gobierno y estados          |        P0 | G0–G2          |
+| WS-02  | Trazabilidad y evidencia    |        P0 | G0–G10         |
+| WS-03  | Arquitectura y C4           |        P0 | G3             |
+| WS-04  | Canonicalización y datos    |        P0 | G4             |
+| WS-05  | Interfaces y CorePort       |        P0 | G5             |
+| WS-06  | Validación y corpus         |        P0 | G7/G9          |
+| WS-07  | Seguridad y updater         |     P0/P1 | G8/G9          |
+| WS-08  | UX y design system          |        P1 | G6             |
+| WS-09  | Calidad y CI                |        P0 | G9             |
+| WS-10  | Delivery y walking skeleton |        P0 | G10            |
+| WS-11  | Runner v1                   |  Diferido | v1             |
+| WS-12  | Enterprise                  |  Diferido | Enterprise     |
 
 ## Fase R0 — Congelación
 
@@ -604,33 +604,33 @@ reviewDate: <date>
 
 ## Backlog priorizado
 
-| Issue | Prioridad | Dependencias | Entregable |
-|---|---:|---|---|
-| AUD-001 Freeze audit baseline | P0 | — | Tag, branch, milestone |
-| AUD-002 Define status model | P0 | AUD-001 | `status-model.md` |
-| AUD-003 Migrate governed metadata | P0 | AUD-002 | Front matter coherente |
-| AUD-004 Remove stale DEC references | P0 | AUD-003 | Consumidores corregidos |
-| AUD-005 Build traceability validator | P0 | AUD-003 | CI semántica |
-| AUD-006 Materialize gate manifests | P0 | AUD-003,005 | Gates reproducibles |
-| AUD-007 Correct C4 containers | P0 | AUD-001 | C4 corregido |
-| AUD-008 Define viewpoints/concerns | P0 | AUD-007 | Matriz 42010 |
-| AUD-009 Accept canonicalization ADR | P0 | AUD-008 | ADR-0007 aceptado |
-| AUD-010 Add canonical vectors | P0 | AUD-009 | Golden corpus |
-| AUD-011 Refactor common schema defs | P0 | AUD-009 | `common.schema.json` |
-| AUD-012 Stabilize Draft v0 | P0 | AUD-011 | Schema + corpus |
-| AUD-013 Stabilize Catalog v0 | P0 | AUD-011 | Schema + corpus |
-| AUD-014 Stabilize Diagnostic v0 | P0 | AUD-011 | Schema + corpus |
-| AUD-015 Stabilize Manifest v0 | P0 | AUD-010,011 | Schema + corpus |
-| AUD-016 Freeze CorePort v0 | P0 | AUD-012..015 | API contractual |
-| AUD-017 Normalize rule operators | P0 | AUD-013 | Corpus de reglas |
-| AUD-018 Add residual risk model | P0 | AUD-008 | Riesgos gobernables |
-| AUD-019 Threat-model updater | P0 | AUD-018 | Control DEC-007 |
-| AUD-020 Freeze visual baseline | P1 | AUD-001 | Goldens/tokens |
-| AUD-021 Create WCAG evidence matrix | P1 | AUD-020 | Plan accesibilidad |
-| AUD-022 Prove clean CI | P0 | AUD-005,006,010..017 | Run verde |
-| AUD-023 Define walking skeleton | P0 | AUD-016,017,018,020 | Slice aprobado |
-| AUD-024 Independent review | P0 | AUD-022,023 | Dictamen externo |
-| AUD-025 Publish planning-v1.1 | P0 | AUD-024 | Baseline nuevo |
+| Issue                                | Prioridad | Dependencias         | Entregable              |
+| ------------------------------------ | --------: | -------------------- | ----------------------- |
+| AUD-001 Freeze audit baseline        |        P0 | —                    | Tag, branch, milestone  |
+| AUD-002 Define status model          |        P0 | AUD-001              | `status-model.md`       |
+| AUD-003 Migrate governed metadata    |        P0 | AUD-002              | Front matter coherente  |
+| AUD-004 Remove stale DEC references  |        P0 | AUD-003              | Consumidores corregidos |
+| AUD-005 Build traceability validator |        P0 | AUD-003              | CI semántica            |
+| AUD-006 Materialize gate manifests   |        P0 | AUD-003,005          | Gates reproducibles     |
+| AUD-007 Correct C4 containers        |        P0 | AUD-001              | C4 corregido            |
+| AUD-008 Define viewpoints/concerns   |        P0 | AUD-007              | Matriz 42010            |
+| AUD-009 Accept canonicalization ADR  |        P0 | AUD-008              | ADR-0007 aceptado       |
+| AUD-010 Add canonical vectors        |        P0 | AUD-009              | Golden corpus           |
+| AUD-011 Refactor common schema defs  |        P0 | AUD-009              | `common.schema.json`    |
+| AUD-012 Stabilize Draft v0           |        P0 | AUD-011              | Schema + corpus         |
+| AUD-013 Stabilize Catalog v0         |        P0 | AUD-011              | Schema + corpus         |
+| AUD-014 Stabilize Diagnostic v0      |        P0 | AUD-011              | Schema + corpus         |
+| AUD-015 Stabilize Manifest v0        |        P0 | AUD-010,011          | Schema + corpus         |
+| AUD-016 Freeze CorePort v0           |        P0 | AUD-012..015         | API contractual         |
+| AUD-017 Normalize rule operators     |        P0 | AUD-013              | Corpus de reglas        |
+| AUD-018 Add residual risk model      |        P0 | AUD-008              | Riesgos gobernables     |
+| AUD-019 Threat-model updater         |        P0 | AUD-018              | Control DEC-007         |
+| AUD-020 Freeze visual baseline       |        P1 | AUD-001              | Goldens/tokens          |
+| AUD-021 Create WCAG evidence matrix  |        P1 | AUD-020              | Plan accesibilidad      |
+| AUD-022 Prove clean CI               |        P0 | AUD-005,006,010..017 | Run verde               |
+| AUD-023 Define walking skeleton      |        P0 | AUD-016,017,018,020  | Slice aprobado          |
+| AUD-024 Independent review           |        P0 | AUD-022,023          | Dictamen externo        |
+| AUD-025 Publish planning-v1.1        |        P0 | AUD-024              | Baseline nuevo          |
 
 ## Dependencias críticas
 
@@ -668,19 +668,19 @@ flowchart TD
 
 ## Matriz de gates
 
-| Gate | Remediación | Evidencia de cierre |
-|---|---|---|
-| G0 | R0, R3 | Baseline + manifest de fuentes |
-| G1 | R1, R3 | Estados coherentes + métricas con estado explícito |
-| G2 | R1, R2 | Requisitos aprobados sin DEC obsoletas |
-| G3 | R4, R5 | C4/viewpoints + ADR-0007 aceptado |
-| G4 | R5, R6 | Schemas v0 + vectors + corpus |
-| G5 | R7 | CorePort/DTO/error catalog v0 |
-| G6 | R10 | Visual baseline + WCAG matrix |
-| G7 | R8 | Operadores y diagnósticos ejecutables |
-| G8 | R9 | Riesgo residual + tests negativos definidos |
-| G9 | R11 | CI verde y evidencia |
-| G10 | R12, R13 | Slice, owners y revisión independiente |
+| Gate | Remediación | Evidencia de cierre                                |
+| ---- | ----------- | -------------------------------------------------- |
+| G0   | R0, R3      | Baseline + manifest de fuentes                     |
+| G1   | R1, R3      | Estados coherentes + métricas con estado explícito |
+| G2   | R1, R2      | Requisitos aprobados sin DEC obsoletas             |
+| G3   | R4, R5      | C4/viewpoints + ADR-0007 aceptado                  |
+| G4   | R5, R6      | Schemas v0 + vectors + corpus                      |
+| G5   | R7          | CorePort/DTO/error catalog v0                      |
+| G6   | R10         | Visual baseline + WCAG matrix                      |
+| G7   | R8          | Operadores y diagnósticos ejecutables              |
+| G8   | R9          | Riesgo residual + tests negativos definidos        |
+| G9   | R11         | CI verde y evidencia                               |
+| G10  | R12, R13    | Slice, owners y revisión independiente             |
 
 ## Definition of Ready
 
@@ -713,16 +713,16 @@ Un issue está Done cuando:
 
 ## Riesgos de remediación
 
-| Riesgo | Impacto | Mitigación |
-|---|---|---|
-| Sobreplanificación | Retraso sin validar arquitectura | Autorizar walking skeleton tras P0, no esperar Enterprise completo |
-| Reescritura documental | Pérdida de decisiones | Cambios incrementales y Git history |
-| Contratos prematuros | Rigidez | Estabilizar `v0`, no prometer `v1` pública |
-| Duplicación de metadatos | Nuevas contradicciones | Autoridad única y generación automática |
-| Updater amplía MVP | Riesgo supply-chain | Feature flag y gate separado |
-| Paridad falsa | Divergencia Tauri/WASM | Golden vectors sobre bytes y digests |
-| Accesibilidad tardía | Retrabajo UI | Baseline y component contracts antes del frontend |
-| Runner contamina MVP | Privilegios prematuros | Workspace/protocolo separados y gate v1 |
+| Riesgo                   | Impacto                          | Mitigación                                                         |
+| ------------------------ | -------------------------------- | ------------------------------------------------------------------ |
+| Sobreplanificación       | Retraso sin validar arquitectura | Autorizar walking skeleton tras P0, no esperar Enterprise completo |
+| Reescritura documental   | Pérdida de decisiones            | Cambios incrementales y Git history                                |
+| Contratos prematuros     | Rigidez                          | Estabilizar `v0`, no prometer `v1` pública                         |
+| Duplicación de metadatos | Nuevas contradicciones           | Autoridad única y generación automática                            |
+| Updater amplía MVP       | Riesgo supply-chain              | Feature flag y gate separado                                       |
+| Paridad falsa            | Divergencia Tauri/WASM           | Golden vectors sobre bytes y digests                               |
+| Accesibilidad tardía     | Retrabajo UI                     | Baseline y component contracts antes del frontend                  |
+| Runner contamina MVP     | Privilegios prematuros           | Workspace/protocolo separados y gate v1                            |
 
 ## Orden de ejecución
 
@@ -770,4 +770,3 @@ Runner, privilegios, discos, shell y Enterprise permanecen bloqueados.
 4. [ISO/IEC/IEEE 42010: Conceptual Model](http://www.iso-architecture.org/ieee-1471/cm/) - ISO/IEC/IEEE 42010 is based upon a conceptual model – or “meta model” – of the terms and concepts pe...
 
 5. [standards.ieee.org › ieee › 42010IEEE SA - IEEE/ISO/IEC 42010-2022](https://standards.ieee.org/ieee/42010/6846/) - This document specifies requirements for the structure and expression of an architecture description...
-

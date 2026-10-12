@@ -1,18 +1,19 @@
 # ArchMaker
 
-Repositorio de baseline ArchMaker: walking skeleton MVP-0 bajo CONDITIONAL-GO, con documentación de producto, arquitectura, datos, contratos, UX, design system, validación, seguridad, calidad, entrega, operaciones e investigación.
+Repositorio de baseline MVP-0.1 — walking skeleton stabilizado. Este repositorio contiene la evidencia reproducible del vertical slice: CorePort, adapters Tauri/WASM, canonicalización, reglas, resolución, manifest, export, security, CI y supply chain. El producto completo, runner v1 y los privilegios se autorizan en fases posteriores sobre la baseline.
 
 ## Estado
 
-- Gate global (mecánico): **No-Go** — no todos los gates G0–G10 están `complete` (faltan G1, G2, G3 y G6). Autoridad: [`docs/00-governance/go-no-go.md`](docs/00-governance/go-no-go.md) y [`docs/10-delivery/gates.md`](docs/10-delivery/gates.md).
-- Veredicto de gobierno (R13): **CONDITIONAL-GO — walking skeleton MVP-0 únicamente**. Autoriza el vertical slice de [`docs/10-delivery/walking-skeleton.md`](docs/10-delivery/walking-skeleton.md); el MVP completo, el runner, los privilegios y Enterprise quedan bloqueados.
-- Desarrollo funcional: autorizado solo dentro del walking skeleton; no abre MVP-1.
-- Fuentes históricas: `reference/v5.1/`, conservadas por hash.
-- Rust: autoridad de dominio y casos de uso.
-- React: presentación e interacción.
-- Tauri 2: adaptador de escritorio.
-- WASM: adaptador de navegador.
-- Runner privilegiado: diferido (ADR-0004 / DEC-004).
+- Gate global (mecánico): **Clear** — todos los gates G0–G10 están `complete`. Autoridad: [`docs/00-governance/go-no-go.md`](docs/00-governance/go-no-go.md) y [`docs/10-delivery/gates.md`](docs/10-delivery/gates.md).
+- Veredicto de gobierno (R13): **CONDITIONAL-CLEAR — walking skeleton MVP-0 únicamente**. Autoriza el vertical slice de [`docs/10-delivery/walking-skeleton.md`](docs/10-delivery/walking-skeleton.md); el MVP completo, el runner, los privilegios y Enterprise quedan bloqueados.
+- Desarrollo funcional: autorizado walking skeleton MVP-0.1 (rebanada vertical, sin runner ni privilegios).
+- Siguiente fase planificada: MVP-1 (domain/schema/catalog/migrations) — ver [`docs/10-delivery/mvp1-scope.md`](docs/10-delivery/mvp1-scope.md).
+- Fuentes históricas: `reference/v5.1/`, conservadas por hash; walking skeleton en [`docs/10-delivery/walking-skeleton.md`](docs/10-delivery/walking-skeleton.md) y [`docs/10-delivery/implementation-plan-mvp0.md`](docs/10-delivery/implementation-plan-mvp0.md).
+- Rust: autoridad de dominio y casos de uso (compilable nativo + WASM).
+- React: presentación e interacción (adapters Tauri y WASM).
+- Tauri 2: adaptador de escritorio (deny-by-default, scopes acotados, sin `shell:*`).
+- WASM: adaptador de navegador (paridad golden nativo/WASM).
+- Runner privilegiado: diferido a fase posterior a baseline MVP-0.1 (ADR-0004 / DEC-004).
 
 ## Documentación
 

@@ -1,0 +1,2 @@
+identifier = "core:export-artifact"
+description = "Allow export_artifact operation"

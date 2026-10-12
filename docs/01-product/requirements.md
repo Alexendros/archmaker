@@ -18,36 +18,36 @@ reviewers:
 - ID: DOC-PROD-REQ-001
 - Estado: accepted
 - Propietario: Producto
-- Última revisión: 2026-10-05
+- Última revisión: 2026-10-06
 - Requisitos relacionados: FR-DRAFT-001, FR-IMPORT-001, FR-CAT-001, FR-PRESET-001, FR-RESOLVE-001, FR-VALIDATE-001, FR-MANIFEST-001, FR-EXPORT-001, FR-RUN-001, FR-ENT-001, NFR-SEC-001, NFR-DET-001, NFR-ACC-001, NFR-OFF-001, NFR-MIG-001, NFR-PORT-001, NFR-OBS-001
 - Sustituye / sustituido por: —
 
 ## Funcionales P0
 
-| ID              | Requisito                                   | Aceptación                                             | Fase       |
-| --------------- | ------------------------------------------- | ------------------------------------------------------ | ---------- |
-| FR-DRAFT-001    | Crear y guardar drafts locales.             | Round-trip sin pérdida y escritura atómica.            | MVP        |
-| FR-IMPORT-001   | Importar y migrar v5.1.                     | Informe previo; original intacto; pérdidas explícitas. | MVP        |
-| FR-CAT-001      | Cargar catálogo versionado.                 | Digest, procedencia y validación disponibles.          | MVP        |
-| FR-PRESET-001   | Aplicar presets como patches.               | ChangeSet muestra cambios manuales y derivados.        | MVP        |
-| FR-RESOLVE-001  | Resolver capacidades/conflictos.            | Determinista e idempotente.                            | MVP        |
-| FR-VALIDATE-001 | Ejecutar pipeline de validación.            | Diagnósticos tipados, localizados y estables.          | MVP        |
-| FR-MANIFEST-001 | Construir manifest canónico.                | Imposible con errores bloqueantes.                     | MVP        |
-| FR-EXPORT-001   | Exportar artefacto y reporte.               | Incluye digests, versiones y target.                   | MVP        |
-| FR-RUN-001      | Ejecutar plan aprobado.                     | Confirmación ligada a hash y journal completo.         | v1         |
-| FR-ENT-001      | Aplicar perfiles/policies por organización. | Aislamiento tenant y auditoría.                        | Enterprise |
+| ID              | Requisito                                   | Aceptación                                             | Fase       | Scope    |
+| --------------- | ------------------------------------------- | ------------------------------------------------------ | ---------- | -------- |
+| FR-DRAFT-001    | Crear y guardar drafts locales.             | Round-trip sin pérdida y escritura atómica.            | MVP        | mvp0.1   |
+| FR-IMPORT-001   | Importar y migrar v5.1.                     | Informe previo; original intacto; pérdidas explícitas. | MVP        | deferred |
+| FR-CAT-001      | Cargar catálogo versionado.                 | Digest, procedencia y validación disponibles.          | MVP        | mvp0.1   |
+| FR-PRESET-001   | Aplicar presets como patches.               | ChangeSet muestra cambios manuales y derivados.        | MVP        | deferred |
+| FR-RESOLVE-001  | Resolver capacidades/conflictos.            | Determinista e idempotente.                            | MVP        | mvp0.1   |
+| FR-VALIDATE-001 | Ejecutar pipeline de validación.            | Diagnósticos tipados, localizados y estables.          | MVP        | mvp0.1   |
+| FR-MANIFEST-001 | Construir manifest canónico.                | Imposible con errores bloqueantes.                     | MVP        | mvp0.1   |
+| FR-EXPORT-001   | Exportar artefacto y reporte.               | Incluye digests, versiones y target.                   | MVP        | mvp0.1   |
+| FR-RUN-001      | Ejecutar plan aprobado.                     | Confirmación ligada a hash y journal completo.         | v1         | deferred |
+| FR-ENT-001      | Aplicar perfiles/policies por organización. | Aislamiento tenant y auditoría.                        | Enterprise | deferred |
 
 ## No funcionales P0
 
-| ID           | Requisito                                   | Evidencia                               |
-| ------------ | ------------------------------------------- | --------------------------------------- |
-| NFR-SEC-001  | Deny-by-default y mínimo privilegio.        | Capabilities, scopes y tests negativos. |
-| NFR-DET-001  | Mismo input/versiones → mismo resultado.    | Golden parity Tauri/WASM.               |
-| NFR-ACC-001  | WCAG 2.2 AA.                                | Axe, teclado y revisión manual.         |
-| NFR-OFF-001  | MVP usable sin CDN ni servidor.             | E2E offline.                            |
-| NFR-MIG-001  | Migraciones explícitas y no destructivas.   | Corpus histórico.                       |
-| NFR-PORT-001 | Dominio independiente de adaptadores.       | Dependency checks.                      |
-| NFR-OBS-001  | Errores/eventos estructurados y redactados. | Contract tests.                         |
+| ID           | Requisito                                   | Evidencia                               | Scope    |
+| ------------ | ------------------------------------------- | --------------------------------------- | -------- |
+| NFR-SEC-001  | Deny-by-default y mínimo privilegio.        | Capabilities, scopes y tests negativos. | mvp0.1   |
+| NFR-DET-001  | Mismo input/versiones → mismo resultado.    | Golden parity Tauri/WASM.               | mvp0.1   |
+| NFR-ACC-001  | WCAG 2.2 AA.                                | Axe, teclado y revisión manual.         | mvp0.1   |
+| NFR-OFF-001  | MVP usable sin CDN ni servidor.             | E2E offline.                            | mvp0.1   |
+| NFR-MIG-001  | Migraciones explícitas y no destructivas.   | Corpus histórico.                       | deferred |
+| NFR-PORT-001 | Dominio independiente de adaptadores.       | Dependency checks.                      | mvp0.1   |
+| NFR-OBS-001  | Errores/eventos estructurados y redactados. | Contract tests.                         | pending  |
 
 ## Detalle de requisitos funcionales
 
@@ -58,6 +58,7 @@ Estructura según `templates/requirement.md`. Estado de todos los apartados: `dr
 - Prioridad: P0
 - Fase: MVP
 - Estado: accepted
+- Scope: mvp0.1
 - Journey/UC: JNY-001 / UC-001
 
 #### Enunciado
@@ -96,6 +97,7 @@ No resuelve capacidades (FR-RESOLVE-001); no persiste `Resolution`; no define fo
 - Prioridad: P0
 - Fase: MVP
 - Estado: accepted
+- Scope: deferred
 - Journey/UC: JNY-002 / UC-002
 
 #### Enunciado
@@ -134,6 +136,7 @@ No instala; no interpreta scripts; no migra versiones distintas de v5.1 mientras
 - Prioridad: P0
 - Fase: MVP
 - Estado: accepted
+- Scope: mvp0.1
 - Journey/UC: JNY-001 / UC-001, UC-003
 
 #### Enunciado
@@ -172,6 +175,7 @@ No publica catálogos (autoría de PER-003 fuera del alcance de la app); entrega
 - Prioridad: P0
 - Fase: MVP
 - Estado: accepted
+- Scope: deferred
 - Journey/UC: JNY-001 / UC-001, UC-004
 
 #### Enunciado
@@ -210,6 +214,7 @@ No cubre la autoría de presets (PER-003); un draft guardado no es un preset (an
 - Prioridad: P0
 - Fase: MVP
 - Estado: accepted
+- Scope: mvp0.1
 - Journey/UC: JNY-001 / UC-003
 
 #### Enunciado
@@ -248,6 +253,7 @@ No valida el target final (FR-VALIDATE-001); no exporta.
 - Prioridad: P0
 - Fase: MVP
 - Estado: accepted
+- Scope: mvp0.1
 - Journey/UC: JNY-001 / UC-003, UC-004
 
 #### Enunciado
@@ -287,6 +293,7 @@ No persuade ni guía al usuario (UX); no repara automáticamente el draft.
 - Prioridad: P0
 - Fase: MVP
 - Estado: accepted
+- Scope: mvp0.1
 - Journey/UC: JNY-001 / UC-005
 
 #### Enunciado
@@ -325,6 +332,7 @@ No exporta (FR-EXPORT-001); no genera el plan de v1 (FR-RUN-001).
 - Prioridad: P0
 - Fase: MVP
 - Estado: accepted
+- Scope: mvp0.1
 - Journey/UC: JNY-001 / UC-005
 
 #### Enunciado
@@ -363,6 +371,7 @@ No instala; no publica; no firma releases (DEC-006).
 - Prioridad: P0
 - Fase: v1
 - Estado: accepted
+- Scope: deferred
 - Journey/UC: JNY-003 / UC-006
 
 #### Enunciado
@@ -401,6 +410,7 @@ El MVP no usa root, discos, shell ni instalación real; requisito fuera del MVP.
 - Prioridad: P0
 - Fase: Enterprise
 - Estado: accepted
+- Scope: deferred
 - Journey/UC: JNY-004 / UC-007
 
 #### Enunciado
@@ -441,6 +451,7 @@ Enterprise queda fuera de MVP y v1; el control plane no forma parte del producto
 - Prioridad: P0
 - Fase: MVP
 - Estado: accepted
+- Scope: mvp0.1
 - Journey/UC: JNY-001, JNY-003, JNY-004 / UC-001, UC-006, UC-007
 
 #### Enunciado
@@ -479,6 +490,7 @@ No cubre la seguridad del sistema operativo anfitrión.
 - Prioridad: P0
 - Fase: MVP
 - Estado: accepted
+- Scope: mvp0.1
 - Journey/UC: JNY-001 / UC-003, UC-005
 
 #### Enunciado
@@ -517,6 +529,7 @@ No exige mismo rendimiento ni misma presentación de UI.
 - Prioridad: P0
 - Fase: MVP
 - Estado: accepted
+- Scope: mvp0.1
 - Journey/UC: JNY-001 / UC-001..UC-005
 
 #### Enunciado
@@ -555,6 +568,7 @@ No define diseño visual nuevo; cualquier cambio estético exige decisión traza
 - Prioridad: P0
 - Fase: MVP
 - Estado: accepted
+- Scope: mvp0.1
 - Journey/UC: JNY-001, JNY-002 / UC-001..UC-005
 
 #### Enunciado
@@ -593,6 +607,7 @@ No aplica a Enterprise, que dispone de servicio.
 - Prioridad: P0
 - Fase: MVP
 - Estado: accepted
+- Scope: deferred
 - Journey/UC: JNY-002 / UC-002
 
 #### Enunciado
@@ -631,6 +646,7 @@ No migra formatos desconocidos ni versiones distintas de v5.1 mientras no haya d
 - Prioridad: P0
 - Fase: MVP
 - Estado: accepted
+- Scope: mvp0.1
 - Journey/UC: JNY-001 / UC-001..UC-005
 
 #### Enunciado
@@ -669,6 +685,7 @@ No prohíbe que existan adaptadores fuera del dominio.
 - Prioridad: P0
 - Fase: MVP
 - Estado: accepted
+- Scope: pending
 - Journey/UC: JNY-001, JNY-003, JNY-004 / UC-001, UC-006, UC-007
 
 #### Enunciado

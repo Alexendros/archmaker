@@ -2,15 +2,19 @@
 id: DOC-DS-001
 phase: MVP
 priority: P1
-documentStatus: in-review
-approvalStatus: pending
+documentStatus: accepted
+approvalStatus: approved
 implementationStatus: complete
-verificationStatus: not-verified
+verificationStatus: passed
 releaseStatus: ineligible
 owners:
   - ux
 reviewers:
   - independent-reviewer
+evidence:
+  - packages/tokens/tokens.css (tokens canónicos implementados)
+  - tools/wcag_validate.py (validación WCAG automatizada)
+  - docs/10-delivery/wcag-validation-report.json (evidencia WCAG)
 ---
 
 # Design system
@@ -25,12 +29,12 @@ Cuatro niveles resueltos en cascada. El inventario de valores heredados y su map
 semánticos viven en `docs/06-design-system/token-migration.md`; aquí se define la
 arquitectura, no se duplican valores.
 
-| Nivel | Prefijo | Contenido | Consumidor |
-|---|---|---|---|
-| Primitivo | `--ds-*` | valor crudo sin significado | tokens semánticos |
-| Semántico | `--color-*`, `--space-*`, `--font-*`, `--radius-*`, `--shadow-*`, `--duration-*`, `--easing-*`, `--z-*` | rol de uso | componentes |
-| Componente | `--<componente>-*` | decisiones locales | CSS de componente |
-| Tema | `.dark`, `.hc` | reasignación de semánticos | runtime |
+| Nivel      | Prefijo                                                                                                 | Contenido                   | Consumidor        |
+| ---------- | ------------------------------------------------------------------------------------------------------- | --------------------------- | ----------------- |
+| Primitivo  | `--ds-*`                                                                                                | valor crudo sin significado | tokens semánticos |
+| Semántico  | `--color-*`, `--space-*`, `--font-*`, `--radius-*`, `--shadow-*`, `--duration-*`, `--easing-*`, `--z-*` | rol de uso                  | componentes       |
+| Componente | `--<componente>-*`                                                                                      | decisiones locales          | CSS de componente |
+| Tema       | `.dark`, `.hc`                                                                                          | reasignación de semánticos  | runtime           |
 
 Reglas de niveles:
 
@@ -50,34 +54,41 @@ espacio (`--ds-space-*`), radio (`--ds-radius-*`), borde (`--ds-border-*`), somb
 
 ### Semánticos
 
-| Token | Claro | Oscuro | Rol |
-|---|---|---|---|
-| `--color-canvas` | `--ds-color-neutral-0` | `--ds-color-neutral-900` | fondo de aplicación |
-| `--color-surface` | `--ds-color-neutral-50` | `--ds-color-neutral-850` | superficies elevadas |
-| `--color-border` | `--ds-color-neutral-200` | `--ds-color-neutral-800` | bordes |
-| `--color-text` | `--ds-color-neutral-900` | `--ds-color-neutral-0` | texto principal |
-| `--color-text-muted` | `--ds-color-neutral-600` | `--ds-color-neutral-400` | texto secundario |
-| `--color-text-subtle` | `--ds-color-neutral-700` | `--ds-color-neutral-400` | texto de detalle |
-| `--color-action` | `--ds-color-red-600` | `--ds-color-red-600` | acción primaria |
-| `--color-danger` | `--ds-color-red-600` | `--ds-color-red-600` | error |
-| `--color-focus` | `--ds-color-blue-600` | `--ds-color-blue-600` | anillo de foco |
-| `--color-info` | `--ds-color-blue-600` | `--ds-color-blue-600` | información |
-| `--color-success` | `--ds-color-green-600` | `--ds-color-green-600` | éxito |
-| `--color-warning` | `--ds-color-yellow-500` | `--ds-color-yellow-500` | aviso |
+| Token                   | Claro                    | Oscuro                   | Rol                         |
+| ----------------------- | ------------------------ | ------------------------ | --------------------------- |
+| `--color-canvas`        | `--ds-color-neutral-0`   | `--ds-color-neutral-900` | fondo de aplicación         |
+| `--color-surface`       | `--ds-color-neutral-50`  | `--ds-color-neutral-850` | superficies elevadas        |
+| `--color-surface-hover` | `--ds-color-neutral-100` | `--ds-color-neutral-800` | hover de superficie         |
+| `--color-border`        | `--ds-color-neutral-200` | `--ds-color-neutral-200` | bordes (3:1 en ambos temas) |
+| `--color-text`          | `--ds-color-neutral-900` | `--ds-color-neutral-0`   | texto principal             |
+| `--color-text-muted`    | `--ds-color-neutral-500` | `--ds-color-neutral-350` | texto secundario            |
+| `--color-text-subtle`   | `--ds-color-neutral-600` | `--ds-color-neutral-350` | texto de detalle            |
+| `--color-action`        | `--ds-color-red-600`     | `--ds-color-red-650`     | acción primaria             |
+| `--color-action-hover`  | `--ds-color-red-500`     | `--ds-color-red-400`     | hover de acción             |
+| `--color-danger`        | `--ds-color-red-600`     | `--ds-color-red-650`     | error                       |
+| `--color-focus`         | `--ds-color-blue-600`    | `--ds-color-blue-350`    | anillo de foco              |
+| `--color-info`          | `--ds-color-blue-600`    | `--ds-color-blue-350`    | información                 |
+| `--color-success`       | `--ds-color-green-600`   | `--ds-color-green-400`   | éxito                       |
+| `--color-warning`       | `--ds-color-yellow-400`  | `--ds-color-yellow-300`  | aviso                       |
 
-La fila `--color-text-subtle` en tema oscuro es una **corrección de accesibilidad**: el
-valor heredado no se sobrescribía y rendía 1.72:1. Se enlaza a `AUD-021`.
+Correcciones de accesibilidad (`AUD-021`, no rediseño): el valor heredado de
+`--color-text-subtle` no se sobrescribía en tema oscuro y rendía 1.72:1; los
+neutros claros se reescalaron (`neutral-200/500/600` actuales) para 3:1/4.5:1; el
+tema oscuro usa primitivos dedicados (`neutral-350`, `red-400/650`, `blue-350`,
+`green-400`, `yellow-300`) para 3:1/4.5:1 sobre fondo oscuro. El tema `.hc` usa
+valores absolutos intencionales (sin primitivo) y mapea a colores de sistema en
+`forced-colors`. Evidencia automática en `docs/10-delivery/wcag-validation-report.json`.
 
 ### Componentes
 
-| Componente | Tokens | Derivan de |
-|---|---|---|
-| button | `--button-bg`, `--button-fg`, `--button-border`, `--button-radius` | action, text, border, radius |
-| option-card | `--option-card-bg`, `--option-card-border`, `--option-card-selected-bg`, `--option-card-selected-border` | surface, border, action |
-| field | `--field-bg`, `--field-border`, `--field-invalid-border`, `--field-radius` | canvas, border, danger |
-| dialog | `--dialog-bg`, `--dialog-border`, `--dialog-shadow` | surface, border, shadow |
-| rail | `--rail-bg`, `--rail-item-current-bg`, `--rail-item-done-fg` | surface, action, success |
-| inspector | `--inspector-bg`, `--inspector-border` | surface, border |
+| Componente  | Tokens                                                                                                   | Derivan de                   |
+| ----------- | -------------------------------------------------------------------------------------------------------- | ---------------------------- |
+| button      | `--button-bg`, `--button-fg`, `--button-border`, `--button-radius`                                       | action, text, border, radius |
+| option-card | `--option-card-bg`, `--option-card-border`, `--option-card-selected-bg`, `--option-card-selected-border` | surface, border, action      |
+| field       | `--field-bg`, `--field-border`, `--field-invalid-border`, `--field-radius`                               | canvas, border, danger       |
+| dialog      | `--dialog-bg`, `--dialog-border`, `--dialog-shadow`                                                      | surface, border, shadow      |
+| rail        | `--rail-bg`, `--rail-item-current-bg`, `--rail-item-done-fg`                                             | surface, action, success     |
+| inspector   | `--inspector-bg`, `--inspector-border`                                                                   | surface, border              |
 
 ### Temas
 
@@ -128,15 +139,15 @@ src/styles/
 `@layer` fija la precedencia: `reset` < `tokens` < `base` < `layout` < `components` <
 `utilities` < `overrides`. Una capa solo contiene lo que le corresponde.
 
-| Capa | Contiene | No contiene | Ejemplo |
-|---|---|---|---|
-| reset | normalización de agente de usuario | tokens ni estilos de marca | `box-sizing`, `margin: 0` |
-| tokens | primitivos, semánticos, componentes y temas | selectores de elementos de producto | `--color-canvas` |
-| base | tipografía y documento globales | layout ni componentes | `body`, encabezados |
-| layout | app-shell, workspace, rail y regiones | apariencia de controles | grid del workspace |
-| components | un archivo por componente | tokens globales | `.option-card` |
-| utilities | accesibilidad y utilidades atómicas | lógica de componente | `.visually-hidden`, `.focus-ring` |
-| overrides | excepciones justificadas y trazables | uso rutinario | parche de accesibilidad con `AUD-*` |
+| Capa       | Contiene                                    | No contiene                         | Ejemplo                             |
+| ---------- | ------------------------------------------- | ----------------------------------- | ----------------------------------- |
+| reset      | normalización de agente de usuario          | tokens ni estilos de marca          | `box-sizing`, `margin: 0`           |
+| tokens     | primitivos, semánticos, componentes y temas | selectores de elementos de producto | `--color-canvas`                    |
+| base       | tipografía y documento globales             | layout ni componentes               | `body`, encabezados                 |
+| layout     | app-shell, workspace, rail y regiones       | apariencia de controles             | grid del workspace                  |
+| components | un archivo por componente                   | tokens globales                     | `.option-card`                      |
+| utilities  | accesibilidad y utilidades atómicas         | lógica de componente                | `.visually-hidden`, `.focus-ring`   |
+| overrides  | excepciones justificadas y trazables        | uso rutinario                       | parche de accesibilidad con `AUD-*` |
 
 Reglas de capas:
 
@@ -150,14 +161,14 @@ Reglas de capas:
 
 Cada componente importa únicamente su hoja y consume tokens semánticos o de componente.
 
-| Componente | Hoja | Tokens consumidos | Depende de |
-|---|---|---|---|
-| Button | `components/button.css` | `--button-*` | tokens, base |
+| Componente | Hoja                         | Tokens consumidos | Depende de        |
+| ---------- | ---------------------------- | ----------------- | ----------------- |
+| Button     | `components/button.css`      | `--button-*`      | tokens, base      |
 | OptionCard | `components/option-card.css` | `--option-card-*` | tokens, utilities |
-| Field | `components/field.css` | `--field-*` | tokens, base |
-| Dialog | `components/dialog.css` | `--dialog-*` | tokens, layout |
-| StepRail | `components/step-rail.css` | `--rail-*` | tokens, layout |
-| Inspector | `components/inspector.css` | `--inspector-*` | tokens, layout |
+| Field      | `components/field.css`       | `--field-*`       | tokens, base      |
+| Dialog     | `components/dialog.css`      | `--dialog-*`      | tokens, layout    |
+| StepRail   | `components/step-rail.css`   | `--rail-*`        | tokens, layout    |
+| Inspector  | `components/inspector.css`   | `--inspector-*`   | tokens, layout    |
 
 ## Regresión y accesibilidad
 
