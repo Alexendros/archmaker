@@ -17,7 +17,7 @@ reviewers:
 
 - Estado: in-review
 - Gate global: CONDITIONAL-CLEAR — walking skeleton MVP-0 + slices MVP-1/MVP-2 (sin runner)
-- Baseline vigente: `implementation-baseline-mvp1`; sucesor `implementation-baseline-mvp2` (emitir con CI verde)
+- Baseline vigente: `implementation-baseline-mvp2` (predecesores mvp0.1 y mvp1 intactos)
 - Fecha de corte: 2026-10-12
 
 ## Bloqueos P0

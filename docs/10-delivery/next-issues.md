@@ -90,5 +90,5 @@ Fuente canónica de alcance: [`mvp2-scope.md`](mvp2-scope.md).
 
 El veredicto vigente es **CONDITIONAL-CLEAR — walking skeleton MVP-0 + slices MVP-1/MVP-2**
 (`docs/00-governance/go-no-go.md`), con gates G0–G10 `complete`. MVP-1-01..08 están `closed`;
-MVP-2-01..06 están `closed`; MVP-2-07 cierra al emitir `implementation-baseline-mvp2` con CI verde.
+MVP-2-01..07 están `closed`; baseline `implementation-baseline-mvp2` emitida (tags previos intactos).
 La autorización del MVP completo y del runner exige su propio gate.
