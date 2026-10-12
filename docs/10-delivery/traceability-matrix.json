@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "generated_at": "1791822953",
-    "git_sha": "773487e554710eb1e536d824f0a1002bae1c2688",
+    "generated_at": "1791827390",
+    "git_sha": "9cef12060127a9a76520c1be4cca1635ab057d0c",
     "requirements_file": "docs/01-product/requirements.md",
     "inventory_file": "docs/10-delivery/tests-inventory.json",
     "validators_file": "docs/10-delivery/validators.json"
@@ -70,7 +70,7 @@
       "evidence_count": 34,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["negative", "unit", "schema", "integration"],
+      "evidence_types": ["schema", "unit", "integration", "negative"],
       "coverage_status": "covered"
     },
     {
@@ -126,7 +126,7 @@
       "evidence_count": 41,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["negative", "unit", "schema", "integration"],
+      "evidence_types": ["negative", "schema", "unit", "integration"],
       "coverage_status": "covered"
     },
     {
@@ -155,11 +155,12 @@
       "pending": false,
       "tests": [
         "TST-ARCHMAKER-CORE-CORE_CONTRACT-EXPORT_ARTIFACT_BYTE_IDEMPOTENT",
+        "TST-ARCHMAKER-CORE-CORE_CONTRACT-EXPORT_ADAPTERS_DIVERGE_BYTES_AND_FILL_CONTENT",
         "TST-ARCHMAKER-CORE-CORE_CONTRACT-EXPORT_ARTIFACT_REJECTS_BAD_TARGET_AND_HANDLE",
         "TST-ARCHMAKER-CORE-CORE_CONTRACT-END_TO_END_CREATE_SAVE_RESOLVE_VALIDATE_BUILD_EXPORT"
       ],
       "validators": [],
-      "evidence_count": 3,
+      "evidence_count": 4,
       "has_executable_evidence": true,
       "passes_ci": true,
       "evidence_types": ["integration"],
@@ -232,11 +233,11 @@
       "has_executable_evidence": true,
       "passes_ci": true,
       "evidence_types": [
-        "unit",
-        "integration",
-        "negative",
+        "canonicalize",
         "schema",
-        "canonicalize"
+        "negative",
+        "integration",
+        "unit"
       ],
       "coverage_status": "covered"
     },
@@ -276,7 +277,7 @@
       "evidence_count": 6,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["negative", "integration"],
+      "evidence_types": ["integration", "negative"],
       "coverage_status": "covered"
     },
     {
@@ -357,7 +358,7 @@
       "evidence_count": 13,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["negative", "unit", "integration", "canonicalize"],
+      "evidence_types": ["negative", "canonicalize", "unit", "integration"],
       "coverage_status": "covered"
     },
     {
@@ -474,7 +475,7 @@
       "evidence_count": 28,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["negative", "unit"],
+      "evidence_types": ["unit", "negative"],
       "coverage_status": "covered"
     }
   ],

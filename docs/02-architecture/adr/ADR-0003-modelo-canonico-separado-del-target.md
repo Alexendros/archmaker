@@ -4,8 +4,8 @@ phase: MVP
 priority: P0
 documentStatus: accepted
 approvalStatus: approved
-implementationStatus: not-started
-verificationStatus: not-verified
+implementationStatus: partial
+verificationStatus: partial
 releaseStatus: ineligible
 owners:
   - architecture

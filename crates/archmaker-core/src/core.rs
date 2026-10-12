@@ -718,40 +718,93 @@ fn resolve_internal(
     })
 }
 
-pub fn render_artifact_bytes(manifest: &Manifest, target: &TargetRef) -> Result<(Vec<u8>, String)> {
+/// Bytes + media type + adapter payload for a sealed manifest (ADR-0003 / DEC-001).
+#[derive(Debug, Clone, PartialEq)]
+pub struct RenderedArtifact {
+    pub bytes: Vec<u8>,
+    pub media_type: String,
+    pub content: serde_json::Value,
+}
+
+fn ordered_effective_selections(manifest: &Manifest) -> Vec<ResolvedSelection> {
+    let mut rows = manifest.effective_selections.clone();
+    rows.sort_by(|a, b| (&a.step_id, &a.option_id).cmp(&(&b.step_id, &b.option_id)));
+    rows
+}
+
+fn render_archmaker_profile(manifest: &Manifest) -> Result<RenderedArtifact> {
+    let source = CoreOp::ExportArtifact.source();
+    let value = serde_json::to_value(manifest).map_err(|_| CoreError::doc_canonical(source))?;
+    Ok(RenderedArtifact {
+        bytes: archmaker_canonicalization::canonicalize(&value),
+        media_type: "application/json".to_string(),
+        content: value,
+    })
+}
+
+/// Experimental archinstall adapter: versioned envelope, never the raw manifest (ADR-0003).
+fn render_archinstall_profile(manifest: &Manifest, target: &TargetRef) -> Result<RenderedArtifact> {
+    let source = CoreOp::ExportArtifact.source();
+    let selections = ordered_effective_selections(manifest);
+    let envelope = serde_json::json!({
+        "adapter": "archinstall-profile",
+        "version": target.version,
+        "manifestRef": {
+            "contentDigest": {
+                "algorithm": "sha256",
+                "value": manifest.content_digest.value,
+                "kind": "content",
+            }
+        },
+        "effectiveSelections": selections,
+    });
+    // Reject executable / shell-shaped keys if they ever appear in the envelope.
+    if let Some(obj) = envelope.as_object() {
+        for banned in ["cmd", "hooks", "pacstrap", "shell", "script", "commands"] {
+            if obj.contains_key(banned) {
+                return Err(CoreError::tgt_unsupported(source));
+            }
+        }
+    }
+    Ok(RenderedArtifact {
+        bytes: archmaker_canonicalization::canonicalize(&envelope),
+        media_type: "application/json".to_string(),
+        content: envelope,
+    })
+}
+
+fn render_report(manifest: &Manifest, target: &TargetRef) -> Result<RenderedArtifact> {
+    let mut text = String::from("# ArchMaker report\n\n");
+    text.push_str(&format!("domain: {MANIFEST_DOMAIN_LABEL}\n"));
+    text.push_str(&format!("target: {} {}\n", target.id, target.version));
+    text.push_str(&format!(
+        "contentDigest: sha256:{}\n\n",
+        manifest.content_digest.value
+    ));
+    text.push_str("## Effective selections\n\n");
+    for selection in &ordered_effective_selections(manifest) {
+        let origin = match selection.origin {
+            SelectionOrigin::Manual => "manual",
+            SelectionOrigin::Derived => "derived",
+        };
+        text.push_str(&format!(
+            "- {} = {} ({})\n",
+            selection.step_id, selection.option_id, origin
+        ));
+    }
+    Ok(RenderedArtifact {
+        bytes: text.as_bytes().to_vec(),
+        media_type: "text/markdown".to_string(),
+        content: serde_json::Value::String(text),
+    })
+}
+
+pub fn render_artifact_bytes(manifest: &Manifest, target: &TargetRef) -> Result<RenderedArtifact> {
     let source = CoreOp::ExportArtifact.source();
     match target.id.as_str() {
-        "archmaker-profile" | "archinstall-profile" => {
-            let value =
-                serde_json::to_value(manifest).map_err(|_| CoreError::doc_canonical(source))?;
-            Ok((
-                archmaker_canonicalization::canonicalize(&value),
-                "application/json".to_string(),
-            ))
-        }
-        "report" => {
-            let mut text = String::from("# ArchMaker report\n\n");
-            text.push_str(&format!("domain: {MANIFEST_DOMAIN_LABEL}\n"));
-            text.push_str(&format!("target: {} {}\n", target.id, target.version));
-            text.push_str(&format!(
-                "contentDigest: sha256:{}\n\n",
-                manifest.content_digest.value
-            ));
-            text.push_str("## Effective selections\n\n");
-            let mut rows = manifest.effective_selections.clone();
-            rows.sort_by(|a, b| (&a.step_id, &a.option_id).cmp(&(&b.step_id, &b.option_id)));
-            for selection in &rows {
-                let origin = match selection.origin {
-                    SelectionOrigin::Manual => "manual",
-                    SelectionOrigin::Derived => "derived",
-                };
-                text.push_str(&format!(
-                    "- {} = {} ({})\n",
-                    selection.step_id, selection.option_id, origin
-                ));
-            }
-            Ok((text.into_bytes(), "text/markdown".to_string()))
-        }
+        "archmaker-profile" => render_archmaker_profile(manifest),
+        "archinstall-profile" => render_archinstall_profile(manifest, target),
+        "report" => render_report(manifest, target),
         _ => Err(CoreError::tgt_unsupported(source)),
     }
 }
@@ -999,10 +1052,10 @@ impl CorePort for RealCore {
         if recomputed.value != input.manifest.content_digest.value {
             return Err(CoreError::doc_canonical(source));
         }
-        let (bytes, media_type) = render_artifact_bytes(&input.manifest, &input.target_ref)?;
+        let rendered = render_artifact_bytes(&input.manifest, &input.target_ref)?;
         let binary = BinaryDigest {
             algorithm: DigestAlgorithm::Sha256,
-            value: sha256_hex(&bytes),
+            value: sha256_hex(&rendered.bytes),
             kind: Some(BinaryKind::Binary),
         };
         let dir = self
@@ -1012,27 +1065,32 @@ impl CorePort for RealCore {
         atomic_write_bytes(
             CoreOp::ExportArtifact,
             &dir.join(input.destination.token()),
-            &bytes,
+            &rendered.bytes,
         )?;
+        let experimental = if input.target_ref.id == "archinstall-profile" {
+            Some(true)
+        } else {
+            None
+        };
         Ok(Artifact {
             document_version: input.manifest.document_version.clone(),
             schema_version: input.manifest.schema_version.clone(),
             artifact_ref: ArtifactRef {
                 binary_digest: binary.clone(),
-                media_type: media_type.clone(),
+                media_type: rendered.media_type.clone(),
             },
             target_ref: input.target_ref,
             producer: Producer {
                 id: PRODUCER_ID.to_string(),
                 version: PRODUCER_VERSION.to_string(),
             },
-            media_type,
+            media_type: rendered.media_type,
             binary_digest: binary,
             manifest_ref: ManifestRef {
                 content_digest: input.manifest.content_digest.clone(),
             },
-            experimental: Some(input.manifest.target_ref.id == "archinstall-profile"),
-            content: None,
+            experimental,
+            content: Some(rendered.content),
         })
     }
 

@@ -24,7 +24,7 @@ PD-0 fuentes; PD-1 producto; PD-2 arquitectura; PD-3 datos; PD-4 interfaces; PD-
 - MVP-0.1 walking skeleton stabilizado (baseline `implementation-baseline-mvp0.1`): CorePort, adapters Tauri/WASM, canonicalización, reglas, resolución, manifest, export, security, CI, supply chain mínimo. Sin runner ni privilegios.
 - MVP-1 domain/schema/catalog/migrations — baseline `implementation-baseline-mvp1` ([`mvp1-scope.md`](mvp1-scope.md)).
 - MVP-2 rules/resolver/validation — baseline `implementation-baseline-mvp2` ([`mvp2-scope.md`](mvp2-scope.md)).
-- MVP-3 manifest/exporters.
+- MVP-3 manifest/exporters — baseline `implementation-baseline-mvp3` ([`mvp3-scope.md`](mvp3-scope.md)).
 - MVP-4 React + MockCorePort + design system.
 - MVP-5 Tauri/WASM/persistencia/paridad.
 - MVP-6 packaging/hardening/beta/stable.
