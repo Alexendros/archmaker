@@ -19,8 +19,8 @@ reviewers:
 - Resultado: **Clear** (checkpoint superado: todos los gates G0–G10 están `complete`; el hilo de la misión puede continuar).
 - Veredicto de gobierno (R13): **CONDITIONAL-CLEAR — walking skeleton MVP-0**.
 - Reevaluación slice MVP-1 (MVP-1-08): **CONDITIONAL-CLEAR — walking skeleton MVP-0 + slice MVP-1**
-  (dominio, catálogo local, `importDraft` / MIG-5.1). Baseline objetivo:
-  `implementation-baseline-mvp1` (el tag `implementation-baseline-mvp0.1` no se mueve).
+  (dominio, catálogo local, `importDraft` / MIG-5.1). Baseline emitida:
+  `implementation-baseline-mvp1` (el tag `implementation-baseline-mvp0.1` no se movió).
 - Alcance autorizado: `docs/10-delivery/walking-skeleton.md` (DOC-DEL-WSK-001) y
   `docs/10-delivery/mvp1-scope.md` (DOC-DEL-MVP1-001). Bloqueados: runner real, root, discos,
   shell arbitraria, catálogos remotos, firma criptográfica de catálogo en carga, Enterprise.
