@@ -47,12 +47,13 @@ reviewers:
 
 ## 02 — Arquitectura
 
-| Documento                   | ID               | Estado   |
-| --------------------------- | ---------------- | -------- |
-| `c4/README.md`              | DOC-ARCH-C4-001  | draft    |
-| `module-map.md` (15 crates) | DOC-ARCH-MOD-001 | draft    |
-| `dependency-rules.md`       | DOC-ARCH-DEP-001 | draft    |
-| `adr/ADR-0001..ADR-0009`    | ADR-0001..0009   | accepted |
+| Documento                                     | ID               | Estado    |
+| --------------------------------------------- | ---------------- | --------- |
+| `c4/README.md`                                | DOC-ARCH-C4-001  | draft     |
+| `module-map.md` (15 crates)                   | DOC-ARCH-MOD-001 | draft     |
+| `dependency-rules.md`                         | DOC-ARCH-DEP-001 | draft     |
+| `adr/ADR-0001..ADR-0009`                      | ADR-0001..0009   | accepted  |
+| `adr/ADR-0010-marca-y-nombre-de-artefacto.md` | ADR-0010         | in-review |
 
 ## 03 — Datos
 
@@ -118,14 +119,18 @@ reviewers:
 | `gates.md` (G0–G10)                 | DOC-DEL-GATE-001 | in-review |
 | `walking-skeleton.md` (slice MVP-0) | DOC-DEL-WSK-001  | in-review |
 | `packaging-release.md`              | DOC-DEL-PKG-001  | draft     |
+| `mvp5-scope.md`                     | DOC-DEL-MVP5-001 | in-review |
+| `mvp6-scope.md`                     | DOC-DEL-MVP6-001 | in-review |
+| `iso-scope.md`                      | DOC-DEL-ISO-001  | in-review |
 
 ## 11–12 — Operaciones e investigación
 
-| Documento                         | ID               | Estado |
-| --------------------------------- | ---------------- | ------ |
-| `11-operations/support-policy.md` | DOC-OPS-SUP-001  | draft  |
-| `12-research/evidence-plan.md`    | DOC-RES-EVID-001 | draft  |
-| `12-research/inventory-v5.1.md`   | DOC-RES-INV-001  | draft  |
+| Documento                            | ID               | Estado    |
+| ------------------------------------ | ---------------- | --------- |
+| `11-operations/support-policy.md`    | DOC-OPS-SUP-001  | draft     |
+| `12-research/evidence-plan.md`       | DOC-RES-EVID-001 | draft     |
+| `12-research/inventory-v5.1.md`      | DOC-RES-INV-001  | draft     |
+| `12-research/html-catalog-matrix.md` | DOC-RES-HTML-001 | in-review |
 
 ## Contratos (`contracts/`)
 

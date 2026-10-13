@@ -17,7 +17,7 @@
 
 ## Restricciones
 
-- No desarrollar funcionalidades mientras `planning-v1` sea No-Go.
+- Funcionalidad nueva solo dentro del veredicto vigente (CONDITIONAL-CLEAR hasta MVP-4). Runner, imagen real, root, discos y shell siguen cerrados hasta un alcance `accepted` y una reevaluación del veredicto.
 - No ejecutar strings heredados `cmd`, hooks, `pacstrap` ni shell.
 - Rust es la única autoridad semántica; TypeScript no duplica reglas.
 - MVP no usa root, discos, shell, sidecars ni instalación real.
