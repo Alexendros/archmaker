@@ -213,6 +213,73 @@ def render(parsed: dict, present: set[str]) -> str:
     return "\n".join(lines) + "\n"
 
 
+def cells(line: str) -> list[str]:
+    return [part.strip().strip("`") for part in line.strip().strip("|").split("|")]
+
+
+def check_document(document: str, parsed: dict, present: set[str]) -> list[str]:
+    if BEGIN not in document or END not in document:
+        return ["faltan los marcadores de matriz"]
+    block = document.split(BEGIN, 1)[1].split(END, 1)[0]
+    problems: list[str] = []
+    rows = []
+    for line in block.splitlines():
+        if not line.startswith("|") or line.startswith("| ---") or line.startswith("| --- |"):
+            continue
+        if set(line.replace("|", "").replace("-", "").replace(" ", "")) == set():
+            continue
+        row = cells(line)
+        if row and row[0] == "Paso":
+            continue
+        if row and row[0] in {"Regla HTML", "Preset"}:
+            continue
+        if len(row) == 8:
+            rows.append(row)
+    expected = []
+    for row in parsed["options"]:
+        canon = propose_id(row["section"], row["id"])
+        expected.append(
+            [
+                row["step"],
+                row["section"],
+                row["id"],
+                row["pkg"],
+                canon,
+                "sí" if canon in present else "no",
+                classify(row),
+                "no verificada",
+            ]
+        )
+    if rows != expected:
+        problems.append(
+            f"tabla de opciones: documento={len(rows)} html={len(expected)}"
+        )
+        for index, (got, want) in enumerate(zip(rows, expected), 1):
+            if got != want:
+                problems.append(f"fila {index}: {got} != {want}")
+                break
+        if len(rows) != len(expected) and not any(p.startswith("fila ") for p in problems):
+            problems.append("el número de filas no coincide y no hay una fila común distinta")
+    for rule_id, _kind in parsed["rules"]:
+        if f"`{rule_id}`" not in block:
+            problems.append(f"falta la regla {rule_id}")
+    for preset_id, _name in parsed["presets"]:
+        if f"`{preset_id}`" not in block:
+            problems.append(f"falta el preset {preset_id}")
+    for step in parsed["pipeline"]:
+        if f"`{step}`" not in block:
+            problems.append(f"falta el paso de pipeline {step}")
+    for fixed in parsed["fixed_ids"]:
+        if f"`{fixed}`" not in block:
+            problems.append(f"falta el id fijo {fixed}")
+    for row in parsed["options"]:
+        if row["cmd"] and f"`{row['id']}`" not in block.split("Opciones con campo", 1)[-1]:
+            problems.append(f"falta cmd de {row['id']}")
+    if "pacstrap" not in block:
+        problems.append("falta la marca de pacstrap")
+    return problems
+
+
 def splice(document: str, block: str) -> str:
     if BEGIN not in document or END not in document:
         raise SystemExit(f"{DOC} no tiene los marcadores de matriz")
@@ -235,13 +302,16 @@ def main() -> int:
         sys.stdout.write(block)
         return 0
     current = DOC.read_text(encoding="utf-8")
-    updated = splice(current, block)
     if args.check:
-        if updated != current:
+        problems = check_document(current, parsed, catalog_ids())
+        if problems:
             print("ERROR: la matriz no coincide con reference/v5.1/index.html", file=sys.stderr)
+            for problem in problems:
+                print(problem, file=sys.stderr)
             return 1
         print(f"Matriz al día: {len(parsed['options'])} opciones")
         return 0
+    updated = splice(current, block)
     if args.write:
         DOC.write_text(updated, encoding="utf-8")
         print(f"Escrito {DOC} ({len(parsed['options'])} opciones)")
