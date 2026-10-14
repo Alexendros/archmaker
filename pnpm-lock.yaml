@@ -27,7 +27,7 @@ importers:
   apps/web:
     dependencies:
       "@tauri-apps/api":
-        specifier: ^2
+        specifier: 2.12.1
         version: 2.12.1
       react:
         specifier: ^19.1.0
