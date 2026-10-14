@@ -1,9 +1,24 @@
-**ArchMaker**
+---
+id: DOC-OPS-MAN-SIDEBAR
+phase: MVP
+priority: P2
+documentStatus: draft
+approvalStatus: pending
+implementationStatus: complete
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - release
+reviewers:
+  - independent-reviewer
+---
 
-- [Home](Home)
-- [Guía de usuario](Guía-de-usuario)
-- [Manual de uso](Manual-de-uso)
-- [Límites](Límites)
+# ArchMaker
+
+- [Home](Home.md)
+- [Guía de usuario](Guia-de-usuario.md)
+- [Manual de uso](Manual-de-uso.md)
+- [Límites](Limites.md)
 
 ---
 

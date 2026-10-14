@@ -1,3 +1,18 @@
+---
+id: DOC-OPS-MAN-USAGE
+phase: MVP
+priority: P1
+documentStatus: draft
+approvalStatus: pending
+implementationStatus: complete
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - release
+reviewers:
+  - independent-reviewer
+---
+
 # Manual de uso
 
 Texto canónico: [`docs/11-operations/manual/Manual-de-uso.md`](https://github.com/Alexendros/archmaker/blob/main/docs/11-operations/manual/Manual-de-uso.md).

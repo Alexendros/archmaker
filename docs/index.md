@@ -129,7 +129,7 @@ reviewers:
 | Documento                                     | ID               | Estado    |
 | --------------------------------------------- | ---------------- | --------- |
 | `11-operations/support-policy.md`             | DOC-OPS-SUP-001  | draft     |
-| `11-operations/manual/` (guía + manual; wiki) | DOC-OPS-MAN-001  | draft     |
+| `11-operations/manual/` (guía + manual; wiki) | DOC-OPS-MAN-*    | draft     |
 | `12-research/evidence-plan.md`                | DOC-RES-EVID-001 | draft     |
 | `12-research/inventory-v5.1.md`               | DOC-RES-INV-001  | draft     |
 | `12-research/html-catalog-matrix.md`          | DOC-RES-HTML-001 | in-review |

@@ -1,3 +1,18 @@
+---
+id: DOC-OPS-MAN-HOME
+phase: MVP
+priority: P1
+documentStatus: draft
+approvalStatus: pending
+implementationStatus: complete
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - release
+reviewers:
+  - independent-reviewer
+---
+
 # ArchMaker
 
 Texto canónico: [`docs/11-operations/manual/`](https://github.com/Alexendros/archmaker/blob/main/docs/11-operations/manual/). Esta wiki lo publica.
@@ -17,8 +32,8 @@ Baseline vigente: `implementation-baseline-mvp4` (walking skeleton MVP-0 y slice
 
 ## Lectura
 
-1. [Guía de usuario](Guía-de-usuario)
-2. [Manual de uso](Manual-de-uso)
-3. [Límites](Límites)
+1. [Guía de usuario](Guia-de-usuario.md)
+2. [Manual de uso](Manual-de-uso.md)
+3. [Límites](Limites.md)
 
 Repositorio: <https://github.com/Alexendros/archmaker>

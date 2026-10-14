@@ -1,3 +1,18 @@
+---
+id: DOC-OPS-MAN-LIMITS
+phase: MVP
+priority: P1
+documentStatus: draft
+approvalStatus: pending
+implementationStatus: complete
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - release
+reviewers:
+  - independent-reviewer
+---
+
 # Límites
 
 Texto canónico: [`docs/11-operations/manual/Limites.md`](https://github.com/Alexendros/archmaker/blob/main/docs/11-operations/manual/Limites.md).

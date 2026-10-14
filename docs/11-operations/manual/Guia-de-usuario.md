@@ -1,3 +1,18 @@
+---
+id: DOC-OPS-MAN-GUIDE
+phase: MVP
+priority: P1
+documentStatus: draft
+approvalStatus: pending
+implementationStatus: complete
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - release
+reviewers:
+  - independent-reviewer
+---
+
 # Guía de usuario
 
 Texto canónico: [`docs/11-operations/manual/Guia-de-usuario.md`](https://github.com/Alexendros/archmaker/blob/main/docs/11-operations/manual/Guia-de-usuario.md).
@@ -24,4 +39,4 @@ Al importar un documento heredado (JNY-002): un draft nuevo más un informe de m
 
 ## Cómo empezar
 
-Sigue el [Manual de uso](Manual-de-uso). Respeta los [Límites](Límites).
+Sigue el [Manual de uso](Manual-de-uso.md). Respeta los [Límites](Limites.md).
