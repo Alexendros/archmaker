@@ -149,18 +149,20 @@ fn neg_capability_deny_by_default() {
         "permissions vacia: denegacion definitiva; los TOML no conceden"
     );
 
-    // Check dialog and picker capabilities have empty permissions (reserved for v1)
+    // MVP: solo main.json. dialog/picker son reserva v1 sin fichero en el árbol.
+    let caps_dir = repo_root().join("src-tauri/capabilities");
+    let mut names: Vec<_> = std::fs::read_dir(&caps_dir)
+        .expect("capabilities dir")
+        .filter_map(|e| e.ok())
+        .map(|e| e.file_name().to_string_lossy().into_owned())
+        .filter(|n| n.ends_with(".json"))
+        .collect();
+    names.sort();
+    assert_eq!(names, vec!["main.json".to_string()], "solo main en MVP");
     for cap in ["dialog", "picker"] {
-        let raw = read_repo(&format!("src-tauri/capabilities/{}.json", cap));
-        let v: serde_json::Value = serde_json::from_str(&raw).expect("capability JSON invalido");
-        let perms = v["permissions"]
-            .as_array()
-            .expect("permissions debe ser lista");
-        assert_eq!(
-            perms.len(),
-            0,
-            "{} capability reservado para v1 sin permisos",
-            cap
+        assert!(
+            !caps_dir.join(format!("{cap}.json")).exists(),
+            "{cap}.json no debe existir en MVP (reserva v1)"
         );
     }
 }
@@ -408,19 +410,12 @@ fn neg_unknown_window_yields_typed_proto_error() {
 }
 
 #[test]
-fn dialog_and_picker_deny_everything_by_default() {
-    // Dialog and picker capabilities are reserved for v1 and have no permissions
+fn dialog_and_picker_capability_files_absent_in_mvp() {
+    let caps_dir = repo_root().join("src-tauri/capabilities");
     for cap in ["dialog", "picker"] {
-        let raw = read_repo(&format!("src-tauri/capabilities/{}.json", cap));
-        let v: serde_json::Value = serde_json::from_str(&raw).expect("capability JSON invalido");
-        let perms = v["permissions"]
-            .as_array()
-            .expect("permissions debe ser lista");
-        assert_eq!(
-            perms.len(),
-            0,
-            "{} capability reservado para v1 sin permisos",
-            cap
+        assert!(
+            !caps_dir.join(format!("{cap}.json")).exists(),
+            "{cap}.json ausente en MVP; reserva documentada en tauri-policy.md"
         );
     }
 }

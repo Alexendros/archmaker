@@ -49,12 +49,17 @@ check(
     found == CORE_CMDS,
     str(found),
 )
+caps_dir = ROOT / "src-tauri/capabilities"
+cap_files = sorted(p.name for p in caps_dir.glob("*.json"))
+check(
+    "NEG-001 solo capability main en MVP",
+    cap_files == ["main.json"],
+    str(cap_files),
+)
 for reserved in ["dialog", "picker"]:
-    ocap = json.loads((ROOT / f"src-tauri/capabilities/{reserved}.json").read_text())
     check(
-        f"NEG-001 {reserved} reservado sin permisos (v1)",
-        ocap.get("permissions") == [],
-        str(ocap.get("permissions")),
+        f"NEG-001 {reserved}.json ausente (reserva v1 sin fichero)",
+        not (caps_dir / f"{reserved}.json").exists(),
     )
 
 raw_conf = (ROOT / "src-tauri/tauri.conf.json").read_text()
