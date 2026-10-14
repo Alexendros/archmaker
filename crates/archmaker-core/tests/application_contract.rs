@@ -171,9 +171,9 @@ fn clause_option_001_rejects_cmd_pacstrap_and_embedded_binaries() {
     assert!(
         forbidden
             .iter()
-            .any(|token| *token == "cmd" || *token == "pacstrap")
+            .any(|token| *token == "legacy-command-field" || *token == "host-bootstrap")
             || !embedded.is_empty(),
-        "invalid fixture must expose cmd/pacstrap tokens or embedded binaries"
+        "invalid fixture must expose legacy-command-field/host-bootstrap or embedded binaries"
     );
 
     assert_clause_accepted("CLAUSE-OPTION-001", &valid);

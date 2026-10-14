@@ -1,6 +1,6 @@
 {
   "id": "CLAUSE-HOST-001",
-  "spawnedProcesses": ["pacstrap", "mkarchiso"],
+  "spawnedProcesses": ["host-bootstrap", "host-image-build"],
   "requiredNetworkForManifest": true,
   "elevatedPrivileges": true,
   "rejectedOutOfProfileNames": []
