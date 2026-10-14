@@ -1,0 +1,19 @@
+{
+  "documentVersion": "vNext",
+  "schemaVersion": "1",
+  "contractId": "aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee",
+  "manifestDigest": {
+    "algorithm": "sha256",
+    "value": "1111111111111111111111111111111111111111111111111111111111111111"
+  },
+  "base": {
+    "distro": "arch-linux",
+    "arch": "aarch64",
+    "kind": "base-iso"
+  },
+  "format": "archiso-image",
+  "clauses": [
+    { "id": "CLAUSE-BASE-001", "required": true, "status": "pending" }
+  ],
+  "publicName": "ArchMaker-ISO"
+}

@@ -113,6 +113,14 @@ jobs:
               "artifact",
               "installation-plan",
               "runner-envelope",
+              "application-contract",
+              "clause-base",
+              "clause-manifest",
+              "clause-option",
+              "clause-rule",
+              "clause-bytes",
+              "clause-host",
+              "clause-boot",
           ]
 
           # Casos que se validan contra un subschema de common o un $defs concreto.

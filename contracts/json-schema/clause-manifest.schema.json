@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://archmaker.dev/schemas/clause-manifest.schema.json",
+  "title": "CLAUSE-MANIFEST-001 — One selection, one manifest",
+  "description": "All loaded options resolve to a single sealed manifest. Projecting to another admitted format does not change that content digest (ADR-0003).",
+  "$comment": "ADR-0011 / CLAUSE-MANIFEST-001.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "manifestDigest",
+    "formatA",
+    "formatB",
+    "digestAfterFormatA",
+    "digestAfterFormatB"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "const": "CLAUSE-MANIFEST-001"
+    },
+    "manifestDigest": {
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/contentDigest"
+    },
+    "formatA": {
+      "type": "string",
+      "enum": ["archmaker-profile", "archinstall-profile", "report"]
+    },
+    "formatB": {
+      "type": "string",
+      "enum": ["archmaker-profile", "archinstall-profile", "report"]
+    },
+    "digestAfterFormatA": {
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/contentDigest"
+    },
+    "digestAfterFormatB": {
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/contentDigest"
+    }
+  }
+}

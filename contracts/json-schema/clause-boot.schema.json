@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://archmaker.dev/schemas/clause-boot.schema.json",
+  "title": "CLAUSE-BOOT-001 — Derived image boot (not yet admitted)",
+  "description": "UEFI x86_64 boot of the derived image. Until an image format is admitted by scope and DEC-001, status must not be satisfied. aarch64 is rejected.",
+  "$comment": "ADR-0011 / CLAUSE-BOOT-001. Satisfied is excluded from the status enum while image format is closed.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "status", "arch", "firmware"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "const": "CLAUSE-BOOT-001"
+    },
+    "status": {
+      "description": "Cannot be satisfied until image format is admitted.",
+      "type": "string",
+      "enum": ["pending", "failed", "not-applicable"]
+    },
+    "arch": {
+      "type": "string",
+      "const": "x86_64"
+    },
+    "firmware": {
+      "type": "string",
+      "const": "uefi"
+    },
+    "imageFormatAdmitted": {
+      "type": "boolean",
+      "const": false
+    }
+  }
+}

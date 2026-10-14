@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://archmaker.dev/schemas/clause-host.schema.json",
+  "title": "CLAUSE-HOST-001 — No host-side execution",
+  "description": "Fulfilling and verifying the contract does not launch pacstrap, mkarchiso, shell or root on the configurator host, and does not require network to resolve the manifest (NFR-OFF-001). A package name outside the sealed profile is rejected.",
+  "$comment": "ADR-0011 / CLAUSE-HOST-001.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "spawnedProcesses",
+    "requiredNetworkForManifest",
+    "elevatedPrivileges",
+    "rejectedOutOfProfileNames"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "const": "CLAUSE-HOST-001"
+    },
+    "spawnedProcesses": {
+      "description": "Must be empty after verify/export on the configurator host.",
+      "type": "array",
+      "maxItems": 0,
+      "items": {
+        "type": "string",
+        "enum": ["pacstrap", "mkarchiso", "bash", "sh", "sudo"]
+      }
+    },
+    "requiredNetworkForManifest": {
+      "type": "boolean",
+      "const": false
+    },
+    "elevatedPrivileges": {
+      "type": "boolean",
+      "const": false
+    },
+    "rejectedOutOfProfileNames": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128
+      },
+      "uniqueItems": true
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "id": "CLAUSE-RULE-001",
+  "blocking": false,
+  "presetsApplied": ["gaming"],
+  "evaluatedOperatorForm": "count_gt",
+  "diagnostics": [],
+  "silentMutation": true
+}

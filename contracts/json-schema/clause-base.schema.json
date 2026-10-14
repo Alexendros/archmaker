@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://archmaker.dev/schemas/clause-base.schema.json",
+  "title": "CLAUSE-BASE-001 — Arch base and derived mark",
+  "description": "The cited base is Arch Linux x86_64. The published artifact is a derivative: it may say derived from Arch Linux and must not present itself as official Arch Linux, use the Arch logo, or publish a visible name starting with ARCH while ADR-0010 is proposed.",
+  "$comment": "ADR-0011 / CLAUSE-BASE-001. Normative schema; tracking issue kind:clause.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "base",
+    "presentsAsOfficialArch",
+    "usesArchLogo",
+    "publicName"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "const": "CLAUSE-BASE-001"
+    },
+    "base": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["distro", "arch", "kind"],
+      "properties": {
+        "distro": { "type": "string", "const": "arch-linux" },
+        "arch": { "type": "string", "const": "x86_64" },
+        "kind": { "type": "string", "const": "base-iso" }
+      }
+    },
+    "presentsAsOfficialArch": {
+      "type": "boolean",
+      "const": false
+    },
+    "usesArchLogo": {
+      "type": "boolean",
+      "const": false
+    },
+    "publicName": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^(?![Aa][Rr][Cc][Hh]).+$"
+    },
+    "derivedFromStatement": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    }
+  }
+}

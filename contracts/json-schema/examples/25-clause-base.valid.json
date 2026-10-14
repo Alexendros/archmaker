@@ -1,0 +1,12 @@
+{
+  "id": "CLAUSE-BASE-001",
+  "base": {
+    "distro": "arch-linux",
+    "arch": "x86_64",
+    "kind": "base-iso"
+  },
+  "presentsAsOfficialArch": false,
+  "usesArchLogo": false,
+  "publicName": "derived-workstation",
+  "derivedFromStatement": "derived from Arch Linux"
+}

@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://archmaker.dev/schemas/application-contract.schema.json",
+  "title": "ArchMaker Application Contract (ADR-0011)",
+  "description": "Contract produced from a resolved configurator selection, an Arch Linux x86_64 base identity and an admitted export format (DEC-001). Each clause is verified independently. Does not admit an image target. Contract state: v0.",
+  "$comment": "ADR-0011. additionalProperties:false. Format enum matches artifact.targetRef.id (DEC-001). Image format is not admitted; CLAUSE-BOOT-001 cannot be satisfied yet.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "documentVersion",
+    "schemaVersion",
+    "contractId",
+    "manifestDigest",
+    "base",
+    "format",
+    "clauses"
+  ],
+  "properties": {
+    "documentVersion": {
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/documentVersion"
+    },
+    "schemaVersion": {
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/schemaVersion"
+    },
+    "contractId": {
+      "description": "Stable identity of this contract instance.",
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/uuid"
+    },
+    "manifestDigest": {
+      "description": "Semantic digest of the sealed manifest that all formats project.",
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/contentDigest"
+    },
+    "base": {
+      "description": "Cited Arch Linux base ISO identity (DEC-008).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["distro", "arch", "kind"],
+      "properties": {
+        "distro": {
+          "type": "string",
+          "const": "arch-linux"
+        },
+        "arch": {
+          "type": "string",
+          "const": "x86_64"
+        },
+        "kind": {
+          "type": "string",
+          "const": "base-iso"
+        }
+      }
+    },
+    "format": {
+      "description": "Admitted export format (DEC-001). Image is not admitted.",
+      "type": "string",
+      "enum": ["archmaker-profile", "archinstall-profile", "report"]
+    },
+    "clauses": {
+      "description": "Closed list of seven clauses. Order is fixed.",
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "items": {
+        "$ref": "#/$defs/clauseEntry"
+      }
+    },
+    "packageNames": {
+      "description": "Package names projected from loaded options for the admitted format. No cmd, no pacstrap.",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128,
+        "pattern": "^[a-z0-9][a-z0-9+._-]*$"
+      },
+      "uniqueItems": true
+    },
+    "publicName": {
+      "description": "Visible artifact name. Must not start with ARCH while ADR-0010 is proposed (NFR-MARK-001).",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^(?![Aa][Rr][Cc][Hh]).+$"
+    }
+  },
+  "$defs": {
+    "clauseId": {
+      "description": "Closed vocabulary of application-contract clauses (ADR-0011).",
+      "type": "string",
+      "enum": [
+        "CLAUSE-BASE-001",
+        "CLAUSE-MANIFEST-001",
+        "CLAUSE-OPTION-001",
+        "CLAUSE-RULE-001",
+        "CLAUSE-BYTES-001",
+        "CLAUSE-HOST-001",
+        "CLAUSE-BOOT-001"
+      ]
+    },
+    "clauseStatus": {
+      "description": "Verification status of a clause. satisfied is forbidden for CLAUSE-BOOT-001 until an image format is admitted.",
+      "type": "string",
+      "enum": ["pending", "satisfied", "failed", "not-applicable"]
+    },
+    "clauseEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "required", "status"],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/clauseId"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "status": {
+          "$ref": "#/$defs/clauseStatus"
+        }
+      }
+    }
+  }
+}

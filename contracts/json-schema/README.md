@@ -26,19 +26,27 @@ tipado v1 y nunca un script.
 `$ref` es **por `$id`**, no por ruta de fichero (registro de `$id` en el gate). Los `$defs`
 compartidos viven una sola vez en `common.schema.json`.
 
-| Archivo                         | Agregado                  | Ejes de versión                                                                                   | Estado       |
-| ------------------------------- | ------------------------- | ------------------------------------------------------------------------------------------------- | ------------ |
-| `common.schema.json`            | `$defs` compartidos       | —                                                                                                 | v0           |
-| `draft.schema.json`             | DM-DRAFT                  | `documentVersion`, `schemaVersion`, `revision`, `catalogRef.version`, `targetRef.version`         | v0           |
-| `catalog.schema.json`           | DM-CATALOG                | `documentVersion`, `schemaVersion`, `catalogRef.version`                                          | v0           |
-| `rule.schema.json`              | RULE-*                    | `documentVersion`, `schemaVersion`                                                                | v0 (AUD-017) |
-| `diagnostic.schema.json`        | Diagnostic (AM-*)         | `schemaVersion`                                                                                   | v0           |
-| `core-error.schema.json`        | CoreError (AM-*)          | `schemaVersion`                                                                                   | v0           |
-| `changeset.schema.json`         | ChangeSet                 | `schemaVersion`, `baseRevision`                                                                   | v0           |
-| `manifest.schema.json`          | DM-MANIFEST               | `documentVersion`, `schemaVersion`, `catalogRef.version`, `targetRef.version`, `producer.version` | v0           |
-| `artifact.schema.json`          | DM-ARTIFACT               | `documentVersion`, `schemaVersion`, `targetRef.version`, `producer.version`                       | v0           |
-| `installation-plan.schema.json` | DM-PLAN (v1)              | `documentVersion`, `schemaVersion`, `protocolVersion`                                             | v0           |
-| `runner-envelope.schema.json`   | DM-SESSION (protocolo v1) | `protocolVersion`, `schemaVersion`                                                                | v0           |
+| Archivo                            | Agregado                       | Ejes de versión                                                                                   | Estado       |
+| ---------------------------------- | ------------------------------ | ------------------------------------------------------------------------------------------------- | ------------ |
+| `common.schema.json`               | `$defs` compartidos            | —                                                                                                 | v0           |
+| `draft.schema.json`                | DM-DRAFT                       | `documentVersion`, `schemaVersion`, `revision`, `catalogRef.version`, `targetRef.version`         | v0           |
+| `catalog.schema.json`              | DM-CATALOG                     | `documentVersion`, `schemaVersion`, `catalogRef.version`                                          | v0           |
+| `rule.schema.json`                 | RULE-*                         | `documentVersion`, `schemaVersion`                                                                | v0 (AUD-017) |
+| `diagnostic.schema.json`           | Diagnostic (AM-*)              | `schemaVersion`                                                                                   | v0           |
+| `core-error.schema.json`           | CoreError (AM-*)               | `schemaVersion`                                                                                   | v0           |
+| `changeset.schema.json`            | ChangeSet                      | `schemaVersion`, `baseRevision`                                                                   | v0           |
+| `manifest.schema.json`             | DM-MANIFEST                    | `documentVersion`, `schemaVersion`, `catalogRef.version`, `targetRef.version`, `producer.version` | v0           |
+| `artifact.schema.json`             | DM-ARTIFACT                    | `documentVersion`, `schemaVersion`, `targetRef.version`, `producer.version`                       | v0           |
+| `installation-plan.schema.json`    | DM-PLAN (v1)                   | `documentVersion`, `schemaVersion`, `protocolVersion`                                             | v0           |
+| `runner-envelope.schema.json`      | DM-SESSION (protocolo v1)      | `protocolVersion`, `schemaVersion`                                                                | v0           |
+| `application-contract.schema.json` | Contrato aplicación (ADR-0011) | `documentVersion`, `schemaVersion`                                                                | v0           |
+| `clause-base.schema.json`          | CLAUSE-BASE-001                | —                                                                                                 | v0           |
+| `clause-manifest.schema.json`      | CLAUSE-MANIFEST-001            | —                                                                                                 | v0           |
+| `clause-option.schema.json`        | CLAUSE-OPTION-001              | —                                                                                                 | v0           |
+| `clause-rule.schema.json`          | CLAUSE-RULE-001                | —                                                                                                 | v0           |
+| `clause-bytes.schema.json`         | CLAUSE-BYTES-001               | —                                                                                                 | v0           |
+| `clause-host.schema.json`          | CLAUSE-HOST-001                | —                                                                                                 | v0           |
+| `clause-boot.schema.json`          | CLAUSE-BOOT-001                | —                                                                                                 | v0           |
 
 Los ejes son independientes (ADR-0006). Formato congelado en MVP-1: `documentVersion` =
 `vNext`/`vNext.N`; `schemaVersion` y `protocolVersion` = entero positivo; `catalogRef` /
