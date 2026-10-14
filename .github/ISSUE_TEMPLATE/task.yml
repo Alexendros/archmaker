@@ -1,0 +1,101 @@
+name: Task
+description: Trabajo trazable (docs, contrato, calidad, seguridad) asignado a un plan
+title: "[Task] "
+labels: ["kind:task"]
+body:
+  - type: dropdown
+    id: plan
+    attributes:
+      label: Plan
+      description: Hito de release de plan. El workflow assign-milestone asigna el hito.
+      options:
+        - MVP-5
+        - MVP-6
+        - v1
+        - security-hygiene
+        - MVP-4
+        - MVP-3
+        - MVP-2
+        - MVP-1
+        - MVP-0.1
+    validations:
+      required: true
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Prioridad
+      options:
+        - P0
+        - P1
+        - P2
+        - P3
+    validations:
+      required: true
+  - type: dropdown
+    id: phase
+    attributes:
+      label: Fase
+      options:
+        - MVP
+        - v1
+        - enterprise
+    validations:
+      required: true
+  - type: dropdown
+    id: kind_docs
+    attributes:
+      label: Tipo de tarea
+      options:
+        - implementación
+        - documentación
+        - contrato
+        - validación
+        - seguridad
+        - calidad
+    validations:
+      required: true
+  - type: input
+    id: gate
+    attributes:
+      label: Gate
+      placeholder: G8
+    validations:
+      required: true
+  - type: input
+    id: role
+    attributes:
+      label: Rol propietario
+    validations:
+      required: true
+  - type: input
+    id: ids
+    attributes:
+      label: Requisitos (FR/NFR)
+    validations:
+      required: true
+  - type: input
+    id: risks
+    attributes:
+      label: Riesgos y amenazas
+      description: RSK-* / THR-* (o «ninguno»).
+    validations:
+      required: true
+  - type: textarea
+    id: objective
+    attributes:
+      label: Objetivo
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Alcance
+      description: Incluye / excluye.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Criterio de Done
+    validations:
+      required: true

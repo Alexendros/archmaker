@@ -1,8 +1,14 @@
 blank_issues_enabled: false
 contact_links:
-  - name: Backlog trazable (planning-v1)
+  - name: Backlog trazable
     url: https://github.com/Alexendros/archmaker/blob/main/docs/10-delivery/next-issues.md
     about: Consulta los próximos issues y su orden de dependencia antes de abrir uno.
+  - name: Criterios de release
+    url: https://github.com/Alexendros/archmaker/blob/main/docs/10-delivery/packaging-release.md
+    about: Release de plan (notas) frente a release de paquete (bloqueada hasta MVP-6 accepted).
+  - name: Manual de uso (wiki)
+    url: https://github.com/Alexendros/archmaker/wiki
+    about: Guía de usuario y manual. Texto canónico en docs/11-operations/manual/.
   - name: Reporte privado de vulnerabilidades
     url: https://github.com/Alexendros/archmaker/security/advisories/new
     about: No abras issues públicos para vulnerabilidades; usa el reporte privado (ver SECURITY.md).

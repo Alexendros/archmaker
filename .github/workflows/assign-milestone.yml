@@ -1,0 +1,59 @@
+# assign-milestone — asigna el hito del campo Plan del formulario de issue.
+#
+# Lee el cuerpo del issue (plantillas feature/bug/task) y asigna el milestone
+# cuyo título coincide con el valor de «Plan». Esa es la asignación de release
+# por plan (docs/10-delivery/packaging-release.md).
+
+name: assign-milestone
+
+on:
+  issues:
+    types: [opened, edited]
+
+permissions:
+  issues: write
+
+jobs:
+  assign:
+    name: Assign plan milestone
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Map Plan field to milestone
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE: ${{ github.event.issue.number }}
+          BODY: ${{ github.event.issue.body }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          PLAN=$(python3 -c '
+          import os, re
+          body = os.environ.get("BODY") or ""
+          m = re.search(r"(?im)^###\s*Plan\s*\n+([^\n#]+)", body)
+          if not m:
+              m = re.search(r"(?im)^\*\*Plan:\*\*\s*(.+)$", body)
+          if not m:
+              m = re.search(r"(?im)^-\s*Plan:\s*(.+)$", body)
+          print((m.group(1).strip() if m else ""), end="")
+          ')
+          if [ -z "$PLAN" ] || [ "$PLAN" = "_No response_" ]; then
+            echo "Sin campo Plan; no se asigna hito."
+            exit 0
+          fi
+          case "$PLAN" in
+            mvp-5|MVP5) PLAN="MVP-5" ;;
+            mvp-6|MVP6) PLAN="MVP-6" ;;
+            mvp-4|MVP4) PLAN="MVP-4" ;;
+            security|seguridad) PLAN="security-hygiene" ;;
+          esac
+          echo "Plan detectado: $PLAN"
+          MS=$(gh api "repos/${REPO}/milestones?state=all&per_page=100" \
+            --jq ".[] | select(.title==\"$PLAN\") | .number")
+          if [ -z "$MS" ]; then
+            echo "Hito '$PLAN' no encontrado; se deja sin asignar."
+            exit 0
+          fi
+          gh api --method PATCH "repos/${REPO}/issues/$ISSUE" \
+            -F milestone="$MS" >/dev/null
+          echo "Issue #$ISSUE → milestone #$MS ($PLAN)"

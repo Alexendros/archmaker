@@ -126,12 +126,15 @@ reviewers:
 
 ## 11–12 — Operaciones e investigación
 
-| Documento                            | ID               | Estado    |
-| ------------------------------------ | ---------------- | --------- |
-| `11-operations/support-policy.md`    | DOC-OPS-SUP-001  | draft     |
-| `12-research/evidence-plan.md`       | DOC-RES-EVID-001 | draft     |
-| `12-research/inventory-v5.1.md`      | DOC-RES-INV-001  | draft     |
-| `12-research/html-catalog-matrix.md` | DOC-RES-HTML-001 | in-review |
+| Documento                                     | ID               | Estado    |
+| --------------------------------------------- | ---------------- | --------- |
+| `11-operations/support-policy.md`             | DOC-OPS-SUP-001  | draft     |
+| `11-operations/manual/` (guía + manual; wiki) | DOC-OPS-MAN-001  | draft     |
+| `12-research/evidence-plan.md`                | DOC-RES-EVID-001 | draft     |
+| `12-research/inventory-v5.1.md`               | DOC-RES-INV-001  | draft     |
+| `12-research/html-catalog-matrix.md`          | DOC-RES-HTML-001 | in-review |
+
+Manual de uso (canónico en el repo, publicado en la [wiki](https://github.com/Alexendros/archmaker/wiki)): [`docs/11-operations/manual/`](11-operations/manual/Home.md).
 
 ## Contratos (`contracts/`)
 
@@ -144,4 +147,4 @@ reviewers:
 
 ## Plantillas
 
-`templates/adr.md`, `templates/requirement.md`. No existe `templates/issue.md` (los issues viven en `docs/10-delivery/next-issues.md`).
+`templates/adr.md`, `templates/requirement.md`, `templates/issue.md`. Formularios GitHub en `.github/ISSUE_TEMPLATE/`.

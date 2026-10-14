@@ -3,11 +3,49 @@ description: Defecto trazado a requisitos, riesgos, amenazas o contratos
 title: "[Bug] "
 labels: ["kind:bug"]
 body:
+  - type: dropdown
+    id: plan
+    attributes:
+      label: Plan
+      description: Hito de release de plan. El workflow assign-milestone asigna el hito.
+      options:
+        - MVP-5
+        - MVP-6
+        - v1
+        - security-hygiene
+        - MVP-4
+        - MVP-3
+        - MVP-2
+        - MVP-1
+        - MVP-0.1
+    validations:
+      required: true
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severidad
+      options:
+        - P0
+        - P1
+        - P2
+        - P3
+    validations:
+      required: true
+  - type: dropdown
+    id: phase
+    attributes:
+      label: Fase
+      options:
+        - MVP
+        - v1
+        - enterprise
+    validations:
+      required: true
   - type: input
     id: ids
     attributes:
       label: IDs afectados
-      description: Requisitos (FR/NFR), riesgo (RSK), amenaza (THR), regla (RULE) o contrato afectado.
+      description: Requisitos (FR/NFR), riesgo (RSK), amenaza (THR), regla (RULE) o contrato.
     validations:
       required: true
   - type: textarea
@@ -23,15 +61,11 @@ body:
       label: Pasos de reproducción
     validations:
       required: true
-  - type: dropdown
-    id: severity
+  - type: textarea
+    id: acceptance
     attributes:
-      label: Severidad
-      options:
-        - P0 — bloqueante
-        - P1 — alta
-        - P2 — media
-        - P3 — baja
+      label: Criterio de Done
+      description: Condición comprobable de cierre.
     validations:
       required: true
   - type: textarea
@@ -45,6 +79,6 @@ body:
     id: security
     attributes:
       label: Impacto de seguridad y accesibilidad
-      description: Si afecta a seguridad, usa GitHub PVR en lugar de este issue (ver SECURITY.md).
+      description: Si afecta a seguridad, usa GitHub PVR (ver SECURITY.md).
     validations:
       required: false

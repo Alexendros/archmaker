@@ -1,27 +1,107 @@
 name: Feature
-description: Funcionalidad trazada
+description: Funcionalidad trazada a un plan (hito de release)
 title: "[Feature] "
 labels: ["kind:feature"]
 body:
+  - type: dropdown
+    id: plan
+    attributes:
+      label: Plan
+      description: Hito de release de plan. El workflow assign-milestone asigna el hito.
+      options:
+        - MVP-5
+        - MVP-6
+        - v1
+        - security-hygiene
+        - MVP-4
+        - MVP-3
+        - MVP-2
+        - MVP-1
+        - MVP-0.1
+    validations:
+      required: true
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Prioridad
+      options:
+        - P0
+        - P1
+        - P2
+        - P3
+    validations:
+      required: true
+  - type: dropdown
+    id: phase
+    attributes:
+      label: Fase
+      options:
+        - MVP
+        - v1
+        - enterprise
+    validations:
+      required: true
+  - type: input
+    id: gate
+    attributes:
+      label: Gate
+      description: G0..G10 o E1..E7
+      placeholder: G5
+    validations:
+      required: true
+  - type: input
+    id: role
+    attributes:
+      label: Rol propietario
+      placeholder: Producto | Arquitectura | Seguridad | Calidad | Release | UX
+    validations:
+      required: true
   - type: input
     id: ids
     attributes:
-      label: IDs de requisitos y journey
+      label: Requisitos (FR/NFR)
+      description: IDs de requisitos y journey afectados.
     validations:
       required: true
+  - type: input
+    id: risks
+    attributes:
+      label: Riesgos y amenazas
+      description: RSK-* / THR-* (o «ninguno»).
+    validations:
+      required: true
+  - type: input
+    id: depends
+    attributes:
+      label: Depende de
+      description: ISSUE-*, DEC-*, SRC-* o «ninguna».
+    validations:
+      required: false
   - type: textarea
     id: objective
     attributes:
       label: Objetivo
+      description: Por qué existe esta tarea y qué desbloquea.
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Alcance
+      description: Incluye / excluye.
     validations:
       required: true
   - type: textarea
     id: acceptance
     attributes:
-      label: Criterios de aceptación
+      label: Criterio de Done
+      description: Lista comprobable; incluir evidencia y trazabilidad.
     validations:
       required: true
   - type: textarea
     id: security
     attributes:
       label: Validación, seguridad y pruebas
+      description: VAL-*, TST-*, impacto de seguridad o accesibilidad.
+    validations:
+      required: false

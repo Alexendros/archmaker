@@ -1,17 +1,19 @@
 # Plantilla de issue
 
-> Copiar a `docs/10-delivery/next-issues.md` (o al tracker cuando el gate `planning-v1` pase a Go).
-> Mientras el gate sea No-Go, el backlog vive en `docs/10-delivery/next-issues.md`.
+> Formularios GitHub: `.github/ISSUE_TEMPLATE/{feature,bug,task,clause}.yml`.
+> El campo **Plan** asigna el hito de release (`assign-milestone.yml`).
+> Backlog documental: `docs/10-delivery/next-issues.md`.
 
 ## ISSUE-NNN — <título corto>
 
-- Tipo: doc | diseño | contrato | validación | seguridad | calidad | implementación
-- Prioridad: P0 | P1 | P2
-- Fase: predesarrollo | MVP | v1 | Enterprise
+- Tipo: feature | bug | task | docs | clause
+- Prioridad: P0 | P1 | P2 | P3
+- Fase: MVP | v1 | enterprise
+- Plan (hito): MVP-5 | MVP-6 | v1 | security-hygiene | …
 - Estado: pending | in-progress | blocked | done
 - Depende de: <ISSUE-* / DEC-* / SRC-*>
 - Gate: G0..G10
-- Rol propietario: <Producto | Arquitectura | Seguridad | Calidad | Release | Diseño>
+- Rol propietario: <Producto | Arquitectura | Seguridad | Calidad | Release | UX>
 - Requisitos relacionados: <FR-* / NFR-*>
 - Riesgos/amenazas: <RSK-* / THR-*>
 
