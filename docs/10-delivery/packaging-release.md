@@ -17,10 +17,41 @@ reviewers:
 
 - Estado: draft
 - Propietario: Release
-- Última revisión: 2026-10-05
-- Requisitos relacionados: FR-EXPORT-001, NFR-OBS-001, NFR-SEC-001, NFR-PORT-001
+- Última revisión: 2026-10-14
+- Requisitos relacionados: FR-EXPORT-001, NFR-OBS-001, NFR-SEC-001, NFR-PORT-001, NFR-MARK-001, NFR-COST-001
 - Sustituye / sustituido por: —
-- Decisiones aplicables: DEC-001, DEC-005, DEC-006, DEC-007 (aceptadas 2026-10-05); DEC-009 (propuesta)
+- Decisiones aplicables: DEC-001, DEC-005, DEC-006, DEC-007 (aceptadas 2026-10-05); DEC-009 (propuesta); ADR-0010 (proposed)
+
+## Dos actos de release
+
+Hay dos actos distintos. Este documento los separa; el segundo no se ejecuta mientras MVP-6 no esté `accepted`.
+
+### Release de plan
+
+Se asigna a un hito de GitHub (`planning-v*`, `MVP-*`, `v1`). Se publica cuando:
+
+1. Existe un tag `implementation-baseline-*` o `planning-v*` apuntando a un commit de `main`.
+2. El CI de ese commit está en verde.
+3. El cuerpo de la GitHub Release lista las issues del hito asociado.
+
+Artefactos: el código del tag que GitHub adjunta y las notas. Sin binarios, sin firmas y sin paquetes. El workflow `.github/workflows/plan-release.yml` crea la release de notas al pushear esos tags; no llama a `release.yml`.
+
+| Hito                   | Tag                                       | Estado del hito    |
+| ---------------------- | ----------------------------------------- | ------------------ |
+| `planning-v1`          | `planning-v1`                             | cerrado (historia) |
+| `planning-v1.1`        | `planning-v1.1`                           | cerrado (historia) |
+| `MVP-0.1` … `MVP-4`    | `implementation-baseline-mvp0.1` … `mvp4` | cerrado (historia) |
+| `MVP-5`, `MVP-6`, `v1` | (cuando exista el tag)                    | abierto            |
+
+### Release de paquete
+
+Sigue la política de artefactos, canales y firma de este documento. Queda bloqueada por:
+
+- alcance MVP-6 (`docs/10-delivery/mvp6-scope.md`) sin estado `accepted`
+- NFR-MARK-001 / ADR-0010 (nombre público no cerrado)
+- residual DEC-006 (pipeline real de SBOM/firmas pendiente de Etapa C)
+
+Canales `nightly` / `beta` / `stable` son política de promoción del paquete futuro. No son tags que `plan-release.yml` dispare.
 
 ## MVP Linux
 

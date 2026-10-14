@@ -1,20 +1,20 @@
 # ArchMaker
 
-Repositorio de baseline MVP-0.1 — walking skeleton stabilizado. Este repositorio contiene la evidencia reproducible del vertical slice: CorePort, adapters Tauri/WASM, canonicalización, reglas, resolución, manifest, export, security, CI y supply chain. El producto completo, runner v1 y los privilegios se autorizan en fases posteriores sobre la baseline.
+Configurador local para diseñar, validar y exportar un perfil. Rust es la autoridad semántica; la interfaz es React en Tauri y WASM. Este repositorio contiene la evidencia reproducible hasta la baseline `implementation-baseline-mvp4`: CorePort, adapters, canonicalización, reglas, resolución, manifest, export, security, CI y supply chain. No instala el sistema ni ejecuta un plan. El runner v1 y los privilegios se autorizan en fases posteriores.
 
 ## Estado
 
 - Gate global (mecánico): **Clear** — todos los gates G0–G10 están `complete`. Autoridad: [`docs/00-governance/go-no-go.md`](docs/00-governance/go-no-go.md) y [`docs/10-delivery/gates.md`](docs/10-delivery/gates.md).
-- Veredicto de gobierno (R13): **CONDITIONAL-CLEAR — walking skeleton MVP-0 únicamente**. Autoriza el vertical slice de [`docs/10-delivery/walking-skeleton.md`](docs/10-delivery/walking-skeleton.md); el MVP completo, el runner, los privilegios y Enterprise quedan bloqueados.
-- Desarrollo funcional: autorizado walking skeleton MVP-0.1 (rebanada vertical, sin runner ni privilegios).
-- Baseline vigente: `implementation-baseline-mvp4`. Los slices MVP-1..MVP-4 están en el árbol; el README antiguo que señalaba MVP-1 como siguiente fase quedó atrás.
+- Veredicto de gobierno: **CONDITIONAL-CLEAR** hasta MVP-4. Autoriza el walking skeleton y los slices MVP-1..MVP-4; el MVP completo, el runner, los privilegios y Enterprise quedan bloqueados.
+- Baseline vigente: `implementation-baseline-mvp4`. En el árbol están MVP-0 (walking skeleton) y los slices MVP-1..MVP-4.
 - Siguiente slice del roadmap, todavía sin aceptar: MVP-5 ([`docs/10-delivery/mvp5-scope.md`](docs/10-delivery/mvp5-scope.md)). Empaquetado en [`docs/10-delivery/mvp6-scope.md`](docs/10-delivery/mvp6-scope.md). Imagen en [`docs/10-delivery/iso-scope.md`](docs/10-delivery/iso-scope.md). Ninguno de esos borradores autoriza implementación.
-- Fuentes históricas: `reference/v5.1/`, conservadas por hash; walking skeleton en [`docs/10-delivery/walking-skeleton.md`](docs/10-delivery/walking-skeleton.md) y [`docs/10-delivery/implementation-plan-mvp0.md`](docs/10-delivery/implementation-plan-mvp0.md).
+- Fuentes históricas: `reference/v5.1/`, conservadas por hash; walking skeleton en [`docs/10-delivery/walking-skeleton.md`](docs/10-delivery/walking-skeleton.md).
 - Rust: autoridad de dominio y casos de uso (compilable nativo + WASM).
 - React: presentación e interacción (adapters Tauri y WASM).
 - Tauri 2: adaptador de escritorio (deny-by-default, scopes acotados, sin `shell:*`).
 - WASM: adaptador de navegador (paridad golden nativo/WASM).
-- Runner privilegiado: diferido a fase posterior a baseline MVP-0.1 (ADR-0004 / DEC-004).
+- Runner privilegiado: diferido (ADR-0004 / DEC-004).
+- Manual de uso: [`docs/11-operations/manual/`](docs/11-operations/manual/) y [wiki](https://github.com/Alexendros/archmaker/wiki).
 
 ## Documentación
 

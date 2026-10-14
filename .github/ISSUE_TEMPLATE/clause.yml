@@ -3,6 +3,19 @@ description: Cláusula del contrato de aplicación (ADR-0011)
 title: "[Clause] "
 labels: ["kind:clause"]
 body:
+  - type: dropdown
+    id: plan
+    attributes:
+      label: Plan
+      description: Hito de release de plan. Por defecto MVP-4 (contrato ADR-0011 en baseline).
+      options:
+        - MVP-4
+        - MVP-5
+        - MVP-6
+        - v1
+        - security-hygiene
+    validations:
+      required: true
   - type: input
     id: clause_id
     attributes:
@@ -47,7 +60,13 @@ body:
         - pending
         - red
         - verified
-      default: 0
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Criterio de Done
+      description: Schema, test Rust y fixtures válidos/inválidos en main.
     validations:
       required: true
   - type: textarea

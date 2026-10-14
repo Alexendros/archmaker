@@ -1,0 +1,105 @@
+# plan-release — GitHub Release de notas por plan (sin binarios).
+#
+# Entrada: docs/10-delivery/packaging-release.md (acto «Release de plan»).
+# Dispara en tags planning-v* e implementation-baseline-*.
+# No llama a release.yml, no firma y no publica paquetes.
+
+name: plan-release
+
+on:
+  push:
+    tags:
+      - "planning-v*"
+      - "implementation-baseline-*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Tag existente para backfill de notas
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: plan-release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  notes:
+    name: Create plan release notes
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+
+      - name: Resolver tag
+        id: tag
+        run: |
+          set -euo pipefail
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            TAG="${{ inputs.tag }}"
+          else
+            TAG="${GITHUB_REF#refs/tags/}"
+          fi
+          echo "name=$TAG" >> "$GITHUB_OUTPUT"
+          case "$TAG" in
+            planning-v1.1) MILESTONE="planning-v1.1" ;;
+            planning-v1) MILESTONE="planning-v1" ;;
+            planning-v*) MILESTONE="$TAG" ;;
+            implementation-baseline-mvp0.1) MILESTONE="MVP-0.1" ;;
+            implementation-baseline-mvp1) MILESTONE="MVP-1" ;;
+            implementation-baseline-mvp2) MILESTONE="MVP-2" ;;
+            implementation-baseline-mvp3) MILESTONE="MVP-3" ;;
+            implementation-baseline-mvp4) MILESTONE="MVP-4" ;;
+            implementation-baseline-mvp5) MILESTONE="MVP-5" ;;
+            implementation-baseline-mvp6) MILESTONE="MVP-6" ;;
+            implementation-baseline-*) MILESTONE="${TAG#implementation-baseline-}" ;;
+            *) MILESTONE="" ;;
+          esac
+          echo "milestone=$MILESTONE" >> "$GITHUB_OUTPUT"
+
+      - name: Crear release si no existe
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.tag.outputs.name }}
+          MILESTONE: ${{ steps.tag.outputs.milestone }}
+        run: |
+          set -euo pipefail
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release $TAG ya existe; no se sobrescribe."
+            exit 0
+          fi
+
+          NOTES=$(mktemp)
+          {
+            echo "## Release de plan"
+            echo
+            echo "Tag: \`$TAG\`"
+            echo
+            echo "Acto: **release de plan** (notas + código del tag). Sin binarios ni paquetes."
+            echo "Política: \`docs/10-delivery/packaging-release.md\`."
+            echo
+            if [ -n "$MILESTONE" ]; then
+              echo "### Hito \`$MILESTONE\`"
+              echo
+              ISSUES=$(gh issue list --milestone "$MILESTONE" --state all --limit 200 \
+                --json number,title,state \
+                --jq '.[] | "- #\(.number) \(.title) (\(.state))"')
+              if [ -n "$ISSUES" ]; then
+                echo "$ISSUES"
+              else
+                echo "_Sin issues asociadas al hito (historia cerrada en el tag)._"
+              fi
+            else
+              echo "_Sin hito mapeado para este tag._"
+            fi
+          } > "$NOTES"
+
+          gh release create "$TAG" \
+            --title "$TAG" \
+            --notes-file "$NOTES" \
+            --verify-tag
