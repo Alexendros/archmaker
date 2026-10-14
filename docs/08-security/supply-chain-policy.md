@@ -38,16 +38,20 @@ artefactos de release. Amenazas asociadas: `THR-SUP-001` (dependencia comprometi
 
 ## Controles por capa
 
-| Capa              | Control                                                                                         | Evidencia                                                      |
-| ----------------- | ----------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
-| Dependencias Rust | `Cargo.lock` versionado; `cargo audit` y `cargo deny`; sin features innecesarias.               | Lockfile en repo; run de CI.                                   |
-| Dependencias JS   | Lockfile (`package-lock.json`/`pnpm-lock.yaml`); auditoría de dependencias; sin CDN en runtime. | Lockfile; `DEC-009`; CSP `self`.                               |
-| CI                | Actions fijadas por SHA; permisos mínimos; sin secretos de larga duración donde OIDC basta.     | Workflows en `.github/workflows/`; `docs/09-quality/ci-cd.md`. |
-| Build             | Build reproducible y determinista; artefactos con digest.                                       | Job de CI; `packaging-release.md`.                             |
-| Release           | Firma Sigstore keyless ligada a identidad OIDC del workflow; SBOM y provenance.                 | `DEC-006`; `docs/10-delivery/packaging-release.md`.            |
-| Verificación      | `cosign verify` con raíces de Fulcio/Rekor fijadas (`trusted_root.json`); verificación offline. | `DEC-006`; `updater-threat-model.md`.                          |
-| Catálogo          | Digest y procedencia verificable como requisito de carga.                                       | `ADR-0008`; `docs/03-data/lifecycles.md`.                      |
-| Actualización     | Canal firmado, endpoint en allowlist, versión mínima.                                           | `ADR-0009`; `updater-threat-model.md`.                         |
+| Capa              | Control                                                                                                               | Evidencia                                                      |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| Dependencias Rust | `Cargo.lock` versionado; `cargo audit` y `cargo deny`; sin features innecesarias.                                     | Lockfile en repo; run de CI.                                   |
+| Dependencias JS   | Lockfile único `pnpm-lock.yaml` en la raíz; pnpm es el único instalador. Sin `package-lock.json`. Sin CDN en runtime. | `pnpm-lock.yaml`; `DEC-009`; CSP `self`.                       |
+| CI                | Actions fijadas por SHA; permisos mínimos; sin secretos de larga duración donde OIDC basta.                           | Workflows en `.github/workflows/`; `docs/09-quality/ci-cd.md`. |
+| Build             | Build reproducible y determinista; artefactos con digest.                                                             | Job de CI; `packaging-release.md`.                             |
+| Release           | Firma Sigstore keyless ligada a identidad OIDC del workflow; SBOM y provenance.                                       | `DEC-006`; `docs/10-delivery/packaging-release.md`.            |
+| Verificación      | `cosign verify` con raíces de Fulcio/Rekor fijadas (`trusted_root.json`); verificación offline.                       | `DEC-006`; `updater-threat-model.md`.                          |
+| Catálogo          | Digest y procedencia verificable como requisito de carga.                                                             | `ADR-0008`; `docs/03-data/lifecycles.md`.                      |
+| Actualización     | Canal firmado, endpoint en allowlist, versión mínima.                                                                 | `ADR-0009`; `updater-threat-model.md`.                         |
+
+## Excepción conocida: glib
+
+`glib` 0.18.5 entra por `gtk` 0.18.2 y `tauri` 2.12 (pila gtk-rs 0.18: atk, cairo-rs, gdk, gdk-pixbuf, gdkx11, gio, pango). La alerta Dependabot #1 pide `glib` 0.20.0. Esa versión no satisface el requisito `^0.18` de esa pila. No se fuerza el bump en `Cargo.lock`. Se reabre cuando Tauri publique una pila sobre glib 0.20. La alerta de seguridad permanece abierta.
 
 ## Reglas
 

@@ -16,6 +16,7 @@ reviewers:
 # Política Tauri
 
 - Deny-by-default.
+- La allow-list JSON de `main`, `dialog` y `picker` permanece vacía: es la denegación definitiva del slice. Los ocho ficheros `src-tauri/permissions/*.toml` definen identificadores `core:*` y no los conceden. `dialog` y `picker` siguen reservadas, sin permisos.
 - Capabilities separadas por ventana y plataforma.
 - Permisos custom con allow/deny explícitos.
 - Scopes de filesystem mínimos; negar rutas sensibles.

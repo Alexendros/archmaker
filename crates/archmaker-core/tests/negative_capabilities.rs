@@ -133,7 +133,8 @@ fn neg_capability_deny_by_default() {
         "solo los 8 comandos CorePort v0+MVP-1"
     );
 
-    // Check main capability has empty permissions (auto-discovered from TOML)
+    // Lista vacía = denegación definitiva del slice. Los TOML definen
+    // identificadores core:* y no los conceden en el JSON.
     let raw = read_repo("src-tauri/capabilities/main.json");
     let v: serde_json::Value = serde_json::from_str(&raw).expect("capability JSON invalido");
     let windows = v["windows"].as_array().expect("windows debe ser lista");
@@ -145,7 +146,7 @@ fn neg_capability_deny_by_default() {
     assert_eq!(
         perms.len(),
         0,
-        "permissions se definen en TOML, no en capability JSON"
+        "permissions vacia: denegacion definitiva; los TOML no conceden"
     );
 
     // Check dialog and picker capabilities have empty permissions (reserved for v1)

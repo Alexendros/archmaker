@@ -30,18 +30,18 @@ implementación de este corte consta abajo; el estado gobernable máximo alcanza
 
 ### Rust — `cargo test -p archmaker-core --test negative_capabilities`: 5/5 PASS
 
-| Test                                                                                                            | TST-NEG            | Resultado |
-| --------------------------------------------------------------------------------------------------------------- | ------------------ | --------- |
-| `neg_fs_outside_scope_never_written` (handle `/etc/passwd` opaco, sin escritura, error `AM-*`, sin parcial)     | 002, 003, 008      | PASS      |
-| `neg_errors_are_typed_catalog_codes` (`createDraft` denegado → `AM-SCHEMA-001` tipado)                          | 001                | PASS      |
-| `neg_capability_deny_by_default` (ventana `main`, 7 permisos `core:*`, `shell:*`+`updater` denegados)           | 001, 004           | PASS      |
-| `neg_shell_blocked_in_tauri_conf` (CSP `default-src 'self'`, sin `unsafe-*`, devtools off)                      | 004, 005           | PASS      |
-| `neg_web_has_no_remote_or_shell_surface` (CSP self, sin CDN, allowlist 7 invokes, sin shell, 10 alias `--rh-*`) | 001, 004, 005, 007 | PASS      |
-| `neg_json_depth_limit_aborts` (nesting > 128 abortado con `AM-DOC-001`)                                         | 006                | PASS      |
+| Test                                                                                                                      | TST-NEG            | Resultado |
+| ------------------------------------------------------------------------------------------------------------------------- | ------------------ | --------- |
+| `neg_fs_outside_scope_never_written` (handle `/etc/passwd` opaco, sin escritura, error `AM-*`, sin parcial)               | 002, 003, 008      | PASS      |
+| `neg_errors_are_typed_catalog_codes` (`createDraft` denegado → `AM-SCHEMA-001` tipado)                                    | 001                | PASS      |
+| `neg_capability_deny_by_default` (ventana `main`, 8 TOML `core:*`, permissions JSON vacío, `shell:*`+`updater` denegados) | 001, 004           | PASS      |
+| `neg_shell_blocked_in_tauri_conf` (CSP `default-src 'self'`, sin `unsafe-*`, devtools off)                                | 004, 005           | PASS      |
+| `neg_web_has_no_remote_or_shell_surface` (CSP self, sin CDN, allowlist 7 invokes, sin shell, 10 alias `--rh-*`)           | 001, 004, 005, 007 | PASS      |
+| `neg_json_depth_limit_aborts` (nesting > 128 abortado con `AM-DOC-001`)                                                   | 006                | PASS      |
 
 ### Estático — `python3 tools/check_negative_capabilities.py`: 14/14 PASS, exit 0
 
-Deny-by-default por ventana, 7 comandos, `shell:*` denegado, CSP self (conf + HTML),
+Deny-by-default por ventana, 8 definiciones TOML y permissions JSON vacío, `shell:*` denegado, CSP self (conf + HTML),
 devtools off, sin CDN/red en WebView, invoke solo allowlist, sin shell en TS,
 `destinationHandle` opaco, 10 alias `--rh-*`, corrección `.dark text-subtle`,
 `prefers-reduced-motion`.

@@ -30,8 +30,9 @@ CORE_CMDS = ["create-draft", "load-catalog", "save-draft", "resolve-draft",
 
 cap = json.loads((ROOT / "src-tauri/capabilities/main.json").read_text())
 check("NEG-001 deny-by-default por ventana", cap.get("windows") == ["main"])
-# Los 8 permisos viven en permissions/*.toml (identifier core:<cmd>); el JSON de
-# capability queda vacio (auto-descubrimiento). Espejo de neg_capability_deny_by_default.
+# Los 8 identificadores core:* viven en permissions/*.toml. La lista JSON
+# vacía es la denegación definitiva del slice: no se auto-conceden.
+# Espejo de neg_capability_deny_by_default.
 check(
     "NEG-001 capability JSON sin permisos inline",
     cap.get("permissions") == [],
