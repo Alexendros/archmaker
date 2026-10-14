@@ -55,14 +55,14 @@ Alcance: walking skeleton MVP-0 (7 operaciones CorePort v0)
 
 ## 3. Tests negativos de protocolo y capacidades (AM-PROTO-001/002)
 
-| Escenario                                   | Ventana/Comando                               | Código esperado    | Test                                        |
-| ------------------------------------------- | --------------------------------------------- | ------------------ | ------------------------------------------- |
-| Comando permitido en ventana denegada       | `dialog` → `export_artifact`                  | AM-PROTO-001       | `denied_invoke_returns_typed_proto_001`     |
-| Comando desconocido en ventana permitida    | `main` → `import_draft`                       | AM-PROTO-002       | `unknown_command_returns_typed_proto_002`   |
-| Ventana desconocida                         | `attacker` → `create_draft`                   | AM-PROTO-002       | `unknown_window_returns_typed_proto_002`    |
-| JSON malformado                             | `main` → `create_draft`                       | AM-SCHEMA-001      | `malformed_json_returns_typed_schema_error` |
-| Capacidad `main` solo 7 permisos            | `src-tauri/capabilities/main.json`            | 7 permisos exactos | `neg_capability_deny_by_default`            |
-| Capacidad `dialog`/`picker` deny-by-default | `src-tauri/capabilities/{dialog,picker}.json` | 0 permisos         | `neg_capabilities` (5 tests)                |
+| Escenario                                   | Ventana/Comando                               | Código esperado                               | Test                                        |
+| ------------------------------------------- | --------------------------------------------- | --------------------------------------------- | ------------------------------------------- |
+| Comando permitido en ventana denegada       | `dialog` → `export_artifact`                  | AM-PROTO-001                                  | `denied_invoke_returns_typed_proto_001`     |
+| Comando desconocido en ventana permitida    | `main` → `import_draft`                       | AM-PROTO-002                                  | `unknown_command_returns_typed_proto_002`   |
+| Ventana desconocida                         | `attacker` → `create_draft`                   | AM-PROTO-002                                  | `unknown_window_returns_typed_proto_002`    |
+| JSON malformado                             | `main` → `create_draft`                       | AM-SCHEMA-001                                 | `malformed_json_returns_typed_schema_error` |
+| Capacidad `main` con lista vacía            | `src-tauri/capabilities/main.json`            | 0 permisos JSON; 8 TOML `core:*` sin conceder | `neg_capability_deny_by_default`            |
+| Capacidad `dialog`/`picker` deny-by-default | `src-tauri/capabilities/{dialog,picker}.json` | 0 permisos                                    | `neg_capabilities` (5 tests)                |
 
 ## 4. Resultados de ejecución CI local (2026-10-06)
 

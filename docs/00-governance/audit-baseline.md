@@ -37,7 +37,9 @@ Registrar de forma inmutable el estado de partida de la remediación `planning-v
 
 ## Declaración de parada (semáforo rojo)
 
-`init-work.sh` marcó **P0: posible secreto** en `reference/v5.1/App.tsx:180` e `reference/v5.1/index.html:203`. Inspección directa: ambas líneas contienen el token de diseño CSS `{ token: "--rh-red", hex: "#ee0000", oklch: "oklch(0.62 0.24 29)", usage: "primary action" }`. **Clasificación: falso positivo** — el escáner interpreta `token:` como asignación de credencial. No hay secreto y no se requiere rotación. Acción derivada: allowlist del patrón `token:` de tokens de diseño en el gate de escaneo (AUD-022).
+`init-work.sh` marcó **P0: posible secreto** en `reference/v5.1/App.tsx:180` e `reference/v5.1/index.html:203`. Inspección directa: ambas líneas contienen el token de diseño CSS `{ token: "--rh-red", hex: "#ee0000", oklch: "oklch(0.62 0.24 29)", usage: "primary action" }`. **Clasificación: falso positivo** — el escáner interpreta `token:` como asignación de credencial. No hay secreto y no se requiere rotación. Acción derivada: allowlist estrecha del patrón `token:` de tokens de diseño en el gate de escaneo. El id AUD-022 del plan de remediación sigue siendo «Prove clean CI» y no es esta allowlist.
+
+Actualización 2026-10-14: el escáner global `plan-continue` ignora solo `token` cuyo valor es una custom property CSS (`--…`) o el handle de fixture `opaque-handle.json`. El mismo patrón sigue marcando contraseñas, `api_key` y el resto de asignaciones `token`.
 
 ## Hallazgos
 

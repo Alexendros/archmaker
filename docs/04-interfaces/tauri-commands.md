@@ -54,9 +54,8 @@ fases posteriores.
 
 ## Capabilities por ventana
 
-- MVP: una sola ventana `main` con los ocho comandos de la tabla (v0 + MVP-1).
-- **Deny-by-default**: ninguna ventana recibe permisos implícitos; `main` declara solo los comandos
-  que invoca (ADR-0002).
+- MVP: una sola ventana `main`. Los ocho comandos de la tabla (v0 + MVP-1) tienen identificador `core:*` en TOML.
+- **Deny-by-default**: la lista `permissions` de `main.json` está vacía a propósito. Esa lista vacía es la denegación definitiva del slice; los TOML no se conceden solos (ADR-0002).
 - Ventanas futuras (no MVP) tendrán su propia capability separada; la ventana de plan/runner (v1)
   **no** incluirá `export_artifact` ni escritura fuera de su scope.
 - Sin `shell:*`, sidecars, root ni discos en el MVP.
