@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://archmaker.dev/schemas/clause-rule.schema.json",
+  "title": "CLAUSE-RULE-001 — Rules travel with the application",
+  "description": "A blocked selection satisfies no format. Informative rules do not block alone. A derivation is explained and does not mutate silently. Presets are not applied. Evaluation uses the normalized AST, not legacy count_gt at runtime.",
+  "$comment": "ADR-0011 / CLAUSE-RULE-001. Aligns with RULE-COMP-001, RULE-KERNEL-001, RULE-BROWSER-001, RULE-DM-001.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "blocking",
+    "presetsApplied",
+    "evaluatedOperatorForm",
+    "diagnostics"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "const": "CLAUSE-RULE-001"
+    },
+    "blocking": {
+      "type": "boolean"
+    },
+    "presetsApplied": {
+      "type": "array",
+      "maxItems": 0,
+      "items": {
+        "type": "string",
+        "enum": ["minimal-dev", "full-workstation", "gaming"]
+      }
+    },
+    "evaluatedOperatorForm": {
+      "description": "Runtime form after normalizing legacy count_gt.",
+      "type": "string",
+      "enum": ["gt-count", "required", "eq", "info-count"]
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["code", "severity"],
+        "properties": {
+          "code": {
+            "type": "string",
+            "pattern": "^AM-[A-Z]+-[0-9]{3}$"
+          },
+          "severity": {
+            "type": "boolean"
+          },
+          "explained": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "silentMutation": {
+      "type": "boolean",
+      "const": false
+    }
+  }
+}

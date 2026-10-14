@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://archmaker.dev/schemas/clause-option.schema.json",
+  "title": "CLAUSE-OPTION-001 — Option fidelity",
+  "description": "A loaded option appears with its package name in the formats that must carry it. An explicit gap is not invented. A non-redistributable -bin candidate may be named as deferred fetch and its binary does not travel. A cmd field never appears. pacstrap is never content.",
+  "$comment": "ADR-0011 / CLAUSE-OPTION-001.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "loadedPackageNames",
+    "gapOptionIds",
+    "forbiddenTokens",
+    "embeddedBinaries"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "const": "CLAUSE-OPTION-001"
+    },
+    "loadedPackageNames": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128,
+        "pattern": "^[a-z0-9][a-z0-9+._-]*$"
+      },
+      "uniqueItems": true
+    },
+    "gapOptionIds": {
+      "description": "Canonical ids that remain explicit gaps (not loaded).",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 387
+      },
+      "uniqueItems": true
+    },
+    "forbiddenTokens": {
+      "description": "Must be empty: no cmd, pacstrap, hooks or shell strings.",
+      "type": "array",
+      "maxItems": 0,
+      "items": {
+        "type": "string"
+      }
+    },
+    "embeddedBinaries": {
+      "description": "Must be empty: -bin blobs do not travel inside the artifact.",
+      "type": "array",
+      "maxItems": 0,
+      "items": {
+        "type": "string"
+      }
+    },
+    "deferredFetchNames": {
+      "description": "Non-redistributable package names cited only as deferred obtainment.",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128
+      },
+      "uniqueItems": true
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "id": "CLAUSE-BOOT-001",
+  "status": "satisfied",
+  "arch": "aarch64",
+  "firmware": "uefi",
+  "imageFormatAdmitted": true
+}

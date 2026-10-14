@@ -54,6 +54,7 @@ reviewers:
 | `dependency-rules.md`                         | DOC-ARCH-DEP-001 | draft     |
 | `adr/ADR-0001..ADR-0009`                      | ADR-0001..0009   | accepted  |
 | `adr/ADR-0010-marca-y-nombre-de-artefacto.md` | ADR-0010         | in-review |
+| `adr/ADR-0011-contrato-de-aplicacion.md`      | ADR-0011         | in-review |
 
 ## 03 — Datos
 

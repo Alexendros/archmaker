@@ -1,0 +1,26 @@
+{
+  "documentVersion": "vNext",
+  "schemaVersion": "1",
+  "contractId": "aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee",
+  "manifestDigest": {
+    "algorithm": "sha256",
+    "value": "1111111111111111111111111111111111111111111111111111111111111111"
+  },
+  "base": {
+    "distro": "arch-linux",
+    "arch": "x86_64",
+    "kind": "base-iso"
+  },
+  "format": "archmaker-profile",
+  "clauses": [
+    { "id": "CLAUSE-BASE-001", "required": true, "status": "pending" },
+    { "id": "CLAUSE-MANIFEST-001", "required": true, "status": "pending" },
+    { "id": "CLAUSE-OPTION-001", "required": true, "status": "pending" },
+    { "id": "CLAUSE-RULE-001", "required": true, "status": "pending" },
+    { "id": "CLAUSE-BYTES-001", "required": true, "status": "pending" },
+    { "id": "CLAUSE-HOST-001", "required": true, "status": "pending" },
+    { "id": "CLAUSE-BOOT-001", "required": true, "status": "not-applicable" }
+  ],
+  "packageNames": ["linux", "btrfs-progs", "firefox"],
+  "publicName": "derived-workstation"
+}

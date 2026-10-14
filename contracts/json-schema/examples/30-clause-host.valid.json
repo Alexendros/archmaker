@@ -1,0 +1,7 @@
+{
+  "id": "CLAUSE-HOST-001",
+  "spawnedProcesses": [],
+  "requiredNetworkForManifest": false,
+  "elevatedPrivileges": false,
+  "rejectedOutOfProfileNames": ["not-in-profile-pkg"]
+}

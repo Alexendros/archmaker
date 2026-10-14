@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://archmaker.dev/schemas/clause-bytes.schema.json",
+  "title": "CLAUSE-BYTES-001 — Deterministic bytes",
+  "description": "The same selection, catalog, base and format produce the same artifact bytes and binary digest. Changing one option changes the manifest digest. Changing format changes artifact bytes and leaves the manifest digest alone.",
+  "$comment": "ADR-0011 / CLAUSE-BYTES-001. NFR-DET-001.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "format",
+    "exportA",
+    "exportB",
+    "manifestDigestA",
+    "manifestDigestB"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "const": "CLAUSE-BYTES-001"
+    },
+    "format": {
+      "type": "string",
+      "enum": ["archmaker-profile", "archinstall-profile", "report"]
+    },
+    "exportA": {
+      "$ref": "#/$defs/exportSample"
+    },
+    "exportB": {
+      "$ref": "#/$defs/exportSample"
+    },
+    "manifestDigestA": {
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/contentDigest"
+    },
+    "manifestDigestB": {
+      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/contentDigest"
+    },
+    "sameSelection": {
+      "type": "boolean"
+    }
+  },
+  "$defs": {
+    "exportSample": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["binaryDigest"],
+      "properties": {
+        "binaryDigest": {
+          "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/binaryDigest"
+        }
+      }
+    }
+  }
+}

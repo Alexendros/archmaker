@@ -1,0 +1,7 @@
+{
+  "id": "CLAUSE-OPTION-001",
+  "loadedPackageNames": ["linux"],
+  "gapOptionIds": [],
+  "forbiddenTokens": ["pacstrap", "cmd"],
+  "embeddedBinaries": ["brave-bin.AppImage"]
+}

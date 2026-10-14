@@ -1,0 +1,59 @@
+name: Clause
+description: Cláusula del contrato de aplicación (ADR-0011)
+title: "[Clause] "
+labels: ["kind:clause"]
+body:
+  - type: input
+    id: clause_id
+    attributes:
+      label: Id de cláusula
+      description: Identificador cerrado CLAUSE-*-001.
+      placeholder: CLAUSE-BASE-001
+    validations:
+      required: true
+  - type: input
+    id: schema_path
+    attributes:
+      label: Ruta del schema
+      description: Norma JSON Schema Draft 2020-12 de esta cláusula.
+      placeholder: contracts/json-schema/clause-base.schema.json
+    validations:
+      required: true
+  - type: input
+    id: test_name
+    attributes:
+      label: Nombre del test
+      description: Función de test Rust de cumplimiento estricto.
+      placeholder: clause_base_001_accepts_valid_and_rejects_invalid
+    validations:
+      required: true
+  - type: dropdown
+    id: formats
+    attributes:
+      label: Formatos afectados
+      description: Targets DEC-001 sobre los que aplica la cláusula.
+      multiple: true
+      options:
+        - archmaker-profile
+        - archinstall-profile
+        - report
+    validations:
+      required: true
+  - type: dropdown
+    id: compliance
+    attributes:
+      label: Estado de cumplimiento
+      options:
+        - pending
+        - red
+        - verified
+      default: 0
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notas
+      description: Evidencia de rojo/verde, issues bloqueantes o exclusiones.
+    validations:
+      required: false

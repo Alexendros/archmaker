@@ -1,0 +1,17 @@
+{
+  "id": "CLAUSE-MANIFEST-001",
+  "manifestDigest": {
+    "algorithm": "sha256",
+    "value": "2222222222222222222222222222222222222222222222222222222222222222"
+  },
+  "formatA": "archmaker-profile",
+  "formatB": "report",
+  "digestAfterFormatA": {
+    "algorithm": "sha256",
+    "value": "2222222222222222222222222222222222222222222222222222222222222222"
+  },
+  "digestAfterFormatB": {
+    "algorithm": "sha256",
+    "value": "2222222222222222222222222222222222222222222222222222222222222222"
+  }
+}

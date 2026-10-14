@@ -1,4 +1,5 @@
 pub mod capability;
+pub mod contract;
 pub mod core;
 pub mod error;
 pub mod inputs;
@@ -11,6 +12,7 @@ pub use capability::{
     allowed_ops, check_invoke, check_invoke_named, denied_error, unknown_command_error, Window,
     ALL_OPS,
 };
+pub use contract::{verify_application_contract, verify_clause, ClauseVerdict, ContractVerdict};
 
 pub use archmaker_domain::{
     is_document_version, is_integer_version, is_semver, Artifact, ArtifactRef, BinaryDigest,

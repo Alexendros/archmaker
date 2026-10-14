@@ -1,0 +1,8 @@
+{
+  "id": "CLAUSE-OPTION-001",
+  "loadedPackageNames": ["linux", "firefox", "hyprland"],
+  "gapOptionIds": ["archmaker.boot.limine", "archmaker.pkg.git"],
+  "forbiddenTokens": [],
+  "embeddedBinaries": [],
+  "deferredFetchNames": ["brave-bin", "onlyoffice-bin"]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "CLAUSE-RULE-001",
+  "blocking": false,
+  "presetsApplied": [],
+  "evaluatedOperatorForm": "gt-count",
+  "diagnostics": [
+    {
+      "code": "AM-RULE-002",
+      "severity": false,
+      "explained": true
+    }
+  ],
+  "silentMutation": false
+}

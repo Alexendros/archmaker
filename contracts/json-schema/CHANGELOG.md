@@ -21,6 +21,20 @@ declaran `schemaVersion: "1"`; la etiqueta `v0` es la revisión del contrato, no
 `schemaVersion`). Cambiar la forma de un contrato exige incrementar `schemaVersion` y una
 _migration note_ (`docs/03-data/versioning-migrations.md`).
 
+## v0.2 — Contrato de aplicación (ADR-0011)
+
+### Añadidos
+
+- `application-contract.schema.json`: contrato generado desde la selección resuelta, base
+  Arch Linux x86_64 y formato DEC-001.
+- `clause-base.schema.json` … `clause-boot.schema.json`: siete cláusulas con `$id` propio.
+- Corpus `24-application-contract.*` y `25-clause-base.*` … `31-clause-boot.*`.
+
+### Notas
+
+- No se amplía el enum de targets de `artifact.schema.json` (DEC-001 intacto).
+- `CLAUSE-BOOT-001` no admite `status: satisfied` mientras el formato de imagen esté cerrado.
+
 ## v0.1 — MVP-1 (domain / catalog / migration)
 
 ### Modificados
