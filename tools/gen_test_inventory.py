@@ -28,6 +28,7 @@ RUST_TEST_TYPES = {
     'capabilities_negative': 'negative',
     'negative_capabilities': 'negative',
     'core_contract': 'integration',
+    'application_contract': 'contract',
     'parity': 'integration',
     'invoke_negative': 'negative',
     'vectors': 'unit',
@@ -110,6 +111,16 @@ def scan_rust_tests() -> List[Dict[str, Any]]:
 def infer_covers(crate: str, test_file: str, test_fn: str) -> List[str]:
     covers = []
     combined = f"{crate} {test_file} {test_fn}".lower()
+
+    # ADR-0011 application-contract suite: every clause covers the in-scope export/validate axes.
+    if test_file == 'application_contract':
+        return [
+            'FR-VALIDATE-001',
+            'FR-MANIFEST-001',
+            'FR-EXPORT-001',
+            'NFR-DET-001',
+            'NFR-OFF-001',
+        ]
 
     keyword_map = {
         'draft': ['FR-DRAFT-001'],

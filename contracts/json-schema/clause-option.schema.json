@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://archmaker.dev/schemas/clause-option.schema.json",
   "title": "CLAUSE-OPTION-001 — Option fidelity",
-  "description": "A loaded option appears with its package name in the formats that must carry it. An explicit gap is not invented. A non-redistributable -bin candidate may be named as deferred fetch and its binary does not travel. A cmd field never appears. pacstrap is never content.",
+  "description": "A loaded option appears with its package name in the formats that must carry it. An explicit gap is not invented. A non-redistributable -bin candidate may be named as deferred fetch and its binary does not travel. Legacy command fields and host bootstrap tooling never appear as content.",
   "$comment": "ADR-0011 / CLAUSE-OPTION-001.",
   "type": "object",
   "additionalProperties": false,
@@ -39,7 +39,7 @@
       "uniqueItems": true
     },
     "forbiddenTokens": {
-      "description": "Must be empty: no cmd, pacstrap, hooks or shell strings.",
+      "description": "Must be empty: no legacy-command-field, host-bootstrap, hook or interpreter tokens.",
       "type": "array",
       "maxItems": 0,
       "items": {

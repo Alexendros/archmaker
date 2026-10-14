@@ -2,8 +2,8 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://archmaker.dev/schemas/clause-host.schema.json",
   "title": "CLAUSE-HOST-001 — No host-side execution",
-  "description": "Fulfilling and verifying the contract does not launch pacstrap, mkarchiso, shell or root on the configurator host, and does not require network to resolve the manifest (NFR-OFF-001). A package name outside the sealed profile is rejected.",
-  "$comment": "ADR-0011 / CLAUSE-HOST-001.",
+  "description": "Fulfilling and verifying the contract does not launch host bootstrap tooling, image builders, interpreters or elevated privileges on the configurator host, and does not require network to resolve the manifest (NFR-OFF-001). A package name outside the sealed profile is rejected.",
+  "$comment": "ADR-0011 / CLAUSE-HOST-001. Process markers are opaque labels; runtime contracts never name prohibited host tools.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -24,7 +24,12 @@
       "maxItems": 0,
       "items": {
         "type": "string",
-        "enum": ["pacstrap", "mkarchiso", "bash", "sh", "sudo"]
+        "enum": [
+          "host-bootstrap",
+          "host-image-build",
+          "host-interpreter",
+          "host-elevated"
+        ]
       }
     },
     "requiredNetworkForManifest": {

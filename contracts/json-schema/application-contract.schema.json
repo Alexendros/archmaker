@@ -65,7 +65,7 @@
       }
     },
     "packageNames": {
-      "description": "Package names projected from loaded options for the admitted format. No cmd, no pacstrap.",
+      "description": "Package names projected from loaded options for the admitted format. No legacy command fields and no host bootstrap tooling as content.",
       "type": "array",
       "items": {
         "type": "string",

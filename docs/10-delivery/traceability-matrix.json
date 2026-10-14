@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "generated_at": "1791830448",
-    "git_sha": "dbf6fe1ce047ef1a552e2e07b18864711934d9ae",
+    "generated_at": "1791970330",
+    "git_sha": "7874e9a641179d2fe8b799d52585c29b62bd0ade",
     "requirements_file": "docs/01-product/requirements.md",
     "inventory_file": "docs/10-delivery/tests-inventory.json",
     "validators_file": "docs/10-delivery/validators.json"
@@ -71,7 +71,7 @@
       "evidence_count": 35,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["schema", "unit", "negative", "integration"],
+      "evidence_types": ["schema", "negative", "unit", "integration"],
       "coverage_status": "covered"
     },
     {
@@ -128,7 +128,7 @@
       "evidence_count": 42,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["schema", "unit", "negative", "integration"],
+      "evidence_types": ["schema", "negative", "unit", "integration"],
       "coverage_status": "covered"
     },
     {
@@ -160,13 +160,21 @@
         "TST-ARCHMAKER-CORE-CORE_CONTRACT-EXPORT_ADAPTERS_DIVERGE_BYTES_AND_FILL_CONTENT",
         "TST-ARCHMAKER-CORE-CORE_CONTRACT-EXPORT_ARTIFACT_REJECTS_BAD_TARGET_AND_HANDLE",
         "TST-ARCHMAKER-CORE-CORE_CONTRACT-END_TO_END_CREATE_SAVE_RESOLVE_VALIDATE_BUILD_EXPORT",
+        "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-APPLICATION_CONTRACT_ACCEPTS_VALID_AND_REJECTS_INVALID",
+        "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_BASE_001_ACCEPTS_VALID_AND_REJECTS_INVALID",
+        "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_MANIFEST_001_DIGEST_STABLE_ACROSS_FORMATS",
+        "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_OPTION_001_REJECTS_CMD_PACSTRAP_AND_EMBEDDED_BINARIES",
+        "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_RULE_001_REJECTS_PRESETS_AND_SILENT_MUTATION",
+        "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_BYTES_001_IDEMPOTENT_EXPORT_SAME_SELECTION",
+        "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_HOST_001_NO_SPAWN_NO_ROOT_NO_NETWORK_FOR_MANIFEST",
+        "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_BOOT_001_REJECTS_SATISFIED_UNTIL_IMAGE_ADMITTED",
         "TST-WEB-MOCK-FLOW.PLAYWRIGHT"
       ],
       "validators": [],
-      "evidence_count": 5,
+      "evidence_count": 13,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["unit", "integration"],
+      "evidence_types": ["contract", "unit", "integration"],
       "coverage_status": "covered"
     },
     {
@@ -214,6 +222,14 @@
         "TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-DENIED_ERROR_SOURCE_IDENTIFIES_WINDOW_AND_COMMAND",
         "TST-ARCHMAKER-CORE-CORE_CONTRACT-BUILD_MANIFEST_SEALED_AND_BLOCKED",
         "TST-ARCHMAKER-CORE-CORE_CONTRACT-BUILD_MANIFEST_HONORS_EXPECTED_RESOLUTION_DIGEST",
+        "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-APPLICATION_CONTRACT_ACCEPTS_VALID_AND_REJECTS_INVALID",
+        "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_BASE_001_ACCEPTS_VALID_AND_REJECTS_INVALID",
+        "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_MANIFEST_001_DIGEST_STABLE_ACROSS_FORMATS",
+        "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_OPTION_001_REJECTS_CMD_PACSTRAP_AND_EMBEDDED_BINARIES",
+        "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_RULE_001_REJECTS_PRESETS_AND_SILENT_MUTATION",
+        "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_BYTES_001_IDEMPOTENT_EXPORT_SAME_SELECTION",
+        "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_HOST_001_NO_SPAWN_NO_ROOT_NO_NETWORK_FOR_MANIFEST",
+        "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_BOOT_001_REJECTS_SATISFIED_UNTIL_IMAGE_ADMITTED",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_FS_OUTSIDE_SCOPE_NEVER_WRITTEN",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_ERRORS_ARE_TYPED_CATALOG_CODES",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_CAPABILITY_DENY_BY_DEFAULT",
@@ -233,15 +249,16 @@
         "VAL-SCHEMA-REFS",
         "VAL-NEG-CAPABILITIES"
       ],
-      "evidence_count": 34,
+      "evidence_count": 42,
       "has_executable_evidence": true,
       "passes_ci": true,
       "evidence_types": [
+        "contract",
+        "schema",
         "negative",
-        "integration",
-        "canonicalize",
         "unit",
-        "schema"
+        "canonicalize",
+        "integration"
       ],
       "coverage_status": "covered"
     },
@@ -313,13 +330,21 @@
         "TST-ARCHMAKER-WASM-PARITY-PARITY_VALIDATE_DIAGNOSTICS",
         "TST-ARCHMAKER-CORE-CORE_CONTRACT-VALIDATE_DRAFT_CLEAN_AND_BLOCKING",
         "TST-ARCHMAKER-CORE-CORE_CONTRACT-END_TO_END_CREATE_SAVE_RESOLVE_VALIDATE_BUILD_EXPORT",
+        "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-APPLICATION_CONTRACT_ACCEPTS_VALID_AND_REJECTS_INVALID",
+        "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_BASE_001_ACCEPTS_VALID_AND_REJECTS_INVALID",
+        "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_MANIFEST_001_DIGEST_STABLE_ACROSS_FORMATS",
+        "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_OPTION_001_REJECTS_CMD_PACSTRAP_AND_EMBEDDED_BINARIES",
+        "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_RULE_001_REJECTS_PRESETS_AND_SILENT_MUTATION",
+        "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_BYTES_001_IDEMPOTENT_EXPORT_SAME_SELECTION",
+        "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_HOST_001_NO_SPAWN_NO_ROOT_NO_NETWORK_FOR_MANIFEST",
+        "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_BOOT_001_REJECTS_SATISFIED_UNTIL_IMAGE_ADMITTED",
         "TST-WEB-MOCK-FLOW.PLAYWRIGHT"
       ],
       "validators": [],
-      "evidence_count": 4,
+      "evidence_count": 12,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["unit", "integration"],
+      "evidence_types": ["contract", "unit", "integration"],
       "coverage_status": "covered"
     },
     {
@@ -358,13 +383,27 @@
         "TST-ARCHMAKER-WASM-PARITY-PARITY_VALIDATE_DIAGNOSTICS",
         "TST-ARCHMAKER-WASM-PARITY-PARITY_RESOLVE_AND_MANIFEST",
         "TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-MALFORMED_JSON_RETURNS_TYPED_SCHEMA_ERROR",
+        "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-APPLICATION_CONTRACT_ACCEPTS_VALID_AND_REJECTS_INVALID",
+        "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_BASE_001_ACCEPTS_VALID_AND_REJECTS_INVALID",
+        "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_MANIFEST_001_DIGEST_STABLE_ACROSS_FORMATS",
+        "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_OPTION_001_REJECTS_CMD_PACSTRAP_AND_EMBEDDED_BINARIES",
+        "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_RULE_001_REJECTS_PRESETS_AND_SILENT_MUTATION",
+        "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_BYTES_001_IDEMPOTENT_EXPORT_SAME_SELECTION",
+        "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_HOST_001_NO_SPAWN_NO_ROOT_NO_NETWORK_FOR_MANIFEST",
+        "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_BOOT_001_REJECTS_SATISFIED_UNTIL_IMAGE_ADMITTED",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_JSON_DEPTH_LIMIT_ABORTS"
       ],
       "validators": ["VAL-CANONICALIZE"],
-      "evidence_count": 13,
+      "evidence_count": 21,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["canonicalize", "unit", "negative", "integration"],
+      "evidence_types": [
+        "contract",
+        "negative",
+        "unit",
+        "canonicalize",
+        "integration"
+      ],
       "coverage_status": "covered"
     },
     {
@@ -409,12 +448,23 @@
       "in_scope": true,
       "deferred": false,
       "pending": false,
-      "tests": ["TST-WEB-MOCK-FLOW.PLAYWRIGHT", "TST-WEB-VISUAL-REGRESSION"],
+      "tests": [
+        "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-APPLICATION_CONTRACT_ACCEPTS_VALID_AND_REJECTS_INVALID",
+        "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_BASE_001_ACCEPTS_VALID_AND_REJECTS_INVALID",
+        "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_MANIFEST_001_DIGEST_STABLE_ACROSS_FORMATS",
+        "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_OPTION_001_REJECTS_CMD_PACSTRAP_AND_EMBEDDED_BINARIES",
+        "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_RULE_001_REJECTS_PRESETS_AND_SILENT_MUTATION",
+        "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_BYTES_001_IDEMPOTENT_EXPORT_SAME_SELECTION",
+        "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_HOST_001_NO_SPAWN_NO_ROOT_NO_NETWORK_FOR_MANIFEST",
+        "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_BOOT_001_REJECTS_SATISFIED_UNTIL_IMAGE_ADMITTED",
+        "TST-WEB-MOCK-FLOW.PLAYWRIGHT",
+        "TST-WEB-VISUAL-REGRESSION"
+      ],
       "validators": [],
-      "evidence_count": 2,
+      "evidence_count": 10,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["visual", "unit"],
+      "evidence_types": ["contract", "visual", "unit"],
       "coverage_status": "covered"
     },
     {
@@ -481,7 +531,7 @@
       "evidence_count": 28,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["unit", "negative"],
+      "evidence_types": ["negative", "unit"],
       "coverage_status": "covered"
     }
   ],

@@ -1,6 +1,6 @@
 {
-  "generated_at": "1791830448",
-  "git_sha": "dbf6fe1ce047ef1a552e2e07b18864711934d9ae",
+  "generated_at": "1791970330",
+  "git_sha": "7874e9a641179d2fe8b799d52585c29b62bd0ade",
   "tests": [
     {
       "id": "TST-ARCHMAKER-CANONICALIZATION-VECTORS-GOLDEN_CORPUS_BYTE_IDENTITY_AND_DIGEST",
@@ -491,6 +491,126 @@
       "description": "core_contract::save_draft_applies_changeset_replace"
     },
     {
+      "id": "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-APPLICATION_CONTRACT_ACCEPTS_VALID_AND_REJECTS_INVALID",
+      "type": "contract",
+      "location": "crates/archmaker-core/tests/application_contract.rs",
+      "command": "cargo test -p archmaker-core --test application_contract application_contract_accepts_valid_and_rejects_invalid",
+      "workflow": "ci",
+      "covers": [
+        "FR-VALIDATE-001",
+        "FR-MANIFEST-001",
+        "FR-EXPORT-001",
+        "NFR-DET-001",
+        "NFR-OFF-001"
+      ],
+      "description": "application_contract::application_contract_accepts_valid_and_rejects_invalid"
+    },
+    {
+      "id": "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_BASE_001_ACCEPTS_VALID_AND_REJECTS_INVALID",
+      "type": "contract",
+      "location": "crates/archmaker-core/tests/application_contract.rs",
+      "command": "cargo test -p archmaker-core --test application_contract clause_base_001_accepts_valid_and_rejects_invalid",
+      "workflow": "ci",
+      "covers": [
+        "FR-VALIDATE-001",
+        "FR-MANIFEST-001",
+        "FR-EXPORT-001",
+        "NFR-DET-001",
+        "NFR-OFF-001"
+      ],
+      "description": "application_contract::clause_base_001_accepts_valid_and_rejects_invalid"
+    },
+    {
+      "id": "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_MANIFEST_001_DIGEST_STABLE_ACROSS_FORMATS",
+      "type": "contract",
+      "location": "crates/archmaker-core/tests/application_contract.rs",
+      "command": "cargo test -p archmaker-core --test application_contract clause_manifest_001_digest_stable_across_formats",
+      "workflow": "ci",
+      "covers": [
+        "FR-VALIDATE-001",
+        "FR-MANIFEST-001",
+        "FR-EXPORT-001",
+        "NFR-DET-001",
+        "NFR-OFF-001"
+      ],
+      "description": "application_contract::clause_manifest_001_digest_stable_across_formats"
+    },
+    {
+      "id": "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_OPTION_001_REJECTS_CMD_PACSTRAP_AND_EMBEDDED_BINARIES",
+      "type": "contract",
+      "location": "crates/archmaker-core/tests/application_contract.rs",
+      "command": "cargo test -p archmaker-core --test application_contract clause_option_001_rejects_cmd_pacstrap_and_embedded_binaries",
+      "workflow": "ci",
+      "covers": [
+        "FR-VALIDATE-001",
+        "FR-MANIFEST-001",
+        "FR-EXPORT-001",
+        "NFR-DET-001",
+        "NFR-OFF-001"
+      ],
+      "description": "application_contract::clause_option_001_rejects_cmd_pacstrap_and_embedded_binaries"
+    },
+    {
+      "id": "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_RULE_001_REJECTS_PRESETS_AND_SILENT_MUTATION",
+      "type": "contract",
+      "location": "crates/archmaker-core/tests/application_contract.rs",
+      "command": "cargo test -p archmaker-core --test application_contract clause_rule_001_rejects_presets_and_silent_mutation",
+      "workflow": "ci",
+      "covers": [
+        "FR-VALIDATE-001",
+        "FR-MANIFEST-001",
+        "FR-EXPORT-001",
+        "NFR-DET-001",
+        "NFR-OFF-001"
+      ],
+      "description": "application_contract::clause_rule_001_rejects_presets_and_silent_mutation"
+    },
+    {
+      "id": "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_BYTES_001_IDEMPOTENT_EXPORT_SAME_SELECTION",
+      "type": "contract",
+      "location": "crates/archmaker-core/tests/application_contract.rs",
+      "command": "cargo test -p archmaker-core --test application_contract clause_bytes_001_idempotent_export_same_selection",
+      "workflow": "ci",
+      "covers": [
+        "FR-VALIDATE-001",
+        "FR-MANIFEST-001",
+        "FR-EXPORT-001",
+        "NFR-DET-001",
+        "NFR-OFF-001"
+      ],
+      "description": "application_contract::clause_bytes_001_idempotent_export_same_selection"
+    },
+    {
+      "id": "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_HOST_001_NO_SPAWN_NO_ROOT_NO_NETWORK_FOR_MANIFEST",
+      "type": "contract",
+      "location": "crates/archmaker-core/tests/application_contract.rs",
+      "command": "cargo test -p archmaker-core --test application_contract clause_host_001_no_spawn_no_root_no_network_for_manifest",
+      "workflow": "ci",
+      "covers": [
+        "FR-VALIDATE-001",
+        "FR-MANIFEST-001",
+        "FR-EXPORT-001",
+        "NFR-DET-001",
+        "NFR-OFF-001"
+      ],
+      "description": "application_contract::clause_host_001_no_spawn_no_root_no_network_for_manifest"
+    },
+    {
+      "id": "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_BOOT_001_REJECTS_SATISFIED_UNTIL_IMAGE_ADMITTED",
+      "type": "contract",
+      "location": "crates/archmaker-core/tests/application_contract.rs",
+      "command": "cargo test -p archmaker-core --test application_contract clause_boot_001_rejects_satisfied_until_image_admitted",
+      "workflow": "ci",
+      "covers": [
+        "FR-VALIDATE-001",
+        "FR-MANIFEST-001",
+        "FR-EXPORT-001",
+        "NFR-DET-001",
+        "NFR-OFF-001"
+      ],
+      "description": "application_contract::clause_boot_001_rejects_satisfied_until_image_admitted"
+    },
+    {
       "id": "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_FS_OUTSIDE_SCOPE_NEVER_WRITTEN",
       "type": "negative",
       "location": "crates/archmaker-core/tests/negative_capabilities.rs",
@@ -766,6 +886,16 @@
       "covers": [],
       "description": "Validador gates",
       "transversal": true
+    },
+    {
+      "id": "VAL-HTML_CATALOG_MATRIX",
+      "type": "doc",
+      "location": "tools/html_catalog_matrix.py",
+      "command": "python3 tools/html_catalog_matrix.py",
+      "workflow": "ci",
+      "covers": [],
+      "description": "Validador html_catalog_matrix",
+      "transversal": false
     },
     {
       "id": "VAL-TRACEABILITY",
