@@ -26,3 +26,4 @@
 - No modificar el diseño visual heredado salvo corrección trazable de accesibilidad, consistencia o mantenibilidad.
 - No añadir dependencias o contratos sin FR/NFR y ADR cuando proceda.
 - Cada PR declara IDs de requisitos, riesgos, amenazas, validadores y pruebas afectados.
+- No fusionar a `main` mientras exista algún check de CI en fallo o pendiente: la integración solo es válida con la suite completa en verde.
