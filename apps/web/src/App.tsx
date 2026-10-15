@@ -36,6 +36,26 @@ const OPTIONS = [
   },
 ];
 
+const BOOT_BUTTONS = [
+  {
+    id: "archmaker.boot.systemd-boot",
+    stepId: "archmaker.base.boot",
+    title: "systemd-boot",
+  },
+  {
+    id: "archmaker.boot.grub",
+    stepId: "archmaker.base.boot",
+    title: "GRUB",
+  },
+  {
+    id: "archmaker.boot.limine",
+    stepId: "archmaker.base.boot",
+    title: "Limine",
+  },
+];
+
+const INITIAL_BOOT_ID = BOOT_BUTTONS[0].id;
+
 const EXPORT_TARGETS = [
   "archmaker-profile",
   "archinstall-profile",
@@ -133,6 +153,18 @@ export function App({ port }: Props) {
     setInspector(`${opt.title}: ${opt.id} en ${opt.stepId}.`);
     markStep(1, "✓");
     announce("status", `${opt.title} ${already ? "quitada" : "seleccionada"}.`);
+  }
+
+  function onBootButton(opt: (typeof BOOT_BUTTONS)[number]): void {
+    if (!draft) {
+      announce("alert", "Crea primero el draft (paso 1).");
+      return;
+    }
+    const next = withSelection(draft, singleSelection(opt.stepId, opt.id));
+    setDraft(next);
+    setInspector(`${opt.title}: ${opt.id} en ${opt.stepId}.`);
+    markStep(1, "✓");
+    announce("status", `${opt.title} seleccionada.`);
   }
 
   async function onResolve(): Promise<void> {
@@ -330,6 +362,29 @@ export function App({ port }: Props) {
                     onClick={() => onToggleOption(o)}
                   >
                     <span className="option-title">{o.title}</span>
+                    <span className="option-state">
+                      {selected ? "● Seleccionada" : "○ Sin seleccionar"}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+            <div role="radiogroup" aria-label="Bootloader">
+              {BOOT_BUTTONS.map((option) => {
+                const selected = draft
+                  ? selectedIds.has(option.id)
+                  : option.id === INITIAL_BOOT_ID;
+                return (
+                  <button
+                    key={option.id}
+                    type="button"
+                    className="option-card"
+                    role="radio"
+                    aria-checked={selected}
+                    data-option-id={option.id}
+                    onClick={() => onBootButton(option)}
+                  >
+                    <span className="option-title">{option.title}</span>
                     <span className="option-state">
                       {selected ? "● Seleccionada" : "○ Sin seleccionar"}
                     </span>

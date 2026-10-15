@@ -9,14 +9,26 @@ test.describe("MockCorePort flow", () => {
     await page.goto(BASE_URL);
     await page.waitForLoadState("networkidle");
 
+    const systemdBoot = page.getByRole("radio", { name: /systemd-boot/i });
+    await expect(systemdBoot).toBeChecked();
+
     await page.getByRole("button", { name: "Crear draft" }).click();
     await expect(page.locator("#toast-region")).toContainText("Draft creado");
+    await expect(systemdBoot).toBeChecked();
+
+    await page.getByRole("radio", { name: /GRUB/i }).click();
+    await expect(page.getByRole("radio", { name: /GRUB/i })).toBeChecked();
+    await expect(systemdBoot).not.toBeChecked();
+    await page.getByRole("radio", { name: /Limine/i }).click();
+    await expect(page.getByRole("radio", { name: /Limine/i })).toBeChecked();
+    await systemdBoot.click();
+    await expect(systemdBoot).toBeChecked();
 
     await page.getByRole("checkbox", { name: /Kernel Linux/i }).click();
     await page.getByRole("checkbox", { name: /Escritorio GNOME/i }).click();
 
     await page.getByRole("button", { name: "Resolver draft" }).click();
-    await expect(page.locator("#resolve-out")).toContainText("2 selecciones");
+    await expect(page.locator("#resolve-out")).toContainText("3 selecciones");
 
     await page.getByRole("button", { name: "Validar draft" }).click();
     await expect(page.locator("#validation-panel")).toContainText(

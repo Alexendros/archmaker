@@ -85,7 +85,15 @@ export class MockCorePort implements CorePort {
       revision: 0,
       catalogRef: input.catalogRef,
       targetRef: input.targetRef,
-      selections: [],
+      selections: [
+        {
+          stepId: "archmaker.base.boot",
+          value: {
+            kind: "single",
+            optionId: "archmaker.boot.systemd-boot",
+          },
+        },
+      ],
     };
     this.drafts.set(id, draft);
     return { ok: true, value: { ...draft } };
