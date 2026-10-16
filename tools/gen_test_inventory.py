@@ -54,6 +54,12 @@ PYTHON_VALIDATORS = {
         'type': 'doc',
         'transversal': True,
     },
+    'check_product_closure.py': {
+        'id': 'VAL-PRODUCT-CLOSURE',
+        'covers': [],
+        'type': 'doc',
+        'transversal': True,
+    },
 }
 
 WEB_TEST_TYPES = {
