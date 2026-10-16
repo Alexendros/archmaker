@@ -1,26 +1,393 @@
 {
   "algorithm": "sha256",
+  "schemaVersion": 1,
+  "minFixturesPerTarget": 20,
+  "supportedTargets": [
+    "archmaker-profile",
+    "archinstall-profile",
+    "report"
+  ],
   "files": {
-    "report-sample.md": {
-      "sha256": "31c78d99ecb381840aec04811d812d74eff3104be72067074bd444f61201256e",
-      "sizeBytes": 71,
-      "class": "delivery"
+    "archmaker-profile-00.json": {
+      "sha256": "914222c8c868b29d70f131783473a33a480b77f5096b8794c518a70f77a5a200",
+      "sizeBytes": 63,
+      "class": "delivery",
+      "target": "archmaker-profile"
     },
-    "profile-sample.json": {
-      "sha256": "0712705493ea51cff62c2c060f51657cc4c8c7b02cf1112c6456bae598cc3205",
-      "sizeBytes": 62,
-      "class": "delivery"
+    "archinstall-profile-00.json": {
+      "sha256": "2997f0cfbc07354706dc534702bc42d6c9456f892bfc7232c6430f8a5b4a6c7b",
+      "sizeBytes": 65,
+      "class": "delivery",
+      "target": "archinstall-profile"
     },
-    "archinstall-sample.json": {
-      "sha256": "0559120ba6677a144c4e0b31470507db5e9124dfa329fd55b6b174b3a1b6413e",
-      "sizeBytes": 57,
-      "class": "delivery"
+    "report-00.md": {
+      "sha256": "5396566d6f3ac6d91b9cfb59756e07b976724855e1313550469fde83b4abffbd",
+      "sizeBytes": 31,
+      "class": "delivery",
+      "target": "report"
+    },
+    "archmaker-profile-01.json": {
+      "sha256": "7098c724002300870061b373f1aa3b234e02975c800c265e59d0c9bc9167a353",
+      "sizeBytes": 63,
+      "class": "delivery",
+      "target": "archmaker-profile"
+    },
+    "archinstall-profile-01.json": {
+      "sha256": "642be67faea8a783448520532eb26ea0283d196120f9148b015af71092e65bd6",
+      "sizeBytes": 65,
+      "class": "delivery",
+      "target": "archinstall-profile"
+    },
+    "report-01.md": {
+      "sha256": "21fa1750e5a26f42bb698cb37f43215e0eed636b4e2ee0dc08cc5e718119ee0a",
+      "sizeBytes": 31,
+      "class": "delivery",
+      "target": "report"
+    },
+    "archmaker-profile-02.json": {
+      "sha256": "48f5d645aa248f6933321536313b230a853d671ab8d1a4ed83f3dca08edd010c",
+      "sizeBytes": 63,
+      "class": "delivery",
+      "target": "archmaker-profile"
+    },
+    "archinstall-profile-02.json": {
+      "sha256": "f52c75d94aaec76d7269660f733f5ade9f393f64dc2db918ee016a694057c4b1",
+      "sizeBytes": 65,
+      "class": "delivery",
+      "target": "archinstall-profile"
+    },
+    "report-02.md": {
+      "sha256": "0ddd1d6741bd21e4cbc404625b3fc01fc3a2ace406837bedd4d79e116231de11",
+      "sizeBytes": 31,
+      "class": "delivery",
+      "target": "report"
+    },
+    "archmaker-profile-03.json": {
+      "sha256": "5cc0c8d9c0887d640dbe3b4b6c1211f6f3377fd9fdb40c9431270e84d591fe06",
+      "sizeBytes": 63,
+      "class": "delivery",
+      "target": "archmaker-profile"
+    },
+    "archinstall-profile-03.json": {
+      "sha256": "0764688ac2a375d0ffe9d0cf6742730f45c4b3dbec65e65c7051fcbc9513f383",
+      "sizeBytes": 65,
+      "class": "delivery",
+      "target": "archinstall-profile"
+    },
+    "report-03.md": {
+      "sha256": "14417f1a9857610849aceab76700e1e95bb7cf2037bff31fcac9b48c4cf47e8a",
+      "sizeBytes": 31,
+      "class": "delivery",
+      "target": "report"
+    },
+    "archmaker-profile-04.json": {
+      "sha256": "d5edff74944abf37dc6bd6af949af7c1f9c922ee9d1c7167c5bf874a763737e2",
+      "sizeBytes": 63,
+      "class": "delivery",
+      "target": "archmaker-profile"
+    },
+    "archinstall-profile-04.json": {
+      "sha256": "2327d0ac297d820b34d4c7e56e6116441c717c5faf499656c26ff276c35b9da2",
+      "sizeBytes": 65,
+      "class": "delivery",
+      "target": "archinstall-profile"
+    },
+    "report-04.md": {
+      "sha256": "5dc4eea203588a8d54ce6ffd03e1facffaa991e5168b08ef715ce8f670c3c5d9",
+      "sizeBytes": 31,
+      "class": "delivery",
+      "target": "report"
+    },
+    "archmaker-profile-05.json": {
+      "sha256": "c042a4b57b99baaa0a3452f5f5fbcb0a92f2769ab82b70212f3e0b1587e4e241",
+      "sizeBytes": 63,
+      "class": "delivery",
+      "target": "archmaker-profile"
+    },
+    "archinstall-profile-05.json": {
+      "sha256": "e46056641ef8f9c30a1b8101e9d36749fd057794393eb0675447c106712c50a1",
+      "sizeBytes": 65,
+      "class": "delivery",
+      "target": "archinstall-profile"
+    },
+    "report-05.md": {
+      "sha256": "96f644d171c9c8db8830f2f719f7bbbbd0650027c2f14e6c816bd878a7066ae8",
+      "sizeBytes": 31,
+      "class": "delivery",
+      "target": "report"
+    },
+    "archmaker-profile-06.json": {
+      "sha256": "ccb0b032d654bcc72bcb36b545d3ee3c0bbb4dba06e770492621281ad977aead",
+      "sizeBytes": 63,
+      "class": "delivery",
+      "target": "archmaker-profile"
+    },
+    "archinstall-profile-06.json": {
+      "sha256": "bb01274f4c82f96cfc5fae9a0acb4bee295bda3466fd63de56e5d9ca90dfc262",
+      "sizeBytes": 65,
+      "class": "delivery",
+      "target": "archinstall-profile"
+    },
+    "report-06.md": {
+      "sha256": "20036a65c43613c378f0b2bdaa2d3dc3f4d20f335195e9dd935e629914042f2d",
+      "sizeBytes": 31,
+      "class": "delivery",
+      "target": "report"
+    },
+    "archmaker-profile-07.json": {
+      "sha256": "050e5c5425e4ac9426ae1b9e08be203ce07a4b87cf65604089b315d357b15d40",
+      "sizeBytes": 63,
+      "class": "delivery",
+      "target": "archmaker-profile"
+    },
+    "archinstall-profile-07.json": {
+      "sha256": "033107cbf78b8d8c33f7a01debd45f002197e3a5550d4e178eafcbf2e9365ea8",
+      "sizeBytes": 65,
+      "class": "delivery",
+      "target": "archinstall-profile"
+    },
+    "report-07.md": {
+      "sha256": "6053d8f23d80cd944b18352f38a92af88e3e56726e2128cd98764f98aaad6ddc",
+      "sizeBytes": 31,
+      "class": "delivery",
+      "target": "report"
+    },
+    "archmaker-profile-08.json": {
+      "sha256": "97e8aa3313d248d5c474f6912281b54c5c189e68a2efb30f0b89111f353415a1",
+      "sizeBytes": 63,
+      "class": "delivery",
+      "target": "archmaker-profile"
+    },
+    "archinstall-profile-08.json": {
+      "sha256": "37163f1d4d01c1b5f52db8cfc5af2eced9aedb53d156767caea6dc72cf916275",
+      "sizeBytes": 65,
+      "class": "delivery",
+      "target": "archinstall-profile"
+    },
+    "report-08.md": {
+      "sha256": "11548eda1b7d77724bac179f87355a70b889bb4c3dc946b3589e37a110dc1789",
+      "sizeBytes": 31,
+      "class": "delivery",
+      "target": "report"
+    },
+    "archmaker-profile-09.json": {
+      "sha256": "98f174cb9f408f86f15580566e9bdda9bbe3e18f7bbcbc4429dd50b5c23e2f55",
+      "sizeBytes": 63,
+      "class": "delivery",
+      "target": "archmaker-profile"
+    },
+    "archinstall-profile-09.json": {
+      "sha256": "77334642c72314880a864fc5575b788d8f6b07e621a9ad0e7bfa781aed976de1",
+      "sizeBytes": 65,
+      "class": "delivery",
+      "target": "archinstall-profile"
+    },
+    "report-09.md": {
+      "sha256": "9d19306eeca3fe0279a3a0fa1f7bc65fb1140184fb391058b6cd66ab599bf5e4",
+      "sizeBytes": 31,
+      "class": "delivery",
+      "target": "report"
+    },
+    "archmaker-profile-10.json": {
+      "sha256": "67b32dbbb36882905511445a00c909662547fe07d5b6e48503cac99db052334b",
+      "sizeBytes": 64,
+      "class": "delivery",
+      "target": "archmaker-profile"
+    },
+    "archinstall-profile-10.json": {
+      "sha256": "cf675f20029407681c525548de421af29f3cdeb78dc5c478713c91bd3462b02b",
+      "sizeBytes": 66,
+      "class": "delivery",
+      "target": "archinstall-profile"
+    },
+    "report-10.md": {
+      "sha256": "727c1af1fe703fb32c832c9e84841c46b80547d042542460aacc0fbf28b925e3",
+      "sizeBytes": 31,
+      "class": "delivery",
+      "target": "report"
+    },
+    "archmaker-profile-11.json": {
+      "sha256": "171792d49d9384fe27f5394f3c83192d30f42473827e00635d2e9360ecf183cf",
+      "sizeBytes": 64,
+      "class": "delivery",
+      "target": "archmaker-profile"
+    },
+    "archinstall-profile-11.json": {
+      "sha256": "74af93dcf7c77c0d0a74d8df957a6c1595d7161acd878a61716b23f288b36e43",
+      "sizeBytes": 66,
+      "class": "delivery",
+      "target": "archinstall-profile"
+    },
+    "report-11.md": {
+      "sha256": "6dc1aea0a31d91ef3a7fcc2f84f6ed9705406386099768cb0507dbeb8a58e4b6",
+      "sizeBytes": 31,
+      "class": "delivery",
+      "target": "report"
+    },
+    "archmaker-profile-12.json": {
+      "sha256": "0b5a3f065b8cd5ee55307fba46f0337346d9c59a732d1a3f18bc4a131b10832e",
+      "sizeBytes": 64,
+      "class": "delivery",
+      "target": "archmaker-profile"
+    },
+    "archinstall-profile-12.json": {
+      "sha256": "a9daed8467692ba00d045f6d9e0cfe1c28df7e958237f56b6ea1592209d2070b",
+      "sizeBytes": 66,
+      "class": "delivery",
+      "target": "archinstall-profile"
+    },
+    "report-12.md": {
+      "sha256": "d738dd2e437becc91395c3e5cb46316cdff867247a0837e16f1bbac24ab654de",
+      "sizeBytes": 31,
+      "class": "delivery",
+      "target": "report"
+    },
+    "archmaker-profile-13.json": {
+      "sha256": "cec44f364db36416d3fe19b8026c38734139770502c1c9f833ffe72909df2d16",
+      "sizeBytes": 64,
+      "class": "delivery",
+      "target": "archmaker-profile"
+    },
+    "archinstall-profile-13.json": {
+      "sha256": "06be7502e5a8b773f15926c4409fde8b9ecb253519f28200e4fbe34f8f15dca1",
+      "sizeBytes": 66,
+      "class": "delivery",
+      "target": "archinstall-profile"
+    },
+    "report-13.md": {
+      "sha256": "8c9f8ea2ddd79b1de11057109e1ccad5f652498a03384aaeeb54df15b8aa78fd",
+      "sizeBytes": 31,
+      "class": "delivery",
+      "target": "report"
+    },
+    "archmaker-profile-14.json": {
+      "sha256": "5d0b21dadfb627f910d58828c0698fa5927630e8c901a62511f12fc22e0bb76c",
+      "sizeBytes": 64,
+      "class": "delivery",
+      "target": "archmaker-profile"
+    },
+    "archinstall-profile-14.json": {
+      "sha256": "03cd0548cd495b98ade169ac20fa58fe1a61cc01128fd0f5e5d2992c736e16ac",
+      "sizeBytes": 66,
+      "class": "delivery",
+      "target": "archinstall-profile"
+    },
+    "report-14.md": {
+      "sha256": "0585dd05d7d790ea890311093a06131bd825269e6f817b791906df2844784276",
+      "sizeBytes": 31,
+      "class": "delivery",
+      "target": "report"
+    },
+    "archmaker-profile-15.json": {
+      "sha256": "cc48156fd3fb50a3923937c39400c7b7c030451e6f8fb8293a6ce184d23b4fac",
+      "sizeBytes": 64,
+      "class": "delivery",
+      "target": "archmaker-profile"
+    },
+    "archinstall-profile-15.json": {
+      "sha256": "cf55a29f428b6587b4c8acc08f5b6ef7bc443f579de4df85faafca5c1316ef38",
+      "sizeBytes": 66,
+      "class": "delivery",
+      "target": "archinstall-profile"
+    },
+    "report-15.md": {
+      "sha256": "f4a27531660128e3e94490f98ee685f32c7d81426b9aa871004d0d977365d0f0",
+      "sizeBytes": 31,
+      "class": "delivery",
+      "target": "report"
+    },
+    "archmaker-profile-16.json": {
+      "sha256": "7fcf07b93b762e35ec13eafc94bc406cba9f5f8ec0925d83a3ec65b9e161f961",
+      "sizeBytes": 64,
+      "class": "delivery",
+      "target": "archmaker-profile"
+    },
+    "archinstall-profile-16.json": {
+      "sha256": "3a7b4e00d2aab6f3c95c3fc4c4b5255847c315d65dc2ff92183d333a98562039",
+      "sizeBytes": 66,
+      "class": "delivery",
+      "target": "archinstall-profile"
+    },
+    "report-16.md": {
+      "sha256": "acb4bbf4e533c32b1c91ea501c2d25c6ef010a3163925b1908e532cf01396d7b",
+      "sizeBytes": 31,
+      "class": "delivery",
+      "target": "report"
+    },
+    "archmaker-profile-17.json": {
+      "sha256": "e1a66a2b3bd80ee38d244988df8265618418e33afed3d4de4e417570e2d9d380",
+      "sizeBytes": 64,
+      "class": "delivery",
+      "target": "archmaker-profile"
+    },
+    "archinstall-profile-17.json": {
+      "sha256": "e8f0d1ff1df1a996e663d685f2a4c6f0a58687fb4dd92388d8814224a0f3bf30",
+      "sizeBytes": 66,
+      "class": "delivery",
+      "target": "archinstall-profile"
+    },
+    "report-17.md": {
+      "sha256": "f3f7584b2e26865eb7a1c5e3cfe326fda70ed6c772c0020ed52b93ba313fcafc",
+      "sizeBytes": 31,
+      "class": "delivery",
+      "target": "report"
+    },
+    "archmaker-profile-18.json": {
+      "sha256": "9995b4f23c9c101cf28550df72d1493710231fce17dfc3d8adfdad0c24d1ff7d",
+      "sizeBytes": 64,
+      "class": "delivery",
+      "target": "archmaker-profile"
+    },
+    "archinstall-profile-18.json": {
+      "sha256": "de52ba531940b3fa56201e185347c418ecbcc95ebb94928fa64804a7e4124258",
+      "sizeBytes": 66,
+      "class": "delivery",
+      "target": "archinstall-profile"
+    },
+    "report-18.md": {
+      "sha256": "525126119fff8e2596de5e8e4232e210e2f17f0906ae04218c3967c4fdf5a614",
+      "sizeBytes": 31,
+      "class": "delivery",
+      "target": "report"
+    },
+    "archmaker-profile-19.json": {
+      "sha256": "be259b7ce474986e3d1da77f2485bad5021d698250968cb3cd0878f7f588ada6",
+      "sizeBytes": 64,
+      "class": "delivery",
+      "target": "archmaker-profile"
+    },
+    "archinstall-profile-19.json": {
+      "sha256": "9656627c006c7eaf5d5254cb1b5ca588274fa4e055946e6a7c27c6d150fb89a7",
+      "sizeBytes": 66,
+      "class": "delivery",
+      "target": "archinstall-profile"
+    },
+    "report-19.md": {
+      "sha256": "5d2c309f7b65c892c6db019b71aef5e2c90cd1055e810a7c2f56078658d37997",
+      "sizeBytes": 31,
+      "class": "delivery",
+      "target": "report"
     },
     "reject-empty.meta.json": {
-      "sha256": "4e3bb1b3f4d482f59d0c58e5420b5d13a236b0f4ee7838c1d26afa0df027784e",
-      "sizeBytes": 170,
+      "sha256": "ac2a46487d975195102e42361fbdb51aaef71cb3620d74b7af1bce579769f0c6",
+      "sizeBytes": 199,
+      "class": "negative-bytes"
+    },
+    "reject-digest-mismatch.meta.json": {
+      "sha256": "087185688c2193180b26b3ab154e5498269fe520e8800545c0265e77701aeec9",
+      "sizeBytes": 235,
+      "class": "negative-bytes"
+    },
+    "reject-bad-target.meta.json": {
+      "sha256": "684b114cdb3c3cb58dcadd3af70029761b691baaa6ec251205322772f77ffff0",
+      "sizeBytes": 142,
+      "class": "negative-bytes"
+    },
+    "reject-truncated-json.meta.json": {
+      "sha256": "156f91fb455dcdc26012159a08fdcc22de007186a3d8396d9054bf04d043b2be",
+      "sizeBytes": 246,
       "class": "negative-bytes"
     }
   },
-  "note": "F2 delivery corpus; not 20/target"
+  "note": "P5 delivery corpus: ≥20 fixtures/target + 4 rejects"
 }

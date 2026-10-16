@@ -49,8 +49,8 @@ Clasificación estática del inventario; no es certificación de navegador ni We
 | C-06 | architecture | corregido en F5 |
 | C-07 | architecture | corregido en F6 |
 
-Corpus versionado: 3 fixtures en `crates/archmaker-core/tests/fixtures/closure/`. El umbral
-propuesto de 20 casos por target **no** se marca cumplido.
+Corpus F0 (clases positive/negative/binary): 3 fixtures en `crates/archmaker-core/tests/fixtures/closure/`.
+Corpus de **entrega** P5: ≥20 fixtures por target en `…/closure/delivery/` (+ 4 rechazos).
 
 ## Matriz F7 — casos obligatorios
 
@@ -82,7 +82,7 @@ Residuales ya observados en inventario (no cierran aceptación):
 
 | Id | executed/passed (inventario) | Sigue pending |
 | --- | --- | --- |
-| F7-E2E-X3 | passed (3 intentos wasm-flow) | — |
+| F7-E2E-X3 | executable (3 invocaciones separadas `--workers=1 --retries=0`) | re-verificar con `--with-e2e` |
 | F7-OFFLINE | web passed (`wasm-offline`) | escritorio sin humo de red/portal |
 | F7-REG-F6 | mensajes F6 executable | — |
 | F7-P95 | web-ready P95 123 ms; web-prepare P95 58 ms (n=30) | desktop blocked; aceptación global de rendimiento no cerrada |
@@ -92,6 +92,6 @@ Residuales ya observados en inventario (no cierran aceptación):
 Quedan `pending`. No se usaron para aprobar nada. Detalle de producto vs harness nativo:
 [`honest-ux.md`](honest-ux.md).
 
-- Corpus de entrega: 20 casos por target soportado + 4 rechazos (propuesto).
+- Corpus de entrega: ≥20 fixtures por target soportado + 4 rechazos (P5 en `delivery/`).
 - Rendimiento de **producto**: ready ≤ 3.000 ms P95; prepare ≤ 1.000 ms P95; n ≥ 30;
   informe `product-p95-report.json`; desktop blocked impide aceptación global.

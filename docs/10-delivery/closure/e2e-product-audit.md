@@ -42,8 +42,10 @@ Controles esenciales: ver `ESSENTIAL_CONTROLS` en `apps/web/e2e-fidelity-helpers
 | --- | --- |
 | `mock-flow.playwright.test.ts` | Inventario + ejercicio F3 mock |
 | `wasm-flow.playwright.test.ts` | Motor real + digest + ejercicio F3 WASM |
+| `product-acceptance.playwright.test.ts` | P5: T-MIG sesión/cuota, teclado, stale/reentrada |
 | `consented-import` / `export-delivery` / `a11y` | F4 / F2 / axe (ya existentes) |
 | `pnpm --dir apps/web test-e2e:fidelity` | Subconjunto inventario + F3 mock |
+| `pnpm --dir apps/web test-f7:e2e-wasm-x3` | Tres invocaciones WASM separadas |
 
 ## Escritorio (F5)
 
@@ -65,5 +67,7 @@ pnpm --dir apps/web test-a11y:flow
 pnpm --dir apps/web test-e2e:fidelity
 pnpm --dir apps/web build:wasm   # si falta pkg
 pnpm --dir apps/web test-f7:e2e-wasm
+pnpm --dir apps/web test-f7:e2e-wasm-x3
+pnpm --dir apps/web test-p5:acceptance
 pnpm --dir apps/web test-a11y:axe
 ```

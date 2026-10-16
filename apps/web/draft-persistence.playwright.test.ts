@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 /**
  * Persistencia IndexedDB: se ejecuta en el page de Vite (no en el worker Node).
- * Métricas 20 ciclos edit-save-reopen: no alcanzadas aquí (5 ciclos enfocados).
+ * P5: 20 ciclos edit-save-reopen; claves técnicas archmaker-profiles / lastDraftId.
  */
 
 test.describe("draft-persistence F4 / T-MIG", () => {
@@ -197,16 +197,17 @@ test.describe("draft-persistence F4 / T-MIG", () => {
     ).toEqual({ kind: "text", value: "retried" });
   });
 
-  test("edit-save-reload cycle preserves normalized text field (×5)", async ({
+  test("edit-save-reload cycle preserves normalized text field (×20)", async ({
     page,
   }) => {
+    test.setTimeout(60_000);
     const hostnames = await page.evaluate(async () => {
       const mod = await import("/src/draft-persistence.ts");
       mod.resetPersistQueueForTests();
       mod.clearLastDraftId();
       const id = "55555555-5555-4555-8555-555555555555";
       const out: unknown[] = [];
-      for (let i = 0; i < 5; i += 1) {
+      for (let i = 0; i < 20; i += 1) {
         const hostname = `cycle-${i}`;
         await mod.persistDraftLocal({
           id,
@@ -239,13 +240,9 @@ test.describe("draft-persistence F4 / T-MIG", () => {
       }
       return out;
     });
-    expect(hostnames).toEqual([
-      { kind: "text", value: "cycle-0" },
-      { kind: "text", value: "cycle-1" },
-      { kind: "text", value: "cycle-2" },
-      { kind: "text", value: "cycle-3" },
-      { kind: "text", value: "cycle-4" },
-    ]);
+    expect(hostnames).toHaveLength(20);
+    expect(hostnames[0]).toEqual({ kind: "text", value: "cycle-0" });
+    expect(hostnames[19]).toEqual({ kind: "text", value: "cycle-19" });
   });
 
   test("T-MIG-03 persist error path exposes exportable copy when put fails", async ({

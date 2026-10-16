@@ -1,0 +1,11 @@
+{
+  "binaryDigest": {
+    "algorithm": "sha256",
+    "value": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+  },
+  "mediaType": "application/json",
+  "content": {
+    "incomplete": true
+  },
+  "reason": "truncated-profile"
+}

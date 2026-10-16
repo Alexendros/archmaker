@@ -88,6 +88,46 @@ fn valid_draft(core: &RealCore) -> Draft {
 }
 
 #[test]
+fn p5_independent_core_instances_share_no_draft_store() {
+    // P5: instancias de perfil independientes — mismo id en cores distintos no colisiona.
+    let a = RealCore::with_embedded().expect("core-a");
+    let b = RealCore::with_embedded().expect("core-b");
+    let id = "0d5e6b1a-4444-4a2b-9c3d-444444444444".to_string();
+    let draft_a = a
+        .create_draft(CreateDraftInput {
+            draft_id: Some(id.clone()),
+            catalog_ref: catalog_ref(),
+            target_ref: draft_target(),
+            preset_ref: None,
+            request_id: None,
+        })
+        .expect("create a");
+    let draft_b = b
+        .create_draft(CreateDraftInput {
+            draft_id: Some(id.clone()),
+            catalog_ref: catalog_ref(),
+            target_ref: draft_target(),
+            preset_ref: None,
+            request_id: None,
+        })
+        .expect("create b independiente");
+    assert_eq!(draft_a.id, draft_b.id);
+    assert!(a.stored_draft(&id).is_some());
+    assert!(b.stored_draft(&id).is_some());
+    // Dentro de una misma instancia sí hay colisión tipada.
+    let err = a
+        .create_draft(CreateDraftInput {
+            draft_id: Some(id),
+            catalog_ref: catalog_ref(),
+            target_ref: draft_target(),
+            preset_ref: None,
+            request_id: None,
+        })
+        .expect_err("colisión intra-instancia");
+    assert_eq!(err.code, "AM-DOC-002");
+}
+
+#[test]
 fn c01_draft_create_rejects_existing_id() {
     // F1: create_draft ya no sobrescribe; colisión tipada AM-DOC-002.
     let core = RealCore::with_embedded().expect("embedded");

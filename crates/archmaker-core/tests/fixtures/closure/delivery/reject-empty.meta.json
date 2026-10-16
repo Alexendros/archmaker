@@ -3,5 +3,6 @@
     "algorithm": "sha256",
     "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
   },
-  "mediaType": "application/json"
+  "mediaType": "application/json",
+  "reason": "bytes-missing"
 }
