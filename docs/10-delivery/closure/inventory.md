@@ -96,6 +96,14 @@ Pruebas: `crates/archmaker-core/tests/f0_findings.rs`. Corpus: `crates/archmaker
 
 Tras F1–F6 en `main`, la reejecución obligatoria vive en `f7-candidate.md` + `f7-required-cases.json` (`VAL-F7-CANDIDATE`). El manifiesto de evidencia permanece `result=pending`; no declara `RC_SHA_FUNCIONAL` ni aceptación independiente.
 
+Residuales de ejecución (agente / `--with-e2e`):
+
+| Id         | executed/passed                                      | Sigue pending                                      |
+| ---------- | ---------------------------------------------------- | -------------------------------------------------- |
+| F7-E2E-X3  | passed (3 intentos consecutivos wasm-flow, retries=0) | —                                                  |
+| F7-OFFLINE | web passed (`wasm-offline`)                          | escritorio sin humo de red/portal                  |
+| F7-REG-F6  | mensajes F6 executable                               | P95 n=30 (sin muestras; no se fabrican cifras)     |
+
 ## F8 — gobierno
 
 Alineación documental (sin distribución): `f8-governance.md`. Capas: baseline de código **passed**; aprobación funcional **pending**; release binaria **blocked**. F9 no abierto.
