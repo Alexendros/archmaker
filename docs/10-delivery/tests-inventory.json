@@ -1,6 +1,6 @@
 {
-  "generated_at": "1792191457",
-  "git_sha": "ad949587ebc6baed7d1269e8bc78f3229dafbe25",
+  "generated_at": "1792193807",
+  "git_sha": "535393dbcb997f46a47ae252d73f3e86ff5a4c06",
   "tests": [
     {
       "id": "TST-ARCHMAKER-CANONICALIZATION-VECTORS-GOLDEN_CORPUS_BYTE_IDENTITY_AND_DIGEST",
@@ -365,6 +365,17 @@
         "FR-MANIFEST-001"
       ],
       "description": "capabilities_negative::denied_error_source_identifies_window_and_command"
+    },
+    {
+      "id": "TST-ARCHMAKER-CORE-F0_FINDINGS-P5_INDEPENDENT_CORE_INSTANCES_SHARE_NO_DRAFT_STORE",
+      "type": "unit",
+      "location": "crates/archmaker-core/tests/f0_findings.rs",
+      "command": "cargo test -p archmaker-core --test f0_findings p5_independent_core_instances_share_no_draft_store",
+      "workflow": "ci",
+      "covers": [
+        "FR-DRAFT-001"
+      ],
+      "description": "f0_findings::p5_independent_core_instances_share_no_draft_store"
     },
     {
       "id": "TST-ARCHMAKER-CORE-F0_FINDINGS-C01_DRAFT_CREATE_REJECTS_EXISTING_ID",
@@ -1289,6 +1300,22 @@
       "description": "Web test consented-import.playwright"
     },
     {
+      "id": "TST-WEB-PRODUCT-ACCEPTANCE.PLAYWRIGHT",
+      "type": "unit",
+      "location": "apps/web/product-acceptance.playwright.test.ts",
+      "command": "cd apps/web && pnpm test product-acceptance.playwright",
+      "workflow": "ci",
+      "covers": [
+        "FR-DRAFT-001",
+        "FR-VALIDATE-001",
+        "FR-EXPORT-001",
+        "NFR-DET-001",
+        "NFR-MIG-001",
+        "NFR-OFF-001"
+      ],
+      "description": "Web test product-acceptance.playwright"
+    },
+    {
       "id": "TST-WEB-WASM-OFFLINE.PLAYWRIGHT",
       "type": "unit",
       "location": "apps/web/wasm-offline.playwright.test.ts",
@@ -1311,6 +1338,16 @@
         "NFR-SEC-001"
       ],
       "description": "Validador check_negative_capabilities",
+      "transversal": false
+    },
+    {
+      "id": "VAL-TEST_RUN_ARCHIFY_DIAGRAMS",
+      "type": "doc",
+      "location": "tools/test_run_archify_diagrams.py",
+      "command": "python3 tools/test_run_archify_diagrams.py",
+      "workflow": "ci",
+      "covers": [],
+      "description": "Validador test_run_archify_diagrams",
       "transversal": false
     },
     {
@@ -1381,6 +1418,16 @@
       "transversal": false
     },
     {
+      "id": "VAL-TEST_CHECK_PRODUCT_CLOSURE",
+      "type": "doc",
+      "location": "tools/test_check_product_closure.py",
+      "command": "python3 tools/test_check_product_closure.py",
+      "workflow": "ci",
+      "covers": [],
+      "description": "Validador test_check_product_closure",
+      "transversal": false
+    },
+    {
       "id": "VAL-PRODUCT-NAMING",
       "type": "doc",
       "location": "tools/check_product_naming.py",
@@ -1403,6 +1450,16 @@
       "transversal": false
     },
     {
+      "id": "VAL-PRODUCT-CLOSURE",
+      "type": "doc",
+      "location": "tools/check_product_closure.py",
+      "command": "python3 tools/check_product_closure.py",
+      "workflow": "ci",
+      "covers": [],
+      "description": "Validador check_product_closure",
+      "transversal": true
+    },
+    {
       "id": "VAL-RUN_F7_CANDIDATE_MATRIX",
       "type": "doc",
       "location": "tools/run_f7_candidate_matrix.py",
@@ -1410,6 +1467,36 @@
       "workflow": "ci",
       "covers": [],
       "description": "Validador run_f7_candidate_matrix",
+      "transversal": false
+    },
+    {
+      "id": "VAL-RUN_PRODUCT_P95_HARNESS",
+      "type": "doc",
+      "location": "tools/run_product_p95_harness.py",
+      "command": "python3 tools/run_product_p95_harness.py",
+      "workflow": "ci",
+      "covers": [],
+      "description": "Validador run_product_p95_harness",
+      "transversal": false
+    },
+    {
+      "id": "VAL-TEST_EVIDENCE_ADVERSARIAL",
+      "type": "doc",
+      "location": "tools/test_evidence_adversarial.py",
+      "command": "python3 tools/test_evidence_adversarial.py",
+      "workflow": "ci",
+      "covers": [],
+      "description": "Validador test_evidence_adversarial",
+      "transversal": false
+    },
+    {
+      "id": "VAL-TEST_RUN_PRODUCT_P95_HARNESS",
+      "type": "doc",
+      "location": "tools/test_run_product_p95_harness.py",
+      "command": "python3 tools/test_run_product_p95_harness.py",
+      "workflow": "ci",
+      "covers": [],
+      "description": "Validador test_run_product_p95_harness",
       "transversal": false
     },
     {
@@ -1488,6 +1575,16 @@
       "covers": [],
       "description": "Validador validate_traceability",
       "transversal": true
+    },
+    {
+      "id": "VAL-GEN_DELIVERY_CORPUS",
+      "type": "doc",
+      "location": "tools/gen_delivery_corpus.py",
+      "command": "python3 tools/gen_delivery_corpus.py",
+      "workflow": "ci",
+      "covers": [],
+      "description": "Validador gen_delivery_corpus",
+      "transversal": false
     }
   ]
 }

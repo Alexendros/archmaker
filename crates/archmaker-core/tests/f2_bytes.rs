@@ -184,10 +184,7 @@ fn f2_delivery_corpus_digests() {
     }
     for target in ["archmaker-profile", "archinstall-profile", "report"] {
         let n = per_target.get(target).copied().unwrap_or(0);
-        assert!(
-            n >= min_per,
-            "corpus {target}: {n} < suelo {min_per}"
-        );
+        assert!(n >= min_per, "corpus {target}: {n} < suelo {min_per}");
     }
     assert!(rejects >= 4, "corpus rejects: {rejects} < 4");
 }

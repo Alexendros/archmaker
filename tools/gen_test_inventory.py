@@ -288,6 +288,16 @@ def infer_web_covers(test_name: str, path: str) -> List[str]:
         ])
     if 'forge-helpers' in name or 'forge-helpers' in path_lower:
         covers.extend(['FR-DRAFT-001', 'NFR-DET-001'])
+    # P5 aceptación de producto: draft/export/validación/offline sobre motor real.
+    if 'product-acceptance' in name or 'product-acceptance' in path_lower:
+        covers.extend([
+            'FR-DRAFT-001',
+            'FR-VALIDATE-001',
+            'FR-EXPORT-001',
+            'NFR-DET-001',
+            'NFR-MIG-001',
+            'NFR-OFF-001',
+        ])
     # Playwright de cierre: draft/export/import/offline por nombre de archivo.
     if 'draft' in name or 'persist' in name:
         covers.append('FR-DRAFT-001')

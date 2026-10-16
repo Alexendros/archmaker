@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "generated_at": "1792181477",
-    "git_sha": "eee9c582c77c871b5d9779fd41aa86c5a23fd587",
+    "generated_at": "1792193807",
+    "git_sha": "535393dbcb997f46a47ae252d73f3e86ff5a4c06",
     "requirements_file": "docs/01-product/requirements.md",
     "inventory_file": "docs/10-delivery/tests-inventory.json",
     "validators_file": "docs/10-delivery/validators.json"
@@ -11,7 +11,7 @@
     "in_scope": 13,
     "deferred": 3,
     "pending": 1,
-    "linked_requirements": 13,
+    "linked_requirements": 14,
     "linked_in_scope": 13,
     "coverage_link_pct": 100.0,
     "coverage_pass_pct": 100.0,
@@ -79,9 +79,9 @@
       "has_executable_evidence": true,
       "passes_ci": true,
       "evidence_types": [
+        "negative",
         "integration",
         "schema",
-        "negative",
         "unit"
       ],
       "coverage_status": "covered"
@@ -111,6 +111,7 @@
         "TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-NAMED_DENIED_INVOKE_YIELDS_PROTO_001",
         "TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-NAMED_ALLOWED_INVOKE_RESOLVES_OP",
         "TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-DENIED_ERROR_SOURCE_IDENTIFIES_WINDOW_AND_COMMAND",
+        "TST-ARCHMAKER-CORE-F0_FINDINGS-P5_INDEPENDENT_CORE_INSTANCES_SHARE_NO_DRAFT_STORE",
         "TST-ARCHMAKER-CORE-F0_FINDINGS-C01_DRAFT_CREATE_REJECTS_EXISTING_ID",
         "TST-ARCHMAKER-CORE-F0_FINDINGS-C05_PERSIST_HAS_TYPED_SAVE_STATES_AND_SERIALIZED_WRITES",
         "TST-ARCHMAKER-CORE-F0_FINDINGS-C06_EXPORT_CAPABILITY_SCOPED_SAVE_ONLY",
@@ -148,19 +149,20 @@
         "TST-WEB-FORGE-HELPERS.PLAYWRIGHT",
         "TST-WEB-WASM-FLOW.PLAYWRIGHT",
         "TST-WEB-MOCK-FLOW.PLAYWRIGHT",
-        "TST-WEB-DRAFT-PERSISTENCE.PLAYWRIGHT"
+        "TST-WEB-DRAFT-PERSISTENCE.PLAYWRIGHT",
+        "TST-WEB-PRODUCT-ACCEPTANCE.PLAYWRIGHT"
       ],
       "validators": [
         "VAL-SCHEMA-REFS",
         "VAL-NEG-CAPABILITIES"
       ],
-      "evidence_count": 56,
+      "evidence_count": 58,
       "has_executable_evidence": true,
       "passes_ci": true,
       "evidence_types": [
+        "negative",
         "integration",
         "schema",
-        "negative",
         "unit"
       ],
       "coverage_status": "covered"
@@ -211,15 +213,16 @@
         "TST-ARCHMAKER-CORE-F2_BYTES-F2_DELIVERY_CORPUS_DIGESTS",
         "TST-WEB-WASM-FLOW.PLAYWRIGHT",
         "TST-WEB-MOCK-FLOW.PLAYWRIGHT",
-        "TST-WEB-EXPORT-DELIVERY.PLAYWRIGHT"
+        "TST-WEB-EXPORT-DELIVERY.PLAYWRIGHT",
+        "TST-WEB-PRODUCT-ACCEPTANCE.PLAYWRIGHT"
       ],
       "validators": [],
-      "evidence_count": 22,
+      "evidence_count": 23,
       "has_executable_evidence": true,
       "passes_ci": true,
       "evidence_types": [
-        "integration",
         "contract",
+        "integration",
         "unit"
       ],
       "coverage_status": "covered"
@@ -312,12 +315,12 @@
       "has_executable_evidence": true,
       "passes_ci": true,
       "evidence_types": [
-        "unit",
-        "negative",
-        "integration",
         "contract",
+        "integration",
         "canonicalize",
-        "schema"
+        "unit",
+        "schema",
+        "negative"
       ],
       "coverage_status": "covered"
     },
@@ -362,9 +365,9 @@
       "has_executable_evidence": true,
       "passes_ci": true,
       "evidence_types": [
-        "integration",
         "negative",
-        "unit"
+        "unit",
+        "integration"
       ],
       "coverage_status": "covered"
     },
@@ -407,16 +410,17 @@
         "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_HOST_001_NO_SPAWN_NO_ROOT_NO_NETWORK_FOR_MANIFEST",
         "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_BOOT_001_REJECTS_SATISFIED_UNTIL_IMAGE_ADMITTED",
         "TST-WEB-WASM-FLOW.PLAYWRIGHT",
-        "TST-WEB-MOCK-FLOW.PLAYWRIGHT"
+        "TST-WEB-MOCK-FLOW.PLAYWRIGHT",
+        "TST-WEB-PRODUCT-ACCEPTANCE.PLAYWRIGHT"
       ],
       "validators": [],
-      "evidence_count": 15,
+      "evidence_count": 16,
       "has_executable_evidence": true,
       "passes_ci": true,
       "evidence_types": [
-        "integration",
         "contract",
-        "unit"
+        "unit",
+        "integration"
       ],
       "coverage_status": "covered"
     },
@@ -463,6 +467,7 @@
         "TST-ARCHMAKER-WASM-PARITY-PARITY_RESOLVE_AND_MANIFEST",
         "TST-ARCHMAKER-WASM-PARITY-PARITY_DESKTOP_CATALOG_MANIFEST_CANONICAL_BYTES",
         "TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-MALFORMED_JSON_RETURNS_TYPED_SCHEMA_ERROR",
+        "TST-ARCHMAKER-CORE-F7_P95_SAMPLE-F7_P95_ONE_SAMPLE_PRINTS_JSON_WHEN_ENV_SET",
         "TST-ARCHMAKER-CORE-CORE_CONTRACT-NEW_UUID_V4_WASM_SAFE_IS_VALID_WITHOUT_HOST_ENTROPY",
         "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-APPLICATION_CONTRACT_ACCEPTS_VALID_AND_REJECTS_INVALID",
         "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_BASE_001_ACCEPTS_VALID_AND_REJECTS_INVALID",
@@ -477,20 +482,21 @@
         "TST-ARCHMAKER-CORE-F2_BYTES-F2_REPORT_BYTES_ARE_MARKDOWN_TEXT_NOT_JSON_STRING",
         "TST-ARCHMAKER-CORE-F2_BYTES-F2_DELIVERY_CORPUS_DIGESTS",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_JSON_DEPTH_LIMIT_ABORTS",
-        "TST-WEB-FORGE-HELPERS.PLAYWRIGHT"
+        "TST-WEB-FORGE-HELPERS.PLAYWRIGHT",
+        "TST-WEB-PRODUCT-ACCEPTANCE.PLAYWRIGHT"
       ],
       "validators": [
         "VAL-CANONICALIZE"
       ],
-      "evidence_count": 28,
+      "evidence_count": 30,
       "has_executable_evidence": true,
       "passes_ci": true,
       "evidence_types": [
-        "unit",
-        "negative",
-        "integration",
         "contract",
-        "canonicalize"
+        "integration",
+        "canonicalize",
+        "unit",
+        "negative"
       ],
       "coverage_status": "covered"
     },
@@ -503,17 +509,19 @@
       "deferred": false,
       "pending": false,
       "tests": [
-        "TST-ARCHMAKER-CORE-CORE_CONTRACT-IMPORT_DRAFT_MIGRATES_V51_SAMPLE"
+        "TST-ARCHMAKER-CORE-CORE_CONTRACT-IMPORT_DRAFT_MIGRATES_V51_SAMPLE",
+        "TST-WEB-PRODUCT-ACCEPTANCE.PLAYWRIGHT"
       ],
       "validators": [
         "VAL-MIG"
       ],
-      "evidence_count": 2,
+      "evidence_count": 3,
       "has_executable_evidence": true,
       "passes_ci": true,
       "evidence_types": [
-        "integration",
-        "schema"
+        "unit",
+        "schema",
+        "integration"
       ],
       "coverage_status": "covered"
     },
@@ -568,18 +576,19 @@
         "TST-WEB-WASM-FLOW.PLAYWRIGHT",
         "TST-WEB-MOCK-FLOW.PLAYWRIGHT",
         "TST-WEB-VISUAL-REGRESSION",
+        "TST-WEB-PRODUCT-ACCEPTANCE.PLAYWRIGHT",
         "TST-WEB-WASM-OFFLINE.PLAYWRIGHT"
       ],
       "validators": [],
-      "evidence_count": 27,
+      "evidence_count": 28,
       "has_executable_evidence": true,
       "passes_ci": true,
       "evidence_types": [
-        "unit",
-        "negative",
-        "integration",
         "contract",
-        "visual"
+        "visual",
+        "integration",
+        "unit",
+        "negative"
       ],
       "coverage_status": "covered"
     },
@@ -615,9 +624,9 @@
       "has_executable_evidence": true,
       "passes_ci": true,
       "evidence_types": [
-        "integration",
         "negative",
-        "unit"
+        "unit",
+        "integration"
       ],
       "coverage_status": "covered"
     },
