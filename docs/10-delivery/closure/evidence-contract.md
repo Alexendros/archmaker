@@ -27,7 +27,7 @@ dependsOn:
 
 Campos obligatorios: `schemaVersion`, `repository`, `phase`, `sourceSha`, `baseSha`, `eventSha`, `prHeadSha`, `workflowSha`, `mergeSha`, `workflowRunId`, `runAttempt`, `eventName`, `startedAt`, `completedAt`, `toolchain`, `platform`, `dirtyTrackedFiles`, `fixtureSetDigest`, `requiredTestIds`, `executed`, `passed`, `failed`, `skipped`, `retries`, `artifacts`, `result`, `reviewer`, `reviewedAt`, `residuals`.
 
-Campos opcionales (F7 endurecido): `harness` (`sourceSha` del harness, `productSourceSha`, `runner`), `technicalResult` (`passed`/`failed`/`partial`/…), `commands`, `tests`, `approval`.
+Campos opcionales (F7 endurecido): `harness` (`sourceSha` del harness, `productSourceSha`, `runner`), `technicalResult` (`pending`/`running`/`passed`/`failed`/`partial`/`blocked` o `null`), `commands`, `tests`, `approval`.
 
 En `approval` se separan identidades:
 
@@ -40,11 +40,11 @@ No usar un solo nombre (`APPROVAL_RECORD_SHA`) para ambas.
 
 Cada artefacto lleva `name`, `sizeBytes`, `sha256`, `mediaType` y `buildSourceSha`.
 
-Lo desconocido es `null`. `result` empieza en `pending` (aprobación). `technicalResult` describe la ejecución. Estados de `result`: `proposed`, `pending`, `running`, `passed`, `failed`, `blocked`, `not-applicable`.
+Lo desconocido es `null`. `result` empieza en `pending` (aprobación). `technicalResult` describe la ejecución; `null` está en el enum (o la propiedad se omite en manifiestos antiguos). Estados de `result`: `proposed`, `pending`, `running`, `passed`, `failed`, `blocked`, `not-applicable`.
 
 El manifiesto no incluye su propio digest. Una propiedad `sha256`, `digest`, `evidenceSha256`, `manifestDigest` o `selfDigest` es inválida. `expected` no es un campo: es `len(requiredTestIds)` y tiene que ser mayor que 0.
 
-Aprobación del conjunto: `result` es `passed`, `technicalResult` es `passed` si está presente, hay `sourceSha`, `reviewer` y `reviewedAt`, `executed == expected`, `passed == expected`, `failed == 0`, `skipped == 0` y `retries == 0`. Si existe `approval`, exige `status=passed` y `approvalRecordSha256`. Exit code 0 con cero tests no cuenta. Un fichero bajo `examples/` o cuyo nombre contiene `example` no es evidencia, aunque el contenido cuadre.
+Aprobación del conjunto: `result` es `passed`, **`technicalResult` es `passed` (obligatorio; `null` u omitido no aprueban)**, hay `sourceSha`, `reviewer` y `reviewedAt`, `executed == expected`, `passed == expected`, `failed == 0`, `skipped == 0` y `retries == 0`. Si existe `approval`, exige `status=passed` y `approvalRecordSha256`. Exit code 0 con cero tests no cuenta. Un fichero bajo `examples/` o cuyo nombre contiene `example` no es evidencia, aunque el contenido cuadre. Los manifiestos antiguos sin `technicalResult` se leen (schema OK) pero no se aprueban. Evidencia desktop: `desktop-evidence.schema.json` + import por `--desktop-evidence` (sin bypass).
 
 ## Corpus
 

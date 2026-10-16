@@ -94,14 +94,14 @@
       "command": "python3 tools/validate_closure_evidence.py",
       "workflow": "ci",
       "covers": [],
-      "description": "Manifiesto de evidencia de cierre: rechaza incompletos y no trata un ejemplo como evidencia",
+      "description": "Manifiesto de evidencia: schema technicalResult concordante con jsonschema==4.23.0; aprobación exige technicalResult=passed",
       "transversal": true
     },
     {
       "id": "VAL-F7-CANDIDATE",
       "type": "doc",
       "location": "tools/run_f7_candidate_matrix.py",
-      "command": "python3 tools/run_f7_candidate_matrix.py --validate-only && python3 tools/test_run_f7_candidate_matrix.py",
+      "command": "python3 tools/run_f7_candidate_matrix.py --validate-only && python3 tools/test_run_f7_candidate_matrix.py && python3 tools/test_evidence_adversarial.py",
       "workflow": "ci",
       "covers": [],
       "description": "Matriz F7 at\u00f3mica: inventario, tests del runner, result=pending, technicalResult separado, sin RC_SHA_FUNCIONAL ni aceptaci\u00f3n independiente",
@@ -117,6 +117,26 @@
         "NFR-MARK-001"
       ],
       "description": "Nomenclatura Forge/ArchMaker (T-NAME) e identidad tecnica intacta (T-MIG)",
+      "transversal": true
+    },
+    {
+      "id": "VAL-EVIDENCE-ADVERSARIAL",
+      "type": "doc",
+      "location": "tools/test_evidence_adversarial.py",
+      "command": "python3 tools/test_evidence_adversarial.py",
+      "workflow": "ci",
+      "covers": [],
+      "description": "20 escenarios adversarios de evidencia F7/schema + control positivo y manifiestos antiguos",
+      "transversal": true
+    },
+    {
+      "id": "VAL-PRODUCT-CLOSURE",
+      "type": "doc",
+      "location": "tools/check_product_closure.py",
+      "command": "python3 tools/check_product_closure.py",
+      "workflow": "ci",
+      "covers": [],
+      "description": "Verificador de cierre solo lectura; sin autoaprobación; inventario canónico",
       "transversal": true
     }
   ]
