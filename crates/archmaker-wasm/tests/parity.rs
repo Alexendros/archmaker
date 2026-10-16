@@ -14,12 +14,9 @@ const UNICODE_VECTORS: &str =
 const FIXED_DRAFT_ID: &str = "11111111-1111-4111-8111-111111111111";
 
 fn catalog_ref_json() -> Value {
-    serde_json::json!({
-        "namespace": "archmaker.core",
-        "id": "minimal",
-        "version": "0.1.0",
-        "digest": {"algorithm": "sha256", "value": "00"}
-    })
+    let core = RealCore::with_embedded().expect("embedded catalog");
+    serde_json::to_value(core.active_catalog_ref().expect("active catalog ref"))
+        .expect("catalogRef serializable")
 }
 
 fn create_input_json() -> String {
@@ -218,19 +215,15 @@ fn desktop_core() -> RealCore {
     RealCore::new(catalog)
 }
 
-fn desktop_catalog_ref_json() -> Value {
-    serde_json::json!({
-        "namespace": "archmaker.core",
-        "id": "desktop",
-        "version": "1.0.0",
-        "digest": {"algorithm": "sha256", "value": "11"}
-    })
+fn desktop_catalog_ref_json(core: &RealCore) -> Value {
+    serde_json::to_value(core.active_catalog_ref().expect("active catalog ref"))
+        .expect("catalogRef serializable")
 }
 
 fn draft_with_desktop_selections(core: &RealCore) -> Value {
     let input = serde_json::json!({
         "draftId": FIXED_DRAFT_ID,
-        "catalogRef": desktop_catalog_ref_json(),
+        "catalogRef": desktop_catalog_ref_json(core),
         "targetRef": {"id": "arch-x86_64", "version": "0.1.0"},
         "requestId": null
     })
@@ -256,10 +249,11 @@ fn canonical_bytes(value: &Value) -> Vec<u8> {
 fn parity_desktop_catalog_manifest_canonical_bytes() {
     let core = desktop_core();
     let draft = draft_with_desktop_selections(&core);
+    let catalog_ref = desktop_catalog_ref_json(&core);
 
     let resolve_input = serde_json::json!({
         "draft": draft,
-        "catalogRef": desktop_catalog_ref_json(),
+        "catalogRef": catalog_ref,
         "requestId": null
     })
     .to_string();
@@ -280,8 +274,8 @@ fn parity_desktop_catalog_manifest_canonical_bytes() {
     );
 
     let manifest_input = serde_json::json!({
-        "draft": draft_with_desktop_selections(&core),
-        "catalogRef": desktop_catalog_ref_json(),
+        "draft": draft,
+        "catalogRef": catalog_ref,
         "targetRef": {"id": "archmaker-profile", "version": "0.1.0"},
         "expectedResolutionDigest": native_resolve["resolutionDigest"],
         "requestId": null
