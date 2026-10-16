@@ -41,6 +41,8 @@ reviewers:
 | Release binaria      | published | AppImage `v0.1.0` (`9297ed7…`); verificación parcial (cosign/GUI); ver `f9-release.md` |
 
 Detalle y residuales: `docs/10-delivery/closure/f8-governance.md`.
+Candidato tip post-P0–P7 (sin publicar): `docs/10-delivery/closure/release-candidate.md`
+(`6440b03a…`); handoff: `closure-handoff.md`.
 
 ## Bloqueos P0
 
@@ -77,3 +79,4 @@ anuncia `.deb`/`.rpm`/AUR.
 - Próximos pasos ordenados: `docs/10-delivery/next-issues.md` (ISSUE-001..010).
 - Índice documental: `docs/index.md`.
 - Desktop/offline P6: `docs/10-delivery/closure/p6-desktop-offline.md`.
+- Candidato sin publicar (P8–P9): `docs/10-delivery/closure/release-candidate.md` / `closure-handoff.md`.

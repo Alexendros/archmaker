@@ -129,6 +129,8 @@ reviewers:
 | `closure/p6-desktop-offline.md`     | DOC-DEL-CLO-P6-001   | draft     |
 | `closure/f9-release.md`             | DOC-DEL-CLO-F9-001   | in-review |
 | `closure/f7-candidate.md`           | DOC-DEL-CLO-F7-001   | draft     |
+| `closure/release-candidate.md`      | DOC-DEL-CLO-RC-001   | draft     |
+| `closure/closure-handoff.md`        | DOC-DEL-CLO-HAND-001 | draft     |
 | `remediation/acceptance-notes.md`   | DOC-DEL-REM-ACC-001  | in-review |
 
 ## 11–12 — Operaciones e investigación

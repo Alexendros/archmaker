@@ -112,6 +112,9 @@ aprobación funcional **pending** (sin `RC_SHA_FUNCIONAL`); release binaria **pu
 (Forge AppImage `v0.1.0`, `RC_SHA` `9297ed7…`) con verificación parcial (sin cosign
 local, sin 3× install GUI). Procedimiento y residuales: `f9-release.md`. Sin imagen Arch.
 
+Candidato de cierre (P8, sin publicar): `release-candidate.md` —
+`6440b03acf27140c410b77d3f81f43c3d9b21898`. Handoff (P9): `closure-handoff.md`.
+
 ## Umbrales propuestos, no resultados
 
 Quedan `pending`. No se usaron para aprobar nada.
