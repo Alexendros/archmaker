@@ -47,18 +47,18 @@ este gobierno (y cualquier fix de pipeline necesario).
 
 Estados permitidos: `passed` | `failed` | `pending` | `blocked` | `not-applicable` | `authorized`.
 
-| Puerta                    | Estado     | Justificación                                                                                                |
-| ------------------------- | ---------- | ------------------------------------------------------------------------------------------------------------ |
-| F0 Evidencia / inventario | passed     | Inventario, schema y validador en árbol                                                                      |
-| F1 Identidad              | passed     | Entropía WASM de producción + create sin sobrescritura                                                       |
-| F2 Bytes                  | passed     | Bytes del renderizador + digest de archivo                                                                   |
-| F3 Fidelidad              | passed     | Matriz de campos, hostname/cifrado como intención                                                            |
-| F4 Importación            | passed     | Consentimiento, `file.size`, persistencia observable                                                         |
-| F5 Escritorio             | passed     | Guardado nativo acotado + ACL                                                                                |
-| F6 Cara honesta           | passed     | Mensajes, rail de seis pasos                                                                                 |
-| F7 Candidato              | pending    | Matriz ejecutable; E2E WASM×3 / offline / P95 y aceptación independiente **no** cerrados (`f7-candidate.md`) |
-| F8 Gobierno (este doc)    | passed     | Canal autorizado: AppImage x86_64 + Neubat; resto deferred/blocked                                           |
-| F9 Publicación            | authorized | Depende de este F8; ejecución en rama/PR F9 sobre `RC_SHA` de `main`                                         |
+| Puerta                    | Estado  | Justificación                                                                                                |
+| ------------------------- | ------- | ------------------------------------------------------------------------------------------------------------ |
+| F0 Evidencia / inventario | passed  | Inventario, schema y validador en árbol                                                                      |
+| F1 Identidad              | passed  | Entropía WASM de producción + create sin sobrescritura                                                       |
+| F2 Bytes                  | passed  | Bytes del renderizador + digest de archivo                                                                   |
+| F3 Fidelidad              | passed  | Matriz de campos, hostname/cifrado como intención                                                            |
+| F4 Importación            | passed  | Consentimiento, `file.size`, persistencia observable                                                         |
+| F5 Escritorio             | passed  | Guardado nativo acotado + ACL                                                                                |
+| F6 Cara honesta           | passed  | Mensajes, rail de seis pasos                                                                                 |
+| F7 Candidato              | pending | Matriz ejecutable; E2E WASM×3 / offline / P95 y aceptación independiente **no** cerrados (`f7-candidate.md`) |
+| F8 Gobierno (este doc)    | passed  | Canal autorizado: AppImage x86_64 + Neubat; resto deferred/blocked                                           |
+| F9 Publicación            | running | Autorizado por este F8; procedimiento en `f9-release.md` + `release.yml` (AppImage Neubat)                   |
 
 ## Plataforma única — decisión trazable
 
