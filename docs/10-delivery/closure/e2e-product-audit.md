@@ -47,7 +47,14 @@ Controles esenciales: ver `ESSENTIAL_CONTROLS` en `apps/web/e2e-fidelity-helpers
 
 ## Escritorio (F5)
 
-Humo GUI del diálogo nativo: **no ejecutado** en este entorno (sin display/`xdg-desktop-portal`). Lógica de guardado cubierta por tests unitarios Tauri + notas en `f5-desktop-notes.md`. Web verifica descarga + digest.
+| Comprobación | Resultado |
+| --- | --- |
+| `pnpm --dir apps/web` vite build → `apps/web/dist` | ok (esta corrida) |
+| `cargo build -p archmaker` → ELF `target/debug/archmaker` | ok |
+| Tests unitarios `save_export*` (picker simulado) | ok (suite lib) |
+| Humo GUI interactivo del diálogo `rfd` | **no ejecutado** — requiere portal de escritorio estable; no se lanza GUI en el agent |
+
+Lógica de cancelar/sobrescribir/atómico: `f5-desktop-notes.md` + tests Tauri. Web verifica descarga + digest (paridad selección→export).
 
 ## Comandos
 

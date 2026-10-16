@@ -21,9 +21,11 @@ test.describe("NEUBAT FORGE face — rutas del plan", () => {
   }) => {
     expect(NEUBAT_RAIL_STEPS).toHaveLength(6);
     expect(ESSENTIAL_CONTROLS.length).toBeGreaterThanOrEqual(20);
+    const rail = page.getByRole("navigation", { name: /Pasos/i });
+    await expect(rail).toBeVisible();
     for (const title of NEUBAT_RAIL_STEPS) {
       await expect(
-        page.getByRole("button", { name: new RegExp(title, "i") }),
+        rail.getByRole("button", { name: new RegExp(title, "i") }),
       ).toBeVisible();
     }
     await expect(page.getByRole("button", { name: "Generar" })).toBeVisible();
@@ -35,6 +37,9 @@ test.describe("NEUBAT FORGE face — rutas del plan", () => {
     ).toBeVisible();
     await expect(page.getByRole("button", { name: "Glosario" })).toBeVisible();
     await expect(page.getByRole("button", { name: "⌘K" })).toBeVisible();
+    await expect(
+      page.getByRole("button", { name: /Continuar → Sistema base/i }),
+    ).toBeVisible();
   });
 
   test("F3 ejercicio: selección → Generar → Exportar → SHA-256 == binaryDigest", async ({
