@@ -50,8 +50,10 @@ Sigue la política de artefactos, canales y firma de este documento. Queda bloqu
 - alcance MVP-6 (`docs/10-delivery/mvp6-scope.md`) sin estado `accepted`
 - NFR-MARK-001 / ADR-0010 (nombre público no cerrado)
 - residual DEC-006 (pipeline real de SBOM/firmas pendiente de Etapa C)
+- F9 **blocked** mientras F7 no tenga aceptación funcional y F8 no autorice un canal
+  (`docs/10-delivery/closure/f8-governance.md`). Este documento no anuncia plataforma ni abre F9.
 
-Canales `nightly` / `beta` / `stable` son política de promoción del paquete futuro. No son tags que `plan-release.yml` dispare.
+Canales `nightly` / `beta` / `stable` son política de promoción del paquete futuro. No son tags que `plan-release.yml` dispare. El AUR (si alguna vez se autoriza) es PKGBUILD fuente, no repositorio binario de pacman.
 
 ## MVP Linux
 

@@ -70,4 +70,5 @@ Las corridas reales de evidencia viven fuera del árbol en `closure-evidence/<so
 
 ## Fuera de alcance
 
-F8/F9: no aceptar MVP-6, no resolver ADR-0010, no tags/releases/paquetes.
+F8 alinea gobierno sin aceptar MVP-6 ni resolver ADR-0010 (`f8-governance.md`). F9 sigue
+**blocked**: no tags/releases/paquetes sin autorización explícita.

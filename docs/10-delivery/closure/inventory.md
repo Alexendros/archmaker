@@ -96,6 +96,10 @@ Pruebas: `crates/archmaker-core/tests/f0_findings.rs`. Corpus: `crates/archmaker
 
 Tras F1–F6 en `main`, la reejecución obligatoria vive en `f7-candidate.md` + `f7-required-cases.json` (`VAL-F7-CANDIDATE`). El manifiesto de evidencia permanece `result=pending`; no declara `RC_SHA_FUNCIONAL` ni aceptación independiente.
 
+## F8 — gobierno
+
+Alineación documental (sin distribución): `f8-governance.md`. Capas: baseline de código **passed**; aprobación funcional **pending**; release binaria **blocked**. F9 no abierto.
+
 ## Umbrales propuestos, no resultados
 
 Quedan `pending`. No se usaron para aprobar nada.
