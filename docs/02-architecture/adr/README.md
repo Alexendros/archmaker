@@ -37,8 +37,9 @@ Propietario, Requisitos) y las secciones de `templates/adr.md`. Estados posibles
 | [ADR-0007](ADR-0007-canonicalizacion-y-hashing.md)                     | Canonicalización y hashing                           | accepted | 2026-10-06 |
 | [ADR-0008](ADR-0008-catalogos-firmados-y-procedencia.md)               | Catálogos firmados y procedencia                     | accepted | 2026-10-05 |
 | [ADR-0009](ADR-0009-actualizacion-firmada-mvp.md)                      | Actualización firmada en MVP                         | accepted | 2026-10-05 |
-| [ADR-0010](ADR-0010-marca-y-nombre-de-artefacto.md)                    | Marca y nombre de artefacto público                  | proposed | 2026-10-14 |
+| [ADR-0010](ADR-0010-marca-y-nombre-de-artefacto.md)                    | Marca y nombre de artefacto público                  | accepted | 2026-10-14 |
 | [ADR-0011](ADR-0011-contrato-de-aplicacion.md)                         | Contrato de aplicación desde el configurador         | proposed | 2026-10-14 |
+| [ADR-0012](ADR-0012-nombre-visible-forge.md)                           | Nombre visible Forge (GUI de ArchMaker)              | accepted | 2026-10-17 |
 
 ## Crear un ADR
 
