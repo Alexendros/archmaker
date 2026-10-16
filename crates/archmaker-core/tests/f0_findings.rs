@@ -88,7 +88,8 @@ fn valid_draft(core: &RealCore) -> Draft {
 }
 
 #[test]
-fn c01_draft_create_overwrites_existing_id() {
+fn c01_draft_create_rejects_existing_id() {
+    // F1: create_draft ya no sobrescribe; colisión tipada AM-DOC-002.
     let core = RealCore::with_embedded().expect("embedded");
     let id = "0d5e6b1a-3333-4a2b-9c3d-333333333333".to_string();
     let created = core
@@ -121,7 +122,7 @@ fn c01_draft_create_overwrites_existing_id() {
     assert_eq!(opened.revision, 1);
     assert_eq!(opened.selections.len(), 1);
 
-    let replaced = core
+    let err = core
         .create_draft(CreateDraftInput {
             draft_id: Some(id.clone()),
             catalog_ref: catalog_ref(),
@@ -129,28 +130,24 @@ fn c01_draft_create_overwrites_existing_id() {
             preset_ref: None,
             request_id: None,
         })
-        .expect("create vuelve a aceptar el mismo id");
-    assert_eq!(replaced.revision, 0);
-    assert!(replaced.selections.is_empty());
+        .expect_err("create no pisa id almacenado");
+    assert_eq!(err.code, "AM-DOC-002");
     let stored = core.stored_draft(&id).expect("sigue almacenado");
-    assert_eq!(stored.revision, 0);
-    assert!(
-        stored.selections.is_empty(),
-        "create_draft pisa el id ya guardado"
-    );
+    assert_eq!(stored.revision, 1);
+    assert_eq!(stored.selections.len(), 1);
 }
 
 #[test]
-fn c01_wasm_uuid_counter_starts_at_zero() {
-    // Única llamada a new_uuid_v4_wasm_safe de este binario: el contador nace en 0.
+fn c01_wasm_production_uses_platform_entropy() {
+    // F1: producción WASM → getrandom; contador solo en new_uuid_v4_wasm_safe (tests).
     let source = read_repo("crates/archmaker-core/src/core.rs");
     assert!(
         source.contains("static UUID_COUNTER: AtomicU64 = AtomicU64::new(0);"),
-        "el contador WASM no nace en 0"
+        "el contador de tests sigue naciendo en 0"
     );
     assert!(
-        source.contains("fill_with_counter_entropy(&mut bytes);"),
-        "new_uuid_v4 en wasm32 no usa el contador"
+        source.contains("getrandom::fill(buffer)"),
+        "producción WASM debe pedir entropía de plataforma"
     );
     let first = new_uuid_v4_wasm_safe();
     let second = new_uuid_v4_wasm_safe();

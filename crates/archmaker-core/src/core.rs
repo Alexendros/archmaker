@@ -85,6 +85,17 @@ pub const PIPELINE_VERSION: &str = "0.1.0";
 
 static UUID_COUNTER: AtomicU64 = AtomicU64::new(0);
 
+#[cfg(test)]
+thread_local! {
+    static FORCE_UUID_ENTROPY_FAILURE: std::cell::Cell<bool> = const { std::cell::Cell::new(false) };
+}
+
+/// Test hook: fuerza fallo cerrado de entropía en `new_uuid_v4` (sin panic).
+#[cfg(test)]
+pub fn test_force_uuid_entropy_failure(fail: bool) {
+    FORCE_UUID_ENTROPY_FAILURE.with(|flag| flag.set(fail));
+}
+
 pub struct RealCore {
     pub catalog_embedded: Catalog,
     /// Reglas activas cargadas desde fichas del catálogo (nunca inventadas en silencio).
@@ -225,29 +236,44 @@ fn fill_with_counter_entropy(buffer: &mut [u8]) {
     }
 }
 
+#[cfg(not(target_family = "wasm"))]
 fn fallback_random(buffer: &mut [u8]) {
-    // Prefer host clock on native; wasm32 must never call SystemTime (panics).
-    #[cfg(target_family = "wasm")]
+    // Native-only clock mix. wasm32 must never call SystemTime (panics).
+    let nanos = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map(|duration| duration.as_nanos())
+        .unwrap_or_else(|_| counter_entropy_seed());
+    let mut state = nanos
+        .wrapping_add((UUID_COUNTER.fetch_add(1, Ordering::Relaxed) as u128) << 64)
+        | 0x9e3779b97f4a7c15;
+    for chunk in buffer.chunks_mut(8) {
+        state ^= state >> 12;
+        state = state.wrapping_mul(0x2545f4914f6cdd1d);
+        state ^= state >> 41;
+        let bytes = state.to_le_bytes();
+        let take = chunk.len().min(8);
+        chunk.copy_from_slice(&bytes[..take]);
+    }
+}
+
+fn fill_production_entropy(buffer: &mut [u8]) -> Result<()> {
+    #[cfg(test)]
     {
-        fill_with_counter_entropy(buffer);
+        if FORCE_UUID_ENTROPY_FAILURE.with(|flag| flag.get()) {
+            return Err(CoreError::io_failed("uuid.v4"));
+        }
     }
     #[cfg(not(target_family = "wasm"))]
     {
-        let nanos = SystemTime::now()
-            .duration_since(UNIX_EPOCH)
-            .map(|duration| duration.as_nanos())
-            .unwrap_or_else(|_| counter_entropy_seed());
-        let mut state = nanos
-            .wrapping_add((UUID_COUNTER.fetch_add(1, Ordering::Relaxed) as u128) << 64)
-            | 0x9e3779b97f4a7c15;
-        for chunk in buffer.chunks_mut(8) {
-            state ^= state >> 12;
-            state = state.wrapping_mul(0x2545f4914f6cdd1d);
-            state ^= state >> 41;
-            let bytes = state.to_le_bytes();
-            let take = chunk.len().min(8);
-            chunk.copy_from_slice(&bytes[..take]);
+        if read_urandom(buffer).is_err() {
+            fallback_random(buffer);
         }
+        Ok(())
+    }
+    #[cfg(target_family = "wasm")]
+    {
+        // Plataforma (Crypto.getRandomValues vía getrandom/wasm_js). Sin contador ni panic.
+        getrandom::fill(buffer).map_err(|_| CoreError::io_failed("uuid.v4"))
     }
 }
 
@@ -275,22 +301,14 @@ fn uuid_from_bytes(mut bytes: [u8; 16]) -> String {
     )
 }
 
-pub fn new_uuid_v4() -> String {
+/// UUID v4 de producción: urandom (nativo) o entropía de plataforma (WASM). Fallo tipado, sin panic.
+pub fn new_uuid_v4() -> Result<String> {
     let mut bytes = [0u8; 16];
-    #[cfg(not(target_family = "wasm"))]
-    {
-        if read_urandom(&mut bytes).is_err() {
-            fallback_random(&mut bytes);
-        }
-    }
-    #[cfg(target_family = "wasm")]
-    {
-        fill_with_counter_entropy(&mut bytes);
-    }
-    uuid_from_bytes(bytes)
+    fill_production_entropy(&mut bytes)?;
+    Ok(uuid_from_bytes(bytes))
 }
 
-/// Same entropy path used on wasm32 (`fill_with_counter_entropy`). Safe on every target.
+/// Solo tests / Prove-It: contador sin host entropy. La producción WASM usa `new_uuid_v4`.
 pub fn new_uuid_v4_wasm_safe() -> String {
     let mut bytes = [0u8; 16];
     fill_with_counter_entropy(&mut bytes);
@@ -970,7 +988,7 @@ impl CorePort for RealCore {
                 }
                 given
             }
-            None => new_uuid_v4(),
+            None => new_uuid_v4()?,
         };
         if let Some(preset) = &input.preset_ref {
             if preset.namespace.is_empty() || preset.id.is_empty() || preset.version.is_empty() {
@@ -990,7 +1008,14 @@ impl CorePort for RealCore {
             created_at: None,
             updated_at: None,
         };
-        self.drafts.borrow_mut().insert(id, draft.clone());
+        match self.drafts.borrow_mut().entry(id) {
+            std::collections::hash_map::Entry::Vacant(slot) => {
+                slot.insert(draft.clone());
+            }
+            std::collections::hash_map::Entry::Occupied(_) => {
+                return Err(CoreError::doc_conflict(source));
+            }
+        }
         Ok(draft)
     }
 
@@ -1286,7 +1311,7 @@ impl CorePort for RealCore {
                 }
                 given
             }
-            None => new_uuid_v4(),
+            None => new_uuid_v4()?,
         };
         let result = migrate_v51_to_draft(
             &input.source_bytes,
@@ -1297,5 +1322,27 @@ impl CorePort for RealCore {
         )?;
         ensure_draft_shape(&result.draft, source)?;
         Ok(result)
+    }
+}
+
+#[cfg(test)]
+mod identity_unit_tests {
+    use super::*;
+
+    #[test]
+    fn entropy_failure_is_typed_without_panic() {
+        test_force_uuid_entropy_failure(true);
+        let err = new_uuid_v4().expect_err("entropía forzada");
+        test_force_uuid_entropy_failure(false);
+        assert_eq!(err.code, "AM-IO-001");
+        assert_eq!(err.source, "uuid.v4");
+    }
+
+    #[test]
+    fn production_uuid_is_v4_after_entropy_ok() {
+        test_force_uuid_entropy_failure(false);
+        let id = new_uuid_v4().expect("entropía disponible en nativo");
+        assert!(is_uuid(&id));
+        assert_eq!(id.as_bytes()[14], b'4');
     }
 }
