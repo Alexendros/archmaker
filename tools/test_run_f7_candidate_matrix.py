@@ -166,6 +166,34 @@ class ExecuteMatrixTests(unittest.TestCase):
         self.assertEqual(desktop["status"], "passed")
         self.assertTrue(metrics["desktopEvidenceImported"])
 
+    def test_desktop_evidence_blocked_preserves_blocked(self) -> None:
+        evidence = {
+            "schemaVersion": "1",
+            "caseId": "F7-OFFLINE-DESKTOP",
+            "sourceSha": "a" * 40,
+            "status": "blocked",
+            "capturedAt": "2026-10-17T00:00:00Z",
+            "artifact": {
+                "name": "desktop-offline-report.json",
+                "sizeBytes": 8,
+                "sha256": "c" * 64,
+                "mediaType": "application/json",
+            },
+            "identity": {"host": "ci-host", "operator": "probe_desktop_offline"},
+            "notes": ["Forge_*.AppImage matching candidate sourceSha"],
+        }
+        metrics = f7.execute_matrix(
+            with_e2e=False,
+            strict=False,
+            run_command=_cmd_ok,
+            desktop_evidence=evidence,
+        )
+        desktop = next(c for c in metrics["cases"] if c["id"] == "F7-OFFLINE-DESKTOP")
+        self.assertEqual(desktop["status"], "blocked")
+        self.assertTrue(metrics["desktopEvidenceImported"])
+        errors = f7.strict_gate(metrics)
+        self.assertTrue(any("desktop" in e for e in errors))
+
     def test_strict_gate_rejects_partial(self) -> None:
         metrics = f7.execute_matrix(with_e2e=False, strict=True, run_command=_cmd_ok)
         errors = f7.strict_gate(metrics)

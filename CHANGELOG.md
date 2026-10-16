@@ -19,8 +19,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Gate desktop/offline P6: estado **blocked** explícito con evidencia ausente nombrada
   (`docs/10-delivery/closure/p6-desktop-offline.md`, `tools/check_desktop_offline_gate.py`);
-  display/portal no bastan sin binario de producción del tip; Mock y AppImage `v0.1.0`
-  histórico no cierran el gate.
+  humo local AppImage Forge + launch + IPC ACL en verde; residuales portal E2E / offline /
+  3× install; Mock y AppImage `v0.1.0` histórico no cierran el gate.
 - Ajuste P7: `check_desktop_offline_gate` permite `sourceSha` ≠ HEAD si status es
   `blocked`/`failed`; solo `passed` exige igualdad con HEAD.
 

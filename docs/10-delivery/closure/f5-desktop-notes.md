@@ -58,6 +58,8 @@ Tres aperturas en la misma sesión no cuentan como tres instalaciones independie
 ## P6 — Desktop / offline (2026-10-17)
 
 Estado del tip: **blocked**. Ver [`p6-desktop-offline.md`](p6-desktop-offline.md) y
-`examples/desktop-evidence.p6-blocked.json`. Display/portal presentes; falta binario de
-producción del SOURCE_SHA. El AppImage `v0.1.0` histórico no cierra P6.
+`examples/desktop-evidence.p6-blocked.json`. Display/portal presentes; AppImage Forge
+local del tip + launch + IPC ACL en verde; residuales ausentes: diálogo portal E2E,
+arranque offline y 3× instalaciones limpias. El AppImage `v0.1.0` histórico y MockCorePort
+no cierran P6.
 

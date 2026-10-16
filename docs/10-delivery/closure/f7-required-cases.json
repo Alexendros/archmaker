@@ -247,13 +247,14 @@
       "title": "Offline escritorio (binario sin red)",
       "hooks": [
         "docs/10-delivery/closure/f5-desktop-notes.md",
-        "docs/10-delivery/closure/f7-candidate.md"
+        "docs/10-delivery/closure/f7-candidate.md",
+        "docs/10-delivery/closure/p6-desktop-offline.md"
       ],
       "commands": [],
       "ci": false,
       "e2eWasmRequired": false,
       "defaultStatus": "pending",
-      "residual": "Requiere humo GUI con red deshabilitada en VM o entorno de prueba; no automatizado en este runner"
+      "residual": "P6 blocked: AppImage Forge local + IPC ok; faltan E2E portal rfd, arranque offline/netns y 3× install limpias (ver p6-desktop-offline.md)"
     },
     {
       "id": "F7-E2E-X3",
