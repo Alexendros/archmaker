@@ -2,7 +2,9 @@ import { test, expect } from "@playwright/test";
 import type { Artifact } from "./src/coreport.js";
 import {
   DeliveryError,
+  confirmedSaveOutcome,
   exportFilename,
+  exportStatusMessage,
   extensionForTarget,
   mediaTypeForTarget,
   prepareDelivery,
@@ -133,5 +135,22 @@ test.describe("export-delivery F2 bytes", () => {
     await expect(prepareDelivery(artifact, "x.iso")).rejects.toMatchObject({
       code: "target-incompatible",
     });
+  });
+
+  test("F6: mensajes descarga iniciada vs archivo guardado", () => {
+    const started = exportStatusMessage({
+      kind: "download-started",
+      filename: "perfil.json",
+      digestShort: "abcdef012345",
+    });
+    expect(started).toMatch(/^Descarga iniciada/);
+    expect(started).not.toMatch(/Archivo guardado/);
+
+    const saved = exportStatusMessage(
+      confirmedSaveOutcome("perfil.json", "abcdef0123456789"),
+    );
+    expect(saved).toMatch(/^Archivo guardado/);
+    expect(saved).toContain("abcdef012345");
+    expect(saved).not.toMatch(/Descarga iniciada/);
   });
 });

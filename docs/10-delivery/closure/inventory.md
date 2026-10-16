@@ -76,15 +76,15 @@ Jobs de `ci.yml`: 10 (`rust`, `security-runtime`, `frontend`, `web-wasm-prod`, `
 
 Clasificación estática y de comportamiento en el árbol de pruebas. No es una certificación de navegador ni de WebView.
 
-| Id   | Clasificación        | Qué quedó demostrado                                                                                                                                                           |
-| ---- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| C-01 | confirmado           | `create_draft` pisa un id ya guardado. En wasm el UUID sale de `UUID_COUNTER` en 0. El primer id de contador es `b8178f96-e05d-4c4c-9574-864fca3fdb7d`.                        |
-| C-02 | confirmado           | `binaryDigest` es el SHA-256 de `rendered.bytes`. El DTO no tiene `bytes`. `JSON.stringify` de la cadena `report` no es el markdown.                                           |
+| Id   | Clasificación        | Qué quedó demostrado                                                                                                                                             |
+| ---- | -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| C-01 | confirmado           | `create_draft` pisa un id ya guardado. En wasm el UUID sale de `UUID_COUNTER` en 0. El primer id de contador es `b8178f96-e05d-4c4c-9574-864fca3fdb7d`.          |
+| C-02 | confirmado           | `binaryDigest` es el SHA-256 de `rendered.bytes`. El DTO no tiene `bytes`. `JSON.stringify` de la cadena `report` no es el markdown.                             |
 | C-03 | corregido en F3      | Hostname y cifrado (intención) llegan al manifiesto. number/secretRef emiten `AM-FACE-001`. Exclusiones face visibles. Ver `field-matrix.md` y `f3_fidelity.rs`. |
-| C-04 | corregido en F4      | `file.size` antes de leer (`IMPORT_MAX_BYTES = 2_000_000`). Análisis con `confirmBlockingLosses: false`; informe y confirmación antes de aplicar.                              |
-| C-05 | corregido en F4      | Estados tipados `guardando` / `guardado` / `error`; escrituras serializadas; copia exportable y reintento si el almacén falla.                                                 |
-| C-06 | confirmado en fuente | Exportar llama a `downloadArtifact`. No existen `dialog.json` ni `picker.json`. El `catch` de WASM no construye `MockCorePort`.                                                |
-| C-07 | confirmado en fuente | La suma de tamaño usa base fija 650. La advertencia Sway/kernel está en `App.tsx` y no en `core.rs`.                                                                           |
+| C-04 | corregido en F4      | `file.size` antes de leer (`IMPORT_MAX_BYTES = 2_000_000`). Análisis con `confirmBlockingLosses: false`; informe y confirmación antes de aplicar.                |
+| C-05 | corregido en F4      | Estados tipados `guardando` / `guardado` / `error`; escrituras serializadas; copia exportable y reintento si el almacén falla.                                   |
+| C-06 | confirmado en fuente | Exportar llama a `downloadArtifact`. No existen `dialog.json` ni `picker.json`. El `catch` de WASM no construye `MockCorePort`.                                  |
+| C-07 | corregido en F6      | Sin base fija 650 ni aviso Sway/kernel inventado. Suma solo paquetes de catálogo. Ver `honest-ux.md`.                                                            |
 
 Pruebas: `crates/archmaker-core/tests/f0_findings.rs`. Corpus: `crates/archmaker-core/tests/fixtures/closure/` (1 positivo, 1 negativo, 1 binario). Eso no cumple el umbral de 20 casos por target; ese umbral queda propuesto, no medido como cumplido.
 
@@ -98,4 +98,4 @@ Quedan `pending`. No se usaron para aprobar nada.
 
 - Identidad: 100 contextos por 100 ids en el lote; 10.000 ids no demuestran unicidad universal.
 - Corpus de entrega: 20 casos por target soportado, más 4 rechazos. F0 versiona 3 fixtures de clases.
-- Rendimiento, en la máquina que se fije al medir: P95 de inicialización ≤ 3.000 ms; resolver + validar + manifiesto ≤ 1.000 ms; 30 muestras. Aquí no se tomaron muestras.
+- Rendimiento, en la máquina que se fije al medir: P95 de inicialización ≤ 3.000 ms; resolver + validar + manifiesto ≤ 1.000 ms; 30 muestras. Estado **pending** (F6 no marca passed sin medir; ver `honest-ux.md`).

@@ -345,13 +345,23 @@ fn c06_export_capability_dialog_absent() {
 }
 
 #[test]
-fn c07_validate_face_base_and_sway_are_ui_only() {
+fn c07_face_no_longer_invents_base_or_sway_warn() {
+    // F6: C-07 corregido — sin base 650 ni aviso Sway/kernel inventado en UI.
     let app = read_repo("apps/web/src/App.tsx");
-    assert!(app.contains("acc + p.size, 650"));
-    assert!(app.contains("Sway con este kernel puede parpadear en algunos GPUs"));
+    assert!(
+        !app.contains("acc + p.size, 650"),
+        "la suma no debe añadir base fija 650"
+    );
+    assert!(
+        !app.contains("Sway con este kernel puede parpadear en algunos GPUs"),
+        "no debe haber aviso Sway/kernel sin diagnóstico Rust"
+    );
+    assert!(
+        app.contains("acc + p.size, 0"),
+        "la suma debe partir de cero (solo paquetes de catálogo)"
+    );
     let core = read_repo("crates/archmaker-core/src/core.rs");
     assert!(!core.contains("Sway con este kernel"));
-    assert!(!core.contains("650"));
 }
 
 #[test]

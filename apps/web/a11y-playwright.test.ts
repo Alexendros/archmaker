@@ -109,3 +109,33 @@ test.describe("WCAG 2.2 AA - axe-core", () => {
     expect(transitions).toMatch(/0s|0ms/);
   });
 });
+
+/** F6: viewports y zoom ampliando la suite axe existente (complemento, no WCAG). */
+test.describe("F6 viewports y foco", () => {
+  for (const width of [360, 768, 1440] as const) {
+    test(`rail y skip link visibles a ${width}px`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 800 });
+      await page.goto(BASE_URL);
+      await page.waitForLoadState("networkidle");
+      await expect(
+        page.locator("nav, [role='navigation']").first(),
+      ).toBeVisible();
+      await page.keyboard.press("Tab");
+      const tag = await page.evaluate(() => document.activeElement?.tagName);
+      expect(["A", "BUTTON", "INPUT", "SELECT", "TEXTAREA", "NAV"]).toContain(
+        tag,
+      );
+    });
+  }
+
+  test("zoom 200% mantiene región de estado", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 720 });
+    await page.goto(BASE_URL);
+    await page.waitForLoadState("networkidle");
+    await page.evaluate(() => {
+      document.documentElement.style.zoom = "2";
+    });
+    await expect(page.locator("#toast-region")).toHaveCount(1);
+    await expect(page.locator("#alert-region")).toHaveCount(1);
+  });
+});
