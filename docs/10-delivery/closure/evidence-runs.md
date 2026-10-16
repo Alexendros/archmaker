@@ -9,6 +9,8 @@ verificationStatus: partial
 releaseStatus: ineligible
 owners:
   - architecture
+reviewers:
+  - independent-reviewer
 ---
 
 # Corridas de evidencia (índice)

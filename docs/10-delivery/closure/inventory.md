@@ -94,7 +94,7 @@ Pruebas: `crates/archmaker-core/tests/f0_findings.rs`. Corpus: `crates/archmaker
 
 ## F7 — matriz de candidato
 
-Tras F1–F6 en `main`, la reejecución obligatoria vive en `f7-candidate.md` + `f7-required-cases.json` (`VAL-F7-CANDIDATE`). El manifiesto de evidencia permanece `result=pending`; no declara `RC_SHA_FUNCIONAL` ni aceptación independiente.
+Tras F1–F6 en `main`, la reejecución obligatoria vive en `f7-candidate.md` + `f7-required-cases.json` (`VAL-F7-CANDIDATE`). Inventario versionado de IDs / denominadores / owner / estado: [`mandatory-cases.md`](mandatory-cases.md). El manifiesto de evidencia permanece `result=pending`; no declara `RC_SHA_FUNCIONAL` ni aceptación independiente.
 
 Residuales de ejecución (agente / `--with-e2e`):
 
@@ -117,4 +117,4 @@ Quedan `pending`. No se usaron para aprobar nada.
 
 - Identidad: 100 contextos por 100 ids en el lote; 10.000 ids no demuestran unicidad universal.
 - Corpus de entrega: 20 casos por target soportado, más 4 rechazos. F0 versiona 3 fixtures de clases.
-- Rendimiento, en la máquina que se fije al medir: P95 de inicialización ≤ 3.000 ms; resolver + validar + manifiesto ≤ 1.000 ms; 30 muestras. Estado **pending** (F6 no marca passed sin medir; ver `honest-ux.md`).
+- Rendimiento de **producto** (ready ≤ 3.000 ms P95; prepare ≤ 1.000 ms P95; n ≥ 30): máquina de referencia **no fijada**; estado **pending**. El harness nativo `run_f7_p95_harness.py` **no certifica** producto (ver `honest-ux.md`).

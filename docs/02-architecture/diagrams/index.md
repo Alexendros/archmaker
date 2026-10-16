@@ -1,3 +1,21 @@
+---
+id: DOC-ARCH-DIAG-002
+phase: MVP
+priority: P1
+documentStatus: draft
+approvalStatus: pending
+implementationStatus: partial
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - architecture
+reviewers:
+  - independent-reviewer
+dependsOn:
+  - id: DOC-ARCH-DIAG-001
+    expectedDocumentStatus: draft
+---
+
 # Diagramas Archify (Neubat)
 
 - sourceSha: `d50d3414857175f1ff4b0b11f146065f8f1377da`
