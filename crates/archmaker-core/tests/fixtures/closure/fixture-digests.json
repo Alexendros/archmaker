@@ -2,13 +2,13 @@
   "algorithm": "sha256",
   "files": {
     "positive-profile.json": {
-      "sha256": "ca2310939773c5e8d53eccea5ab417df768536d985f11b721f7a77e46fb10d50",
-      "sizeBytes": 78,
+      "sha256": "79617aa94c8d629fd389a3cef18b0037e67c0a6ed5cb20a458eb92c259d16679",
+      "sizeBytes": 91,
       "class": "positive"
     },
     "negative-incomplete.json": {
-      "sha256": "713ec53cd8c9f2c5dee5066b373d7c71f4c4225c3d52310b43ca0ee7ea801222",
-      "sizeBytes": 40,
+      "sha256": "0738da867fa08c0d954ce4ca32dc7c6e3eeb353db25583625b7f1ee8632c72b4",
+      "sizeBytes": 45,
       "class": "negative"
     },
     "binary-payload.bin": {
