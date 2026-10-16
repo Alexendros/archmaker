@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "e630277c-38b0-43e7-a380-bd7520a19252",
+  "status": "current",
+  "command": "deliver",
+  "type": "architecture",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D04-frontend-coreport.architecture.json",
+  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/rendered/D04.html",
+  "specification": {
+    "sha256": "0f61b365c3c56da45b95ac954bd256553c9645bc0c3294635931f113cd488c78",
+    "bytes": 2701
+  },
+  "artifact": {
+    "sha256": "1bc41fa7c006541c991ab1ad999228b217aeefce713e1a832973bb8f6d349880",
+    "bytes": 813755
+  }
+}

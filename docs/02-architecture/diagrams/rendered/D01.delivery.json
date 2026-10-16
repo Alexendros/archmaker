@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "9fc23fd2-2911-4138-8263-4d1dad24be62",
+  "status": "current",
+  "command": "deliver",
+  "type": "architecture",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D01-context.architecture.json",
+  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/rendered/D01.html",
+  "specification": {
+    "sha256": "05d7a98939e2233c26d6c14a17de99d6271272eaeb57afc8e8bb77efebe11b18",
+    "bytes": 2515
+  },
+  "artifact": {
+    "sha256": "fd652d18b80883e255b45dee14900d1ffd22b600dfe19a1ad6757a9383239720",
+    "bytes": 811942
+  }
+}

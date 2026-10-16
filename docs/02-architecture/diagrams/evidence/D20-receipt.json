@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "bffaa34a-2532-4fd3-8d54-220409251031",
+  "ok": true,
+  "command": "deliver",
+  "type": "workflow",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D20-ci-pipeline.workflow.json",
+  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/rendered/D20.html",
+  "specification": {
+    "sha256": "5684eb36c648793b2d70af6786e39059de6e2087661bc3ee79cca58a2810d937",
+    "bytes": 1788
+  },
+  "artifact": {
+    "sha256": "0566fcab5711d832b70e850f89b011e1d42053f71409fed0e3a15dae0e111985",
+    "bytes": 808872
+  },
+  "validation": {
+    "checksPassed": 9,
+    "checkCount": 9,
+    "compositionProfile": "showcase",
+    "compositionStatus": "pass",
+    "errors": 0,
+    "warnings": 1,
+    "compositionIssues": [
+      {
+        "severity": "warning",
+        "code": "composition/viewport-height",
+        "readerFit": null,
+        "viewBoxWidth": 720,
+        "viewBoxHeight": 528,
+        "viewportWidth": 1440,
+        "viewportHeight": 900,
+        "ratio": 1.36,
+        "wideRatio": 1.55,
+        "svgWidthPx": 1346,
+        "svgHeightPx": 987,
+        "fixedChromePx": 126,
+        "pageHeightPx": 1113,
+        "overflowPx": 213,
+        "detail": "[composition/viewport-height] Preserve every node, relationship, and label. This 720x528 canvas (ratio 1.36) declares no intrinsic-height fit and is below the 1.55 wide ratio, so the desktop Reader can neither narrow it nor accept vertical scroll: it renders 987px tall at the full 1346px width and the page reaches 1113px before cards against 900px, a certain visual-check failure. Either compact vertical spacing so meta.viewBox height is at most 464 at this width, or spread content sideways so the width is at least 819 at this height; for architecture and readable-v2 workflow, omitting meta.viewBox lets the renderer size the canvas and declare the fit."
+      }
+    ]
+  },
+  "update": {
+    "status": "unavailable",
+    "installedVersion": null,
+    "availableVersion": null,
+    "releaseNotes": null,
+    "checkedAt": null,
+    "source": null,
+    "noticeRequired": false,
+    "noticeText": null,
+    "reason": "disabled"
+  }
+}
+

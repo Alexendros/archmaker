@@ -21,6 +21,7 @@ reviewers:
 - Fecha: 2026-10-06
 - Requisitos relacionados: FR-DRAFT-001, FR-RESOLVE-001, FR-VALIDATE-001, FR-MANIFEST-001, FR-EXPORT-001, FR-RUN-001, NFR-DET-001
 - Viewpoint: VP-05 Interacción y runtime ([`../viewpoints.md`](../viewpoints.md))
+- Diagramas Archify as-built: [`../diagrams/`](../diagrams/) (D07–D12)
 - Fase: R4
 
 ## Secuencia — Editar y guardar draft

@@ -21,6 +21,7 @@ reviewers:
 - Fecha: 2026-10-06
 - Requisitos relacionados: NFR-PORT-001, NFR-DET-001, NFR-OBS-001
 - Viewpoint: VP-03 Componentes ([`../viewpoints.md`](../viewpoints.md))
+- Diagramas Archify as-built: [`../diagrams/`](../diagrams/) (D03–D04)
 - Fase: R4; resuelve `AUD-F-08`
 
 ## VW-03 — Componentes de Desktop Application

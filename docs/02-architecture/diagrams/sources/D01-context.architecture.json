@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "D01 Contexto del configurador Neubat",
+    "output": "rendered/D01.html",
+    "quality_profile": "showcase",
+    "subtitle": "Neubat as-built (MVP); runner/ISO/Enterprise fuera de alcance"
+  },
+  "components": [
+    {
+      "id": "user",
+      "type": "external",
+      "label": "Usuario",
+      "sublabel": "Sencillo / Avanzado",
+      "pos": [
+        40,
+        280
+      ],
+      "size": [
+        130,
+        64
+      ]
+    },
+    {
+      "id": "neubat",
+      "type": "frontend",
+      "label": "Neubat",
+      "sublabel": "configurador",
+      "pos": [
+        280,
+        280
+      ],
+      "size": [
+        150,
+        64
+      ],
+      "tag": "público"
+    },
+    {
+      "id": "arch_docs",
+      "type": "external",
+      "label": "Docs Arch",
+      "sublabel": "referencia",
+      "pos": [
+        520,
+        140
+      ],
+      "size": [
+        140,
+        60
+      ]
+    },
+    {
+      "id": "gh_release",
+      "type": "cloud",
+      "label": "GitHub Release",
+      "sublabel": "AppImage v0.1.0",
+      "pos": [
+        520,
+        280
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "future",
+      "type": "external",
+      "label": "Futuro",
+      "sublabel": "Runner / ISO",
+      "pos": [
+        520,
+        420
+      ],
+      "size": [
+        160,
+        64
+      ],
+      "tag": "no shipped"
+    }
+  ],
+  "boundaries": [],
+  "connections": [
+    {
+      "id": "u-n",
+      "from": "user",
+      "to": "neubat",
+      "label": "selección → export",
+      "variant": "emphasis"
+    },
+    {
+      "id": "n-docs",
+      "from": "neubat",
+      "to": "arch_docs",
+      "label": "lee documentación",
+      "variant": "dashed"
+    },
+    {
+      "id": "n-rel",
+      "from": "neubat",
+      "to": "gh_release",
+      "label": "descarga AppImage",
+      "variant": "dashed"
+    },
+    {
+      "id": "n-fut",
+      "from": "neubat",
+      "to": "future",
+      "label": "fuera de veredicto",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Producto",
+      "items": [
+        "Neubat es el nombre público del configurador",
+        "Archify es herramienta de diagramación, no el producto"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Límites",
+      "items": [
+        "Runner, ISO, root y discos no están implementados",
+        "Enterprise documentado solo en C4 aspiracional"
+      ]
+    }
+  ]
+}

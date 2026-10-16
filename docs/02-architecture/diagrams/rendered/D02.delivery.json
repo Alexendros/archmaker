@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "d71054d7-10f9-4a2b-aa59-5b26a18305c8",
+  "status": "current",
+  "command": "deliver",
+  "type": "architecture",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D02-containers.architecture.json",
+  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/rendered/D02.html",
+  "specification": {
+    "sha256": "2fcdc5b6f24351361ac17071bda4c4179923328a86ac21615db8243b9ab9f075",
+    "bytes": 3623
+  },
+  "artifact": {
+    "sha256": "61d57d1c0132fe1b10079e3c0d35031c18c433f1640641a7392036f758c52b87",
+    "bytes": 819000
+  }
+}

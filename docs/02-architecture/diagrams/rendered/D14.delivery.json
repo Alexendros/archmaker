@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "8656998c-6b1c-4949-a6b1-118f6ffd5a7e",
+  "status": "current",
+  "command": "deliver",
+  "type": "lifecycle",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D14-prepare-export.lifecycle.json",
+  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/rendered/D14.html",
+  "specification": {
+    "sha256": "d1bb4e85626ecd3054c1e116cdc9c94182bbd1263724bba935e37ef0a5f4235f",
+    "bytes": 1746
+  },
+  "artifact": {
+    "sha256": "07e9a57b827979ad60f5a9888389888fc409db4c5a443f512c9be3cc34c5e50f",
+    "bytes": 808461
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "e41dd0bf-f518-4cec-b295-a8d0f24f218d",
+  "status": "current",
+  "command": "deliver",
+  "type": "sequence",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D07-init.sequence.json",
+  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/rendered/D07.html",
+  "specification": {
+    "sha256": "37a84155c5dcc73cdbb54086df734c8dd57b138f0e31323426c02975c8d67a08",
+    "bytes": 1191
+  },
+  "artifact": {
+    "sha256": "51c9d687fdd77d63f33b1cf763b0860e4725a8160dad14baf2d56cd8d7eeeb75",
+    "bytes": 801558
+  }
+}

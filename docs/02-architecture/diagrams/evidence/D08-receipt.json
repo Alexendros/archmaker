@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "26a45000-8a30-402c-b054-6136ea159c7c",
+  "ok": true,
+  "command": "deliver",
+  "type": "sequence",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D08-resolve-validate-manifest.sequence.json",
+  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/rendered/D08.html",
+  "specification": {
+    "sha256": "e13bf02546ac4e4c9c8ff3c3ca19f4a85de0d02dae23fb0cdddcec18eb3e3e9b",
+    "bytes": 1462
+  },
+  "artifact": {
+    "sha256": "55c4838d588643f6d24799796fd7b407c95299e81737debd1df79a60e2491580",
+    "bytes": 802270
+  },
+  "validation": {
+    "checksPassed": 9,
+    "checkCount": 9,
+    "compositionProfile": "showcase",
+    "compositionStatus": "pass",
+    "errors": 0,
+    "warnings": 0
+  },
+  "update": {
+    "status": "unavailable",
+    "installedVersion": null,
+    "availableVersion": null,
+    "releaseNotes": null,
+    "checkedAt": null,
+    "source": null,
+    "noticeRequired": false,
+    "noticeText": null,
+    "reason": "disabled"
+  }
+}
+

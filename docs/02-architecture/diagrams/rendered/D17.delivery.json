@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "9537d989-b432-457d-a2b4-095a682f40c7",
+  "status": "current",
+  "command": "deliver",
+  "type": "dataflow",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D17-profile-persist.dataflow.json",
+  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/rendered/D17.html",
+  "specification": {
+    "sha256": "b7f3e01a038b7f96072befe2b80a42f6d565c2ded05b02015a25273f1fab8d33",
+    "bytes": 2081
+  },
+  "artifact": {
+    "sha256": "7261f07cb59d818a66a13bf5c0337874f62ee65b3d7df405e10359dbe5927c65",
+    "bytes": 806621
+  }
+}

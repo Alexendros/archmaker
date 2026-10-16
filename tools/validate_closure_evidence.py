@@ -138,6 +138,9 @@ def approvable(data: dict, path: Path) -> tuple[bool, str]:
         return False, "un ejemplo no es evidencia"
     if data.get("result") != "passed":
         return False, "result distinto de passed"
+    # technicalResult es opcional en manifiestos antiguos; si existe, debe ser passed.
+    if "technicalResult" in data and data.get("technicalResult") not in (None, "passed"):
+        return False, "technicalResult distinto de passed"
     ids = data.get("requiredTestIds")
     if not isinstance(ids, list) or len(ids) == 0:
         return False, "expected es 0; exit 0 sin tests no cuenta"
@@ -152,6 +155,13 @@ def approvable(data: dict, path: Path) -> tuple[bool, str]:
         return False, "reviewedAt ausente"
     if not isinstance(data.get("sourceSha"), str) or not data["sourceSha"]:
         return False, "sourceSha ausente"
+    approval = data.get("approval")
+    if isinstance(approval, dict):
+        if approval.get("status") != "passed":
+            return False, "approval.status distinto de passed"
+        digest = approval.get("approvalRecordSha256")
+        if not isinstance(digest, str) or len(digest) != 64:
+            return False, "approval.approvalRecordSha256 ausente"
     return True, "ok"
 
 

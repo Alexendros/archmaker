@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "d0f600f2-e437-43b7-b7c9-0bf2a527bb1d",
+  "status": "current",
+  "command": "deliver",
+  "type": "tree",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D23-crates-tree.tree.json",
+  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/rendered/D23.html",
+  "specification": {
+    "sha256": "14272cb291ca03ee9763b03d21cab201b3322fb599af285cf9b3d022d493569c",
+    "bytes": 1572
+  },
+  "artifact": {
+    "sha256": "b094611b3e6ddc280deace3371a1ff1efba6abc23994b815fd27a6ee5347a45a",
+    "bytes": 820511
+  }
+}

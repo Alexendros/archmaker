@@ -19,59 +19,63 @@ dependsOn:
 # F7 — Candidato funcional (matriz sobre un RC_SHA)
 
 - Documento: DOC-DEL-CLO-F7-001 · Estado: draft · Propietario: Arquitectura
-- Inventario ejecutable: `f7-required-cases.json`
+- Inventario ejecutable: `f7-required-cases.json` (casos **atómicos**)
 - Runner / validador: `python3 tools/run_f7_candidate_matrix.py` (VAL-F7-CANDIDATE)
-- Manifiesto de evidencia: `result` permanece **`pending`**. F7 **no** declara `RC_SHA_FUNCIONAL` ni aceptación independiente firmada.
+- Manifiesto de evidencia: `result` permanece **`pending`**. `technicalResult` refleja la
+  ejecución. F7 **no** declara `RC_SHA_FUNCIONAL` ni firma `reviewer`/`reviewedAt`.
 
 ## Qué es un RC_SHA candidato
 
-Cualquier commit de `main` (o el `HEAD` de esta PR antes del merge) sobre el que se reejecuta la matriz obligatoria. Cambiar el SHA obliga a repetir la matriz. Un check de `pull_request` no valida `main` por sí solo (`GITHUB_SHA` puede ser el merge sintético).
+Cualquier commit de `main` (o el `HEAD` de esta PR antes del merge) sobre el que se reejecuta
+la matriz obligatoria. Cambiar el SHA obliga a repetir la matriz. Un harness posterior al
+tag `v0.1.0` **no** demuestra el código de `9297ed7…`; registrar por separado
+`harness.sourceSha` y `harness.productSourceSha`.
 
-## Matriz obligatoria
+## Matriz obligatoria (atómica)
 
-| Id                     | Caso                                                   | Estado documentado                                                                 |
-| ---------------------- | ------------------------------------------------------ | ---------------------------------------------------------------------------------- |
-| F7-MOTOR-REAL          | Motor real; fallo sin mock                             | executable (parcial en CI; E2E-01 con WASM)                                        |
-| F7-GEN-EDIT-EXPORT     | Generar A → editar B → exportar B; invalidar obsoletos | executable (parcial en CI; E2E-04 con WASM)                                        |
-| F7-DBLCLICK            | Reentrada / doble clic mientras `busy`                 | executable                                                                         |
-| F7-BLOCKING-VALIDATION | Validación bloqueante                                  | executable (`core_contract`)                                                       |
-| F7-TARGET-INCOMPATIBLE | Target incompatible                                    | executable (`export-delivery`)                                                     |
-| F7-REG-F0…F5           | Regresión F0–F5                                        | executable                                                                         |
-| F7-REG-F6              | Regresión F6 (mensajes; P95 no medido)                 | executable; **P95 pending** (sin 30 muestras)                                      |
-| F7-OFFLINE             | Offline según contrato                                 | **web passed** (local/`--with-e2e`); **escritorio pending** (sin humo de red)      |
-| F7-E2E-X3              | Tres E2E consecutivos WASM                             | **passed** en última verificación local (3 intentos, retries=0); CI vía `--with-e2e` |
+| Id | Caso | Estado documentado |
+| --- | --- | --- |
+| F7-MOTOR-REAL | Motor real (forge) | executable en CI |
+| F7-MOTOR-REAL-WASM | Motor real WASM E2E-01 | requiere `--with-e2e` + pkg completo |
+| F7-GEN-EDIT-EXPORT | Generar/editar/exportar (forge) | executable en CI |
+| F7-GEN-EDIT-EXPORT-WASM | E2E-04 WASM | requiere `--with-e2e` |
+| F7-DBLCLICK | Reentrada / doble clic | executable |
+| F7-BLOCKING-VALIDATION | Validación bloqueante | executable |
+| F7-TARGET-INCOMPATIBLE | Target incompatible | executable |
+| F7-REG-F0…F5 | Regresión F0–F5 | executable |
+| F7-REG-F6 | Mensajes F6 | executable |
+| F7-P95 | P95 n=30 init/prepare | `tools/run_f7_p95_harness.py` |
+| F7-OFFLINE-WEB | Offline web | requiere `--with-e2e` |
+| F7-OFFLINE-DESKTOP | Offline escritorio | **pending** (humo GUI/red) |
+| F7-E2E-X3 | Tres E2E WASM consecutivos | requiere `--with-e2e` |
 
-Detalle de comandos, hooks y `lastVerified`: `f7-required-cases.json`.
+Un subconjunto de comandos **no** cierra el caso: el runner marca `partial` y `--strict` falla.
 
-## Limitaciones registradas (sin etiqueta de aceptación independiente)
+## Limitaciones registradas
 
-1. El dueño puede mergear sin checks bloqueantes; el verde de colaborador externo no es el mismo gate.
-2. P95 F6 (inicialización ≤ 3.000 ms; resolve+validate+manifiesto ≤ 1.000 ms; n=30) sigue **pending**. No se fabrican cifras.
-3. Humo GUI F5 no es E2E de `xdg-desktop-portal`; el diálogo nativo se prueba con picker simulado.
-4. Offline **escritorio** (binario ya construido sin red) no tiene humo en CI; queda **pending** / documentado.
+1. El dueño puede mergear sin checks bloqueantes.
+2. Offline **escritorio** y diálogo nativo F5 reales siguen pendientes de evidencia GUI.
+3. `--strict` es cierre técnico; la aceptación independiente sigue siendo gobierno.
 
-## Offline (contrato)
+## P95
 
-- **Escritorio:** binario ya construido sin red. Sin humo de red en CI; **pending** hasta corrida de evidencia fuera del árbol con portal/ACL reales.
-- **Web:** página ya cargada, luego `context.setOffline(true)`. Cubierto por `apps/web/wasm-offline.playwright.test.ts` (requiere pkg WASM + Chromium). `lastVerified.web=passed` no cierra la aceptación funcional del conjunto.
+Umbrales (`honest-ux.md`): init ≤ 3.000 ms; prepare ≤ 1.000 ms; n = 30.
+Harness: `python3 tools/run_f7_p95_harness.py`. Las corridas viven fuera del árbol
+(`~/archmaker-closure/evidence/<source-sha>/…`). No inventar cifras sin informe.
 
 ## Cómo ejecutar
 
 ```bash
-# Solo valida inventario + emite métricas/manifiesto pending (CI)
 python3 tools/run_f7_candidate_matrix.py --validate-only
+python3 tools/test_run_f7_candidate_matrix.py
 
-# Ejecuta el subconjunto local/CI (sin exigir E2E WASM ×3 / offline)
-python3 tools/run_f7_candidate_matrix.py --execute
-
-# Con E2E WASM ×3 + offline web si el pkg WASM y Chromium están listos
-python3 tools/run_f7_candidate_matrix.py --execute --with-e2e
+# Evidencia local (no CI): falla ante omitidos/partial/cero tests
+python3 tools/run_f7_candidate_matrix.py --execute --with-e2e --strict --out-dir "$EVIDENCE/f7"
 ```
 
-Las corridas reales de evidencia viven fuera del árbol en `closure-evidence/<source-sha>/<run-id>/`. El manifiesto de esa corrida debe conservar `result=pending` hasta aceptación independiente (gobierno), y listar las limitaciones en `residuals` (P95, escritorio offline, dueño sin checks bloqueantes, sin `RC_SHA_FUNCIONAL`).
+El manifiesto conserva `result=pending` y rellena `technicalResult`, `harness`, tiempos,
+toolchain y digests de fixtures cuando hay `--execute`.
 
 ## Fuera de alcance
 
-La autorización de canal (AppImage / Neubat) vive en `f8-governance.md` y DEC-011; no cierra
-esta matriz ni sustituye `RC_SHA_FUNCIONAL`. F9 publica bytes del canal autorizado; no es
-aceptación funcional F7.
+F8/F9 (canal y release) no sustituyen `RC_SHA_FUNCIONAL`. El tag `v0.1.0` no se mueve.

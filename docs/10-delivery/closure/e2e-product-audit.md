@@ -49,7 +49,7 @@ Controles esenciales: ver `ESSENTIAL_CONTROLS` en `apps/web/e2e-fidelity-helpers
 
 | Comprobación | Resultado |
 | --- | --- |
-| `pnpm --dir apps/web` vite build → `apps/web/dist` | ok (esta corrida) |
+| `pnpm --dir apps/web` vite build → `apps/web/dist` | ok (corrida documentada; asociar a `sourceSha` + `RUN_ID` en evidencia externa) |
 | `cargo build -p archmaker` → ELF `target/debug/archmaker` | ok |
 | Tests unitarios `save_export*` (picker simulado) | ok (suite lib) |
 | Humo GUI interactivo del diálogo `rfd` | **no ejecutado** — requiere portal de escritorio estable; no se lanza GUI en el agent |

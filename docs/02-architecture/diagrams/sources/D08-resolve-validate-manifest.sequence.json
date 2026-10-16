@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "D08 Resolver → validar → construir manifiesto",
+    "output": "rendered/D08.html",
+    "quality_profile": "showcase",
+    "animation": "trace",
+    "viewBox": [
+      900,
+      508
+    ]
+  },
+  "participants": [
+    {
+      "id": "ui",
+      "type": "frontend",
+      "label": "UI"
+    },
+    {
+      "id": "core",
+      "type": "backend",
+      "label": "RealCore"
+    }
+  ],
+  "messages": [
+    {
+      "from": "ui",
+      "to": "core",
+      "y": 180,
+      "label": "resolveDraft",
+      "variant": "emphasis"
+    },
+    {
+      "from": "core",
+      "to": "ui",
+      "y": 222,
+      "label": "ResolveResult + resolutionDigest",
+      "variant": "return"
+    },
+    {
+      "from": "ui",
+      "to": "core",
+      "y": 264,
+      "label": "validateDraft",
+      "variant": "emphasis"
+    },
+    {
+      "from": "core",
+      "to": "ui",
+      "y": 306,
+      "label": "ValidationResult",
+      "variant": "return"
+    },
+    {
+      "from": "ui",
+      "to": "core",
+      "y": 348,
+      "label": "buildManifest",
+      "variant": "emphasis"
+    },
+    {
+      "from": "core",
+      "to": "ui",
+      "y": 390,
+      "label": "Manifest + contentDigest",
+      "variant": "return"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Pipeline",
+      "items": [
+        "Autoridad en Rust",
+        "Invalidación si el draft cambia"
+      ]
+    }
+  ]
+}

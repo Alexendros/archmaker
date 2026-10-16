@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "bffaa34a-2532-4fd3-8d54-220409251031",
+  "status": "current",
+  "command": "deliver",
+  "type": "workflow",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D20-ci-pipeline.workflow.json",
+  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/rendered/D20.html",
+  "specification": {
+    "sha256": "5684eb36c648793b2d70af6786e39059de6e2087661bc3ee79cca58a2810d937",
+    "bytes": 1788
+  },
+  "artifact": {
+    "sha256": "0566fcab5711d832b70e850f89b011e1d42053f71409fed0e3a15dae0e111985",
+    "bytes": 808872
+  }
+}

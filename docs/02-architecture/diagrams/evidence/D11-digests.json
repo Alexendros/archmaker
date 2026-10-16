@@ -1,0 +1,9 @@
+{
+  "id": "D11",
+  "source": "sources/D11-import-consent.sequence.json",
+  "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+  "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
+  "sourceSha256": "ca2c4cc5ee449cf145fb33237f134ac0923602d7b5f13c184fba2470db253727",
+  "htmlSha256": "829a8522fba27f87845616de586a9d656948034e51e90403a18a9b10eb51f687",
+  "html": "rendered/D11.html"
+}

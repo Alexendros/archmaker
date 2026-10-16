@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "61c852ed-de95-4246-9a65-149e12346198",
+  "ok": true,
+  "command": "deliver",
+  "type": "lifecycle",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D15-import-lifecycle.lifecycle.json",
+  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/rendered/D15.html",
+  "specification": {
+    "sha256": "137c2bb66aa7f4a076f64ffdd65ca88adac94f4c34ad3c78496299cc92caec40",
+    "bytes": 1636
+  },
+  "artifact": {
+    "sha256": "247e6fc81beca24db5c916662036940849f11f25fa761b647e5ff2d4e054760a",
+    "bytes": 808507
+  },
+  "validation": {
+    "checksPassed": 9,
+    "checkCount": 9,
+    "compositionProfile": "showcase",
+    "compositionStatus": "pass",
+    "errors": 0,
+    "warnings": 0
+  },
+  "update": {
+    "status": "unavailable",
+    "installedVersion": null,
+    "availableVersion": null,
+    "releaseNotes": null,
+    "checkedAt": null,
+    "source": null,
+    "noticeRequired": false,
+    "noticeText": null,
+    "reason": "disabled"
+  }
+}
+

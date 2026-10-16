@@ -1,0 +1,9 @@
+{
+  "id": "D13",
+  "source": "sources/D13-draft-lifecycle.lifecycle.json",
+  "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+  "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
+  "sourceSha256": "652f62e47897c8464883286b52194c3c68271f198c66e7c1ee07c4541c8878d3",
+  "htmlSha256": "acc980b7781a44c7d82bc0b9bae4f5321f3a9a5580ed4dfaab2eb8b3854debb1",
+  "html": "rendered/D13.html"
+}

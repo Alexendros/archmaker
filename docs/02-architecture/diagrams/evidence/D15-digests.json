@@ -1,0 +1,9 @@
+{
+  "id": "D15",
+  "source": "sources/D15-import-lifecycle.lifecycle.json",
+  "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+  "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
+  "sourceSha256": "137c2bb66aa7f4a076f64ffdd65ca88adac94f4c34ad3c78496299cc92caec40",
+  "htmlSha256": "247e6fc81beca24db5c916662036940849f11f25fa761b647e5ff2d4e054760a",
+  "html": "rendered/D15.html"
+}

@@ -27,13 +27,24 @@ dependsOn:
 
 Campos obligatorios: `schemaVersion`, `repository`, `phase`, `sourceSha`, `baseSha`, `eventSha`, `prHeadSha`, `workflowSha`, `mergeSha`, `workflowRunId`, `runAttempt`, `eventName`, `startedAt`, `completedAt`, `toolchain`, `platform`, `dirtyTrackedFiles`, `fixtureSetDigest`, `requiredTestIds`, `executed`, `passed`, `failed`, `skipped`, `retries`, `artifacts`, `result`, `reviewer`, `reviewedAt`, `residuals`.
 
+Campos opcionales (F7 endurecido): `harness` (`sourceSha` del harness, `productSourceSha`, `runner`), `technicalResult` (`passed`/`failed`/`partial`/…), `commands`, `tests`, `approval`.
+
+En `approval` se separan identidades:
+
+| Campo | Significado |
+| --- | --- |
+| `approvalRecordSha256` | SHA-256 del fichero de registro de aprobación |
+| `approvalRecordCommit` | Commit git del registro si está versionado |
+
+No usar un solo nombre (`APPROVAL_RECORD_SHA`) para ambas.
+
 Cada artefacto lleva `name`, `sizeBytes`, `sha256`, `mediaType` y `buildSourceSha`.
 
-Lo desconocido es `null`. `result` empieza en `pending`. Estados: `proposed`, `pending`, `running`, `passed`, `failed`, `blocked`, `not-applicable`.
+Lo desconocido es `null`. `result` empieza en `pending` (aprobación). `technicalResult` describe la ejecución. Estados de `result`: `proposed`, `pending`, `running`, `passed`, `failed`, `blocked`, `not-applicable`.
 
 El manifiesto no incluye su propio digest. Una propiedad `sha256`, `digest`, `evidenceSha256`, `manifestDigest` o `selfDigest` es inválida. `expected` no es un campo: es `len(requiredTestIds)` y tiene que ser mayor que 0.
 
-Aprobación del conjunto: `result` es `passed`, hay `sourceSha`, `reviewer` y `reviewedAt`, `executed == expected`, `passed == expected`, `failed == 0`, `skipped == 0` y `retries == 0`. Exit code 0 con cero tests no cuenta. Un fichero bajo `examples/` o cuyo nombre contiene `example` no es evidencia, aunque el contenido cuadre. El ejemplo que parece completo está en `docs/10-delivery/closure/examples/` y el validador lo rechaza como corrida.
+Aprobación del conjunto: `result` es `passed`, `technicalResult` es `passed` si está presente, hay `sourceSha`, `reviewer` y `reviewedAt`, `executed == expected`, `passed == expected`, `failed == 0`, `skipped == 0` y `retries == 0`. Si existe `approval`, exige `status=passed` y `approvalRecordSha256`. Exit code 0 con cero tests no cuenta. Un fichero bajo `examples/` o cuyo nombre contiene `example` no es evidencia, aunque el contenido cuadre.
 
 ## Corpus
 

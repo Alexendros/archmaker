@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "f7b5a2eb-67ef-4faa-b9a0-4c21d34e6c4a",
+  "status": "current",
+  "command": "deliver",
+  "type": "dataflow",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D19-trust-ipc.dataflow.json",
+  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/rendered/D19.html",
+  "specification": {
+    "sha256": "bf9144dcc0c1c24ab1464fbac8714a48e4ceca9f1f4a1068b90b84fc50fca0f4",
+    "bytes": 2145
+  },
+  "artifact": {
+    "sha256": "09929bf3811e12011927a00c57e3cfd8be502d0da5207c999b555a7a3b023509",
+    "bytes": 807833
+  }
+}

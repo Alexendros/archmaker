@@ -1,0 +1,399 @@
+{
+  "schemaVersion": "1",
+  "title": "Catálogo de diagramas Archify (Neubat)",
+  "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+  "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
+  "rendererPin": "$HOME/.local/share/archify/ca67c9f16be0c8cad409cd45190aa052e0649b84",
+  "requiredIds": [
+    "D01",
+    "D02",
+    "D03",
+    "D04",
+    "D05",
+    "D06",
+    "D07",
+    "D08",
+    "D09",
+    "D10",
+    "D11",
+    "D12",
+    "D13",
+    "D14",
+    "D15",
+    "D16",
+    "D17",
+    "D18",
+    "D19",
+    "D20",
+    "D21",
+    "D22",
+    "D23",
+    "D24"
+  ],
+  "conditioned": {
+    "D25": "Waterfall de rendimiento: solo con 30 muestras reales (ver F7-P95)",
+    "D26": "ERD físico: no aplica; persistencia es FS/IndexedDB, no SQL"
+  },
+  "entries": [
+    {
+      "id": "D01",
+      "title": "Contexto del configurador y actores",
+      "type": "architecture",
+      "source": "sources/D01-context.architecture.json",
+      "status": "actual",
+      "scope": "neubat-mvp-as-built",
+      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
+      "codeRefs": [],
+      "validation": {
+        "status": "pending",
+        "reviewer": null
+      }
+    },
+    {
+      "id": "D02",
+      "title": "Contenedores web/WASM/Tauri/almacenamiento",
+      "type": "architecture",
+      "source": "sources/D02-containers.architecture.json",
+      "status": "actual",
+      "scope": "neubat-mvp-as-built",
+      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
+      "codeRefs": [],
+      "validation": {
+        "status": "pending",
+        "reviewer": null
+      }
+    },
+    {
+      "id": "D03",
+      "title": "Componentes del core Rust",
+      "type": "architecture",
+      "source": "sources/D03-core-components.architecture.json",
+      "status": "actual",
+      "scope": "neubat-mvp-as-built",
+      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
+      "codeRefs": [],
+      "validation": {
+        "status": "pending",
+        "reviewer": null
+      }
+    },
+    {
+      "id": "D04",
+      "title": "Frontend y adaptadores CorePort",
+      "type": "architecture",
+      "source": "sources/D04-frontend-coreport.architecture.json",
+      "status": "actual",
+      "scope": "neubat-mvp-as-built",
+      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
+      "codeRefs": [],
+      "validation": {
+        "status": "pending",
+        "reviewer": null
+      }
+    },
+    {
+      "id": "D05",
+      "title": "Despliegue desktop Linux",
+      "type": "architecture",
+      "source": "sources/D05-desktop-linux.architecture.json",
+      "status": "actual",
+      "scope": "neubat-mvp-as-built",
+      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
+      "codeRefs": [],
+      "validation": {
+        "status": "pending",
+        "reviewer": null
+      }
+    },
+    {
+      "id": "D06",
+      "title": "Despliegue web y carga WASM",
+      "type": "architecture",
+      "source": "sources/D06-web-wasm.architecture.json",
+      "status": "actual",
+      "scope": "neubat-mvp-as-built",
+      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
+      "codeRefs": [],
+      "validation": {
+        "status": "pending",
+        "reviewer": null
+      }
+    },
+    {
+      "id": "D07",
+      "title": "Inicialización, catálogo y perfil",
+      "type": "sequence",
+      "source": "sources/D07-init.sequence.json",
+      "status": "actual",
+      "scope": "neubat-mvp-as-built",
+      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
+      "codeRefs": [],
+      "validation": {
+        "status": "pending",
+        "reviewer": null
+      }
+    },
+    {
+      "id": "D08",
+      "title": "Resolver → validar → manifiesto",
+      "type": "sequence",
+      "source": "sources/D08-resolve-validate-manifest.sequence.json",
+      "status": "actual",
+      "scope": "neubat-mvp-as-built",
+      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
+      "codeRefs": [],
+      "validation": {
+        "status": "pending",
+        "reviewer": null
+      }
+    },
+    {
+      "id": "D09",
+      "title": "Exportación web y digest",
+      "type": "sequence",
+      "source": "sources/D09-export-web.sequence.json",
+      "status": "actual",
+      "scope": "neubat-mvp-as-built",
+      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
+      "codeRefs": [],
+      "validation": {
+        "status": "pending",
+        "reviewer": null
+      }
+    },
+    {
+      "id": "D10",
+      "title": "Guardado desktop y cancelación",
+      "type": "sequence",
+      "source": "sources/D10-desktop-save.sequence.json",
+      "status": "actual",
+      "scope": "neubat-mvp-as-built",
+      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
+      "codeRefs": [],
+      "validation": {
+        "status": "pending",
+        "reviewer": null
+      }
+    },
+    {
+      "id": "D11",
+      "title": "Importación con consentimiento",
+      "type": "sequence",
+      "source": "sources/D11-import-consent.sequence.json",
+      "status": "actual",
+      "scope": "neubat-mvp-as-built",
+      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
+      "codeRefs": [],
+      "validation": {
+        "status": "pending",
+        "reviewer": null
+      }
+    },
+    {
+      "id": "D12",
+      "title": "Persistencia y recuperación",
+      "type": "sequence",
+      "source": "sources/D12-persistence.sequence.json",
+      "status": "actual",
+      "scope": "neubat-mvp-as-built",
+      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
+      "codeRefs": [],
+      "validation": {
+        "status": "pending",
+        "reviewer": null
+      }
+    },
+    {
+      "id": "D13",
+      "title": "Ciclo de vida del draft",
+      "type": "lifecycle",
+      "source": "sources/D13-draft-lifecycle.lifecycle.json",
+      "status": "actual",
+      "scope": "neubat-mvp-as-built",
+      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
+      "codeRefs": [],
+      "validation": {
+        "status": "pending",
+        "reviewer": null
+      }
+    },
+    {
+      "id": "D14",
+      "title": "Preparación/exportación e invalidación",
+      "type": "lifecycle",
+      "source": "sources/D14-prepare-export.lifecycle.json",
+      "status": "actual",
+      "scope": "neubat-mvp-as-built",
+      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
+      "codeRefs": [],
+      "validation": {
+        "status": "pending",
+        "reviewer": null
+      }
+    },
+    {
+      "id": "D15",
+      "title": "Importación lifecycle",
+      "type": "lifecycle",
+      "source": "sources/D15-import-lifecycle.lifecycle.json",
+      "status": "actual",
+      "scope": "neubat-mvp-as-built",
+      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
+      "codeRefs": [],
+      "validation": {
+        "status": "pending",
+        "reviewer": null
+      }
+    },
+    {
+      "id": "D16",
+      "title": "Tipos dominio/DTO/CorePort",
+      "type": "class",
+      "source": "sources/D16-domain-coreport.class.json",
+      "status": "actual",
+      "scope": "neubat-mvp-as-built",
+      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
+      "codeRefs": [],
+      "validation": {
+        "status": "pending",
+        "reviewer": null
+      }
+    },
+    {
+      "id": "D17",
+      "title": "Flujo de datos del perfil",
+      "type": "dataflow",
+      "source": "sources/D17-profile-persist.dataflow.json",
+      "status": "actual",
+      "scope": "neubat-mvp-as-built",
+      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
+      "codeRefs": [],
+      "validation": {
+        "status": "pending",
+        "reviewer": null
+      }
+    },
+    {
+      "id": "D18",
+      "title": "Canonicalización y digests",
+      "type": "dataflow",
+      "source": "sources/D18-canonicalization.dataflow.json",
+      "status": "actual",
+      "scope": "neubat-mvp-as-built",
+      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
+      "codeRefs": [],
+      "validation": {
+        "status": "pending",
+        "reviewer": null
+      }
+    },
+    {
+      "id": "D19",
+      "title": "Fronteras de confianza e IPC",
+      "type": "dataflow",
+      "source": "sources/D19-trust-ipc.dataflow.json",
+      "status": "actual",
+      "scope": "neubat-mvp-as-built",
+      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
+      "codeRefs": [],
+      "validation": {
+        "status": "pending",
+        "reviewer": null
+      }
+    },
+    {
+      "id": "D20",
+      "title": "Pipeline CI y validadores",
+      "type": "workflow",
+      "source": "sources/D20-ci-pipeline.workflow.json",
+      "status": "actual",
+      "scope": "neubat-mvp-as-built",
+      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
+      "codeRefs": [],
+      "validation": {
+        "status": "pending",
+        "reviewer": null
+      }
+    },
+    {
+      "id": "D21",
+      "title": "Build firma publicación",
+      "type": "workflow",
+      "source": "sources/D21-release-sign.workflow.json",
+      "status": "actual",
+      "scope": "neubat-mvp-as-built",
+      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
+      "codeRefs": [],
+      "validation": {
+        "status": "pending",
+        "reviewer": null
+      }
+    },
+    {
+      "id": "D22",
+      "title": "Aceptación F0–F9",
+      "type": "workflow",
+      "source": "sources/D22-f0-f9.workflow.json",
+      "status": "actual",
+      "scope": "neubat-mvp-as-built",
+      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
+      "codeRefs": [],
+      "validation": {
+        "status": "pending",
+        "reviewer": null
+      }
+    },
+    {
+      "id": "D23",
+      "title": "Árbol crates/apps/docs",
+      "type": "tree",
+      "source": "sources/D23-crates-tree.tree.json",
+      "status": "actual",
+      "scope": "neubat-mvp-as-built",
+      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
+      "codeRefs": [],
+      "validation": {
+        "status": "pending",
+        "reviewer": null
+      }
+    },
+    {
+      "id": "D24",
+      "title": "Historial baselines y releases",
+      "type": "timeline",
+      "source": "sources/D24-baselines.timeline.json",
+      "status": "actual",
+      "scope": "neubat-mvp-as-built",
+      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
+      "codeRefs": [],
+      "validation": {
+        "status": "pending",
+        "reviewer": null
+      }
+    }
+  ]
+}

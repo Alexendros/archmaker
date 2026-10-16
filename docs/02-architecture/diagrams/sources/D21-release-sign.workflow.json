@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "D21 Build, firma, publicación y verificación",
+    "output": "rendered/D21.html",
+    "quality_profile": "showcase",
+    "animation": "trace"
+  },
+  "lanes": [
+    {
+      "id": "build",
+      "label": "Build"
+    },
+    {
+      "id": "sign",
+      "label": "Sigstore"
+    },
+    {
+      "id": "publish",
+      "label": "GitHub Release"
+    },
+    {
+      "id": "verify",
+      "label": "Verifier"
+    }
+  ],
+  "mainPath": [
+    "pkg",
+    "sbom",
+    "cosign",
+    "rel",
+    "local"
+  ],
+  "nodes": [
+    {
+      "id": "pkg",
+      "lane": "build",
+      "col": 0,
+      "type": "backend",
+      "label": "AppImage"
+    },
+    {
+      "id": "sbom",
+      "lane": "build",
+      "col": 1,
+      "type": "backend",
+      "label": "SBOM"
+    },
+    {
+      "id": "cosign",
+      "lane": "sign",
+      "col": 2,
+      "type": "security",
+      "label": "cosign"
+    },
+    {
+      "id": "rel",
+      "lane": "publish",
+      "col": 3,
+      "type": "cloud",
+      "label": "Release"
+    },
+    {
+      "id": "local",
+      "lane": "verify",
+      "col": 4,
+      "type": "external",
+      "label": "verify",
+      "width": 110
+    }
+  ],
+  "edges": [
+    {
+      "from": "pkg",
+      "to": "sbom"
+    },
+    {
+      "from": "sbom",
+      "to": "cosign",
+      "route": "drop",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "from": "cosign",
+      "to": "rel",
+      "route": "drop",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "from": "rel",
+      "to": "local",
+      "route": "drop",
+      "fromSide": "bottom",
+      "toSide": "top"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "amber",
+      "title": "v0.1.0",
+      "items": [
+        "RC_SHA 9297ed7… inamovible",
+        "Verificación parcial: cosign local y 3× GUI pendientes"
+      ]
+    }
+  ]
+}

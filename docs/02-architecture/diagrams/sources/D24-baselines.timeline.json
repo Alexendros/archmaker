@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "diagram_type": "timeline",
+  "meta": {
+    "title": "D24 Baselines y releases",
+    "subtitle": "Hitos documentados; v0.1.0 inamovible",
+    "timezone": "Europe/Madrid",
+    "quality_profile": "showcase",
+    "output": "rendered/D24.html",
+    "evidence": "illustrative"
+  },
+  "lanes": [
+    {
+      "id": "baseline",
+      "label": "Baselines"
+    },
+    {
+      "id": "closure",
+      "label": "Cierre"
+    },
+    {
+      "id": "release",
+      "label": "Release"
+    }
+  ],
+  "events": [
+    {
+      "id": "mvp5",
+      "at": "2026-09-01T00:00:00+02:00",
+      "title": "implementation-baseline-mvp5",
+      "detail": "Baseline vigente de código MVP-5",
+      "lane": "baseline",
+      "kind": "change"
+    },
+    {
+      "id": "f0f8",
+      "at": "2026-10-15T12:00:00+02:00",
+      "title": "Cierre F0–F8 en main",
+      "detail": "Documentación y matriz; aprobación funcional pending",
+      "lane": "closure",
+      "kind": "change"
+    },
+    {
+      "id": "v010",
+      "at": "2026-10-16T12:00:00+02:00",
+      "title": "Neubat v0.1.0",
+      "detail": "RC_SHA 9297ed7…; verificación parcial",
+      "lane": "release",
+      "kind": "action"
+    },
+    {
+      "id": "c909",
+      "at": "2026-10-16T22:47:00+02:00",
+      "title": "main c90919c",
+      "detail": "Corte revisado post PR #122",
+      "lane": "baseline",
+      "kind": "change"
+    }
+  ]
+}

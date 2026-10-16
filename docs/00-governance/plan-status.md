@@ -36,8 +36,8 @@ reviewers:
 | Capa                 | Estado    | Nota                                                                                          |
 | -------------------- | --------- | --------------------------------------------------------------------------------------------- |
 | Baseline de código   | passed    | Tag MVP-5 + F0–F8 en `main`                                                                   |
-| Aprobación funcional | pending   | Limitaciones F7 (`f7-candidate.md`); sin `RC_SHA_FUNCIONAL`                                   |
-| Release binaria      | published | Neubat AppImage `v0.1.0`; verificación parcial (cosign/GUI); ver `f9-release.md`              |
+| Aprobación funcional | pending   | Runner F7 estricto + P95 harness en árbol; sin `RC_SHA_FUNCIONAL` ni revisor independiente    |
+| Release binaria      | published | Neubat AppImage `v0.1.0` (`9297ed7…`); verificación parcial (cosign/GUI); ver `f9-release.md` |
 
 Detalle y residuales: `docs/10-delivery/closure/f8-governance.md`.
 

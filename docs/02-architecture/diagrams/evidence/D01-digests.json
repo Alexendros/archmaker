@@ -1,0 +1,9 @@
+{
+  "id": "D01",
+  "source": "sources/D01-context.architecture.json",
+  "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+  "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
+  "sourceSha256": "05d7a98939e2233c26d6c14a17de99d6271272eaeb57afc8e8bb77efebe11b18",
+  "htmlSha256": "fd652d18b80883e255b45dee14900d1ffd22b600dfe19a1ad6757a9383239720",
+  "html": "rendered/D01.html"
+}

@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "D07 Inicialización, catálogo y creación de perfil",
+    "output": "rendered/D07.html",
+    "quality_profile": "showcase",
+    "animation": "trace",
+    "viewBox": [
+      900,
+      480
+    ]
+  },
+  "participants": [
+    {
+      "id": "ui",
+      "type": "frontend",
+      "label": "UI",
+      "sublabel": "App"
+    },
+    {
+      "id": "factory",
+      "type": "backend",
+      "label": "create-core-port"
+    },
+    {
+      "id": "core",
+      "type": "backend",
+      "label": "CorePort"
+    }
+  ],
+  "messages": [
+    {
+      "from": "ui",
+      "to": "factory",
+      "y": 180,
+      "label": "boot adapter",
+      "variant": "emphasis"
+    },
+    {
+      "from": "factory",
+      "to": "core",
+      "y": 222,
+      "label": "loadCatalog / createDraft",
+      "variant": "emphasis"
+    },
+    {
+      "from": "core",
+      "to": "ui",
+      "y": 264,
+      "label": "Draft + CatalogRef",
+      "variant": "return"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Inicio",
+      "items": [
+        "Adapter según entorno",
+        "Catálogo embebido / producto"
+      ]
+    }
+  ]
+}
