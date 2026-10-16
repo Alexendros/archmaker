@@ -27,8 +27,11 @@ PD-0 fuentes; PD-1 producto; PD-2 arquitectura; PD-3 datos; PD-4 interfaces; PD-
 - MVP-3 manifest/exporters — baseline `implementation-baseline-mvp3` ([`mvp3-scope.md`](mvp3-scope.md)).
 - MVP-4 React + MockCorePort + design system — baseline `implementation-baseline-mvp4` ([`mvp4-scope.md`](mvp4-scope.md)).
 - MVP-5 catálogo de matriz, UI cinco pasos, paridad Tauri/WASM — baseline `implementation-baseline-mvp5` ([`mvp5-scope.md`](mvp5-scope.md)).
-- Cierre F0–F7 en `main`; gobierno F8 ([`closure/f8-governance.md`](closure/f8-governance.md)): aprobación funcional **pending**, F9 **blocked**.
-- MVP-6 packaging/hardening/beta/stable — alcance en revisión ([`mvp6-scope.md`](mvp6-scope.md)); no autorizado hasta `accepted`; ADR-0010 sigue `proposed`.
+- Cierre F0–F9: gobierno F8 ([`closure/f8-governance.md`](closure/f8-governance.md)) **accepted**;
+  F9 publicó Neubat AppImage [`v0.1.0`](https://github.com/Alexendros/archmaker/releases/tag/v0.1.0)
+  ([`closure/f9-release.md`](closure/f9-release.md)); aprobación funcional F7 **pending**.
+- MVP-6 packaging — [`mvp6-scope.md`](mvp6-scope.md) **accepted** solo AppImage; ADR-0010
+  **accepted** (opción 3). Residual: cosign local / 3× GUI; `.deb`/`.rpm`/AUR deferred.
 - Imagen de instalación — alcance v1 en revisión ([`iso-scope.md`](iso-scope.md)); fuera del veredicto vigente.
 
 ## v1

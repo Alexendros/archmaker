@@ -23,11 +23,11 @@ ArchMaker es un **configurador local** para diseñar, validar y exportar un perf
 
 ## Estado (tres capas)
 
-| Capa                 | Estado  | Lectura                                                    |
-| -------------------- | ------- | ---------------------------------------------------------- |
-| Baseline de código   | passed  | Tag `implementation-baseline-mvp5`; cierre F0–F7 en `main` |
-| Aprobación funcional | pending | Limitaciones F7; sin aceptación independiente firmada      |
-| Release binaria      | blocked | MVP-6 y ADR-0010 sin `accepted`; F9 no abierto             |
+| Capa                 | Estado    | Lectura                                                                 |
+| -------------------- | --------- | ----------------------------------------------------------------------- |
+| Baseline de código   | passed    | Tag `implementation-baseline-mvp5`; cierre F0–F8 en `main`              |
+| Aprobación funcional | pending   | Limitaciones F7; sin `RC_SHA_FUNCIONAL`                                 |
+| Release binaria      | published | [Neubat v0.1.0](https://github.com/Alexendros/archmaker/releases/tag/v0.1.0) AppImage; verificación parcial |
 
 Detalle de gobierno: [`docs/10-delivery/closure/f8-governance.md`](https://github.com/Alexendros/archmaker/blob/main/docs/10-delivery/closure/f8-governance.md).
 
@@ -38,8 +38,7 @@ Veredicto vigente: **CONDITIONAL-CLEAR** hasta MVP-5 (sin runner). Walking skele
 - No instala Arch Linux ni ningún sistema.
 - No ejecuta un plan privilegiado ni abre un shell.
 - No requiere red para el flujo MVP (catálogo y drafts locales).
-- No publica paquetes de tienda mientras MVP-6 no esté `accepted` y ADR-0010 no esté `accepted`.
-- No anuncia canales de paquete ni abre F9 desde este manual.
+- No anuncia `.deb`/`.rpm`/AUR/ISO como Done; el canal publicado es solo AppImage Neubat.
 
 ## Lectura
 

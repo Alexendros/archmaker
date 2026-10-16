@@ -35,11 +35,12 @@ reviewers:
 - Reevaluación slice MVP-5 (MVP-5-05): **CONDITIONAL-CLEAR — walking skeleton MVP-0 + slices MVP-1..MVP-5**
   (remediación operativa + Prove-It). Baseline emitida: `implementation-baseline-mvp5`
   (tags previos intactos). Exclusiones del alcance vigentes (sin runner/ISO).
-- Post-slice cierre F0–F7 (código en `main`): **no** amplía el veredicto al runner/ISO.
-  Capas separadas (DOC-DEL-CLO-F8-001): baseline de código **passed**; aprobación funcional
-  **pending** (limitaciones F7); release binaria **authorized** — AppImage Linux x86_64,
-  nombre público Neubat (MVP-6 `accepted` solo para esa plataforma; ADR-0010 `accepted`
-  opción 3; DEC-011). F9 abierto. Ver `docs/10-delivery/closure/f8-governance.md`.
+- Post-slice cierre F0–F9 (código en `main` + release): **no** amplía el veredicto al
+  runner/ISO. Capas separadas (DOC-DEL-CLO-F8-001 / DOC-DEL-CLO-F9-001): baseline de
+  código **passed**; aprobación funcional **pending** (limitaciones F7; sin
+  `RC_SHA_FUNCIONAL`); release binaria **published** — AppImage Linux x86_64 Neubat
+  tag `v0.1.0` (`RC_SHA` `9297ed7…`), verificación parcial (sin cosign local, sin 3×
+  install GUI). Ver `docs/10-delivery/closure/f8-governance.md` y `f9-release.md`.
 - Alcance autorizado: `docs/10-delivery/walking-skeleton.md` (DOC-DEL-WSK-001),
   `docs/10-delivery/mvp1-scope.md` (DOC-DEL-MVP1-001), `docs/10-delivery/mvp2-scope.md`
   (DOC-DEL-MVP2-001), `docs/10-delivery/mvp3-scope.md` (DOC-DEL-MVP3-001),
@@ -122,8 +123,9 @@ DEC-011). **No** autorizado: runner real, root, discos, shell arbitraria, catál
 firma criptográfica de catálogo en carga, Enterprise, ISO, ni `.deb`/`.rpm`/OBS/AUR binario
 como Done.
 
-La presencia de F0–F7 en `main` **no** equivale a aprobación funcional firmada. La
-autorización de publicación F9 es el acto de gobierno F8/DEC-011, distinto de esa capa.
+La presencia de F0–F8 en `main` y la publicación F9 (`v0.1.0`) **no** equivalen a
+aprobación funcional firmada ni a `RC_SHA_FUNCIONAL`. El acto de gobierno F8/DEC-011
+autorizó el canal; F9 publicó bytes con verificación parcial, capa distinta de F7.
 
 ## Decisiones de alcance (C3 — G1-C03)
 

@@ -31,13 +31,16 @@ El runner privilegiado (JNY-003 / UC-006) está diferido (ADR-0004 / DEC-004). N
 
 ## Empaquetado
 
-La **release de plan** publica notas y el código del tag. La **release de paquete** autorizada
-es el **AppImage Linux x86_64** con nombre público **Neubat** (ADR-0010 opción 3, DEC-011,
-MVP-6 accepted solo para esa plataforma). `.deb`, `.rpm`, OBS y AUR quedan deferred; AUR no
-es repositorio binario. Detalle: `docs/10-delivery/packaging-release.md` y
-`docs/10-delivery/closure/f8-governance.md`.
+La **release de plan** publica notas y el código del tag. La **release de paquete** publicada
+es el **AppImage Linux x86_64** con nombre público **Neubat** tag
+[`v0.1.0`](https://github.com/Alexendros/archmaker/releases/tag/v0.1.0) (ADR-0010 opción 3,
+DEC-011, MVP-6 accepted solo para esa plataforma). Limitaciones: sin cosign local verificado,
+sin 3× install GUI de aceptación, sin `RC_SHA_FUNCIONAL` F7, sin imagen Arch. `.deb`, `.rpm`,
+OBS y AUR quedan deferred; AUR no es repositorio binario. Detalle:
+`docs/10-delivery/packaging-release.md`, `docs/10-delivery/closure/f8-governance.md` y
+`docs/10-delivery/closure/f9-release.md`.
 
 ## Veredicto vigente
 
 CONDITIONAL-CLEAR hasta MVP-5 (sin runner). MVP-6 AppImage está `accepted` para el canal
-único; ISO y runner siguen sin `accepted`.
+único y `v0.1.0` está publicado; ISO y runner siguen sin `accepted`.

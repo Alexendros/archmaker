@@ -5,7 +5,7 @@ priority: P0
 documentStatus: in-review
 approvalStatus: pending
 implementationStatus: complete
-verificationStatus: not-verified
+verificationStatus: partial
 releaseStatus: ineligible
 owners:
   - governance
@@ -20,21 +20,24 @@ reviewers:
 - Baseline vigente: `implementation-baseline-mvp5` (predecesores mvp0.1..mvp4 intactos)
 - Alcance MVP-5 `accepted` y cerrado (MVP-5-01..05): `docs/10-delivery/mvp5-scope.md`. Hueco residual: `docs/10-delivery/mvp5-gap-spec.md` (draft).
 - Remediación operativa cerrada (transportes reales, ACL, ciclo de edición, exportación, Prove-It): `docs/10-delivery/remediation/`; notas en `acceptance-notes.md`.
-- Cierre de producto F0–F7: código en `main` (PRs de cierre + CI #112). Gobierno de canal F8:
+- Cierre de producto F0–F8: código en `main`. Gobierno de canal F8:
   `docs/10-delivery/closure/f8-governance.md` (**accepted**).
-- Canal de distribución autorizado: AppImage Linux x86_64, nombre público **Neubat**
-  (`mvp6-scope.md` accepted solo para esa plataforma; ADR-0010 accepted opción 3; DEC-011).
-  ISO / runner / Enterprise siguen sin `accepted`. F9 en ejecución
-  (`docs/10-delivery/closure/f9-release.md`); evidencia y `APPROVAL_RECORD` fuera del árbol.
+- Canal de distribución: AppImage Linux x86_64, nombre público **Neubat**, tag
+  [`v0.1.0`](https://github.com/Alexendros/archmaker/releases/tag/v0.1.0)
+  (`RC_SHA` `9297ed7…`; `docs/10-delivery/closure/f9-release.md`). ISO / runner /
+  Enterprise siguen sin `accepted`. Evidencia y `APPROVAL_RECORD` fuera del árbol.
+- Limitaciones v0.1.0: sin cosign local verificado; sin 3× install GUI; F7 sin
+  `RC_SHA_FUNCIONAL`; sin imagen Arch. R2: `releaseStatus` del doc F9 = `ineligible`
+  (verification parcial).
 - Fecha de corte: 2026-10-16
 
 ## Tres capas (no equiparar)
 
-| Capa                 | Estado     | Nota                                                               |
-| -------------------- | ---------- | ------------------------------------------------------------------ |
-| Baseline de código   | passed     | Tag MVP-5 + F0–F7 en `main`                                        |
-| Aprobación funcional | pending    | Limitaciones F7 (`f7-candidate.md`); sin `RC_SHA_FUNCIONAL`        |
-| Release binaria      | authorized | AppImage x86_64 / Neubat; F9 abierto (`f8-governance.md`, DEC-011) |
+| Capa                 | Estado    | Nota                                                                                          |
+| -------------------- | --------- | --------------------------------------------------------------------------------------------- |
+| Baseline de código   | passed    | Tag MVP-5 + F0–F8 en `main`                                                                   |
+| Aprobación funcional | pending   | Limitaciones F7 (`f7-candidate.md`); sin `RC_SHA_FUNCIONAL`                                   |
+| Release binaria      | published | Neubat AppImage `v0.1.0`; verificación parcial (cosign/GUI); ver `f9-release.md`              |
 
 Detalle y residuales: `docs/10-delivery/closure/f8-governance.md`.
 
@@ -57,9 +60,10 @@ del propio alcance). El runner v1 y los privilegios se autorizan únicamente cua
 evidencia específica de esas fases, no existan riesgos P0 sin tratamiento y todos los contratos
 P0 posean fixtures válidos e inválidos.
 
-F9 (empaquetado/firma/publicación del AppImage Neubat) está **autorizado** por F8 / DEC-011 /
-MVP-6 accepted (solo AppImage). La aprobación funcional F7 permanece `pending` como capa
-distinta; no reabre runner/ISO ni anuncia `.deb`/`.rpm`/AUR.
+F9 publicó el AppImage Neubat `v0.1.0` bajo F8 / DEC-011 / MVP-6 accepted (solo AppImage).
+La verificación de esa release es **parcial** (cosign local y 3× GUI pendientes). La
+aprobación funcional F7 permanece `pending` como capa distinta; no reabre runner/ISO ni
+anuncia `.deb`/`.rpm`/AUR.
 
 ## Referencias
 
