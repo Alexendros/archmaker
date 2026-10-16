@@ -142,6 +142,9 @@ def infer_covers(crate: str, test_file: str, test_fn: str) -> List[str]:
         'visual': ['NFR-ACC-001', 'NFR-OFF-001'],
         'a11y': ['NFR-ACC-001'],
         'e2e': ['FR-DRAFT-001', 'FR-CAT-001', 'FR-RESOLVE-001', 'FR-VALIDATE-001', 'FR-MANIFEST-001', 'FR-EXPORT-001', 'NFR-OFF-001'],
+        # Prove-It wasm-safe UUID path (no SystemTime/urandom): offline + portability.
+        'wasm': ['NFR-OFF-001', 'NFR-PORT-001'],
+        'uuid': ['NFR-DET-001', 'NFR-PORT-001'],
     }
 
     for keyword, reqs in keyword_map.items():

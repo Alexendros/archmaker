@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "generated_at": "1792166266",
-    "git_sha": "efefbdabb58679c3666b55209bf5689ac8d8e5ed",
+    "generated_at": "1792169481",
+    "git_sha": "6e25f21e051888d86eef19e45627167fb237d652",
     "requirements_file": "docs/01-product/requirements.md",
     "inventory_file": "docs/10-delivery/tests-inventory.json",
     "validators_file": "docs/10-delivery/validators.json"
@@ -73,7 +73,7 @@
       "evidence_count": 37,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["unit", "integration", "negative", "schema"],
+      "evidence_types": ["unit", "negative", "integration", "schema"],
       "coverage_status": "covered"
     },
     {
@@ -101,6 +101,7 @@
         "TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-NAMED_DENIED_INVOKE_YIELDS_PROTO_001",
         "TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-NAMED_ALLOWED_INVOKE_RESOLVES_OP",
         "TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-DENIED_ERROR_SOURCE_IDENTIFIES_WINDOW_AND_COMMAND",
+        "TST-ARCHMAKER-CORE-CORE_CONTRACT-RESOLVE_DRAFT_REJECTS_FACE_INTENT_OPTION",
         "TST-ARCHMAKER-CORE-CORE_CONTRACT-CREATE_DRAFT_VALID_DEFAULTS",
         "TST-ARCHMAKER-CORE-CORE_CONTRACT-CREATE_DRAFT_HONORS_GIVEN_ID",
         "TST-ARCHMAKER-CORE-CORE_CONTRACT-CREATE_DRAFT_REJECTS_BAD_TARGET",
@@ -130,10 +131,10 @@
         "TST-WEB-MOCK-FLOW.PLAYWRIGHT"
       ],
       "validators": ["VAL-SCHEMA-REFS", "VAL-NEG-CAPABILITIES"],
-      "evidence_count": 45,
+      "evidence_count": 46,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["unit", "integration", "negative", "schema"],
+      "evidence_types": ["unit", "negative", "integration", "schema"],
       "coverage_status": "covered"
     },
     {
@@ -181,7 +182,7 @@
       "evidence_count": 15,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["contract", "integration", "unit"],
+      "evidence_types": ["unit", "contract", "integration"],
       "coverage_status": "covered"
     },
     {
@@ -262,12 +263,12 @@
       "has_executable_evidence": true,
       "passes_ci": true,
       "evidence_types": [
-        "contract",
+        "canonicalize",
+        "integration",
         "schema",
         "unit",
-        "negative",
-        "integration",
-        "canonicalize"
+        "contract",
+        "negative"
       ],
       "coverage_status": "covered"
     },
@@ -298,6 +299,7 @@
       "tests": [
         "TST-ARCHMAKER-WASM-PARITY-PARITY_RESOLVE_AND_MANIFEST",
         "TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-NAMED_ALLOWED_INVOKE_RESOLVES_OP",
+        "TST-ARCHMAKER-CORE-CORE_CONTRACT-RESOLVE_DRAFT_REJECTS_FACE_INTENT_OPTION",
         "TST-ARCHMAKER-CORE-CORE_CONTRACT-RESOLVE_DRAFT_VALID_AND_DETERMINISTIC",
         "TST-ARCHMAKER-CORE-CORE_CONTRACT-RESOLVE_DRAFT_REJECTS_UNKNOWN_OPTION",
         "TST-ARCHMAKER-CORE-CORE_CONTRACT-END_TO_END_CREATE_SAVE_RESOLVE_VALIDATE_BUILD_EXPORT",
@@ -306,10 +308,10 @@
         "TST-WEB-MOCK-FLOW.PLAYWRIGHT"
       ],
       "validators": [],
-      "evidence_count": 8,
+      "evidence_count": 9,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["unit", "integration", "negative"],
+      "evidence_types": ["unit", "negative", "integration"],
       "coverage_status": "covered"
     },
     {
@@ -355,7 +357,7 @@
       "evidence_count": 13,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["contract", "integration", "unit"],
+      "evidence_types": ["unit", "contract", "integration"],
       "coverage_status": "covered"
     },
     {
@@ -371,7 +373,7 @@
       "evidence_count": 2,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["a11y", "visual"],
+      "evidence_types": ["visual", "a11y"],
       "coverage_status": "covered"
     },
     {
@@ -395,6 +397,7 @@
         "TST-ARCHMAKER-WASM-PARITY-PARITY_RESOLVE_AND_MANIFEST",
         "TST-ARCHMAKER-WASM-PARITY-PARITY_DESKTOP_CATALOG_MANIFEST_CANONICAL_BYTES",
         "TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-MALFORMED_JSON_RETURNS_TYPED_SCHEMA_ERROR",
+        "TST-ARCHMAKER-CORE-CORE_CONTRACT-NEW_UUID_V4_WASM_SAFE_IS_VALID_WITHOUT_HOST_ENTROPY",
         "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-APPLICATION_CONTRACT_ACCEPTS_VALID_AND_REJECTS_INVALID",
         "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_BASE_001_ACCEPTS_VALID_AND_REJECTS_INVALID",
         "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_MANIFEST_001_DIGEST_STABLE_ACROSS_FORMATS",
@@ -407,15 +410,15 @@
         "TST-WEB-FORGE-HELPERS.PLAYWRIGHT"
       ],
       "validators": ["VAL-CANONICALIZE"],
-      "evidence_count": 23,
+      "evidence_count": 24,
       "has_executable_evidence": true,
       "passes_ci": true,
       "evidence_types": [
-        "contract",
-        "unit",
-        "negative",
+        "canonicalize",
         "integration",
-        "canonicalize"
+        "unit",
+        "contract",
+        "negative"
       ],
       "coverage_status": "covered"
     },
@@ -462,6 +465,19 @@
       "deferred": false,
       "pending": false,
       "tests": [
+        "TST-ARCHMAKER-WASM-PARITY-PARITY_MAPS_VECTORS",
+        "TST-ARCHMAKER-WASM-PARITY-PARITY_DOMAIN_VECTORS",
+        "TST-ARCHMAKER-WASM-PARITY-PARITY_UNICODE_VECTORS",
+        "TST-ARCHMAKER-WASM-PARITY-PARITY_CREATE_DRAFT_DETERMINISTIC_BYTES",
+        "TST-ARCHMAKER-WASM-PARITY-PARITY_VALIDATE_DIAGNOSTICS",
+        "TST-ARCHMAKER-WASM-PARITY-PARITY_RESOLVE_AND_MANIFEST",
+        "TST-ARCHMAKER-WASM-PARITY-PARITY_DESKTOP_CATALOG_MANIFEST_CANONICAL_BYTES",
+        "TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-DENIED_INVOKE_RETURNS_TYPED_PROTO_001",
+        "TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-ALLOWED_INVOKE_PASSES_CAPABILITY_GATE",
+        "TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-UNKNOWN_COMMAND_RETURNS_TYPED_PROTO_002",
+        "TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-UNKNOWN_WINDOW_RETURNS_TYPED_PROTO_002",
+        "TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-MALFORMED_JSON_RETURNS_TYPED_SCHEMA_ERROR",
+        "TST-ARCHMAKER-CORE-CORE_CONTRACT-NEW_UUID_V4_WASM_SAFE_IS_VALID_WITHOUT_HOST_ENTROPY",
         "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-APPLICATION_CONTRACT_ACCEPTS_VALID_AND_REJECTS_INVALID",
         "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_BASE_001_ACCEPTS_VALID_AND_REJECTS_INVALID",
         "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_MANIFEST_001_DIGEST_STABLE_ACROSS_FORMATS",
@@ -475,10 +491,16 @@
         "TST-WEB-VISUAL-REGRESSION"
       ],
       "validators": [],
-      "evidence_count": 11,
+      "evidence_count": 24,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["contract", "unit", "visual"],
+      "evidence_types": [
+        "integration",
+        "visual",
+        "unit",
+        "contract",
+        "negative"
+      ],
       "coverage_status": "covered"
     },
     {
@@ -496,13 +518,19 @@
         "TST-ARCHMAKER-WASM-PARITY-PARITY_CREATE_DRAFT_DETERMINISTIC_BYTES",
         "TST-ARCHMAKER-WASM-PARITY-PARITY_VALIDATE_DIAGNOSTICS",
         "TST-ARCHMAKER-WASM-PARITY-PARITY_RESOLVE_AND_MANIFEST",
-        "TST-ARCHMAKER-WASM-PARITY-PARITY_DESKTOP_CATALOG_MANIFEST_CANONICAL_BYTES"
+        "TST-ARCHMAKER-WASM-PARITY-PARITY_DESKTOP_CATALOG_MANIFEST_CANONICAL_BYTES",
+        "TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-DENIED_INVOKE_RETURNS_TYPED_PROTO_001",
+        "TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-ALLOWED_INVOKE_PASSES_CAPABILITY_GATE",
+        "TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-UNKNOWN_COMMAND_RETURNS_TYPED_PROTO_002",
+        "TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-UNKNOWN_WINDOW_RETURNS_TYPED_PROTO_002",
+        "TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-MALFORMED_JSON_RETURNS_TYPED_SCHEMA_ERROR",
+        "TST-ARCHMAKER-CORE-CORE_CONTRACT-NEW_UUID_V4_WASM_SAFE_IS_VALID_WITHOUT_HOST_ENTROPY"
       ],
       "validators": [],
-      "evidence_count": 7,
+      "evidence_count": 13,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["integration"],
+      "evidence_types": ["negative", "integration"],
       "coverage_status": "covered"
     },
     {

@@ -1,6 +1,6 @@
 {
-  "generated_at": "1792168307",
-  "git_sha": "ef5b705703522e3b35a34cd61bbd5cd8d2b19380",
+  "generated_at": "1792169481",
+  "git_sha": "6e25f21e051888d86eef19e45627167fb237d652",
   "tests": [
     {
       "id": "TST-ARCHMAKER-CANONICALIZATION-VECTORS-GOLDEN_CORPUS_BYTE_IDENTITY_AND_DIGEST",
@@ -50,7 +50,7 @@
       "location": "crates/archmaker-wasm/tests/parity.rs",
       "command": "cargo test -p archmaker-wasm --test parity parity_maps_vectors",
       "workflow": "ci",
-      "covers": ["NFR-DET-001", "NFR-PORT-001"],
+      "covers": ["NFR-DET-001", "NFR-PORT-001", "NFR-OFF-001"],
       "description": "parity::parity_maps_vectors"
     },
     {
@@ -59,7 +59,7 @@
       "location": "crates/archmaker-wasm/tests/parity.rs",
       "command": "cargo test -p archmaker-wasm --test parity parity_domain_vectors",
       "workflow": "ci",
-      "covers": ["NFR-DET-001", "NFR-PORT-001"],
+      "covers": ["NFR-DET-001", "NFR-PORT-001", "NFR-OFF-001"],
       "description": "parity::parity_domain_vectors"
     },
     {
@@ -68,7 +68,7 @@
       "location": "crates/archmaker-wasm/tests/parity.rs",
       "command": "cargo test -p archmaker-wasm --test parity parity_unicode_vectors",
       "workflow": "ci",
-      "covers": ["NFR-DET-001", "NFR-PORT-001"],
+      "covers": ["NFR-DET-001", "NFR-PORT-001", "NFR-OFF-001"],
       "description": "parity::parity_unicode_vectors"
     },
     {
@@ -77,7 +77,7 @@
       "location": "crates/archmaker-wasm/tests/parity.rs",
       "command": "cargo test -p archmaker-wasm --test parity parity_create_draft_deterministic_bytes",
       "workflow": "ci",
-      "covers": ["FR-DRAFT-001", "NFR-DET-001", "NFR-PORT-001"],
+      "covers": ["FR-DRAFT-001", "NFR-DET-001", "NFR-PORT-001", "NFR-OFF-001"],
       "description": "parity::parity_create_draft_deterministic_bytes"
     },
     {
@@ -86,7 +86,12 @@
       "location": "crates/archmaker-wasm/tests/parity.rs",
       "command": "cargo test -p archmaker-wasm --test parity parity_validate_diagnostics",
       "workflow": "ci",
-      "covers": ["FR-VALIDATE-001", "NFR-DET-001", "NFR-PORT-001"],
+      "covers": [
+        "FR-VALIDATE-001",
+        "NFR-DET-001",
+        "NFR-PORT-001",
+        "NFR-OFF-001"
+      ],
       "description": "parity::parity_validate_diagnostics"
     },
     {
@@ -99,7 +104,8 @@
         "FR-RESOLVE-001",
         "FR-MANIFEST-001",
         "NFR-DET-001",
-        "NFR-PORT-001"
+        "NFR-PORT-001",
+        "NFR-OFF-001"
       ],
       "description": "parity::parity_resolve_and_manifest"
     },
@@ -113,7 +119,8 @@
         "FR-CAT-001",
         "FR-MANIFEST-001",
         "NFR-DET-001",
-        "NFR-PORT-001"
+        "NFR-PORT-001",
+        "NFR-OFF-001"
       ],
       "description": "parity::parity_desktop_catalog_manifest_canonical_bytes"
     },
@@ -125,6 +132,8 @@
       "workflow": "ci",
       "covers": [
         "NFR-SEC-001",
+        "NFR-OFF-001",
+        "NFR-PORT-001",
         "FR-DRAFT-001",
         "FR-CAT-001",
         "FR-MANIFEST-001"
@@ -139,6 +148,8 @@
       "workflow": "ci",
       "covers": [
         "NFR-SEC-001",
+        "NFR-OFF-001",
+        "NFR-PORT-001",
         "FR-DRAFT-001",
         "FR-CAT-001",
         "FR-MANIFEST-001"
@@ -153,6 +164,8 @@
       "workflow": "ci",
       "covers": [
         "NFR-SEC-001",
+        "NFR-OFF-001",
+        "NFR-PORT-001",
         "FR-DRAFT-001",
         "FR-CAT-001",
         "FR-MANIFEST-001"
@@ -167,6 +180,8 @@
       "workflow": "ci",
       "covers": [
         "NFR-SEC-001",
+        "NFR-OFF-001",
+        "NFR-PORT-001",
         "FR-DRAFT-001",
         "FR-CAT-001",
         "FR-MANIFEST-001"
@@ -182,6 +197,8 @@
       "covers": [
         "NFR-SEC-001",
         "NFR-DET-001",
+        "NFR-OFF-001",
+        "NFR-PORT-001",
         "FR-DRAFT-001",
         "FR-CAT-001",
         "FR-MANIFEST-001"
@@ -321,7 +338,7 @@
       "location": "crates/archmaker-core/tests/core_contract.rs",
       "command": "cargo test -p archmaker-core --test core_contract new_uuid_v4_wasm_safe_is_valid_without_host_entropy",
       "workflow": "ci",
-      "covers": [],
+      "covers": ["NFR-OFF-001", "NFR-PORT-001", "NFR-DET-001"],
       "description": "core_contract::new_uuid_v4_wasm_safe_is_valid_without_host_entropy"
     },
     {
