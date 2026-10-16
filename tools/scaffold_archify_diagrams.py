@@ -43,7 +43,7 @@ def arch(
             "title": title,
             "output": f"rendered/{diagram_id}.html",
             "quality_profile": "showcase",
-            "subtitle": "Neubat as-built (MVP); runner/ISO/Enterprise fuera de alcance",
+            "subtitle": "Forge as-built (MVP); runner/ISO/Enterprise fuera de alcance",
         },
         "components": components,
         "boundaries": boundaries or [],
@@ -61,22 +61,22 @@ def main() -> int:
         "D01-context.architecture.json",
         arch(
             "D01",
-            "D01 Contexto del configurador Neubat",
+            "D01 Contexto del configurador Forge",
             [
                 {"id": "user", "type": "external", "label": "Usuario", "sublabel": "Sencillo / Avanzado", "pos": [40, 280], "size": [130, 64]},
-                {"id": "neubat", "type": "frontend", "label": "Neubat", "sublabel": "configurador", "pos": [280, 280], "size": [150, 64], "tag": "público"},
+                {"id": "forge", "type": "frontend", "label": "Forge", "sublabel": "configurador", "pos": [280, 280], "size": [150, 64], "tag": "público"},
                 {"id": "arch_docs", "type": "external", "label": "Docs Arch", "sublabel": "referencia", "pos": [520, 140], "size": [140, 60]},
                 {"id": "gh_release", "type": "cloud", "label": "GitHub Release", "sublabel": "AppImage v0.1.0", "pos": [520, 280], "size": [160, 64]},
                 {"id": "future", "type": "external", "label": "Futuro", "sublabel": "Runner / ISO", "pos": [520, 420], "size": [160, 64], "tag": "no shipped"},
             ],
             [
-                {"id": "u-n", "from": "user", "to": "neubat", "label": "selección → export", "variant": "emphasis"},
-                {"id": "n-docs", "from": "neubat", "to": "arch_docs", "label": "lee documentación", "variant": "dashed"},
-                {"id": "n-rel", "from": "neubat", "to": "gh_release", "label": "descarga AppImage", "variant": "dashed"},
-                {"id": "n-fut", "from": "neubat", "to": "future", "label": "fuera de veredicto", "variant": "dashed"},
+                {"id": "u-n", "from": "user", "to": "forge", "label": "selección → export", "variant": "emphasis"},
+                {"id": "n-docs", "from": "forge", "to": "arch_docs", "label": "lee documentación", "variant": "dashed"},
+                {"id": "n-rel", "from": "forge", "to": "gh_release", "label": "descarga AppImage", "variant": "dashed"},
+                {"id": "n-fut", "from": "forge", "to": "future", "label": "fuera de veredicto", "variant": "dashed"},
             ],
             [
-                {"dot": "cyan", "title": "Producto", "items": ["Neubat es el nombre público del configurador", "Archify es herramienta de diagramación, no el producto"]},
+                {"dot": "cyan", "title": "Producto", "items": ["Forge es la interfaz gráfica de ArchMaker", "Archify es herramienta de diagramación, no el producto"]},
                 {"dot": "amber", "title": "Límites", "items": ["Runner, ISO, root y discos no están implementados", "Enterprise documentado solo en C4 aspiracional"]},
             ],
         ),
@@ -154,8 +154,8 @@ def main() -> int:
             "D04",
             "D04 Frontend y adaptadores CorePort",
             [
-                {"id": "app", "type": "frontend", "label": "App.tsx", "sublabel": "NEUBAT face", "pos": [40, 220], "size": [140, 64]},
-                {"id": "face", "type": "frontend", "label": "neubat-face", "sublabel": "UI state", "pos": [40, 80], "size": [140, 60]},
+                {"id": "app", "type": "frontend", "label": "App.tsx", "sublabel": "Forge face", "pos": [40, 220], "size": [140, 64]},
+                {"id": "face", "type": "frontend", "label": "forge-face", "sublabel": "UI state", "pos": [40, 80], "size": [140, 60]},
                 {"id": "create", "type": "backend", "label": "create-core-port", "sublabel": "factory", "pos": [260, 220], "size": [160, 64]},
                 {"id": "tauri_p", "type": "backend", "label": "TauriCorePort", "sublabel": "invoke", "pos": [500, 120], "size": [150, 60]},
                 {"id": "wasm_p", "type": "backend", "label": "WasmCorePort", "sublabel": "wasm_invoke", "pos": [500, 220], "size": [150, 60]},
@@ -180,10 +180,10 @@ def main() -> int:
         "D05-desktop-linux.architecture.json",
         arch(
             "D05",
-            "D05 Despliegue desktop Linux (AppImage Neubat)",
+            "D05 Despliegue desktop Linux (AppImage Forge)",
             [
                 {"id": "user", "type": "external", "label": "Usuario Linux", "sublabel": "x86_64", "pos": [40, 220], "size": [140, 60]},
-                {"id": "appimage", "type": "cloud", "label": "Neubat AppImage", "sublabel": "bundle", "pos": [260, 220], "size": [170, 64], "tag": "v0.1.0"},
+                {"id": "appimage", "type": "cloud", "label": "Forge AppImage", "sublabel": "bundle", "pos": [260, 220], "size": [170, 64], "tag": "v0.1.0"},
                 {"id": "webview", "type": "frontend", "label": "WebView", "sublabel": "UI", "pos": [500, 120], "size": [140, 60]},
                 {"id": "host", "type": "backend", "label": "Proceso Rust", "sublabel": "src-tauri", "pos": [500, 280], "size": [150, 60]},
                 {"id": "portal", "type": "security", "label": "rfd / portal", "sublabel": "save dialog", "pos": [720, 280], "size": [150, 60]},
@@ -571,7 +571,7 @@ def main() -> int:
             "D17 Flujo de datos del perfil y persistencia",
             ["UI", "Adapter", "Core", "Store"],
             [
-                {"id": "face", "type": "frontend", "label": "neubat-face", "stage": 0, "row": 1},
+                {"id": "face", "type": "frontend", "label": "forge-face", "stage": 0, "row": 1},
                 {"id": "draft_map", "type": "frontend", "label": "draft-for-core", "stage": 0, "row": 3},
                 {"id": "port", "type": "backend", "label": "CorePort adapter", "stage": 1, "row": 2},
                 {"id": "core", "type": "backend", "label": "RealCore", "stage": 2, "row": 2},
@@ -877,7 +877,7 @@ def main() -> int:
     catalog_entries.append({"id": "D24", "title": "Historial baselines y releases", "type": "timeline", "source": "sources/D24-baselines.timeline.json", "status": "actual"})
 
     for entry in catalog_entries:
-        entry["scope"] = "neubat-mvp-as-built"
+        entry["scope"] = "forge-mvp-as-built"
         entry["sourceSha"] = source_sha
         entry["rendererSha"] = RENDERER_SHA
         entry["codeRefs"] = []
@@ -885,7 +885,7 @@ def main() -> int:
 
     catalog = {
         "schemaVersion": "1",
-        "title": "Catálogo de diagramas Archify (Neubat)",
+        "title": "Catálogo de diagramas Archify (Forge / ArchMaker)",
         "sourceSha": source_sha,
         "rendererSha": RENDERER_SHA,
         "rendererPin": f"$HOME/.local/share/archify/{RENDERER_SHA}",

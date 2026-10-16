@@ -5,14 +5,14 @@
     "title": "D04 Frontend y adaptadores CorePort",
     "output": "rendered/D04.html",
     "quality_profile": "showcase",
-    "subtitle": "Neubat as-built (MVP); runner/ISO/Enterprise fuera de alcance"
+    "subtitle": "Forge as-built (MVP); runner/ISO/Enterprise fuera de alcance"
   },
   "components": [
     {
       "id": "app",
       "type": "frontend",
       "label": "App.tsx",
-      "sublabel": "NEUBAT face",
+      "sublabel": "Forge face",
       "pos": [
         40,
         220
@@ -25,7 +25,7 @@
     {
       "id": "face",
       "type": "frontend",
-      "label": "neubat-face",
+      "label": "forge-face",
       "sublabel": "UI state",
       "pos": [
         40,

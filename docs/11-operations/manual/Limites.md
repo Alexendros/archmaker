@@ -23,7 +23,7 @@ El MVP es usable sin CDN ni servidor (NFR-OFF-001). El catálogo y los drafts vi
 
 ## Sin instalación del sistema
 
-Neubat (ids técnicos `archmaker*`) no particiona discos, no ejecuta `pacstrap`, no corre hooks ni scripts heredados y no escribe fuera del espacio de la aplicación. La imagen de instalación es otro alcance (`docs/10-delivery/iso-scope.md`), todavía no autorizado.
+Forge / ArchMaker (ids técnicos `archmaker*`) no particiona discos, no ejecuta `pacstrap`, no corre hooks ni scripts heredados y no escribe fuera del espacio de la aplicación. La imagen de instalación es otro alcance (`docs/10-delivery/iso-scope.md`), todavía no autorizado.
 
 ## Sin ejecución del plan
 
@@ -32,7 +32,7 @@ El runner privilegiado (JNY-003 / UC-006) está diferido (ADR-0004 / DEC-004). N
 ## Empaquetado
 
 La **release de plan** publica notas y el código del tag. La **release de paquete** publicada
-es el **AppImage Linux x86_64** con nombre público **Neubat** tag
+es el **AppImage Linux x86_64** con nombre visible **Forge** tag
 [`v0.1.0`](https://github.com/Alexendros/archmaker/releases/tag/v0.1.0) (ADR-0010 opción 3,
 DEC-011, MVP-6 accepted solo para esa plataforma). Comprueba el archivo con
 `ARTIFACT_SHA256=6567464f5e2f21398fd3eef35592f0e9d377fd2cc7887c1e46df092b5a8e6d81` antes de

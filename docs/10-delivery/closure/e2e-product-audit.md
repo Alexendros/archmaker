@@ -22,7 +22,7 @@ dependsOn:
 
 | Verificable | Fuera de alcance |
 | --- | --- |
-| Recorrido NEUBAT 6 pasos | Imagen Arch real / ISO |
+| Recorrido Forge 6 pasos | Imagen Arch real / ISO |
 | Controles esenciales (rail, cabecera, Continuar, Generar, Exportar) | root, discos, pacstrap, shell |
 | `archmaker-profile` bytes íntegros | Instalación en hardware |
 | SHA-256(archivo) == `binaryDigest` (toast) | Runner / sidecars |

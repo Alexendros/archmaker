@@ -414,7 +414,7 @@ Cada tarea referencia: Requisitos (FR/NFR), ADRs, Contratos (schemas), Riesgos (
 | CON-005 | `cmd` en schema v5.1                                     | `contradiction-register.md` | Seguridad    | I2/I6: rechazar ejecución; solo evidencia no ejecutable   |
 | CON-006 | Hooks `pre/post` string                                  | `contradiction-register.md` | Seguridad    | I2/I6: no migrar a contratos runtime                      |
 | CON-007 | README declara archivos no recibidos                     | `contradiction-register.md` | Procedencia  | I0: declarados ausentes en `source-register.md`           |
-| CON-008 | Alias NEUBAT nombre distinto                             | `contradiction-register.md` | Procedencia  | I0: verificado byte-a-byte (`cmp`) en G0                  |
+| CON-008 | Alias Forge nombre distinto                             | `contradiction-register.md` | Procedencia  | I0: verificado byte-a-byte (`cmp`) en G0                  |
 | CON-009 | Catálogo/reglas/comandos/estado/UI embebidos en HTML/TSX | `contradiction-register.md` | Arquitectura | I3–I6: separación por puertos/módulos (CorePort)          |
 | CON-010 | CDN en prototipos (React, Babel, Tailwind)               | `contradiction-register.md` | Offline/CSP  | I1/I8: bundling + CSP `self`; tokens canónicos            |
 | CON-011 | Versiones/tamaños/compatibilidad sin citar fuentes       | `contradiction-register.md` | Exactitud    | I0/I2: registro evidencia `claimId` con URL/versión/fecha |

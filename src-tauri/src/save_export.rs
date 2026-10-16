@@ -38,7 +38,7 @@ impl SavePicker for NativeSavePicker {
     fn pick_save_path(&self, suggested_name: &str) -> Option<PathBuf> {
         rfd::FileDialog::new()
             .set_file_name(suggested_name)
-            .set_title("Guardar perfil Neubat")
+            .set_title("Guardar perfil Forge")
             .save_file()
     }
 }

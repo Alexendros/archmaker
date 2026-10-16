@@ -2,10 +2,10 @@
   "schema_version": 1,
   "diagram_type": "architecture",
   "meta": {
-    "title": "D01 Contexto del configurador Neubat",
+    "title": "D01 Contexto del configurador Forge",
     "output": "rendered/D01.html",
     "quality_profile": "showcase",
-    "subtitle": "Neubat as-built (MVP); runner/ISO/Enterprise fuera de alcance"
+    "subtitle": "Forge as-built (MVP); runner/ISO/Enterprise fuera de alcance"
   },
   "components": [
     {
@@ -23,9 +23,9 @@
       ]
     },
     {
-      "id": "neubat",
+      "id": "forge",
       "type": "frontend",
-      "label": "Neubat",
+      "label": "Forge",
       "sublabel": "configurador",
       "pos": [
         280,
@@ -86,27 +86,27 @@
     {
       "id": "u-n",
       "from": "user",
-      "to": "neubat",
+      "to": "forge",
       "label": "selección → export",
       "variant": "emphasis"
     },
     {
       "id": "n-docs",
-      "from": "neubat",
+      "from": "forge",
       "to": "arch_docs",
       "label": "lee documentación",
       "variant": "dashed"
     },
     {
       "id": "n-rel",
-      "from": "neubat",
+      "from": "forge",
       "to": "gh_release",
       "label": "descarga AppImage",
       "variant": "dashed"
     },
     {
       "id": "n-fut",
-      "from": "neubat",
+      "from": "forge",
       "to": "future",
       "label": "fuera de veredicto",
       "variant": "dashed"
@@ -117,7 +117,7 @@
       "dot": "cyan",
       "title": "Producto",
       "items": [
-        "Neubat es el nombre público del configurador",
+        "Forge es la interfaz gráfica de ArchMaker",
         "Archify es herramienta de diagramación, no el producto"
       ]
     },

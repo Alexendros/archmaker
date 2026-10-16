@@ -1,6 +1,6 @@
 /**
  * Helpers compartidos para el ejercicio E2E de cierre:
- * selección NEUBAT → Generar → Exportar → SHA-256(archivo) == binaryDigest.
+ * selección Forge → Generar → Exportar → SHA-256(archivo) == binaryDigest.
  * Fuera de alcance: imagen Arch, ISO, root, discos, pacstrap, instalación real.
  */
 import { createHash } from "node:crypto";
@@ -10,8 +10,8 @@ import { expect, type Page } from "@playwright/test";
 /** Hostname del ejercicio de ejemplo (F3). */
 export const E2E_HOSTNAME = "arch-e2e-audit";
 
-/** Seis pasos del rail NEUBAT (RAIL_STEPS). */
-export const NEUBAT_RAIL_STEPS = [
+/** Seis pasos del rail Forge (RAIL_STEPS). */
+export const FORGE_RAIL_STEPS = [
   "Intención",
   "Sistema base",
   "Entorno",

@@ -19,11 +19,11 @@ dependsOn:
 # F6 — Cara honesta (mensajes, rail, rendimiento)
 
 - Documento: DOC-DEL-CLO-UX-001 · Estado: draft · Propietario: Arquitectura
-- No rediseña la cara NEUBAT. No toca capabilities de Tauri (dueño: F5).
+- No rediseña la cara Forge. No toca capabilities de Tauri (dueño: F5).
 
 ## Seis pasos visibles (`RAIL_STEPS`)
 
-El flujo del configurador ya tiene seis pasos en `apps/web/src/neubat-face.ts` → `RAIL_STEPS`, renderizados por `ForgeRail` sin cambio de diseño:
+El flujo del configurador ya tiene seis pasos en `apps/web/src/forge-face.ts` → `RAIL_STEPS`, renderizados por `ForgeRail` sin cambio de diseño:
 
 | #   | id            | Título       |
 | --- | ------------- | ------------ |

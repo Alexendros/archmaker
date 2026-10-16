@@ -66,7 +66,7 @@ import {
   filteredLayers,
   findOptionById,
   type FacePackage,
-} from "./neubat-face.js";
+} from "./forge-face.js";
 
 type Props = { port: CorePort; portKind: PortKind };
 

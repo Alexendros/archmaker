@@ -131,6 +131,6 @@ El veredicto vigente es **CONDITIONAL-CLEAR — walking skeleton MVP-0 + slices 
 MVP-2-01..07 están `closed`; MVP-3-01..06 están `closed`; MVP-4-01..06 están `closed`;
 MVP-5-01..05 están `closed`; baseline `implementation-baseline-mvp5` emitida (tags previos
 intactos). Cierre F0–F9: gobierno F8 en `closure/f8-governance.md`; release binaria
-**published** (Neubat AppImage `v0.1.0`, verificación parcial); aprobación funcional F7
+**published** (Forge AppImage `v0.1.0`, verificación parcial); aprobación funcional F7
 **pending** (sin `RC_SHA_FUNCIONAL`). La autorización del MVP completo, del runner y de
 familias de paquete distintas de AppImage exige su propio gate y `accepted` explícito.

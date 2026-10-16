@@ -108,7 +108,7 @@ Residuales de ejecución (agente / `--with-e2e`):
 
 Gobierno: `f8-governance.md` (**accepted**). Capas: baseline de código **passed**;
 aprobación funcional **pending** (sin `RC_SHA_FUNCIONAL`); release binaria **published**
-(Neubat AppImage `v0.1.0`, `RC_SHA` `9297ed7…`) con verificación parcial (sin cosign
+(Forge AppImage `v0.1.0`, `RC_SHA` `9297ed7…`) con verificación parcial (sin cosign
 local, sin 3× install GUI). Procedimiento y residuales: `f9-release.md`. Sin imagen Arch.
 
 ## Umbrales propuestos, no resultados

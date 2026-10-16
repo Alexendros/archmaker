@@ -165,7 +165,7 @@ se eligen con el mismo botón. No hay caja nueva ni texto de megabytes.
 
 ## Qué queda cerrado con esto
 
-- La cara NEUBAT en `apps/web` conecta los tres radios de Bootloader:
+- La cara Forge en `apps/web` conecta los tres radios de Bootloader:
   `systemd-boot` marcado al abrir el draft, `GRUB` y `Limine` al pulsarlos
   en modo Avanzado. El resto de huecos de catálogo sigue fuera del fixture
   Rust hasta MVP-5 (`docs/10-delivery/mvp5-scope.md`).

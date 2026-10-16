@@ -5,12 +5,14 @@ import { test, expect } from "@playwright/test";
  * Métricas 20 ciclos edit-save-reopen: no alcanzadas aquí (5 ciclos enfocados).
  */
 
-test.describe("draft-persistence F4", () => {
+test.describe("draft-persistence F4 / T-MIG", () => {
+  // T-MIG-01 recuperacion, T-MIG-02 doble ejecucion, T-MIG-03 error tipado;
+  // T-MIG-04 (sin wipe IDB) se valida estaticamente en check_product_naming.py.
   test.beforeEach(async ({ page }) => {
     await page.goto("/?mock=1");
   });
 
-  test("emits saving → saved status and reloads last draft", async ({
+  test("T-MIG-01 emits saving → saved status and reloads last draft", async ({
     page,
   }) => {
     const outcome = await page.evaluate(async () => {
@@ -63,7 +65,7 @@ test.describe("draft-persistence F4", () => {
     expect(outcome.hostname).toEqual({ kind: "text", value: "host-a" });
   });
 
-  test("serializes concurrent writes (last write wins)", async ({ page }) => {
+  test("T-MIG-02 serializes concurrent writes (last write wins)", async ({ page }) => {
     const hostname = await page.evaluate(async () => {
       const mod = await import("/src/draft-persistence.ts");
       mod.resetPersistQueueForTests();
@@ -246,7 +248,7 @@ test.describe("draft-persistence F4", () => {
     ]);
   });
 
-  test("persist error path exposes exportable copy when put fails", async ({
+  test("T-MIG-03 persist error path exposes exportable copy when put fails", async ({
     page,
   }) => {
     const outcome = await page.evaluate(async () => {

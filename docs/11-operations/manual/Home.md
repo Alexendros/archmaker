@@ -38,7 +38,7 @@ Veredicto vigente: **CONDITIONAL-CLEAR** hasta MVP-5 (sin runner). Walking skele
 - No instala Arch Linux ni ningún sistema.
 - No ejecuta un plan privilegiado ni abre un shell.
 - No requiere red para el flujo MVP (catálogo y drafts locales).
-- No anuncia `.deb`/`.rpm`/AUR/ISO como Done; el canal publicado es solo AppImage Neubat.
+- No anuncia `.deb`/`.rpm`/AUR/ISO como Done; el canal publicado es solo AppImage Forge.
 
 ## Lectura
 

@@ -50,6 +50,7 @@ consumidores referencian los identificadores `DEC-*` y **no** reafirman su estad
 | DEC-009 | Sin CDN en runtime; recursos empaquetados o del sistema                    | 2026-10-06 | ux           | P1        | accepted | no         |
 | DEC-010 | Sin telemetría en MVP                                                      | 2026-10-06 | product      | P1        | accepted | no         |
 | DEC-011 | Nombre público Neubat + canal inicial AppImage Linux x86_64                | 2026-10-16 | product      | P0        | accepted | no         |
+| DEC-012 | Nombre visible Forge (GUI) + motor ArchMaker; ids técnicos intactos        | 2026-10-17 | product      | P0        | accepted | no         |
 
 ## Registro estructurado
 
@@ -190,11 +191,26 @@ consumidores referencian los identificadores `DEC-*` y **no** reafirman su estad
   `RC_SHA` de `main` sin alterar bytes tras el digest.
 - Issue de seguimiento: MVP-6-02, MVP-6-03 (F9).
 
+
+### DEC-012 — Nombre visible Forge (GUI de ArchMaker)
+
+- Pregunta: ¿qué nombre visible usa la GUI no publicada tras `v0.1.0`, sin alterar la identidad
+  técnica ni reescribir la release ya publicada?
+- Decisión: nombre visible de la GUI **Forge**; proyecto y motor **ArchMaker**; fórmula
+  «Forge, la interfaz gráfica de ArchMaker». Ids técnicos (`dev.archmaker.app`,
+  IndexedDB `archmaker-profiles`, `archmaker.lastDraftId`, crates `archmaker*`,
+  `@archmaker/web`) intactos. ADR-0010 / DEC-011 permanecen como historia de `v0.1.0` (Neubat).
+- Fecha y autoridad: 2026-10-17 · `product` · `accepted`.
+- ADR: ADR-0012. Requisitos: NFR-MARK-001. Riesgos: —. Gates: G2.
+- Consecuencia: superficies activas y empaquetado futuro usan Forge; no se mueven tags ni
+  assets de `v0.1.0`.
+- Issue de seguimiento: product-naming P1.
+
 ## Desviaciones respecto a la recomendación
 
 Las únicas desviaciones aceptadas son `DEC-007` y `DEC-008`; ambas se detallan en su registro. El
 resto de decisiones coinciden con la recomendación o la precisan (DEC-005, DEC-006, DEC-009,
-DEC-010, DEC-011).
+DEC-010, DEC-011, DEC-012).
 
 ## Consecuencias aplicadas y no aplicadas
 
@@ -213,6 +229,7 @@ DEC-010, DEC-011).
 | DEC-009 | Sin CDN en runtime; CSP `self` y recursos empaquetados.              | aplicada            | AUD-020          |
 | DEC-010 | MVP sin telemetría; solo eventos locales redactados.                 | aplicada            | —                |
 | DEC-011 | Nombre público Neubat; AppImage x86_64 como único canal inicial.     | aplicada (gobierno + release `v0.1.0`) | MVP-6-02/03 (F9) |
+| DEC-012 | Nombre visible Forge; motor ArchMaker; sin renombrar ids técnicos.   | aplicada            | ADR-0012         |
 
 ## Reglas de validación (R2)
 
@@ -236,8 +253,8 @@ Equivalencias aplicadas:
 
 ## Historia
 
-Se conservan `DEC-001`..`DEC-011` sin eliminar ninguna. Todas están en estado `accepted`; ninguna
+Se conservan `DEC-001`..`DEC-012` sin eliminar ninguna. Todas están en estado `accepted`; ninguna
 está `superseded`, `rejected` ni `proposed`, por lo que no se declara sucesora. `DEC-005` y
 `DEC-006` fueron aceptadas el 2026-10-05 y **clarificadas** el 2026-10-06. `DEC-009` y `DEC-010`
 pasan de `proposed` a `accepted` el 2026-10-06. `DEC-011` se acepta el 2026-10-16 con ADR-0010
-opción 3 y MVP-6 AppImage.
+opción 3 y MVP-6 AppImage. `DEC-012` se acepta el 2026-10-17 con ADR-0012 (Forge).

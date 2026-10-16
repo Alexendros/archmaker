@@ -223,7 +223,7 @@ fn c03_resolve_hostname_encrypt_preserved_as_intention() {
     draft.selections.push(Selection {
         step_id: "archmaker.face.hostname".to_string(),
         value: SelectionValue::Text {
-            value: "arch-neubat".to_string(),
+            value: "arch-forge".to_string(),
         },
     });
     draft.selections.push(Selection {
@@ -241,7 +241,7 @@ fn c03_resolve_hostname_encrypt_preserved_as_intention() {
         .effective_selections
         .iter()
         .any(|s| s.step_id == "archmaker.face.hostname"
-            && matches!(&s.value, SelectionValue::Text { value } if value == "arch-neubat")));
+            && matches!(&s.value, SelectionValue::Text { value } if value == "arch-forge")));
     assert!(resolved.effective_selections.iter().any(|s| {
         s.step_id == "archmaker.face.encrypt"
             && matches!(&s.value, SelectionValue::Boolean { value: true })
@@ -257,7 +257,7 @@ fn c03_resolve_hostname_encrypt_preserved_as_intention() {
         .expect("el manifiesto se construye");
     let json = serde_json::to_string(&manifest).expect("json");
     assert!(
-        json.contains("arch-neubat"),
+        json.contains("arch-forge"),
         "el hostname llega al manifiesto"
     );
     assert!(

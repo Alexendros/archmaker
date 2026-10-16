@@ -1,5 +1,5 @@
 /**
- * Presentation data for the NEUBAT FORGE face.
+ * Presentation data for the Forge face (ArchMaker GUI).
  * Canonical ids map to local-catalog-mvp1 where they exist; others are face gaps.
  */
 

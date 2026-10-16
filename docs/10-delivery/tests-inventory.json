@@ -1,6 +1,6 @@
 {
-  "generated_at": "1792181477",
-  "git_sha": "eee9c582c77c871b5d9779fd41aa86c5a23fd587",
+  "generated_at": "1792191457",
+  "git_sha": "ad949587ebc6baed7d1269e8bc78f3229dafbe25",
   "tests": [
     {
       "id": "TST-ARCHMAKER-CANONICALIZATION-VECTORS-GOLDEN_CORPUS_BYTE_IDENTITY_AND_DIGEST",
@@ -227,6 +227,17 @@
         "FR-MANIFEST-001"
       ],
       "description": "invoke_negative::malformed_json_returns_typed_schema_error"
+    },
+    {
+      "id": "TST-ARCHMAKER-CORE-F7_P95_SAMPLE-F7_P95_ONE_SAMPLE_PRINTS_JSON_WHEN_ENV_SET",
+      "type": "unit",
+      "location": "crates/archmaker-core/tests/f7_p95_sample.rs",
+      "command": "cargo test -p archmaker-core --test f7_p95_sample f7_p95_one_sample_prints_json_when_env_set",
+      "workflow": "ci",
+      "covers": [
+        "NFR-DET-001"
+      ],
+      "description": "f7_p95_sample::f7_p95_one_sample_prints_json_when_env_set"
     },
     {
       "id": "TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-ALLOWLIST_COVERS_ALL_EIGHT_OPS_EXACTLY_ONCE",
@@ -1303,6 +1314,16 @@
       "transversal": false
     },
     {
+      "id": "VAL-RUN_F7_P95_HARNESS",
+      "type": "doc",
+      "location": "tools/run_f7_p95_harness.py",
+      "command": "python3 tools/run_f7_p95_harness.py",
+      "workflow": "ci",
+      "covers": [],
+      "description": "Validador run_f7_p95_harness",
+      "transversal": false
+    },
+    {
       "id": "VAL-WCAG_VALIDATE",
       "type": "doc",
       "location": "tools/wcag_validate.py",
@@ -1310,6 +1331,16 @@
       "workflow": "ci",
       "covers": [],
       "description": "Validador wcag_validate",
+      "transversal": false
+    },
+    {
+      "id": "VAL-SCAFFOLD_ARCHIFY_DIAGRAMS",
+      "type": "doc",
+      "location": "tools/scaffold_archify_diagrams.py",
+      "command": "python3 tools/scaffold_archify_diagrams.py",
+      "workflow": "ci",
+      "covers": [],
+      "description": "Validador scaffold_archify_diagrams",
       "transversal": false
     },
     {
@@ -1347,6 +1378,28 @@
         "FR-MANIFEST-001"
       ],
       "description": "Validador validate_tauri_schemas",
+      "transversal": false
+    },
+    {
+      "id": "VAL-PRODUCT-NAMING",
+      "type": "doc",
+      "location": "tools/check_product_naming.py",
+      "command": "python3 tools/check_product_naming.py",
+      "workflow": "ci",
+      "covers": [
+        "NFR-MARK-001"
+      ],
+      "description": "Validador check_product_naming",
+      "transversal": true
+    },
+    {
+      "id": "VAL-TEST_RUN_F7_CANDIDATE_MATRIX",
+      "type": "doc",
+      "location": "tools/test_run_f7_candidate_matrix.py",
+      "command": "python3 tools/test_run_f7_candidate_matrix.py",
+      "workflow": "ci",
+      "covers": [],
+      "description": "Validador test_run_f7_candidate_matrix",
       "transversal": false
     },
     {
@@ -1395,6 +1448,16 @@
       "covers": [],
       "description": "Validador validate_front_matter",
       "transversal": true
+    },
+    {
+      "id": "VAL-RUN_ARCHIFY_DIAGRAMS",
+      "type": "doc",
+      "location": "tools/run_archify_diagrams.py",
+      "command": "python3 tools/run_archify_diagrams.py",
+      "workflow": "ci",
+      "covers": [],
+      "description": "Validador run_archify_diagrams",
+      "transversal": false
     },
     {
       "id": "VAL-GATES",

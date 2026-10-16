@@ -1,4 +1,4 @@
-import { RAIL_STEPS } from "./neubat-face.js";
+import { RAIL_STEPS } from "./forge-face.js";
 
 type Props = {
   step: number;

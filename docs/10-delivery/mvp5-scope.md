@@ -80,7 +80,7 @@ MVP-5. Capas tras F8 (`closure/f8-governance.md`):
 
 - Baseline de código: **passed** (este tag + commits F0–F8 en `main`).
 - Aprobación funcional: **pending** (limitaciones F7; sin `RC_SHA_FUNCIONAL`).
-- Release binaria: **published** en capa F9 (Neubat AppImage `v0.1.0`; verificación parcial);
+- Release binaria: **published** en capa F9 (Forge AppImage `v0.1.0`; verificación parcial);
   fuera del Done de este slice MVP-5.
 
 Nombre público de tienda o imagen (ADR-0010) sigue excluido de MVP-5.

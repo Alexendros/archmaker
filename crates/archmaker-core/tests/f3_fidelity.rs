@@ -59,7 +59,7 @@ fn hostname_and_encrypt_intention_reach_manifest() {
     draft.selections.push(Selection {
         step_id: "archmaker.face.hostname".to_string(),
         value: SelectionValue::Text {
-            value: "arch-neubat".to_string(),
+            value: "arch-forge".to_string(),
         },
     });
     draft.selections.push(Selection {
@@ -81,7 +81,7 @@ fn hostname_and_encrypt_intention_reach_manifest() {
         .expect("hostname en effective");
     assert!(matches!(
         &host.value,
-        SelectionValue::Text { value } if value == "arch-neubat"
+        SelectionValue::Text { value } if value == "arch-forge"
     ));
     let enc = resolved
         .effective_selections
@@ -103,7 +103,7 @@ fn hostname_and_encrypt_intention_reach_manifest() {
         })
         .expect("manifest");
     let json = serde_json::to_string_pretty(&manifest).expect("json");
-    assert!(json.contains("arch-neubat"));
+    assert!(json.contains("arch-forge"));
     assert!(json.contains("\"kind\": \"boolean\""));
     assert!(json.contains("archmaker.face.encrypt"));
     assert!(!json.to_lowercase().contains("disk encrypted"));
