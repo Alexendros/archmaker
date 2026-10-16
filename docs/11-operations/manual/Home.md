@@ -42,8 +42,9 @@ Veredicto vigente: **CONDITIONAL-CLEAR** hasta MVP-5 (sin runner). Walking skele
 
 ## Lectura
 
-1. [Guía de usuario](Guia-de-usuario.md)
-2. [Manual de uso](Manual-de-uso.md)
-3. [Límites](Limites.md)
+1. [Instalación de Forge](Instalacion-Forge.md)
+2. [Guía de usuario](Guia-de-usuario.md)
+3. [Manual de uso](Manual-de-uso.md)
+4. [Límites](Limites.md)
 
 Repositorio: <https://github.com/Alexendros/archmaker>

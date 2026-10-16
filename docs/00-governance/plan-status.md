@@ -30,14 +30,14 @@ reviewers:
 - Limitaciones v0.1.0: sin cosign local verificado; sin 3× install GUI; F7 sin
   `RC_SHA_FUNCIONAL`; sin imagen Arch. R2: `releaseStatus` del doc F9 = `ineligible`
   (verification parcial).
-- Fecha de corte: 2026-10-16
+- Fecha de corte: 2026-10-17
 
 ## Tres capas (no equiparar)
 
 | Capa                 | Estado    | Nota                                                                                          |
 | -------------------- | --------- | --------------------------------------------------------------------------------------------- |
 | Baseline de código   | passed    | Tag MVP-5 + F0–F8 en `main`                                                                   |
-| Aprobación funcional | pending   | Runner F7 estricto + P95 harness en árbol; sin `RC_SHA_FUNCIONAL` ni revisor independiente    |
+| Aprobación funcional | pending   | F7 estricto + P95 web en árbol; desktop/offline **blocked** (P6); sin `RC_SHA_FUNCIONAL` ni revisor independiente |
 | Release binaria      | published | AppImage `v0.1.0` (`9297ed7…`); verificación parcial (cosign/GUI); ver `f9-release.md` |
 
 Detalle y residuales: `docs/10-delivery/closure/f8-governance.md`.
@@ -76,3 +76,4 @@ anuncia `.deb`/`.rpm`/AUR.
 - Registro de decisiones: `docs/00-governance/decision-register.md` (DOC-GOV-DEC-001).
 - Próximos pasos ordenados: `docs/10-delivery/next-issues.md` (ISSUE-001..010).
 - Índice documental: `docs/index.md`.
+- Desktop/offline P6: `docs/10-delivery/closure/p6-desktop-offline.md`.

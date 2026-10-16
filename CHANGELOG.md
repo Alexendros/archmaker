@@ -9,10 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Gobernanza documental P7: manual de instalación de Forge, capas en plan-status/go-no-go,
+  reglas de nombre/evidencia en AGENTS.md, enlaces README/índice; historia `v0.1.0` intacta.
+- Gate desktop/offline P6: el verificador admite `sourceSha` retrasado respecto de HEAD cuando
+  el estado es `blocked`/`failed` (solo `passed` exige igualdad).
+
 - Gate desktop/offline P6: estado **blocked** explícito con evidencia ausente nombrada
   (`docs/10-delivery/closure/p6-desktop-offline.md`, `tools/check_desktop_offline_gate.py`);
   display/portal no bastan sin binario de producción del tip; Mock y AppImage `v0.1.0`
   histórico no cierran el gate.
+- Ajuste P7: `check_desktop_offline_gate` permite `sourceSha` ≠ HEAD si status es
+  `blocked`/`failed`; solo `passed` exige igualdad con HEAD.
 
 - Aceptación de producto P5: corpus de entrega ≥20 fixtures/target + 4 rechazos,
   tres invocaciones Playwright separadas (`--workers=1 --retries=0`, no `--repeat-each`),

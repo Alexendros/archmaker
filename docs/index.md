@@ -126,6 +126,7 @@ reviewers:
 | `mvp6-scope.md`                     | DOC-DEL-MVP6-001     | accepted  |
 | `iso-scope.md`                      | DOC-DEL-ISO-001      | in-review |
 | `closure/f8-governance.md`          | DOC-DEL-CLO-F8-001   | accepted  |
+| `closure/p6-desktop-offline.md`     | DOC-DEL-CLO-P6-001   | draft     |
 | `closure/f9-release.md`             | DOC-DEL-CLO-F9-001   | in-review |
 | `closure/f7-candidate.md`           | DOC-DEL-CLO-F7-001   | draft     |
 | `remediation/acceptance-notes.md`   | DOC-DEL-REM-ACC-001  | in-review |

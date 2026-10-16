@@ -42,6 +42,9 @@ reviewers:
   **published** — AppImage Linux x86_64 tag `v0.1.0` (`RC_SHA` `9297ed7…`; artefacto histórico en `f9-release.md`),
   verificación parcial (checksum OK; sin `.sig`/`.pem` públicos; sin 3×
   install GUI). Ver `docs/10-delivery/closure/f8-governance.md` y `f9-release.md`.
+- Post P0–P6 (cierre ArchMaker/Forge): nomenclatura ADR-0012, integridad de evidencia,
+  P95 web, Archify AS_BUILT, aceptación web y desktop/offline **blocked** (P6) documentados
+  en `docs/10-delivery/closure/`. Sin ampliar veredicto a runner/ISO ni publicar un tag nuevo.
 - Alcance autorizado: `docs/10-delivery/walking-skeleton.md` (DOC-DEL-WSK-001),
   `docs/10-delivery/mvp1-scope.md` (DOC-DEL-MVP1-001), `docs/10-delivery/mvp2-scope.md`
   (DOC-DEL-MVP2-001), `docs/10-delivery/mvp3-scope.md` (DOC-DEL-MVP3-001),
