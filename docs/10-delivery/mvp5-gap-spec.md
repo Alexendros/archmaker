@@ -24,7 +24,8 @@ dependsOn:
 - Documento: DOC-DEL-MVP5-GAP-001 · Estado: draft · Propietario: Arquitectura/Release · Fecha: 2026-10-16
 - Autoridad de alcance: [`mvp5-scope.md`](mvp5-scope.md) (DOC-DEL-MVP5-001, `accepted`). Este texto no lo sustituye.
 - MVP-5-01 cerrado. El alcance autoriza el slice (catálogo, UI de cinco pasos, paridad) bajo sus exclusiones; este hueco no abre runner, ISO ni cifras no verificadas del HTML.
-- MVP-5-02 cerrado: las 54 opciones de la matriz están en `local-catalog-mvp1.json` (sin `cmd`/versión/tamaño). Quedan MVP-5-03 (UI cinco pasos), MVP-5-04 (paridad) y MVP-5-05 (tag).
+- MVP-5-02 cerrado: las 54 opciones de la matriz están en `local-catalog-mvp1.json` (sin `cmd`/versión/tamaño).
+- MVP-5-03 cerrado: cara NEUBAT conectada (gaps deshabilitados; resolve→validate→export). Residual sin control de cara: `zstd`/`xz`, `greetd-tuigreet`, libpacks office/dev/gaming completos. Quedan MVP-5-04 (paridad) y MVP-5-05 (tag).
 
 ## Supuestos
 

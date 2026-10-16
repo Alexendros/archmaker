@@ -10,7 +10,7 @@ type Props = {
 export function CommandPalette({ selectedIds, onToggle, onClose }: Props) {
   const [q, setQ] = useState("");
   const items = useMemo(() => {
-    const all = allPackages();
+    const all = allPackages().filter((p) => !p.gap);
     const needle = q.trim().toLowerCase();
     if (!needle) return all.slice(0, 8);
     return all.filter(
