@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "4889aaa4-cc08-433e-98d8-d67748b7bcc5",
+  "status": "current",
+  "command": "deliver",
+  "type": "dataflow",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D18-canonicalization.dataflow.json",
+  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/rendered/D18.html",
+  "specification": {
+    "sha256": "bfa6d124916636ed2bbc1314f0ac7932fb2cacb4ddd72a4b7b30f2dbef42338a",
+    "bytes": 1915
+  },
+  "artifact": {
+    "sha256": "332d1de91da1946ea677d2c45cf3dc08b60486cd7cf9e5e26c48859dbd691ab5",
+    "bytes": 805051
+  }
+}

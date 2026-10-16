@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "diagram_type": "class",
+  "meta": {
+    "title": "D16 Dominio, DTO y CorePort",
+    "subtitle": "9 operaciones reales en port.rs; TypeScript mirror en coreport.ts",
+    "output": "rendered/D16.html",
+    "quality_profile": "showcase"
+  },
+  "layout": {
+    "mode": "grid"
+  },
+  "types": [
+    {
+      "id": "coreport",
+      "label": "CorePort",
+      "kind": "interface",
+      "row": 0,
+      "col": 1,
+      "methods": [
+        {
+          "name": "createDraft",
+          "visibility": "public",
+          "abstract": true
+        },
+        {
+          "name": "saveDraft",
+          "visibility": "public",
+          "abstract": true
+        },
+        {
+          "name": "openDraft",
+          "visibility": "public",
+          "abstract": true
+        },
+        {
+          "name": "importDraft",
+          "visibility": "public",
+          "abstract": true
+        },
+        {
+          "name": "resolveDraft",
+          "visibility": "public",
+          "abstract": true
+        },
+        {
+          "name": "validateDraft",
+          "visibility": "public",
+          "abstract": true
+        },
+        {
+          "name": "buildManifest",
+          "visibility": "public",
+          "abstract": true
+        },
+        {
+          "name": "exportArtifact",
+          "visibility": "public",
+          "abstract": true
+        },
+        {
+          "name": "loadCatalog",
+          "visibility": "public",
+          "abstract": true
+        }
+      ]
+    },
+    {
+      "id": "draft",
+      "label": "Draft",
+      "kind": "class",
+      "row": 1,
+      "col": 0,
+      "attributes": [
+        {
+          "name": "id",
+          "type": "Uuid",
+          "visibility": "public"
+        },
+        {
+          "name": "selections",
+          "type": "Selection[]",
+          "visibility": "public"
+        },
+        {
+          "name": "contentDigest",
+          "type": "ContentDigest?",
+          "visibility": "public"
+        }
+      ]
+    },
+    {
+      "id": "manifest",
+      "label": "Manifest",
+      "kind": "class",
+      "row": 1,
+      "col": 2,
+      "attributes": [
+        {
+          "name": "contentDigest",
+          "type": "ContentDigest",
+          "visibility": "public"
+        },
+        {
+          "name": "resolutionDigest",
+          "type": "ContentDigest",
+          "visibility": "public"
+        }
+      ]
+    },
+    {
+      "id": "realcore",
+      "label": "RealCore",
+      "kind": "class",
+      "row": 0,
+      "col": 0,
+      "methods": [
+        {
+          "name": "implements CorePort",
+          "visibility": "public"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "from": "realcore",
+      "to": "coreport",
+      "kind": "realization"
+    },
+    {
+      "from": "coreport",
+      "to": "draft",
+      "kind": "association",
+      "label": "I/O"
+    },
+    {
+      "from": "coreport",
+      "to": "manifest",
+      "kind": "association",
+      "label": "build"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "id": "D02",
+  "source": "sources/D02-containers.architecture.json",
+  "sourceSha": "c90919c12416bab53312f4f7f117c99c05f36dba",
+  "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
+  "sourceSha256": "2fcdc5b6f24351361ac17071bda4c4179923328a86ac21615db8243b9ab9f075",
+  "htmlSha256": "61d57d1c0132fe1b10079e3c0d35031c18c433f1640641a7392036f758c52b87",
+  "html": "rendered/D02.html"
+}

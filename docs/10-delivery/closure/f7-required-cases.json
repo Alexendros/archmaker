@@ -7,44 +7,68 @@
     "declareRcShaFuncional": false,
     "independentAcceptance": false,
     "resultUntilAcceptance": "pending",
-    "notes": "F7 documenta y ejecuta la matriz sobre un RC_SHA candidato. No declara RC_SHA_FUNCIONAL ni aceptación independiente firmada."
+    "notes": "F7 documenta y ejecuta la matriz sobre un RC_SHA candidato. Casos atómicos: un subconjunto de comandos no cierra el caso. No declara RC_SHA_FUNCIONAL ni aceptación independiente firmada."
   },
   "limitations": [
     "El dueño del repositorio puede mergear sin checks bloqueantes; un verde de PR no certifica main solo.",
-    "P95 de rendimiento F6 permanece pending (sin 30 muestras en máquina fijada en F0).",
-    "Humo GUI F5 no es E2E de portal/xdg-desktop-portal; picker nativo cubierto por simulación unitaria."
+    "P95 de rendimiento F6 permanece pending hasta 30 muestras en la máquina fijada en F0 (caso F7-P95).",
+    "Humo GUI F5 no es E2E de portal/xdg-desktop-portal; picker nativo cubierto por simulación unitaria hasta evidencia GUI real."
   ],
   "cases": [
     {
       "id": "F7-MOTOR-REAL",
-      "title": "Motor real web/desktop; fallo sin mock",
+      "title": "Motor real (forge); fallo sin mock",
       "hooks": [
         "apps/web/src/create-core-port.ts",
-        "apps/web/forge-helpers.playwright.test.ts",
-        "apps/web/wasm-flow.playwright.test.ts"
+        "apps/web/forge-helpers.playwright.test.ts"
       ],
       "commands": [
-        "pnpm --dir apps/web exec playwright test forge-helpers.playwright.test.ts -g \"motor real\"",
-        "pnpm --dir apps/web exec playwright test wasm-flow.playwright.test.ts -g \"E2E-01\""
+        "pnpm --dir apps/web exec playwright test forge-helpers.playwright.test.ts -g \"motor real\""
       ],
-      "ci": "partial",
+      "ci": true,
       "e2eWasmRequired": false,
       "defaultStatus": "executable"
     },
     {
-      "id": "F7-GEN-EDIT-EXPORT",
-      "title": "Generar A, editar B, exportar B; invalidar obsoletos",
+      "id": "F7-MOTOR-REAL-WASM",
+      "title": "Motor real vía WASM (E2E-01)",
       "hooks": [
-        "apps/web/src/export-generation.ts",
-        "apps/web/forge-helpers.playwright.test.ts",
+        "apps/web/src/create-core-port.ts",
         "apps/web/wasm-flow.playwright.test.ts"
       ],
       "commands": [
-        "pnpm --dir apps/web exec playwright test forge-helpers.playwright.test.ts -g \"generar A\"",
+        "pnpm --dir apps/web exec playwright test wasm-flow.playwright.test.ts -g \"E2E-01\""
+      ],
+      "ci": false,
+      "e2eWasmRequired": true,
+      "defaultStatus": "executable"
+    },
+    {
+      "id": "F7-GEN-EDIT-EXPORT",
+      "title": "Generar A, editar B, exportar B (forge)",
+      "hooks": [
+        "apps/web/src/export-generation.ts",
+        "apps/web/forge-helpers.playwright.test.ts"
+      ],
+      "commands": [
+        "pnpm --dir apps/web exec playwright test forge-helpers.playwright.test.ts -g \"generar A\""
+      ],
+      "ci": true,
+      "e2eWasmRequired": false,
+      "defaultStatus": "executable"
+    },
+    {
+      "id": "F7-GEN-EDIT-EXPORT-WASM",
+      "title": "Generar/editar/exportar vía WASM (E2E-04)",
+      "hooks": [
+        "apps/web/src/export-generation.ts",
+        "apps/web/wasm-flow.playwright.test.ts"
+      ],
+      "commands": [
         "pnpm --dir apps/web exec playwright test wasm-flow.playwright.test.ts -g \"E2E-04\""
       ],
-      "ci": "partial",
-      "e2eWasmRequired": false,
+      "ci": false,
+      "e2eWasmRequired": true,
       "defaultStatus": "executable"
     },
     {
@@ -151,7 +175,7 @@
     },
     {
       "id": "F7-REG-F6",
-      "title": "Regresión F6 cara honesta (mensajes; P95 pending)",
+      "title": "Regresión F6 cara honesta (mensajes)",
       "hooks": [
         "docs/10-delivery/closure/honest-ux.md",
         "apps/web/export-delivery.playwright.test.ts"
@@ -161,12 +185,25 @@
       ],
       "ci": true,
       "e2eWasmRequired": false,
-      "defaultStatus": "executable",
-      "residual": "P95 F6 pending"
+      "defaultStatus": "executable"
     },
     {
-      "id": "F7-OFFLINE",
-      "title": "Offline según contrato (web cargada / escritorio sin red)",
+      "id": "F7-P95",
+      "title": "P95 inicialización y preparación (n=30)",
+      "hooks": [
+        "docs/10-delivery/closure/honest-ux.md",
+        "tools/run_f7_p95_harness.py",
+        "crates/archmaker-core/tests/f7_p95_sample.rs"
+      ],
+      "commands": ["python3 tools/run_f7_p95_harness.py"],
+      "ci": false,
+      "e2eWasmRequired": false,
+      "defaultStatus": "executable",
+      "residual": "Sin 30 muestras en máquina F0 el harness falla; no se fabrican cifras"
+    },
+    {
+      "id": "F7-OFFLINE-WEB",
+      "title": "Offline web (WASM cargado, red cortada)",
       "hooks": [
         "apps/web/wasm-offline.playwright.test.ts",
         "docs/10-delivery/closure/f7-candidate.md"
@@ -177,14 +214,20 @@
       "ci": false,
       "e2eWasmRequired": true,
       "defaultStatus": "executable",
-      "residual": "Escritorio: sin humo de red / portal en CI (sigue pending). Web: verificable con --with-e2e.",
-      "lastVerified": {
-        "status": "passed",
-        "web": "passed",
-        "desktop": "pending",
-        "retries": 0,
-        "note": "Web setOffline tras carga OK en agente; no declara RC_SHA_FUNCIONAL ni aceptación independiente"
-      }
+      "residual": "Cierra solo el recorrido web; no implica escritorio offline"
+    },
+    {
+      "id": "F7-OFFLINE-DESKTOP",
+      "title": "Offline escritorio (binario sin red)",
+      "hooks": [
+        "docs/10-delivery/closure/f5-desktop-notes.md",
+        "docs/10-delivery/closure/f7-candidate.md"
+      ],
+      "commands": [],
+      "ci": false,
+      "e2eWasmRequired": false,
+      "defaultStatus": "pending",
+      "residual": "Requiere humo GUI con red deshabilitada en VM o entorno de prueba; no automatizado en este runner"
     },
     {
       "id": "F7-E2E-X3",
@@ -196,17 +239,7 @@
       "ci": false,
       "e2eWasmRequired": true,
       "defaultStatus": "executable",
-      "residual": "Sin --with-e2e / pkg WASM el runner deja el caso pending; P95 F6 no forma parte de este id",
-      "lastVerified": {
-        "status": "passed",
-        "retries": 0,
-        "attempts": [
-          { "index": 1, "exitCode": 0, "initialResult": "passed" },
-          { "index": 2, "exitCode": 0, "initialResult": "passed" },
-          { "index": 3, "exitCode": 0, "initialResult": "passed" }
-        ],
-        "note": "Tres intentos consecutivos wasm-flow (E2E-01 + E2E-04/10); resultado inicial de cada intento conservado; no RC_SHA_FUNCIONAL"
-      }
+      "residual": "Sin --with-e2e / pkg WASM completo el runner deja el caso pending/partial; P95 no forma parte de este id"
     }
   ]
 }

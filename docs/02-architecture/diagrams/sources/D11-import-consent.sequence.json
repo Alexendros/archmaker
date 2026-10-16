@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "D11 Importación con informe y consentimiento",
+    "output": "rendered/D11.html",
+    "quality_profile": "showcase",
+    "animation": "trace",
+    "viewBox": [
+      900,
+      480
+    ]
+  },
+  "participants": [
+    {
+      "id": "ui",
+      "type": "frontend",
+      "label": "UI"
+    },
+    {
+      "id": "import",
+      "type": "backend",
+      "label": "consented-import"
+    },
+    {
+      "id": "core",
+      "type": "backend",
+      "label": "importDraft"
+    }
+  ],
+  "messages": [
+    {
+      "from": "ui",
+      "to": "import",
+      "y": 180,
+      "label": "parse + report",
+      "variant": "emphasis"
+    },
+    {
+      "from": "import",
+      "to": "ui",
+      "y": 222,
+      "label": "diff / warnings",
+      "variant": "return"
+    },
+    {
+      "from": "ui",
+      "to": "import",
+      "y": 264,
+      "label": "user consents",
+      "variant": "security"
+    },
+    {
+      "from": "import",
+      "to": "core",
+      "y": 306,
+      "label": "importDraft",
+      "variant": "emphasis"
+    },
+    {
+      "from": "core",
+      "to": "ui",
+      "y": 348,
+      "label": "Draft migrated",
+      "variant": "return"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "Consentimiento",
+      "items": [
+        "Sin aceptación no se aplica",
+        "Informe visible antes"
+      ]
+    }
+  ]
+}

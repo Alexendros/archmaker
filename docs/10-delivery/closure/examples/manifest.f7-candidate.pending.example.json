@@ -19,7 +19,9 @@
   "fixtureSetDigest": null,
   "requiredTestIds": [
     "F7-MOTOR-REAL",
+    "F7-MOTOR-REAL-WASM",
     "F7-GEN-EDIT-EXPORT",
+    "F7-GEN-EDIT-EXPORT-WASM",
     "F7-DBLCLICK",
     "F7-BLOCKING-VALIDATION",
     "F7-TARGET-INCOMPATIBLE",
@@ -30,7 +32,9 @@
     "F7-REG-F4",
     "F7-REG-F5",
     "F7-REG-F6",
-    "F7-OFFLINE",
+    "F7-P95",
+    "F7-OFFLINE-WEB",
+    "F7-OFFLINE-DESKTOP",
     "F7-E2E-X3"
   ],
   "executed": null,
@@ -48,7 +52,18 @@
     "Dueño puede mergear sin checks bloqueantes",
     "P95 F6 pending sin 30 muestras",
     "Humo GUI F5 no E2E portal",
-    "F7-OFFLINE: escritorio offline pending (sin humo de red/portal)",
-    "F7-REG-F6: P95 F6 pending"
-  ]
+    "F7-OFFLINE-DESKTOP: escritorio offline pending (sin humo de red/portal)",
+    "F7-P95: Sin 30 muestras en máquina F0 el harness falla; no se fabrican cifras"
+  ],
+  "harness": null,
+  "technicalResult": null,
+  "commands": null,
+  "tests": null,
+  "approval": {
+    "status": "pending",
+    "approvalRecordSha256": null,
+    "approvalRecordCommit": null,
+    "reviewer": null,
+    "reviewedAt": null
+  }
 }

@@ -42,3 +42,15 @@ cargo build -p archmaker
 En este entorno se pudo compilar `target/debug/archmaker` (ELF) con `save_export_bytes` enlazado y `apps/web/dist/index.html` presente. No se ejecutó GUI interactiva del diálogo (headless / sin sesión de portal para humo E2E de picker).
 
 Bloqueo residual de humo GUI: requiere display/`xdg-desktop-portal` para ejercitar `rfd::FileDialog` de punta a punta; la lógica de cancelar/sobrescribir/atómico queda cubierta por picker simulado en tests unitarios.
+
+### Evidencia GUI real (pendiente)
+
+Para cerrar el residual hay que, en un entorno con display y portal:
+
+1. Abrir el binario / AppImage del SHA bajo prueba.
+2. Completar selección → validación → exportación con digest correcto.
+3. Diálogo nativo: cancelar, guardar, rechazar sobrescritura, aceptar sobrescritura.
+4. Editar, cerrar y reabrir (persistencia).
+5. Repetir el recorrido esencial con red deshabilitada (`F7-OFFLINE-DESKTOP`).
+
+Tres aperturas en la misma sesión no cuentan como tres instalaciones independientes (capa F9).

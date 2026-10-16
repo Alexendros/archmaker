@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Runner F7 estricto (`--strict`): estados por comando/test, `technicalResult` separado de
+  `result=pending`, pkg WASM completo, harness P95 n=30 (`tools/run_f7_p95_harness.py`).
+- Casos F7 atómicos (motor/export WASM, offline web/desktop, P95).
+- Suite de diagramas Archify D01–D24 bajo `docs/02-architecture/diagrams/` (renderer fijado;
+  regenerar con `tools/scaffold_archify_diagrams.py` + `tools/run_archify_diagrams.py`).
+
+### Changed
+
+- Contrato de evidencia: campos opcionales `harness`, `technicalResult`, `commands`, `tests`,
+  `approval` (`approvalRecordSha256` vs `approvalRecordCommit`).
+- Documentación de cierre: código de `main`, AppImage `v0.1.0` y aceptación funcional siguen
+  como capas distintas; el tag `v0.1.0` no se mueve.
+
 ## [0.1.0] - 2026-10-16
 
 Primera release pública del canal autorizado F8/F9: AppImage Linux x86_64 con nombre

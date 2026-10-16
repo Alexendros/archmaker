@@ -91,10 +91,10 @@
       "id": "VAL-F7-CANDIDATE",
       "type": "doc",
       "location": "tools/run_f7_candidate_matrix.py",
-      "command": "python3 tools/run_f7_candidate_matrix.py --validate-only",
+      "command": "python3 tools/run_f7_candidate_matrix.py --validate-only && python3 tools/test_run_f7_candidate_matrix.py",
       "workflow": "ci",
       "covers": [],
-      "description": "Matriz F7 de candidato: inventario obligatorio, result=pending, sin RC_SHA_FUNCIONAL ni aceptación independiente",
+      "description": "Matriz F7 atómica: inventario, tests del runner, result=pending, technicalResult separado, sin RC_SHA_FUNCIONAL ni aceptación independiente",
       "transversal": true
     }
   ]

@@ -132,6 +132,89 @@
     "residuals": {
       "type": ["array", "null"],
       "items": { "type": "string" }
+    },
+    "harness": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["sourceSha", "productSourceSha", "runner"],
+      "properties": {
+        "sourceSha": {
+          "type": ["string", "null"],
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "productSourceSha": {
+          "type": ["string", "null"],
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "runner": { "type": ["string", "null"], "minLength": 1 }
+      }
+    },
+    "technicalResult": {
+      "type": ["string", "null"],
+      "enum": ["pending", "running", "passed", "failed", "partial", "blocked"]
+    },
+    "commands": {
+      "type": ["array", "null"],
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["caseId", "command", "status"],
+        "properties": {
+          "caseId": { "type": "string", "minLength": 1 },
+          "command": { "type": ["string", "null"] },
+          "status": {
+            "type": "string",
+            "enum": ["passed", "failed", "skipped", "pending", "partial"]
+          },
+          "exitCode": { "type": ["integer", "null"] },
+          "notes": {
+            "type": ["array", "null"],
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+    "tests": {
+      "type": ["array", "null"],
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["caseId", "title", "status"],
+        "properties": {
+          "caseId": { "type": "string", "minLength": 1 },
+          "command": { "type": ["string", "null"] },
+          "title": { "type": "string" },
+          "status": { "type": "string", "minLength": 1 },
+          "retries": { "type": ["integer", "null"], "minimum": 0 }
+        }
+      }
+    },
+    "approval": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "approvalRecordSha256",
+        "approvalRecordCommit",
+        "reviewer",
+        "reviewedAt"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["pending", "passed", "failed", "blocked"]
+        },
+        "approvalRecordSha256": {
+          "type": ["string", "null"],
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "approvalRecordCommit": {
+          "type": ["string", "null"],
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "reviewer": { "type": ["string", "null"] },
+        "reviewedAt": { "type": ["string", "null"] }
+      }
     }
   }
 }

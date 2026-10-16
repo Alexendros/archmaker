@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "D10 Guardado desktop y cancelación",
+    "output": "rendered/D10.html",
+    "quality_profile": "showcase",
+    "animation": "trace",
+    "viewBox": [
+      900,
+      480
+    ]
+  },
+  "participants": [
+    {
+      "id": "ui",
+      "type": "frontend",
+      "label": "WebView"
+    },
+    {
+      "id": "host",
+      "type": "backend",
+      "label": "save_export"
+    },
+    {
+      "id": "portal",
+      "type": "security",
+      "label": "rfd"
+    },
+    {
+      "id": "fs",
+      "type": "database",
+      "label": "FS"
+    }
+  ],
+  "messages": [
+    {
+      "from": "ui",
+      "to": "host",
+      "y": 180,
+      "label": "saveExport",
+      "variant": "emphasis"
+    },
+    {
+      "from": "host",
+      "to": "portal",
+      "y": 222,
+      "label": "pick path",
+      "variant": "security"
+    },
+    {
+      "from": "portal",
+      "to": "host",
+      "y": 264,
+      "label": "Cancelled | Path",
+      "variant": "return"
+    },
+    {
+      "from": "host",
+      "to": "fs",
+      "y": 306,
+      "label": "write if accepted",
+      "variant": "dashed"
+    },
+    {
+      "from": "host",
+      "to": "ui",
+      "y": 348,
+      "label": "SaveExportResult",
+      "variant": "return"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "amber",
+      "title": "Cancelación",
+      "items": [
+        "Cancelar no escribe",
+        "Sobrescritura explícita"
+      ]
+    }
+  ]
+}

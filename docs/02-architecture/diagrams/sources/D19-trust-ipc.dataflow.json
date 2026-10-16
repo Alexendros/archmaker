@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "D19 Fronteras de confianza, IPC y destinos",
+    "output": "rendered/D19.html",
+    "quality_profile": "showcase",
+    "animation": "trace",
+    "viewBox": [
+      1100,
+      720
+    ]
+  },
+  "stages": [
+    {
+      "label": "Untrusted UI"
+    },
+    {
+      "label": "IPC"
+    },
+    {
+      "label": "Privileged host"
+    },
+    {
+      "label": "Destinations"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "ui",
+      "type": "frontend",
+      "label": "WebView / Browser",
+      "stage": 0,
+      "row": 2
+    },
+    {
+      "id": "ipc",
+      "type": "security",
+      "label": "Tauri invoke / WASM",
+      "stage": 1,
+      "row": 2,
+      "tag": "deny-by-default"
+    },
+    {
+      "id": "host",
+      "type": "backend",
+      "label": "Rust host",
+      "stage": 2,
+      "row": 2
+    },
+    {
+      "id": "fs",
+      "type": "database",
+      "label": "User FS",
+      "stage": 3,
+      "row": 1
+    },
+    {
+      "id": "dl",
+      "type": "external",
+      "label": "Browser download",
+      "stage": 3,
+      "row": 3
+    },
+    {
+      "id": "runner",
+      "type": "external",
+      "label": "Runner future",
+      "stage": 3,
+      "row": 4,
+      "tag": "not shipped"
+    }
+  ],
+  "flows": [
+    {
+      "from": "ui",
+      "to": "ipc",
+      "label": "typed ops",
+      "variant": "security",
+      "route": "straight"
+    },
+    {
+      "from": "ipc",
+      "to": "host",
+      "label": "gate",
+      "variant": "emphasis",
+      "route": "straight"
+    },
+    {
+      "from": "host",
+      "to": "fs",
+      "label": "write",
+      "route": "vertical-channel"
+    },
+    {
+      "from": "host",
+      "to": "dl",
+      "label": "blob",
+      "route": "vertical-channel"
+    },
+    {
+      "from": "host",
+      "to": "runner",
+      "label": "none",
+      "variant": "dashed",
+      "route": "bottom-channel",
+      "labelDy": 24
+    }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "Confianza",
+      "items": [
+        "Capabilities mínimas",
+        "Sin scripts arbitrarios",
+        "Runner no implementado"
+      ]
+    }
+  ]
+}

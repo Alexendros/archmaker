@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "00290c21-f5c4-47d5-9a93-0825a347361e",
+  "status": "current",
+  "command": "deliver",
+  "type": "sequence",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D12-persistence.sequence.json",
+  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/rendered/D12.html",
+  "specification": {
+    "sha256": "0f60e58df99b6a942e238636abf967a3d8c4216db8556554e15c65c8f3343de0",
+    "bytes": 1352
+  },
+  "artifact": {
+    "sha256": "424a6b6bdc07881c300b022351ba086f653b82d4f59503a0248e3d207a20519b",
+    "bytes": 802881
+  }
+}

@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "validate",
+  "type": "timeline",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D24-baselines.timeline.json",
+  "candidate": {
+    "path": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D24-baselines.timeline.json",
+    "sha256": "e616908951066b845d94e53b4a2737f2198a3f17552ebd7297acc4a92cdb14ee",
+    "bytes": 1400
+  },
+  "candidateFrozen": true,
+  "nextAction": {
+    "command": "finalize",
+    "arguments": [
+      "timeline",
+      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D24-baselines.timeline.json",
+      "<output.html>",
+      "--quality",
+      "showcase",
+      "--repo-root",
+      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1",
+      "--candidate-sha256",
+      "e616908951066b845d94e53b4a2737f2198a3f17552ebd7297acc4a92cdb14ee",
+      "--json"
+    ]
+  },
+  "checks": [
+    {
+      "name": "single_svg",
+      "ok": true,
+      "details": [
+        "found 1 <svg> block(s)"
+      ]
+    },
+    {
+      "name": "finite_svg",
+      "ok": true,
+      "details": []
+    },
+    {
+      "name": "orthogonal_arrows",
+      "ok": true,
+      "details": []
+    },
+    {
+      "name": "label_route_clearance",
+      "ok": true,
+      "details": []
+    },
+    {
+      "name": "relationship_crossings",
+      "ok": true,
+      "details": []
+    },
+    {
+      "name": "relationship_corridors",
+      "ok": true,
+      "details": []
+    },
+    {
+      "name": "container_border_runs",
+      "ok": true,
+      "details": []
+    },
+    {
+      "name": "route_rhythm",
+      "ok": true,
+      "details": []
+    },
+    {
+      "name": "legend_clearance",
+      "ok": true,
+      "details": []
+    }
+  ],
+  "composition": {
+    "schemaVersion": 1,
+    "profile": "showcase",
+    "status": "pass",
+    "summary": {
+      "errors": 0,
+      "warnings": 0
+    },
+    "metrics": {
+      "properCrossings": 0,
+      "resolvedCrossovers": 0,
+      "ambiguousCorridors": 0,
+      "arrowheadCollisions": 0,
+      "containerBorderRuns": 0,
+      "labelRouteClearanceIssues": 0,
+      "labelCanvasOverflowIssues": 0,
+      "minLabelRouteClearance": null,
+      "desktopReadabilityIssues": 0,
+      "viewportHeightIssues": 0,
+      "minProjectedNodeTextPx": 10.426008968609866,
+      "maxBends": 0,
+      "routesOverSuggestedBends": 0,
+      "maxStretch": null,
+      "routesOverSuggestedStretch": 0,
+      "minSegmentPx": null,
+      "minInteriorSegmentPx": null,
+      "shortSegmentCount": 0,
+      "shortEndpointSegmentCount": 0,
+      "shortInteriorSegmentCount": 0,
+      "microSegmentCount": 0
+    },
+    "suggestedLimits": {
+      "bendsPerRelationship": 2,
+      "stretch": 1.35,
+      "segmentPx": 16,
+      "microSegmentPx": 8
+    },
+    "routeReview": {
+      "crossings": [],
+      "detours": []
+    },
+    "leadingSpace": {
+      "measured": false,
+      "reviewSuggested": false
+    },
+    "desktopReadability": {
+      "budgetBasis": "recognized-declared-wide",
+      "readerContract": "declared-wide-v1",
+      "availableDiagramWidth": 930,
+      "actualBudgetPx": 930,
+      "actualReaderWidth": 960,
+      "desiredReaderWidth": 960,
+      "viewportCap": 1376,
+      "limit": "source-size",
+      "requestedTargetPx": 7.5,
+      "requestedTargetMet": true,
+      "hardFloorPx": 6,
+      "hardFloorMet": true,
+      "minimumOwner": {
+        "kind": "node",
+        "id": "mvp5"
+      },
+      "minimumSourceTextPx": 12.5,
+      "minimumProjectedTextPx": 10.426008968609866,
+      "semanticTextCount": 4
+    },
+    "issues": []
+  }
+}
+

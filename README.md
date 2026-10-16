@@ -12,11 +12,16 @@ Tres capas distintas (detalle: [`docs/10-delivery/closure/f8-governance.md`](doc
 | Aprobación funcional | **pending** — matriz F7 ejecutable; sin `RC_SHA_FUNCIONAL` ni aceptación independiente (`f7-candidate.md`)                      |
 | Release binaria      | **published** — [Neubat v0.1.0](https://github.com/Alexendros/archmaker/releases/tag/v0.1.0) AppImage x86_64; verificación parcial |
 
+- Código actual de `main` y el AppImage publicado son identidades distintas: el tip de `main`
+  puede incluir harness F7, diagramas y docs posteriores a `v0.1.0`; el tag **no se mueve**.
 - Canal publicado: AppImage Linux x86_64, nombre público **Neubat**. `RC_SHA` de la release:
-  `9297ed7…`. Changelog: [`CHANGELOG.md`](CHANGELOG.md).
-- Limitaciones honestas de v0.1.0: sin cosign verificado en host local; sin tres instalaciones GUI;
+  `9297ed7cc47f42a9611aed0093b5ab040daca512`; `ARTIFACT_SHA256`
+  `6567464f5e2f21398fd3eef35592f0e9d377fd2cc7887c1e46df092b5a8e6d81`. Changelog: [`CHANGELOG.md`](CHANGELOG.md).
+- Limitaciones honestas de v0.1.0: cosign local y tres instalaciones GUI siguen residuales F9;
   F7 sin `RC_SHA_FUNCIONAL`; sin imagen Arch / runner / `.deb`/`.rpm`. Detalle:
   [`docs/10-delivery/closure/f9-release.md`](docs/10-delivery/closure/f9-release.md).
+- Diagramas Archify (Neubat as-built): [`docs/02-architecture/diagrams/`](docs/02-architecture/diagrams/).
+  Archify es herramienta de diagramación; no confundir con Neubat.
 - Gate global (mecánico): **Clear** — todos los gates G0–G10 están `complete`. Autoridad: [`docs/00-governance/go-no-go.md`](docs/00-governance/go-no-go.md) y [`docs/10-delivery/gates.md`](docs/10-delivery/gates.md).
 - Veredicto de gobierno: **CONDITIONAL-CLEAR** hasta MVP-5 (sin runner). Autoriza el walking skeleton, los slices MVP-1..MVP-5 y el canal AppImage de MVP-6; runner, privilegios, ISO y Enterprise siguen bloqueados.
 - Baseline vigente: `implementation-baseline-mvp5` (commit anotado `b13c200…`; tags previos intactos). Remediación operativa: [`docs/10-delivery/remediation/`](docs/10-delivery/remediation/).
@@ -35,6 +40,7 @@ Tres capas distintas (detalle: [`docs/10-delivery/closure/f8-governance.md`](doc
 - Estado del plan: [`docs/00-governance/plan-status.md`](docs/00-governance/plan-status.md).
 - Resultado Go/No-Go: [`docs/00-governance/go-no-go.md`](docs/00-governance/go-no-go.md).
 - Gobierno del cierre (F8): [`docs/10-delivery/closure/f8-governance.md`](docs/10-delivery/closure/f8-governance.md).
+- Diagramas verificables: [`docs/02-architecture/diagrams/index.md`](docs/02-architecture/diagrams/index.md).
 - Cobertura de gates: [`docs/10-delivery/gates.md`](docs/10-delivery/gates.md).
 - Próximos issues: [`docs/10-delivery/next-issues.md`](docs/10-delivery/next-issues.md).
 

@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "f067a621-8304-4ecd-93ba-d6d37ad9e0e1",
+  "status": "current",
+  "command": "deliver",
+  "type": "sequence",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D08-resolve-validate-manifest.sequence.json",
+  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/rendered/D08.html",
+  "specification": {
+    "sha256": "e13bf02546ac4e4c9c8ff3c3ca19f4a85de0d02dae23fb0cdddcec18eb3e3e9b",
+    "bytes": 1462
+  },
+  "artifact": {
+    "sha256": "55c4838d588643f6d24799796fd7b407c95299e81737debd1df79a60e2491580",
+    "bytes": 802270
+  }
+}

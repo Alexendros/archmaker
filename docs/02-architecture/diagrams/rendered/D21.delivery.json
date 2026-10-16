@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "4763455e-dcea-4ee4-95a6-0b1f53470fc5",
+  "status": "current",
+  "command": "deliver",
+  "type": "workflow",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D21-release-sign.workflow.json",
+  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/rendered/D21.html",
+  "specification": {
+    "sha256": "2151f0c323d676ed4d8495ab711e1b6384b703ac7e94ecb574d0ebcd95758478",
+    "bytes": 1886
+  },
+  "artifact": {
+    "sha256": "ee1aaa04abf9244008b66f9dbc59cca449647ac63056385981bb02664b3605c5",
+    "bytes": 807874
+  }
+}

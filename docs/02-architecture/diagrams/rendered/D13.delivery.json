@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "c951dce7-98bc-4748-a197-4d9ceea69ffd",
+  "status": "current",
+  "command": "deliver",
+  "type": "lifecycle",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D13-draft-lifecycle.lifecycle.json",
+  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/rendered/D13.html",
+  "specification": {
+    "sha256": "652f62e47897c8464883286b52194c3c68271f198c66e7c1ee07c4541c8878d3",
+    "bytes": 1562
+  },
+  "artifact": {
+    "sha256": "acc980b7781a44c7d82bc0b9bae4f5321f3a9a5580ed4dfaab2eb8b3854debb1",
+    "bytes": 807076
+  }
+}

@@ -60,12 +60,14 @@ Ampliación de `a11y-playwright.test.ts`: viewports 360 / 768 / 1440 px y zoom 2
 
 ## Presupuesto de rendimiento (P95)
 
-Estado: **pending**. No se marca `passed` sin 30 muestras en la máquina fijada en F0.
-
-Umbral propuesto (sin medir aquí):
+Umbrales:
 
 - Inicialización ≤ 3.000 ms (P95)
-- Resolver + validar + manifiesto ≤ 1.000 ms (P95) en el fixture completo, sin entrega de archivo
+- Resolver + validar + manifiesto ≤ 1.000 ms (P95) en el fixture embebido, sin entrega de archivo
 - n = 30
 
-Si F0 demuestra que el presupuesto no cabe, se acuerda otro **antes** de medir.
+Harness: `python3 tools/run_f7_p95_harness.py` (caso `F7-P95`). Las cifras viven en la
+carpeta de evidencia externa (`~/archmaker-closure/evidence/<source-sha>/…/p95-report.json`),
+no en este documento. Sin informe con n=30 no se declara rendimiento `passed` en el cierre
+funcional; un verde local del harness en una máquina concreta no sustituye la aceptación
+independiente F7.

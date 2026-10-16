@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "D05 Despliegue desktop Linux (AppImage Neubat)",
+    "output": "rendered/D05.html",
+    "quality_profile": "showcase",
+    "subtitle": "Neubat as-built (MVP); runner/ISO/Enterprise fuera de alcance"
+  },
+  "components": [
+    {
+      "id": "user",
+      "type": "external",
+      "label": "Usuario Linux",
+      "sublabel": "x86_64",
+      "pos": [
+        40,
+        220
+      ],
+      "size": [
+        140,
+        60
+      ]
+    },
+    {
+      "id": "appimage",
+      "type": "cloud",
+      "label": "Neubat AppImage",
+      "sublabel": "bundle",
+      "pos": [
+        260,
+        220
+      ],
+      "size": [
+        170,
+        64
+      ],
+      "tag": "v0.1.0"
+    },
+    {
+      "id": "webview",
+      "type": "frontend",
+      "label": "WebView",
+      "sublabel": "UI",
+      "pos": [
+        500,
+        120
+      ],
+      "size": [
+        140,
+        60
+      ]
+    },
+    {
+      "id": "host",
+      "type": "backend",
+      "label": "Proceso Rust",
+      "sublabel": "src-tauri",
+      "pos": [
+        500,
+        280
+      ],
+      "size": [
+        150,
+        60
+      ]
+    },
+    {
+      "id": "portal",
+      "type": "security",
+      "label": "rfd / portal",
+      "sublabel": "save dialog",
+      "pos": [
+        720,
+        280
+      ],
+      "size": [
+        150,
+        60
+      ]
+    },
+    {
+      "id": "fs",
+      "type": "database",
+      "label": "Filesystem",
+      "sublabel": "export + drafts",
+      "pos": [
+        720,
+        120
+      ],
+      "size": [
+        150,
+        60
+      ]
+    }
+  ],
+  "boundaries": [],
+  "connections": [
+    {
+      "id": "u-a",
+      "from": "user",
+      "to": "appimage",
+      "variant": "emphasis"
+    },
+    {
+      "id": "a-w",
+      "from": "appimage",
+      "to": "webview"
+    },
+    {
+      "id": "a-h",
+      "from": "appimage",
+      "to": "host"
+    },
+    {
+      "id": "h-p",
+      "from": "host",
+      "to": "portal",
+      "label": "save_export"
+    },
+    {
+      "id": "h-f",
+      "from": "host",
+      "to": "fs"
+    },
+    {
+      "id": "w-h",
+      "from": "webview",
+      "to": "host",
+      "label": "IPC invoke",
+      "variant": "security"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "amber",
+      "title": "Residuales",
+      "items": [
+        "Firma cosign local y 3× GUI pendientes en F9",
+        "Humo portal nativo aún no es E2E de aceptación"
+      ]
+    }
+  ]
+}

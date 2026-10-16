@@ -190,6 +190,8 @@ jobs:
           python3 tools/validate_closure_evidence.py
           # F7: inventario de matriz candidata; result=pending (sin aceptación firmada).
           python3 tools/run_f7_candidate_matrix.py --validate-only
+          # F7: tests simulados del runner (strict/partial/cero tests/WASM incompleto).
+          python3 tools/test_run_f7_candidate_matrix.py
 
   traceability:
     name: Matriz de trazabilidad FR/NFR -> TST/VAL (G2/G9)

@@ -52,18 +52,23 @@ Verificación registrada en el manifiesto externo:
 | Comprobación     | Resultado                                         |
 | ---------------- | ------------------------------------------------- |
 | CLI / checksums  | verified                                          |
-| cosign local     | deferred-ci-oidc-or-unavailable-local             |
-| install_gui (×3) | not-verified                                      |
-| `result`         | published                                         |
+| checksum AppImage | verified (`ARTIFACT_SHA256` coincide al descargar)              |
+| cosign local       | deferred: assets `.sig`/`.pem` no listados en la release pública |
+| install_gui (×3)   | not-verified                                                    |
+| `result`           | published                                                       |
 
 ## Identidades
 
-| Id                    | Uso                                                                  |
-| --------------------- | -------------------------------------------------------------------- |
-| `RC_SHA`              | Commit de `main` desde el que se construye                           |
-| `ARTIFACT_SHA256`     | SHA-256 del AppImage publicado (identidad del paquete)               |
-| `EVIDENCE_SHA256`     | SHA-256 del manifiesto de evidencia (externo; no dentro de sí mismo) |
-| `APPROVAL_RECORD_SHA` | SHA-256 del registro de aprobación (fichero separado)                |
+| Id                         | Uso                                                                  |
+| -------------------------- | -------------------------------------------------------------------- |
+| `RC_SHA`                   | Commit de `main` desde el que se construye                           |
+| `ARTIFACT_SHA256`          | SHA-256 del AppImage publicado (identidad del paquete)               |
+| `EVIDENCE_SHA256`          | SHA-256 del manifiesto de evidencia (externo; no dentro de sí mismo) |
+| `approvalRecordSha256`     | SHA-256 del fichero de registro de aprobación                        |
+| `approvalRecordCommit`     | Commit git del registro si está versionado (identidad distinta)      |
+
+No reutilizar el nombre histórico `APPROVAL_RECORD_SHA` para un commit: el valor de
+aprobación es el digest del fichero. El tip de `main` posterior a `v0.1.0` no altera este tag.
 
 ## Procedimiento (reproducible)
 
