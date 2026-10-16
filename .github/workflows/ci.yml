@@ -198,6 +198,7 @@ jobs:
           python3 tools/test_evidence_adversarial.py
           # P2: cierre de producto solo lectura (nunca autoaprueba).
           python3 tools/check_product_closure.py
+          python3 tools/test_check_product_closure.py
 
   traceability:
     name: Matriz de trazabilidad FR/NFR -> TST/VAL (G2/G9)
