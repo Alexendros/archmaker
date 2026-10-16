@@ -6,7 +6,7 @@ documentStatus: accepted
 approvalStatus: approved
 implementationStatus: partial
 verificationStatus: partial
-releaseStatus: eligible
+releaseStatus: ineligible
 owners:
   - product
 reviewers:

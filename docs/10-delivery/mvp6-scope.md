@@ -6,7 +6,7 @@ documentStatus: accepted
 approvalStatus: approved
 implementationStatus: partial
 verificationStatus: not-verified
-releaseStatus: eligible
+releaseStatus: ineligible
 owners:
   - release
 reviewers:
@@ -16,7 +16,7 @@ dependsOn:
     expectedDocumentStatus: accepted
   - id: DOC-DEL-PKG-001
   - id: DOC-GOV-GNG-001
-  - id: DEC-011
+  - id: DOC-GOV-DEC-001
 ---
 
 # Alcance MVP-6 — empaquetado del configurador

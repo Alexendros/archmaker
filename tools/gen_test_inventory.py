@@ -281,13 +281,15 @@ def infer_web_covers(test_name: str, path: str) -> List[str]:
         ])
     if 'forge-helpers' in name or 'forge-helpers' in path_lower:
         covers.extend(['FR-DRAFT-001', 'NFR-DET-001'])
-    # Playwright de cierre: draft/export/import por nombre de archivo.
+    # Playwright de cierre: draft/export/import/offline por nombre de archivo.
     if 'draft' in name or 'persist' in name:
         covers.append('FR-DRAFT-001')
     if 'export' in name or 'delivery' in name:
         covers.append('FR-EXPORT-001')
     if 'import' in name:
         covers.append('FR-IMPORT-001')
+    if 'offline' in name or 'offline' in path_lower:
+        covers.append('NFR-OFF-001')
     return list(dict.fromkeys(covers))
 
 

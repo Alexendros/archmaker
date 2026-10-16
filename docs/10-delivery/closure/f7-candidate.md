@@ -72,11 +72,6 @@ Las corridas reales de evidencia viven fuera del árbol en `closure-evidence/<so
 
 ## Fuera de alcance
 
-<<<<<<< HEAD
 La autorización de canal (AppImage / Neubat) vive en `f8-governance.md` y DEC-011; no cierra
 esta matriz ni sustituye `RC_SHA_FUNCIONAL`. F9 publica bytes del canal autorizado; no es
 aceptación funcional F7.
-=======
-F8 alinea gobierno sin aceptar MVP-6 ni resolver ADR-0010 (`f8-governance.md`). F9 sigue
-**blocked**: no tags/releases/paquetes sin autorización explícita. Este documento no toca ADR-0010, MVP-6 ni release.
->>>>>>> d92faf8 (feat(cierre): residuales F7 E2E WASM×3 y offline web)

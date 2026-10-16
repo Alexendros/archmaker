@@ -6,7 +6,7 @@ documentStatus: accepted
 approvalStatus: approved
 implementationStatus: complete
 verificationStatus: partial
-releaseStatus: eligible
+releaseStatus: ineligible
 owners:
   - governance
 reviewers:
@@ -21,7 +21,7 @@ dependsOn:
     expectedDocumentStatus: accepted
   - id: ADR-0010
     expectedDocumentStatus: accepted
-  - id: DEC-011
+  - id: DOC-GOV-DEC-001
 ---
 
 # F8 — Gobierno de canal (distribución autorizada, una plataforma)

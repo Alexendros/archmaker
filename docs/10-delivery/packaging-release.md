@@ -6,7 +6,7 @@ documentStatus: in-review
 approvalStatus: approved
 implementationStatus: partial
 verificationStatus: not-verified
-releaseStatus: eligible
+releaseStatus: ineligible
 owners:
   - release
 reviewers:
