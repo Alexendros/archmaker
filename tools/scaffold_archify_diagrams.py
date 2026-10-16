@@ -18,7 +18,7 @@ SOURCES = DIAG / "sources"
 RENDERER_SHA = "ca67c9f16be0c8cad409cd45190aa052e0649b84"
 
 # SHA del producto descrito por las vistas (no se exige == HEAD).
-AS_BUILT_SOURCE_SHA = "00d59d051eee4c1cd7ce45889269ce1446289396"
+AS_BUILT_SOURCE_SHA = "0cc53574388a1da45c3eff07b966e4441650e053"
 
 TITLES = {
     "D01": "Contexto de ArchMaker, Forge y actores",
