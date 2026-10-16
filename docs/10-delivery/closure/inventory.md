@@ -81,8 +81,8 @@ Clasificación estática y de comportamiento en el árbol de pruebas. No es una 
 | C-01 | confirmado           | `create_draft` pisa un id ya guardado. En wasm el UUID sale de `UUID_COUNTER` en 0. El primer id de contador es `b8178f96-e05d-4c4c-9574-864fca3fdb7d`.                        |
 | C-02 | confirmado           | `binaryDigest` es el SHA-256 de `rendered.bytes`. El DTO no tiene `bytes`. `JSON.stringify` de la cadena `report` no es el markdown.                                           |
 | C-03 | corregido en F3      | Hostname y cifrado (intención) llegan al manifiesto. number/secretRef emiten `AM-FACE-001`. Exclusiones face visibles. Ver `field-matrix.md` y `f3_fidelity.rs`. |
-| C-04 | confirmado en fuente | `confirmBlockingLosses: true`. El tope `2_000_000` va después de `arrayBuffer()`. No se mira `file.size`.                                                                      |
-| C-05 | confirmado en fuente | No hay estados guardando/guardado. `port.saveDraft` aparece 2 veces (arranque e importación). Las ediciones van a IndexedDB.                                                   |
+| C-04 | corregido en F4      | `file.size` antes de leer (`IMPORT_MAX_BYTES = 2_000_000`). Análisis con `confirmBlockingLosses: false`; informe y confirmación antes de aplicar.                              |
+| C-05 | corregido en F4      | Estados tipados `guardando` / `guardado` / `error`; escrituras serializadas; copia exportable y reintento si el almacén falla.                                                 |
 | C-06 | confirmado en fuente | Exportar llama a `downloadArtifact`. No existen `dialog.json` ni `picker.json`. El `catch` de WASM no construye `MockCorePort`.                                                |
 | C-07 | confirmado en fuente | La suma de tamaño usa base fija 650. La advertencia Sway/kernel está en `App.tsx` y no en `core.rs`.                                                                           |
 

@@ -462,6 +462,20 @@ export class MockCorePort implements CorePort {
         error: typedError("AM-DOC-001", "mock-core", "error.doc.limit"),
       };
     }
+    const text = new TextDecoder().decode(Uint8Array.from(input.sourceBytes));
+    const blockingFixture =
+      text.includes('"__archmakerBlocking":true') ||
+      text.includes("__archmakerBlocking");
+    if (blockingFixture && !input.confirmBlockingLosses) {
+      return {
+        ok: false,
+        error: typedError(
+          "AM-MIG-002",
+          "mock-core",
+          "error.migration.confirmationRequired",
+        ),
+      };
+    }
     const draft: Draft = {
       id: input.draftId ?? FIXED_DRAFT_ID,
       schemaVersion: "1",
@@ -475,8 +489,24 @@ export class MockCorePort implements CorePort {
       ok: true,
       value: {
         draft,
-        report: { entries: [], blockingLosses: false },
+        report: {
+          schemaVersion: "1",
+          sourceFormat: "v5.1",
+          entries: blockingFixture
+            ? [
+                {
+                  path: "/legacy",
+                  fate: "dropped",
+                  messageKey: "migration.dropped",
+                  detail: "campo legado",
+                  blocking: true,
+                },
+              ]
+            : [],
+          blocking: blockingFixture,
+        },
         changeset: { schemaVersion: "1", operations: [] },
+        originalDigest: "0".repeat(64),
       },
     };
   }
