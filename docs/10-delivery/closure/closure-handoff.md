@@ -33,7 +33,7 @@ Mandato de cierre ArchMaker/Forge. Casillas solo con evidencia. **No publicado.*
 
 | Rol | SHA / pin |
 | --- | --- |
-| Candidato (fuente) | `a09c429988a39c77f56f2795b8e12dfd0051bac8` — ver `release-candidate.md` |
+| Candidato (fuente) | `59246f0879e9d7d8ef54e44c3e6963197eeac8f5` — ver `release-candidate.md` |
 | Renderer Archify | `ca67c9f16be0c8cad409cd45190aa052e0649b84` |
 | Artefacto histórico | `9297ed7cc47f42a9611aed0093b5ab040daca512` / digest en `f9-release.md` |
 
@@ -104,6 +104,6 @@ Mandato de cierre ArchMaker/Forge. Casillas solo con evidencia. **No publicado.*
 ## 12. Decisión
 
 - **No publicar** en este handoff.
-- Candidato = `a09c429988a39c77f56f2795b8e12dfd0051bac8` (tip `main` post-P0–P7 + P6 humo #141).
+- Candidato = `59246f0879e9d7d8ef54e44c3e6963197eeac8f5` (tip `main` post-P0–P9 + fixes AS_BUILT #143/#145).
 - Distribución y revisión independiente: **pending** hasta autorización y revisor
   distintos del autor.

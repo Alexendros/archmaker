@@ -36,8 +36,8 @@ assets de la release histórica.
 
 | Rol | Valor | Notas |
 | --- | --- | --- |
-| Fuente (candidato) | `a09c429988a39c77f56f2795b8e12dfd0051bac8` | `origin/main` post-P0–P7 + humo P6 (merge PR #141); tip al fijar este documento |
-| Harness | `a09c429988a39c77f56f2795b8e12dfd0051bac8` | Coincide con fuente (herramientas en el mismo tip) |
+| Fuente (candidato) | `59246f0879e9d7d8ef54e44c3e6963197eeac8f5` | `origin/main` tip de cierre (merge PR #145 AS_BUILT); post-P0–P9 sin publicar |
+| Harness | `59246f0879e9d7d8ef54e44c3e6963197eeac8f5` | Coincide con fuente (herramientas en el mismo tip) |
 | Renderer Archify | `ca67c9f16be0c8cad409cd45190aa052e0649b84` | Pin; no actualizar sin revalidar |
 | Artefacto publicado | `9297ed7cc47f42a9611aed0093b5ab040daca512` | Histórico `v0.1.0` (nombre público retirado); **no** es este candidato |
 
