@@ -43,8 +43,8 @@
 ## Learned Workspace Facts
 
 - Remoto canónico: `https://github.com/Alexendros/archmaker`. Licencia Apache-2.0.
-- Baseline vigente: `implementation-baseline-mvp4`. En el árbol están el walking skeleton MVP-0 y los slices MVP-1 (dominio, catálogo y migración v5.1), MVP-2 (reglas, resolución y validación), MVP-3 (adapters de exportación) y MVP-4 (React + MockCorePort + cara NEUBAT en `apps/web`).
-- Alcance MVP-5 `accepted` (`mvp5-scope.md`, MVP-5-01); catálogo (02), UI cinco pasos (03) y paridad (04) cerrados. Queda el tag (MVP-5-05). Hueco: `docs/10-delivery/mvp5-gap-spec.md` (draft). Remediación operativa post-MVP-5 (configurador real Tauri/WASM, sin ampliar veredicto): `docs/10-delivery/remediation/`. MVP-6 e `iso-scope.md` siguen sin `accepted`.
+- Baseline vigente: `implementation-baseline-mvp5`. En el árbol están el walking skeleton MVP-0 y los slices MVP-1 (dominio, catálogo y migración v5.1), MVP-2 (reglas, resolución y validación), MVP-3 (adapters de exportación), MVP-4 (React + MockCorePort + cara NEUBAT en `apps/web`) y MVP-5 (catálogo de matriz, UI cinco pasos, paridad Tauri/WASM, remediación operativa + Prove-It).
+- Alcance MVP-5 cerrado (`mvp5-scope.md`, MVP-5-01..05). Hueco residual: `docs/10-delivery/mvp5-gap-spec.md` (draft). Remediación operativa: `docs/10-delivery/remediation/`. MVP-6 e `iso-scope.md` siguen sin `accepted`.
 - `reference/v5.1/` es evidencia inmutable verificada por SHA-256. La UI React vive en `apps/web/` (`neubat-face.ts`); el dominio está en `crates/archmaker-core` y se expone por CorePort.
 - Arranque de adaptadores vía `apps/web/src/create-core-port.ts`: Desktop → TauriCorePort (`invoke` de `@tauri-apps/api/core`); navegador → WasmCorePort (`tools/build-wasm.sh`); MockCorePort solo con `?mock=1` u opt-in explícito, nunca por fallo silencioso de Tauri/WASM.
 - ADR-0011 (propuesto, `in-review`): la selección del configurador produce un contrato JSON de aplicación; cada cláusula tiene schema en `contracts/json-schema/`, issue `kind:clause` y tests verificados en Rust. No añade target de imagen.

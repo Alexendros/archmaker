@@ -4,8 +4,8 @@ phase: MVP
 priority: P0
 documentStatus: accepted
 approvalStatus: approved
-implementationStatus: partial
-verificationStatus: not-verified
+implementationStatus: complete
+verificationStatus: partial
 releaseStatus: ineligible
 owners:
   - architecture
@@ -58,7 +58,7 @@ Rust. No se construye ISO, no se descarga el espejo y no se llama a pacman.
 | MVP-5-02 | Ampliar el catálogo local con la matriz, sin afirmaciones no verificadas | 01         | G4      | data         | Cada id HTML está en catálogo o sigue como hueco explícito | closed |
 | MVP-5-03 | UI de cinco pasos con los contratos existentes                           | 02         | G6      | ux           | Seleccionar, resolver, validar y exportar sin escribir ISO | closed |
 | MVP-5-04 | Paridad Tauri/WASM del mismo draft                                       | 02         | G5, G9  | architecture | Mismos bytes de manifiesto                                 | closed |
-| MVP-5-05 | Tag de baseline solo tras 01–04 y CI verde                               | 04         | G10     | release      | Tag nuevo; los anteriores no se mueven                     | open   |
+| MVP-5-05 | Tag de baseline solo tras 01–04 y CI verde                               | 04         | G10     | release      | Tag nuevo; los anteriores no se mueven                     | closed |
 
 ## Trazabilidad
 
@@ -69,5 +69,5 @@ Rust. No se construye ISO, no se descarga el espejo y no se llama a pacman.
 
 ## Criterio de salida
 
-Los issues 01–05 cerrados o con residual fechado. MVP-5-01 cerrado autoriza 02–04; el tag
-(MVP-5-05) solo tras CI verde. Runner e ISO siguen fuera del veredicto.
+Los issues 01–05 cerrados. Tag `implementation-baseline-mvp5` emitido (MVP-5-05); tags
+MVP-0.1..MVP-4 intactos. Runner e ISO siguen fuera del veredicto.

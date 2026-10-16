@@ -32,7 +32,9 @@ reviewers:
   `implementation-baseline-mvp4` (tags previos intactos).
 - Reevaluación alcance MVP-5 (MVP-5-01): **CONDITIONAL-CLEAR — walking skeleton MVP-0 + slices MVP-1..MVP-5**
   (alcance `mvp5-scope.md` accepted: catálogo de matriz, UI de cinco pasos, paridad Tauri/WASM).
-  Sin tag de baseline MVP-5 hasta MVP-5-05; exclusiones del alcance vigentes.
+- Reevaluación slice MVP-5 (MVP-5-05): **CONDITIONAL-CLEAR — walking skeleton MVP-0 + slices MVP-1..MVP-5**
+  (remediación operativa + Prove-It). Baseline emitida: `implementation-baseline-mvp5`
+  (tags previos intactos). Exclusiones del alcance vigentes (sin runner/ISO).
 - Alcance autorizado: `docs/10-delivery/walking-skeleton.md` (DOC-DEL-WSK-001),
   `docs/10-delivery/mvp1-scope.md` (DOC-DEL-MVP1-001), `docs/10-delivery/mvp2-scope.md`
   (DOC-DEL-MVP2-001), `docs/10-delivery/mvp3-scope.md` (DOC-DEL-MVP3-001),

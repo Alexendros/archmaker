@@ -36,12 +36,12 @@ Se asigna a un hito de GitHub (`planning-v*`, `MVP-*`, `v1`). Se publica cuando:
 
 Artefactos: el código del tag que GitHub adjunta y las notas. Sin binarios, sin firmas y sin paquetes. El workflow `.github/workflows/plan-release.yml` crea la release de notas al pushear esos tags; no llama a `release.yml`.
 
-| Hito                   | Tag                                       | Estado del hito    |
-| ---------------------- | ----------------------------------------- | ------------------ |
-| `planning-v1`          | `planning-v1`                             | cerrado (historia) |
-| `planning-v1.1`        | `planning-v1.1`                           | cerrado (historia) |
-| `MVP-0.1` … `MVP-4`    | `implementation-baseline-mvp0.1` … `mvp4` | cerrado (historia) |
-| `MVP-5`, `MVP-6`, `v1` | (cuando exista el tag)                    | abierto            |
+| Hito                | Tag                                       | Estado del hito    |
+| ------------------- | ----------------------------------------- | ------------------ |
+| `planning-v1`       | `planning-v1`                             | cerrado (historia) |
+| `planning-v1.1`     | `planning-v1.1`                           | cerrado (historia) |
+| `MVP-0.1` … `MVP-5` | `implementation-baseline-mvp0.1` … `mvp5` | cerrado (historia) |
+| `MVP-6`, `v1`       | (cuando exista el tag)                    | abierto            |
 
 ### Release de paquete
 
