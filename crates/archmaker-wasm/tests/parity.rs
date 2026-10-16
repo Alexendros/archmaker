@@ -1,5 +1,7 @@
-use archmaker_core::{CorePort, RealCore};
-use archmaker_wasm::{canonicalize_json, digest_for_json, guarded_invoke, DEFAULT_DOMAIN};
+use archmaker_core::{Catalog, CorePort, RealCore};
+use archmaker_wasm::{
+    canonicalize_json, digest_for_json, guarded_invoke, guarded_invoke_with_core, DEFAULT_DOMAIN,
+};
 use serde_json::Value;
 
 const MAPS_VECTORS: &str =
@@ -203,6 +205,122 @@ fn parity_resolve_and_manifest() {
         }
         (Ok(_), Err(e)) | (Err(_), Ok(e)) => {
             panic!("native/wasm divergence: {e}");
+        }
+    }
+}
+
+const DESKTOP_CATALOG_JSON: &str =
+    include_str!("../../archmaker-core/fixtures/local-catalog-mvp1.json");
+
+fn desktop_core() -> RealCore {
+    let catalog: Catalog =
+        serde_json::from_str(DESKTOP_CATALOG_JSON).expect("desktop catalog deserializes");
+    RealCore::new(catalog)
+}
+
+fn desktop_catalog_ref_json() -> Value {
+    serde_json::json!({
+        "namespace": "archmaker.core",
+        "id": "desktop",
+        "version": "1.0.0",
+        "digest": {"algorithm": "sha256", "value": "11"}
+    })
+}
+
+fn draft_with_desktop_selections(core: &RealCore) -> Value {
+    let input = serde_json::json!({
+        "draftId": FIXED_DRAFT_ID,
+        "catalogRef": desktop_catalog_ref_json(),
+        "targetRef": {"id": "arch-x86_64", "version": "0.1.0"},
+        "requestId": null
+    })
+    .to_string();
+    let typed = serde_json::from_str(&input).expect("valid create input");
+    let draft = core.create_draft(typed).expect("create desktop draft");
+    let mut value = serde_json::to_value(&draft).expect("serializable");
+    value["selections"] = serde_json::json!([
+        {"stepId": "archmaker.base.kernel", "value": {"kind": "single", "optionId": "archmaker.kernel.linux"}},
+        {"stepId": "archmaker.base.boot", "value": {"kind": "single", "optionId": "archmaker.boot.systemd-boot"}},
+        {"stepId": "archmaker.base.filesystem", "value": {"kind": "single", "optionId": "archmaker.filesystem.btrfs"}},
+        {"stepId": "archmaker.environment.compositor", "value": {"kind": "single", "optionId": "archmaker.compositor.gnome"}},
+        {"stepId": "archmaker.apps.browser", "value": {"kind": "single", "optionId": "archmaker.browser.firefox"}}
+    ]);
+    value
+}
+
+fn canonical_bytes(value: &Value) -> Vec<u8> {
+    archmaker_canonicalization::canonicalize(value)
+}
+
+#[test]
+fn parity_desktop_catalog_manifest_canonical_bytes() {
+    let core = desktop_core();
+    let draft = draft_with_desktop_selections(&core);
+
+    let resolve_input = serde_json::json!({
+        "draft": draft,
+        "catalogRef": desktop_catalog_ref_json(),
+        "requestId": null
+    })
+    .to_string();
+    let native_resolve: Value = {
+        let typed = serde_json::from_str(&resolve_input).expect("valid resolve input");
+        let result = core.resolve_draft(typed).expect("native resolve");
+        serde_json::to_value(&result).expect("serializable")
+    };
+    let wasm_resolve: Value = serde_json::from_str(
+        &guarded_invoke_with_core(&core, "main", "resolve_draft", &resolve_input)
+            .expect("wasm resolve"),
+    )
+    .expect("resolve JSON");
+    assert_eq!(
+        canonical_bytes(&native_resolve),
+        canonical_bytes(&wasm_resolve),
+        "desktop resolve: same canonical bytes"
+    );
+
+    let manifest_input = serde_json::json!({
+        "draft": draft_with_desktop_selections(&core),
+        "catalogRef": desktop_catalog_ref_json(),
+        "targetRef": {"id": "archmaker-profile", "version": "0.1.0"},
+        "expectedResolutionDigest": native_resolve["resolutionDigest"],
+        "requestId": null
+    })
+    .to_string();
+    let native_manifest = core.build_manifest(serde_json::from_str(&manifest_input).unwrap());
+    let wasm_manifest = guarded_invoke_with_core(&core, "main", "build_manifest", &manifest_input);
+    match (native_manifest, wasm_manifest) {
+        (Ok(native), Ok(wasm_raw)) => {
+            let native_json: Value = serde_json::to_value(&native).expect("serializable");
+            let wasm_json: Value = serde_json::from_str(&wasm_raw).expect("manifest JSON");
+            assert_eq!(
+                canonical_bytes(&native_json),
+                canonical_bytes(&wasm_json),
+                "desktop manifest: same canonical bytes"
+            );
+            let content_digest = wasm_json["contentDigest"]["value"]
+                .as_str()
+                .expect("contentDigest");
+            let recomputed = {
+                let without: Value = {
+                    let mut v = wasm_json.clone();
+                    v.as_object_mut().expect("object").remove("contentDigest");
+                    v
+                };
+                let canonical = archmaker_canonicalization::canonicalize(&without);
+                archmaker_canonicalization::digest(&canonical, DEFAULT_DOMAIN)
+            };
+            assert_eq!(
+                content_digest, recomputed,
+                "desktop contentDigest matches canonical bytes"
+            );
+        }
+        (Err(native_err), Err(wasm_raw)) => {
+            let wasm_err: Value = serde_json::from_str(&wasm_raw).expect("typed error");
+            assert_eq!(wasm_err["code"], native_err.code);
+        }
+        (Ok(_), Err(e)) | (Err(_), Ok(e)) => {
+            panic!("native/wasm desktop divergence: {e}");
         }
     }
 }

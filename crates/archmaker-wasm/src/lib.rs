@@ -96,10 +96,21 @@ pub fn guarded_invoke(
     op_name: &str,
     input_json: &str,
 ) -> Result<String, String> {
+    guarded_invoke_with_core(&embedded_core()?, window_label, op_name, input_json)
+}
+
+/// Dispatch WASM guarded by window allowlist against an injected `RealCore`.
+/// Production browser bindings keep using [`guarded_invoke`] (embedded catalog).
+pub fn guarded_invoke_with_core(
+    core: &RealCore,
+    window_label: &str,
+    op_name: &str,
+    input_json: &str,
+) -> Result<String, String> {
     let op = check_invoke_named(window_label, op_name).map_err(|e| error_json(&e))?;
     let input: serde_json::Value = serde_json::from_str(input_json)
         .map_err(|_| error_json(&invalid_json_error("archmaker-wasm.invoke")))?;
-    dispatch(&embedded_core()?, op, input)
+    dispatch(core, op, input)
 }
 
 #[wasm_bindgen]
