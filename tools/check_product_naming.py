@@ -48,8 +48,43 @@ ALLOWLIST: list[AllowEntry] = [
     ),
     AllowEntry(
         "AGENTS.md",
-        "regla de historia + ruta externa archmaker_neubat.html",
-        3,
+        "regla de historia + ruta externa archmaker_neubat.html + MVP-6 histórico",
+        4,
+    ),
+    AllowEntry(
+        "docs/11-operations/manual/Instalacion-Forge.md",
+        "manual: nombre del AppImage histórico v0.1.0",
+        2,
+    ),
+    AllowEntry(
+        "docs/10-delivery/closure/release-candidate.md",
+        "P8: contraste candidato vs artefacto histórico Neubat",
+        1,
+    ),
+    AllowEntry(
+        "docs/10-delivery/closure/p6-desktop-offline.md",
+        "P6: AppImage histórico no cierra el gate",
+        1,
+    ),
+    AllowEntry(
+        "docs/10-delivery/closure/closure-handoff.md",
+        "P9: historia v0.1.0 Neubat vs Forge vigente",
+        1,
+    ),
+    AllowEntry(
+        "docs/10-delivery/closure/examples/desktop-offline-p6-probe.json",
+        "ejemplo P6: ruta histórica AppImage Neubat",
+        1,
+    ),
+    AllowEntry(
+        "docs/10-delivery/closure/examples/desktop-evidence.p6-blocked.json",
+        "ejemplo P6 blocked: nombre histórico Neubat",
+        1,
+    ),
+    AllowEntry(
+        "tools/check_desktop_offline_gate.py",
+        "gate P6 rechaza AppImage histórico Neubat",
+        1,
     ),
     AllowEntry(
         "README.md",
