@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "generated_at": "1791970330",
-    "git_sha": "7874e9a641179d2fe8b799d52585c29b62bd0ade",
+    "generated_at": "1792137450",
+    "git_sha": "cd086afa2e331e561a7cfc04bcefae3650f3a996",
     "requirements_file": "docs/01-product/requirements.md",
     "inventory_file": "docs/10-delivery/tests-inventory.json",
     "validators_file": "docs/10-delivery/validators.json"
@@ -63,7 +63,7 @@
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_NAMED_DENIED_INVOKE_YIELDS_PROTO_001",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_UNKNOWN_COMMAND_YIELDS_TYPED_PROTO_ERROR",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_UNKNOWN_WINDOW_YIELDS_TYPED_PROTO_ERROR",
-        "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-DIALOG_AND_PICKER_DENY_EVERYTHING_BY_DEFAULT",
+        "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-DIALOG_AND_PICKER_CAPABILITY_FILES_ABSENT_IN_MVP",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_ALLOWLIST_COVERS_ALL_EIGHT_OPS_EXACTLY_ONCE",
         "TST-WEB-MOCK-FLOW.PLAYWRIGHT"
       ],
@@ -71,7 +71,7 @@
       "evidence_count": 35,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["schema", "negative", "unit", "integration"],
+      "evidence_types": ["unit", "integration", "schema", "negative"],
       "coverage_status": "covered"
     },
     {
@@ -120,15 +120,16 @@
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_NAMED_DENIED_INVOKE_YIELDS_PROTO_001",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_UNKNOWN_COMMAND_YIELDS_TYPED_PROTO_ERROR",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_UNKNOWN_WINDOW_YIELDS_TYPED_PROTO_ERROR",
-        "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-DIALOG_AND_PICKER_DENY_EVERYTHING_BY_DEFAULT",
+        "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-DIALOG_AND_PICKER_CAPABILITY_FILES_ABSENT_IN_MVP",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_ALLOWLIST_COVERS_ALL_EIGHT_OPS_EXACTLY_ONCE",
+        "TST-WEB-FORGE-HELPERS.PLAYWRIGHT",
         "TST-WEB-MOCK-FLOW.PLAYWRIGHT"
       ],
       "validators": ["VAL-SCHEMA-REFS", "VAL-NEG-CAPABILITIES"],
-      "evidence_count": 42,
+      "evidence_count": 43,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["schema", "negative", "unit", "integration"],
+      "evidence_types": ["unit", "integration", "schema", "negative"],
       "coverage_status": "covered"
     },
     {
@@ -174,7 +175,7 @@
       "evidence_count": 13,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["contract", "unit", "integration"],
+      "evidence_types": ["unit", "contract", "integration"],
       "coverage_status": "covered"
     },
     {
@@ -192,7 +193,7 @@
       "evidence_count": 2,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["schema", "integration"],
+      "evidence_types": ["integration", "schema"],
       "coverage_status": "covered"
     },
     {
@@ -240,7 +241,7 @@
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_NAMED_DENIED_INVOKE_YIELDS_PROTO_001",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_UNKNOWN_COMMAND_YIELDS_TYPED_PROTO_ERROR",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_UNKNOWN_WINDOW_YIELDS_TYPED_PROTO_ERROR",
-        "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-DIALOG_AND_PICKER_DENY_EVERYTHING_BY_DEFAULT",
+        "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-DIALOG_AND_PICKER_CAPABILITY_FILES_ABSENT_IN_MVP",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_ALLOWLIST_COVERS_ALL_EIGHT_OPS_EXACTLY_ONCE",
         "TST-WEB-MOCK-FLOW.PLAYWRIGHT"
       ],
@@ -253,12 +254,12 @@
       "has_executable_evidence": true,
       "passes_ci": true,
       "evidence_types": [
-        "contract",
-        "schema",
-        "negative",
-        "unit",
+        "integration",
         "canonicalize",
-        "integration"
+        "unit",
+        "schema",
+        "contract",
+        "negative"
       ],
       "coverage_status": "covered"
     },
@@ -299,7 +300,7 @@
       "evidence_count": 7,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["unit", "negative", "integration"],
+      "evidence_types": ["unit", "integration", "negative"],
       "coverage_status": "covered"
     },
     {
@@ -344,7 +345,7 @@
       "evidence_count": 12,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["contract", "unit", "integration"],
+      "evidence_types": ["unit", "contract", "integration"],
       "coverage_status": "covered"
     },
     {
@@ -360,7 +361,7 @@
       "evidence_count": 2,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["visual", "a11y"],
+      "evidence_types": ["a11y", "visual"],
       "coverage_status": "covered"
     },
     {
@@ -391,18 +392,19 @@
         "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_BYTES_001_IDEMPOTENT_EXPORT_SAME_SELECTION",
         "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_HOST_001_NO_SPAWN_NO_ROOT_NO_NETWORK_FOR_MANIFEST",
         "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_BOOT_001_REJECTS_SATISFIED_UNTIL_IMAGE_ADMITTED",
-        "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_JSON_DEPTH_LIMIT_ABORTS"
+        "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_JSON_DEPTH_LIMIT_ABORTS",
+        "TST-WEB-FORGE-HELPERS.PLAYWRIGHT"
       ],
       "validators": ["VAL-CANONICALIZE"],
-      "evidence_count": 21,
+      "evidence_count": 22,
       "has_executable_evidence": true,
       "passes_ci": true,
       "evidence_types": [
-        "contract",
-        "negative",
-        "unit",
+        "integration",
         "canonicalize",
-        "integration"
+        "unit",
+        "contract",
+        "negative"
       ],
       "coverage_status": "covered"
     },
@@ -421,7 +423,7 @@
       "evidence_count": 2,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["schema", "integration"],
+      "evidence_types": ["integration", "schema"],
       "coverage_status": "covered"
     },
     {
@@ -464,7 +466,7 @@
       "evidence_count": 10,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["contract", "visual", "unit"],
+      "evidence_types": ["unit", "contract", "visual"],
       "coverage_status": "covered"
     },
     {
@@ -524,14 +526,14 @@
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_NAMED_DENIED_INVOKE_YIELDS_PROTO_001",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_UNKNOWN_COMMAND_YIELDS_TYPED_PROTO_ERROR",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_UNKNOWN_WINDOW_YIELDS_TYPED_PROTO_ERROR",
-        "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-DIALOG_AND_PICKER_DENY_EVERYTHING_BY_DEFAULT",
+        "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-DIALOG_AND_PICKER_CAPABILITY_FILES_ABSENT_IN_MVP",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_ALLOWLIST_COVERS_ALL_EIGHT_OPS_EXACTLY_ONCE"
       ],
       "validators": ["VAL-NEG-CAPABILITIES"],
       "evidence_count": 28,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["negative", "unit"],
+      "evidence_types": ["unit", "negative"],
       "coverage_status": "covered"
     }
   ],

@@ -1,6 +1,6 @@
 {
-  "generated_at": "1791970330",
-  "git_sha": "7874e9a641179d2fe8b799d52585c29b62bd0ade",
+  "generated_at": "1792137450",
+  "git_sha": "cd086afa2e331e561a7cfc04bcefae3650f3a996",
   "tests": [
     {
       "id": "TST-ARCHMAKER-CANONICALIZATION-VECTORS-GOLDEN_CORPUS_BYTE_IDENTITY_AND_DIGEST",
@@ -753,10 +753,10 @@
       "description": "negative_capabilities::neg_unknown_window_yields_typed_proto_error"
     },
     {
-      "id": "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-DIALOG_AND_PICKER_DENY_EVERYTHING_BY_DEFAULT",
+      "id": "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-DIALOG_AND_PICKER_CAPABILITY_FILES_ABSENT_IN_MVP",
       "type": "negative",
       "location": "crates/archmaker-core/tests/negative_capabilities.rs",
-      "command": "cargo test -p archmaker-core --test negative_capabilities dialog_and_picker_deny_everything_by_default",
+      "command": "cargo test -p archmaker-core --test negative_capabilities dialog_and_picker_capability_files_absent_in_mvp",
       "workflow": "ci",
       "covers": [
         "NFR-SEC-001",
@@ -764,7 +764,7 @@
         "FR-CAT-001",
         "FR-MANIFEST-001"
       ],
-      "description": "negative_capabilities::dialog_and_picker_deny_everything_by_default"
+      "description": "negative_capabilities::dialog_and_picker_capability_files_absent_in_mvp"
     },
     {
       "id": "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_ALLOWLIST_COVERS_ALL_EIGHT_OPS_EXACTLY_ONCE",
@@ -779,6 +779,15 @@
         "FR-MANIFEST-001"
       ],
       "description": "negative_capabilities::neg_allowlist_covers_all_eight_ops_exactly_once"
+    },
+    {
+      "id": "TST-WEB-FORGE-HELPERS.PLAYWRIGHT",
+      "type": "unit",
+      "location": "apps/web/forge-helpers.playwright.test.ts",
+      "command": "cd apps/web && pnpm test forge-helpers.playwright",
+      "workflow": "ci",
+      "covers": ["FR-DRAFT-001", "NFR-DET-001"],
+      "description": "Web test forge-helpers.playwright"
     },
     {
       "id": "TST-WEB-A11Y-PLAYWRIGHT",
@@ -845,6 +854,16 @@
       "workflow": "ci",
       "covers": ["FR-IMPORT-001", "NFR-MIG-001"],
       "description": "Validador validate_mig",
+      "transversal": false
+    },
+    {
+      "id": "VAL-VALIDATE_TAURI_SCHEMAS",
+      "type": "doc",
+      "location": "tools/validate_tauri_schemas.py",
+      "command": "python3 tools/validate_tauri_schemas.py",
+      "workflow": "ci",
+      "covers": ["FR-DRAFT-001", "FR-CAT-001", "FR-MANIFEST-001"],
+      "description": "Validador validate_tauri_schemas",
       "transversal": false
     },
     {

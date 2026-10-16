@@ -11,7 +11,7 @@
     "test-a11y": "python3 ./a11y-check.py",
     "test-a11y:axe": "playwright test a11y-playwright.test.ts",
     "test-a11y:visual": "playwright test visual-regression.test.ts",
-    "test-a11y:flow": "playwright test mock-flow.playwright.test.ts",
+    "test-a11y:flow": "playwright test mock-flow.playwright.test.ts forge-helpers.playwright.test.ts",
     "test-a11y:all": "pnpm test-a11y && pnpm test-a11y:axe && pnpm test-a11y:visual && pnpm test-a11y:flow"
   },
   "dependencies": {

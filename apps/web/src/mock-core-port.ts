@@ -16,10 +16,23 @@ import type {
   ResolvedSelection,
   Result,
   SaveDraftInput,
+  Selection,
   ValidateDraftInput,
   ValidationResult,
 } from "./coreport.js";
 import { typedError } from "./coreport.js";
+import {
+  BOOTLOADERS,
+  ENVIRONMENTS,
+  FILESYSTEMS,
+  GLOSSARY,
+  INITIAL_APP_OPTION_IDS,
+  INITIAL_SINGLE,
+  INTENTS,
+  KERNELS,
+  LAYERS,
+  STEP_IDS,
+} from "./neubat-face.js";
 
 const FIXED_DRAFT_ID = "0d5e6b1a-1111-4a2b-9c3d-111111111111";
 const FIXED_DIGEST =
@@ -29,28 +42,166 @@ function digest(value = FIXED_DIGEST) {
   return { algorithm: "sha256" as const, value, kind: "content" as const };
 }
 
-function optionIdOf(draft: Draft, stepId: string): string | undefined {
-  const sel = draft.selections.find((s) => s.stepId === stepId);
-  if (!sel) return undefined;
-  if (sel.value.kind === "single") return sel.value.optionId;
-  return undefined;
+function initialSelections(): Selection[] {
+  return [
+    {
+      stepId: STEP_IDS.intent,
+      value: { kind: "single", optionId: INITIAL_SINGLE.intent },
+    },
+    {
+      stepId: STEP_IDS.kernel,
+      value: { kind: "single", optionId: INITIAL_SINGLE.kernel },
+    },
+    {
+      stepId: STEP_IDS.boot,
+      value: { kind: "single", optionId: INITIAL_SINGLE.boot },
+    },
+    {
+      stepId: STEP_IDS.filesystem,
+      value: { kind: "single", optionId: INITIAL_SINGLE.filesystem },
+    },
+    {
+      stepId: STEP_IDS.compositor,
+      value: { kind: "single", optionId: INITIAL_SINGLE.compositor },
+    },
+    {
+      stepId: STEP_IDS.apps,
+      value: {
+        kind: "multiple",
+        optionIds: [...INITIAL_APP_OPTION_IDS],
+      },
+    },
+  ];
+}
+
+function faceCatalog() {
+  return {
+    namespace: "archmaker.core",
+    id: "minimal",
+    version: "0.1.0",
+    documentVersion: "vNext",
+    schemaVersion: "1",
+    face: "neubat-forge",
+    glossary: GLOSSARY,
+    steps: [
+      {
+        id: STEP_IDS.intent,
+        title: "Intención",
+        mode: "single",
+        options: INTENTS.map((o) => ({
+          id: o.optionId,
+          title: o.title,
+          description: o.description,
+        })),
+      },
+      {
+        id: STEP_IDS.kernel,
+        title: "Kernel",
+        mode: "single",
+        options: KERNELS.map((o) => ({
+          id: o.optionId,
+          title: o.title,
+          description: o.description,
+          gap: o.gap ?? false,
+        })),
+      },
+      {
+        id: STEP_IDS.boot,
+        title: "Bootloader",
+        mode: "single",
+        options: BOOTLOADERS.map((o) => ({
+          id: o.optionId,
+          title: o.title,
+          description: o.description,
+          gap: o.gap ?? false,
+        })),
+      },
+      {
+        id: STEP_IDS.filesystem,
+        title: "Filesystem",
+        mode: "single",
+        options: FILESYSTEMS.map((o) => ({
+          id: o.optionId,
+          title: o.title,
+          description: o.description,
+        })),
+      },
+      {
+        id: STEP_IDS.compositor,
+        title: "Entorno",
+        mode: "single",
+        options: ENVIRONMENTS.map((o) => ({
+          id: o.optionId,
+          title: o.title,
+          description: o.description,
+          kind: o.kind,
+          gap: o.gap ?? false,
+        })),
+      },
+      {
+        id: STEP_IDS.apps,
+        title: "Apps",
+        mode: "multiple",
+        layers: LAYERS.map((l) => ({
+          id: l.id,
+          title: l.title,
+          simple: l.simple,
+          options: l.packages.map((p) => ({
+            id: p.optionId,
+            title: p.title,
+            description: p.description,
+            gap: p.gap ?? false,
+          })),
+        })),
+      },
+    ],
+  };
 }
 
 function effectiveFrom(draft: Draft): ResolvedSelection[] {
-  return draft.selections
-    .filter((s) => s.value.kind === "single")
-    .map((s) => ({
-      stepId: s.stepId,
-      optionId: (s.value as { kind: "single"; optionId: string }).optionId,
-      value: s.value,
-      origin: "manual" as const,
-      locked: false,
-    }))
-    .sort((a, b) =>
-      a.stepId === b.stepId
-        ? a.optionId.localeCompare(b.optionId)
-        : a.stepId.localeCompare(b.stepId),
-    );
+  const out: ResolvedSelection[] = [];
+  for (const s of draft.selections) {
+    if (s.value.kind === "single") {
+      out.push({
+        stepId: s.stepId,
+        optionId: s.value.optionId,
+        value: s.value,
+        origin: "manual",
+        locked: false,
+      });
+    } else if (s.value.kind === "multiple") {
+      for (const optionId of s.value.optionIds) {
+        out.push({
+          stepId: s.stepId,
+          optionId,
+          value: { kind: "single", optionId },
+          origin: "manual",
+          locked: false,
+        });
+      }
+    } else if (s.value.kind === "text") {
+      out.push({
+        stepId: s.stepId,
+        optionId: `${s.stepId}:text`,
+        value: s.value,
+        origin: "manual",
+        locked: false,
+      });
+    } else if (s.value.kind === "boolean") {
+      out.push({
+        stepId: s.stepId,
+        optionId: `${s.stepId}:${s.value.value}`,
+        value: s.value,
+        origin: "manual",
+        locked: false,
+      });
+    }
+  }
+  return out.sort((a, b) =>
+    a.stepId === b.stepId
+      ? a.optionId.localeCompare(b.optionId)
+      : a.stepId.localeCompare(b.stepId),
+  );
 }
 
 export class MockCorePort implements CorePort {
@@ -85,51 +236,14 @@ export class MockCorePort implements CorePort {
       revision: 0,
       catalogRef: input.catalogRef,
       targetRef: input.targetRef,
-      selections: [],
+      selections: initialSelections(),
     };
     this.drafts.set(id, draft);
     return { ok: true, value: { ...draft } };
   }
 
   async loadCatalog(_input: LoadCatalogInput): Promise<Result<unknown>> {
-    return {
-      ok: true,
-      value: {
-        namespace: "archmaker.core",
-        id: "minimal",
-        version: "0.1.0",
-        documentVersion: "vNext",
-        schemaVersion: "1",
-        steps: [
-          {
-            id: "archmaker.sys.base",
-            title: "Base system",
-            mode: "single",
-            sections: [
-              {
-                id: "archmaker.sys.kernel",
-                title: "Kernel",
-                cardinality: "one",
-                options: [{ id: "archmaker.kernel.linux", title: "Linux" }],
-              },
-            ],
-          },
-          {
-            id: "archmaker.sys.session",
-            title: "Session",
-            mode: "single",
-            sections: [
-              {
-                id: "archmaker.sys.desktop",
-                title: "Desktop",
-                cardinality: "one",
-                options: [{ id: "archmaker.desktop.gnome", title: "GNOME" }],
-              },
-            ],
-          },
-        ],
-      },
-    };
+    return { ok: true, value: faceCatalog() };
   }
 
   async saveDraft(input: SaveDraftInput): Promise<Result<Draft>> {
@@ -151,12 +265,6 @@ export class MockCorePort implements CorePort {
 
   async resolveDraft(input: ResolveDraftInput): Promise<Result<ResolveResult>> {
     const effective = effectiveFrom(input.draft);
-    if (
-      optionIdOf(input.draft, "archmaker.sys.base") === undefined &&
-      input.draft.selections.length > 0
-    ) {
-      /* still resolve whatever was selected */
-    }
     return {
       ok: true,
       value: {
@@ -312,7 +420,7 @@ export class MockCorePort implements CorePort {
       revision: 0,
       catalogRef: input.catalogRef,
       targetRef: input.targetRef,
-      selections: [],
+      selections: initialSelections(),
     };
     return {
       ok: true,

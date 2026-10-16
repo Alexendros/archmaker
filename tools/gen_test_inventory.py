@@ -255,6 +255,8 @@ def infer_web_covers(test_name: str, path: str) -> List[str]:
             'FR-EXPORT-001',
             'NFR-OFF-001',
         ])
+    if 'forge-helpers' in name or 'forge-helpers' in path_lower:
+        covers.extend(['FR-DRAFT-001', 'NFR-DET-001'])
     return list(dict.fromkeys(covers))
 
 
