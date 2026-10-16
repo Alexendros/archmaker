@@ -14,6 +14,7 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
+INVENTORY_MD = ROOT / "docs/10-delivery/closure/inventory.md"
 INVENTORY = ROOT / "docs/10-delivery/closure/f7-required-cases.json"
 MANDATORY = ROOT / "docs/10-delivery/closure/mandatory-cases.md"
 SCHEMA_PATH = ROOT / "docs/10-delivery/closure/evidence-manifest.schema.json"
@@ -232,6 +233,9 @@ def main(argv: list[str] | None = None) -> int:
     )
     args = parser.parse_args(argv)
 
+    if not INVENTORY_MD.is_file():
+        fail(f"falta inventario canónico {INVENTORY_MD}")
+        return 1
     if not INVENTORY.is_file():
         fail(f"falta inventario {INVENTORY}")
         return 1
