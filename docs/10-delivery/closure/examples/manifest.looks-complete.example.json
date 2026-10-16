@@ -36,6 +36,7 @@
   "retries": 0,
   "artifacts": [],
   "result": "passed",
+  "technicalResult": "passed",
   "reviewer": "example-not-a-person",
   "reviewedAt": "2026-10-16T18:06:00Z",
   "residuals": ["specimen"]

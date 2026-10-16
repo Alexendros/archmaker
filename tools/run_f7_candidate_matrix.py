@@ -29,6 +29,7 @@ EXAMPLE = (
     / "docs/10-delivery/closure/examples/manifest.f7-candidate.pending.example.json"
 )
 SCHEMA_PATH = ROOT / "docs/10-delivery/closure/evidence-manifest.schema.json"
+DESKTOP_SCHEMA_PATH = ROOT / "docs/10-delivery/closure/desktop-evidence.schema.json"
 VALIDATE_SCRIPT = ROOT / "tools/validate_closure_evidence.py"
 FIXTURE_DIGESTS = (
     ROOT / "crates/archmaker-core/tests/fixtures/closure/fixture-digests.json"
@@ -484,12 +485,52 @@ def command_requires_wasm(cmd: str) -> bool:
     return "wasm-flow" in cmd or "wasm-offline" in cmd
 
 
+def load_desktop_evidence(path: Path) -> tuple[dict[str, Any] | None, list[str]]:
+    """Importa evidencia desktop con schema, hash e identidad. Sin bypass."""
+    errors: list[str] = []
+    if not path.is_file():
+        return None, [f"falta evidencia desktop: {path}"]
+    if not DESKTOP_SCHEMA_PATH.is_file():
+        return None, [f"falta schema desktop: {DESKTOP_SCHEMA_PATH}"]
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        return None, [f"evidencia desktop ilegible: {exc}"]
+    if not isinstance(data, dict):
+        return None, ["evidencia desktop no es objeto"]
+    sys.path.insert(0, str(ROOT / "tools"))
+    try:
+        import validate_closure_evidence as vce  # type: ignore
+    except ImportError:
+        return None, ["no se pudo importar validate_closure_evidence"]
+    schema = json.loads(DESKTOP_SCHEMA_PATH.read_text(encoding="utf-8"))
+    schema_errors: list[str] = []
+    vce.validate_against(schema, data, "$", schema_errors)
+    if schema_errors:
+        return None, [f"desktop schema: {e}" for e in schema_errors[:5]]
+    artifact = data.get("artifact") or {}
+    digest = artifact.get("sha256")
+    if not isinstance(digest, str) or len(digest) != 64:
+        errors.append("desktop artifact.sha256 inválido")
+    identity = data.get("identity") or {}
+    if not identity.get("host") or not identity.get("operator"):
+        errors.append("desktop identity incompleta")
+    if data.get("caseId") != "F7-OFFLINE-DESKTOP":
+        errors.append("desktop caseId distinto de F7-OFFLINE-DESKTOP")
+    if data.get("status") not in {"passed", "failed", "blocked"}:
+        errors.append("desktop status inválido")
+    if errors:
+        return None, errors
+    return data, []
+
+
 def execute_matrix(
     *,
     with_e2e: bool,
     strict: bool,
     run_command: RunCommandFn | None = None,
     report_root: Path | None = None,
+    desktop_evidence: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     inventory = json.loads(INVENTORY.read_text(encoding="utf-8"))
     runner = run_command or default_run_command
@@ -506,8 +547,58 @@ def execute_matrix(
         commands: list[str] = list(case.get("commands") or [])
         command_results: list[dict[str, Any]] = []
 
-        # Escritorio offline: sin comando automatizado en este runner.
-        if cid == "F7-OFFLINE-DESKTOP" or case.get("defaultStatus") == "pending" and not commands:
+        # Escritorio offline: evidencia externa importada o pending (nunca bypass).
+        if cid == "F7-OFFLINE-DESKTOP":
+            if desktop_evidence is not None:
+                desk_status = desktop_evidence.get("status")
+                if desk_status == "passed":
+                    results.append(
+                        {
+                            "id": cid,
+                            "status": "passed",
+                            "commands": [],
+                            "note": "evidencia desktop importada (schema+hash+identidad)",
+                            "desktopEvidence": {
+                                "sourceSha": desktop_evidence.get("sourceSha"),
+                                "artifactSha256": (desktop_evidence.get("artifact") or {}).get(
+                                    "sha256"
+                                ),
+                                "status": desk_status,
+                            },
+                        }
+                    )
+                elif desk_status == "failed":
+                    results.append(
+                        {
+                            "id": cid,
+                            "status": "failed",
+                            "commands": [],
+                            "note": "evidencia desktop importada con status=failed",
+                        }
+                    )
+                else:
+                    # blocked: no cuenta como passed; en strict es partial/bloqueo.
+                    results.append(
+                        {
+                            "id": cid,
+                            "status": "partial" if strict else "pending",
+                            "commands": [],
+                            "note": "evidencia desktop blocked (sin GUI/portal)",
+                        }
+                    )
+            else:
+                results.append(
+                    {
+                        "id": cid,
+                        "status": "pending",
+                        "commands": [],
+                        "note": note
+                        or "sin evidencia desktop importada (schema+hash+identidad)",
+                    }
+                )
+            continue
+
+        if case.get("defaultStatus") == "pending" and not commands:
             results.append(
                 {
                     "id": cid,
@@ -637,6 +728,10 @@ def execute_matrix(
     else:
         technical = "partial"
 
+    # Defensa: nunca etiquetar passed si hay pending/partial/failed.
+    if technical == "passed" and (partial > 0 or skipped > 0 or failed > 0):
+        technical = "partial" if failed == 0 else "failed"
+
     return {
         "cases": results,
         "executed": executed,
@@ -651,6 +746,7 @@ def execute_matrix(
         "withE2e": e2e_enabled,
         "strict": strict,
         "technicalResult": technical,
+        "desktopEvidenceImported": desktop_evidence is not None,
         "startedAt": started,
         "completedAt": completed,
         "reportRoot": str(report_root),
@@ -812,6 +908,8 @@ def strict_gate(metrics: dict[str, Any]) -> list[str]:
         errors.append(
             f"technicalResult={metrics.get('technicalResult')!r} (se exige passed)"
         )
+    if metrics.get("technicalResult") == "partial":
+        errors.append("modo parcial no cierra aceptación (technicalResult=partial)")
     if metrics.get("failed", 0) > 0:
         errors.append("hay casos failed")
     if metrics.get("partial", 0) > 0:
@@ -824,6 +922,12 @@ def strict_gate(metrics: dict[str, Any]) -> list[str]:
         errors.append("cero tests en toda la matriz")
     if not metrics.get("wasmPkgReady"):
         errors.append("pkg WASM incompleto")
+    desktop = next(
+        (c for c in (metrics.get("cases") or []) if c.get("id") == "F7-OFFLINE-DESKTOP"),
+        None,
+    )
+    if desktop is None or desktop.get("status") != "passed":
+        errors.append("evidencia desktop ausente o no passed (sin bypass)")
     for case in metrics.get("cases") or []:
         if case.get("status") != "passed":
             errors.append(f"{case.get('id')}: status={case.get('status')}")
@@ -832,7 +936,7 @@ def strict_gate(metrics: dict[str, Any]) -> list[str]:
             if cmd.get("status") != "passed":
                 errors.append(f"{case.get('id')}: comando {cmd.get('status')}")
             tests = cmd.get("tests") or {}
-            if int(tests.get("testCount") or 0) == 0:
+            if int(tests.get("testCount") or 0) == 0 and case.get("id") != "F7-OFFLINE-DESKTOP":
                 errors.append(f"{case.get('id')}: comando con cero tests")
             if int(tests.get("retries") or 0) > 0:
                 errors.append(f"{case.get('id')}: retries en informe")
@@ -840,6 +944,15 @@ def strict_gate(metrics: dict[str, Any]) -> list[str]:
 
 
 def main(argv: list[str] | None = None) -> int:
+    raw = list(argv) if argv is not None else sys.argv[1:]
+    if any(
+        a == "--desktop-passed"
+        or a.startswith("--desktop-passed=")
+        or a == "--allow-desktop-passed"
+        for a in raw
+    ):
+        fail("flag de bypass desktop no admitido")
+        return 1
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--validate-only",
@@ -867,6 +980,19 @@ def main(argv: list[str] | None = None) -> int:
         default=None,
         help="Directorio para metrics.json y manifest.json",
     )
+    parser.add_argument(
+        "--desktop-evidence",
+        type=Path,
+        default=None,
+        help=(
+            "Ruta a JSON de evidencia desktop (schema+hash+identidad). "
+            "No existe bypass --desktop-passed."
+        ),
+    )
+    raw = list(argv) if argv is not None else sys.argv[1:]
+    if any(a == "--desktop-passed" or a.startswith("--desktop-passed=") for a in raw):
+        fail("flag --desktop-passed no existe (bypass prohibido); use --desktop-evidence")
+        return 1
     args = parser.parse_args(argv)
 
     if not INVENTORY.is_file():
@@ -882,10 +1008,26 @@ def main(argv: list[str] | None = None) -> int:
         print(f"{len(errors)} fallos en la matriz F7")
         return 1
 
+    if args.validate_only and not args.execute:
+        print(
+            f"OK inventario F7 (modo CI parcial): {len(inventory['cases'])} casos; "
+            "technicalResult no se etiqueta passed; result=pending; "
+            "sin RC_SHA_FUNCIONAL ni aceptación independiente"
+        )
+        return 0
+
     print(
         f"OK inventario F7: {len(inventory['cases'])} casos; "
         "result=pending; sin RC_SHA_FUNCIONAL ni aceptación independiente"
     )
+
+    desktop_data: dict[str, Any] | None = None
+    if args.desktop_evidence is not None:
+        desktop_data, desk_errors = load_desktop_evidence(args.desktop_evidence)
+        if desk_errors:
+            for err in desk_errors:
+                fail(err)
+            return 1
 
     metrics = None
     exit_code = 0
@@ -893,8 +1035,14 @@ def main(argv: list[str] | None = None) -> int:
         out = args.out_dir or Path("/tmp/archmaker-f7-candidate")
         report_root = out / "command-reports"
         metrics = execute_matrix(
-            with_e2e=args.with_e2e, strict=args.strict, report_root=report_root
+            with_e2e=args.with_e2e,
+            strict=args.strict,
+            report_root=report_root,
+            desktop_evidence=desktop_data,
         )
+        # Modo parcial: informar partial; nunca relabel a passed.
+        if metrics["technicalResult"] == "partial":
+            print("INFO technicalResult=partial (CI/ejecución incompleta; no passed)")
         print(
             json.dumps(
                 {
@@ -909,6 +1057,7 @@ def main(argv: list[str] | None = None) -> int:
                     "wasmPkgReady": metrics["wasmPkgReady"],
                     "withE2e": metrics["withE2e"],
                     "strict": metrics["strict"],
+                    "desktopEvidenceImported": metrics.get("desktopEvidenceImported", False),
                 },
                 ensure_ascii=False,
             )
@@ -916,6 +1065,9 @@ def main(argv: list[str] | None = None) -> int:
         if metrics["failed"] > 0:
             fail("hay casos failed en la matriz F7")
             exit_code = 1
+        if metrics["technicalResult"] == "partial" and not args.strict:
+            # Informativo: partial no es passed; no fuerza fallo fuera de --strict.
+            pass
         if args.strict:
             gate_errors = strict_gate(metrics)
             if gate_errors:
@@ -929,6 +1081,11 @@ def main(argv: list[str] | None = None) -> int:
         manifest = build_pending_manifest(metrics, source, harness_sha=harness)
         if manifest.get("result") != "pending":
             fail("el manifiesto F7 debe permanecer pending")
+            return 1
+        if manifest.get("technicalResult") == "passed" and metrics and (
+            metrics.get("partial", 0) > 0 or metrics.get("skipped", 0) > 0
+        ):
+            fail("technicalResult=passed con partial/skipped (falso positivo)")
             return 1
         schema_errors = validate_manifest_against_schema(manifest)
         if schema_errors:

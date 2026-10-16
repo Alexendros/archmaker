@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "1",
+  "caseId": "F7-OFFLINE-DESKTOP",
+  "sourceSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "status": "blocked",
+  "capturedAt": "2026-10-17T00:00:00Z",
+  "artifact": {
+    "name": "example-not-evidence.log",
+    "sizeBytes": 0,
+    "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "mediaType": "text/plain"
+  },
+  "identity": {
+    "host": "example-host",
+    "operator": "example-not-a-person"
+  },
+  "notes": ["specimen: no es evidencia real"]
+}

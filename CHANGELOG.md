@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Integridad de evidencia P2: `technicalResult` concordante con `jsonschema==4.23.0`, 20 escenarios adversarios (`tools/test_evidence_adversarial.py`), import de evidencia desktop sin bypass, `tools/check_product_closure.py` de solo lectura.
 - Runner F7 estricto (`--strict`): estados por comando/test, `technicalResult` separado de
   `result=pending`, pkg WASM completo, harness P95 n=30 (`tools/run_f7_p95_harness.py`).
 - Casos F7 atómicos (motor/export WASM, offline web/desktop, P95).
@@ -20,8 +21,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Nombre visible de la GUI: **Forge** (interfaz gráfica de ArchMaker); el motor y los
   ids técnicos `archmaker*` no cambian (ADR-0012 / DEC-012). La release `[0.1.0]`
   permanece con el nombre público histórico **Neubat**.
+- `archify_ok` exige exit 0 y recibo `ok:true` (un `ok:true` no salva exit ≠ 0).
 - Contrato de evidencia: campos opcionales `harness`, `technicalResult`, `commands`, `tests`,
-  `approval` (`approvalRecordSha256` vs `approvalRecordCommit`).
+  `approval` (`approvalRecordSha256` vs `approvalRecordCommit`); aprobación exige
+  `technicalResult=passed` (null u omitido no aprueban).
 - Documentación de cierre: código de `main`, AppImage `v0.1.0` y aceptación funcional siguen
   como capas distintas; el tag `v0.1.0` no se mueve.
 

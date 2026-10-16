@@ -98,9 +98,9 @@ def _first_json_object(blob: str) -> dict | None:
 
 
 def archify_ok(completed: subprocess.CompletedProcess[str]) -> bool:
-    if completed.returncode == 0:
-        return True
-    # Algunos entornos fallan al limpiar temporales tras emitir JSON ok:true.
+    """Éxito solo con exit 0 y recibo JSON con ok:true. ok:true no salva exit≠0."""
+    if completed.returncode != 0:
+        return False
     for blob in (completed.stdout, completed.stderr):
         if not blob:
             continue

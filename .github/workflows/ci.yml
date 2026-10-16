@@ -194,6 +194,10 @@ jobs:
           python3 tools/run_f7_candidate_matrix.py --validate-only
           # F7: tests simulados del runner (strict/partial/cero tests/WASM incompleto).
           python3 tools/test_run_f7_candidate_matrix.py
+          # P2: 20 adversarios de evidencia + control positivo / manifiestos antiguos.
+          python3 tools/test_evidence_adversarial.py
+          # P2: cierre de producto solo lectura (nunca autoaprueba).
+          python3 tools/check_product_closure.py
 
   traceability:
     name: Matriz de trazabilidad FR/NFR -> TST/VAL (G2/G9)

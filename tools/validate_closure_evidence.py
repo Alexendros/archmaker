@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
-"""VAL-CLOSURE-EVIDENCE: manifiesto de evidencia de cierre (F0).
+"""VAL-CLOSURE-EVIDENCE: manifiesto de evidencia de cierre (F0/P2).
 
 Comprueba el esquema mínimo, rechaza manifiestos incompletos y no trata un
 ejemplo como evidencia. El manifiesto no puede incluir su propio digest.
 La aprobación exige executed == expected, passed == expected, failed == 0,
-skipped == 0 y retries == 0, con expected = len(requiredTestIds) > 0.
+skipped == 0 y retries == 0, con expected = len(requiredTestIds) > 0, y
+technicalResult == "passed" (no null ni ausente en modo aprobación nueva).
 Exit 0 con cero tests no cuenta.
 
-Solo biblioteca estándar. Interpreta el subconjunto de JSON Schema que el
-esquema de cierre usa; una keyword desconocida hace fallar el validador.
+Solo biblioteca estándar para el validador propio. Si jsonschema==4.23.0 está
+instalado, se compara concordancia sobre corpus positivo/negativo.
 """
 
 from __future__ import annotations
@@ -92,12 +93,13 @@ def validate_against(schema: dict, value: object, path: str, errors: list[str]) 
     if "type" in schema and not matches_type(value, schema["type"]):
         errors.append(f"{path}: tipo distinto de {schema['type']}")
         return
-    if value is None:
-        return
+    # enum/const también para null (concordancia con jsonschema draft 2020-12).
     if "const" in schema and value != schema["const"]:
         errors.append(f"{path}: const {schema['const']!r}")
     if "enum" in schema and value not in schema["enum"]:
         errors.append(f"{path}: fuera de enum")
+    if value is None:
+        return
     if "pattern" in schema and isinstance(value, str):
         if re.fullmatch(schema["pattern"], value) is None:
             errors.append(f"{path}: no cumple el patrón")
@@ -138,8 +140,8 @@ def approvable(data: dict, path: Path) -> tuple[bool, str]:
         return False, "un ejemplo no es evidencia"
     if data.get("result") != "passed":
         return False, "result distinto de passed"
-    # technicalResult es opcional en manifiestos antiguos; si existe, debe ser passed.
-    if "technicalResult" in data and data.get("technicalResult") not in (None, "passed"):
+    # Modo aprobación nueva: exige technicalResult=passed (no null ni omitido).
+    if data.get("technicalResult") != "passed":
         return False, "technicalResult distinto de passed"
     ids = data.get("requiredTestIds")
     if not isinstance(ids, list) or len(ids) == 0:
@@ -167,6 +169,48 @@ def approvable(data: dict, path: Path) -> tuple[bool, str]:
 
 def sha256_hex(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
+
+
+def compare_with_jsonschema(schema: dict, instances: list[tuple[str, object, bool]]) -> list[str]:
+    """Compara validador propio con jsonschema==4.23.0. Devuelve errores de discordancia."""
+    try:
+        from importlib.metadata import version as pkg_version
+
+        from jsonschema import Draft202012Validator
+    except ImportError:
+        return ["falta jsonschema (pip install jsonschema==4.23.0)"]
+
+    try:
+        js_version = pkg_version("jsonschema")
+    except Exception:  # noqa: BLE001
+        js_version = "?"
+    if js_version != "4.23.0":
+        return [f"jsonschema versión {js_version!r}; se exige 4.23.0"]
+
+    mismatches: list[str] = []
+    validator = Draft202012Validator(schema)
+    for label, instance, expect_valid in instances:
+        own_errors: list[str] = []
+        validate_against(schema, instance, "$", own_errors)
+        std_errors = list(validator.iter_errors(instance))
+        own_ok = len(own_errors) == 0
+        std_ok = len(std_errors) == 0
+        if own_ok != std_ok:
+            mismatches.append(
+                f"{label}: propio={'ok' if own_ok else 'fail'} "
+                f"jsonschema={'ok' if std_ok else 'fail'}"
+            )
+        if own_ok != expect_valid:
+            mismatches.append(
+                f"{label}: propio={'ok' if own_ok else 'fail'} "
+                f"esperado={'ok' if expect_valid else 'fail'}"
+            )
+        if std_ok != expect_valid:
+            mismatches.append(
+                f"{label}: jsonschema={'ok' if std_ok else 'fail'} "
+                f"esperado={'ok' if expect_valid else 'fail'}"
+            )
+    return mismatches
 
 
 def check_corpus() -> int:
@@ -228,6 +272,11 @@ def main() -> int:
         fail("el esquema no exige result")
         errors += 1
 
+    tr_schema = (schema.get("properties") or {}).get("technicalResult") or {}
+    if None not in (tr_schema.get("enum") or []):
+        fail("technicalResult.enum debe incluir null (pending)")
+        errors += 1
+
     pending_path = EXAMPLES / "manifest.pending.example.json"
     pending = json.loads(pending_path.read_text(encoding="utf-8"))
     pending_errors: list[str] = []
@@ -245,6 +294,22 @@ def main() -> int:
     elif "ejemplo" not in reason and pending.get("result") == "pending":
         pass
 
+    f7_pending_path = EXAMPLES / "manifest.f7-candidate.pending.example.json"
+    if f7_pending_path.is_file():
+        f7_pending = json.loads(f7_pending_path.read_text(encoding="utf-8"))
+        f7_errors: list[str] = []
+        validate_against(schema, f7_pending, "$", f7_errors)
+        if f7_errors:
+            fail(f"ejemplo F7 pending no cumple esquema: {f7_errors[:3]}")
+            errors += 1
+        if f7_pending.get("technicalResult") is not None:
+            # Pending puede emitir null o omitir; si emite valor, debe ser válido.
+            pass
+        ok, _ = approvable(f7_pending, f7_pending_path)
+        if ok:
+            fail("ejemplo F7 pending se aprobó")
+            errors += 1
+
     complete_path = EXAMPLES / "manifest.looks-complete.example.json"
     complete = json.loads(complete_path.read_text(encoding="utf-8"))
     complete_errors: list[str] = []
@@ -260,6 +325,19 @@ def main() -> int:
     ok, reason = approvable(complete, synthetic_path)
     if not ok:
         fail(f"el mismo contenido fuera de examples debería aprobar: {reason}")
+        errors += 1
+
+    # Manifiesto antiguo sin technicalResult: legible (schema) pero no aprobable.
+    legacy = dict(complete)
+    legacy.pop("technicalResult", None)
+    legacy_errors: list[str] = []
+    validate_against(schema, legacy, "$", legacy_errors)
+    if legacy_errors:
+        fail(f"manifiesto antiguo sin technicalResult debe leerse: {legacy_errors[:3]}")
+        errors += 1
+    ok, reason = approvable(legacy, synthetic_path)
+    if ok or "technicalResult" not in reason:
+        fail(f"manifiesto antiguo sin technicalResult no debe aprobar ({reason})")
         errors += 1
 
     incomplete = {"schemaVersion": "1", "result": "passed"}
@@ -293,11 +371,29 @@ def main() -> int:
         fail("failed=1 fue aprobado")
         errors += 1
 
+    # Concordancia propio ↔ jsonschema sobre pending (null) e incompleto.
+    compare_instances: list[tuple[str, object, bool]] = [
+        ("pending-example", pending, True),
+        ("looks-complete", complete, True),
+        ("incomplete", incomplete, False),
+        ("self-digest", with_digest, False),
+        ("legacy-no-technicalResult", legacy, True),
+    ]
+    if f7_pending_path.is_file():
+        compare_instances.append(("f7-pending-null", f7_pending, True))
+    mismatches = compare_with_jsonschema(schema, compare_instances)
+    for msg in mismatches:
+        fail(msg)
+        errors += 1
+
     errors += check_corpus()
     if errors:
         print(f"{errors} fallos en la evidencia de cierre")
         return 1
-    print("OK evidencia de cierre: esquema, ejemplos rechazados, corpus con digest")
+    print(
+        "OK evidencia de cierre: esquema, null en enum, jsonschema 4.23.0, "
+        "ejemplos rechazados, legacy legible no aprobable, corpus con digest"
+    )
     return 0
 
 

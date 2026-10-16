@@ -151,7 +151,15 @@
     },
     "technicalResult": {
       "type": ["string", "null"],
-      "enum": ["pending", "running", "passed", "failed", "partial", "blocked"]
+      "enum": [
+        "pending",
+        "running",
+        "passed",
+        "failed",
+        "partial",
+        "blocked",
+        null
+      ]
     },
     "commands": {
       "type": ["array", "null"],

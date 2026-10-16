@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://archmaker.dev/closure/desktop-evidence.schema.json",
+  "title": "Evidencia externa desktop (F7-OFFLINE-DESKTOP)",
+  "description": "Registro importable de humo GUI offline. No es bypass: exige schema, hashes e identidad.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "caseId",
+    "sourceSha",
+    "status",
+    "artifact",
+    "identity",
+    "capturedAt"
+  ],
+  "properties": {
+    "schemaVersion": { "type": "string", "const": "1" },
+    "caseId": { "type": "string", "const": "F7-OFFLINE-DESKTOP" },
+    "sourceSha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "status": { "type": "string", "enum": ["passed", "failed", "blocked"] },
+    "capturedAt": { "type": "string", "minLength": 1 },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "sizeBytes", "sha256", "mediaType"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "sizeBytes": { "type": "integer", "minimum": 0 },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "mediaType": { "type": "string", "minLength": 1 }
+      }
+    },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["host", "operator"],
+      "properties": {
+        "host": { "type": "string", "minLength": 1 },
+        "operator": { "type": "string", "minLength": 1 }
+      }
+    },
+    "notes": {
+      "type": ["array", "null"],
+      "items": { "type": "string" }
+    }
+  }
+}

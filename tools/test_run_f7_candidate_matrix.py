@@ -141,10 +141,41 @@ class ExecuteMatrixTests(unittest.TestCase):
         desktop = next(c for c in metrics["cases"] if c["id"] == "F7-OFFLINE-DESKTOP")
         self.assertEqual(desktop["status"], "pending")
 
+    def test_desktop_evidence_import_marks_passed(self) -> None:
+        evidence = {
+            "schemaVersion": "1",
+            "caseId": "F7-OFFLINE-DESKTOP",
+            "sourceSha": "a" * 40,
+            "status": "passed",
+            "capturedAt": "2026-10-17T00:00:00Z",
+            "artifact": {
+                "name": "gui.log",
+                "sizeBytes": 4,
+                "sha256": "b" * 64,
+                "mediaType": "text/plain",
+            },
+            "identity": {"host": "ci-host", "operator": "tester"},
+        }
+        metrics = f7.execute_matrix(
+            with_e2e=False,
+            strict=False,
+            run_command=_cmd_ok,
+            desktop_evidence=evidence,
+        )
+        desktop = next(c for c in metrics["cases"] if c["id"] == "F7-OFFLINE-DESKTOP")
+        self.assertEqual(desktop["status"], "passed")
+        self.assertTrue(metrics["desktopEvidenceImported"])
+
     def test_strict_gate_rejects_partial(self) -> None:
         metrics = f7.execute_matrix(with_e2e=False, strict=True, run_command=_cmd_ok)
         errors = f7.strict_gate(metrics)
         self.assertTrue(errors)
+        self.assertNotEqual(metrics["technicalResult"], "passed")
+
+    def test_partial_never_relabeled_passed(self) -> None:
+        metrics = f7.execute_matrix(with_e2e=False, strict=True, run_command=_cmd_ok)
+        self.assertEqual(metrics["technicalResult"], "partial")
+        self.assertNotEqual(metrics["technicalResult"], "passed")
 
     def test_manifest_keeps_result_pending_and_validates_schema(self) -> None:
         metrics = f7.execute_matrix(with_e2e=False, strict=False, run_command=_cmd_ok)
