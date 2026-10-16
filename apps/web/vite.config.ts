@@ -4,6 +4,15 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   root: ".",
+  resolve: {
+    alias: {
+      // Relative to this config file (apps/web/).
+      "archmaker-wasm": new URL(
+        "../../crates/archmaker-wasm/pkg/archmaker_wasm.js",
+        import.meta.url,
+      ).pathname,
+    },
+  },
   server: {
     port: 5173,
     strictPort: true,
@@ -13,7 +22,7 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    exclude: ["archmaker_wasm"],
+    exclude: ["archmaker-wasm"],
   },
   assetsInclude: ["**/*.wasm"],
 });

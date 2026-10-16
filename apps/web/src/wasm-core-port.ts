@@ -78,8 +78,7 @@ export class WasmCorePort implements CorePort {
     if (this.bindings) return;
     if (!this.initPromise) {
       this.initPromise = (async () => {
-        const mod =
-          (await import("../../../crates/archmaker-wasm/pkg/archmaker_wasm.js")) as WasmBindings;
+        const mod = (await import("archmaker-wasm")) as WasmBindings;
         if (typeof mod.default === "function") {
           await mod.default();
         }

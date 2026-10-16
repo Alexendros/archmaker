@@ -4,11 +4,13 @@ phase: MVP
 priority: P0
 documentStatus: in-review
 approvalStatus: pending
-implementationStatus: in-progress
+implementationStatus: partial
 verificationStatus: partial
 releaseStatus: ineligible
 owners:
   - architecture
+reviewers:
+  - independent-reviewer
 ---
 
 # Notas de aceptación — remediación operativa

@@ -1,7 +1,6 @@
 import type { CorePort } from "./coreport.js";
 import { MockCorePort } from "./mock-core-port.js";
 import { TauriCorePort } from "./tauri-core-port.js";
-import { WasmCorePort } from "./wasm-core-port.js";
 
 export type PortKind = "tauri" | "wasm" | "mock";
 
@@ -21,6 +20,7 @@ function allowMock(): boolean {
 /**
  * Desktop → TauriCorePort; browser → WasmCorePort.
  * Mock only with explicit ?mock=1 (dev) or localStorage flag — never silently.
+ * WasmCorePort is loaded dynamically so mock/a11y paths do not require pkg/.
  */
 export async function createCorePort(): Promise<CreateCorePortResult> {
   if (allowMock()) {
@@ -36,8 +36,9 @@ export async function createCorePort(): Promise<CreateCorePortResult> {
     // Not a Tauri host; continue to WASM.
   }
 
-  const wasm = new WasmCorePort();
   try {
+    const { WasmCorePort } = await import("./wasm-core-port.js");
+    const wasm = new WasmCorePort();
     await wasm.init();
     return { ok: true, port: wasm, kind: "wasm" };
   } catch (e) {

@@ -1,6 +1,6 @@
 {
-  "generated_at": "1792163426",
-  "git_sha": "af56a8912a33e22715a015188fde5a08adfcafa2",
+  "generated_at": "1792166266",
+  "git_sha": "efefbdabb58679c3666b55209bf5689ac8d8e5ed",
   "tests": [
     {
       "id": "TST-ARCHMAKER-CANONICALIZATION-VECTORS-GOLDEN_CORPUS_BYTE_IDENTITY_AND_DIGEST",
@@ -827,7 +827,15 @@
       "location": "apps/web/wasm-flow.playwright.test.ts",
       "command": "cd apps/web && pnpm test wasm-flow.playwright",
       "workflow": "ci",
-      "covers": [],
+      "covers": [
+        "FR-DRAFT-001",
+        "FR-CAT-001",
+        "FR-RESOLVE-001",
+        "FR-VALIDATE-001",
+        "FR-MANIFEST-001",
+        "FR-EXPORT-001",
+        "NFR-OFF-001"
+      ],
       "description": "Web test wasm-flow.playwright"
     },
     {

@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "generated_at": "1792137450",
-    "git_sha": "cd086afa2e331e561a7cfc04bcefae3650f3a996",
+    "generated_at": "1792166266",
+    "git_sha": "efefbdabb58679c3666b55209bf5689ac8d8e5ed",
     "requirements_file": "docs/01-product/requirements.md",
     "inventory_file": "docs/10-delivery/tests-inventory.json",
     "validators_file": "docs/10-delivery/validators.json"
@@ -34,6 +34,7 @@
       "pending": false,
       "tests": [
         "TST-ARCHMAKER-CANONICALIZATION-VECTORS-N_NEGATIVE_ZERO_BYTE_IDENTITY",
+        "TST-ARCHMAKER-WASM-PARITY-PARITY_DESKTOP_CATALOG_MANIFEST_CANONICAL_BYTES",
         "TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-DENIED_INVOKE_RETURNS_TYPED_PROTO_001",
         "TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-ALLOWED_INVOKE_PASSES_CAPABILITY_GATE",
         "TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-UNKNOWN_COMMAND_RETURNS_TYPED_PROTO_002",
@@ -64,14 +65,15 @@
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_UNKNOWN_COMMAND_YIELDS_TYPED_PROTO_ERROR",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_UNKNOWN_WINDOW_YIELDS_TYPED_PROTO_ERROR",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-DIALOG_AND_PICKER_CAPABILITY_FILES_ABSENT_IN_MVP",
-        "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_ALLOWLIST_COVERS_ALL_EIGHT_OPS_EXACTLY_ONCE",
+        "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_ALLOWLIST_COVERS_ALL_NINE_OPS_EXACTLY_ONCE",
+        "TST-WEB-WASM-FLOW.PLAYWRIGHT",
         "TST-WEB-MOCK-FLOW.PLAYWRIGHT"
       ],
       "validators": ["VAL-SCHEMA-REFS", "VAL-NEG-CAPABILITIES"],
-      "evidence_count": 35,
+      "evidence_count": 37,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["unit", "integration", "schema", "negative"],
+      "evidence_types": ["unit", "integration", "negative", "schema"],
       "coverage_status": "covered"
     },
     {
@@ -109,6 +111,7 @@
         "TST-ARCHMAKER-CORE-CORE_CONTRACT-RESOLVE_DRAFT_REJECTS_UNKNOWN_OPTION",
         "TST-ARCHMAKER-CORE-CORE_CONTRACT-VALIDATE_DRAFT_CLEAN_AND_BLOCKING",
         "TST-ARCHMAKER-CORE-CORE_CONTRACT-IMPORT_DRAFT_MIGRATES_V51_SAMPLE",
+        "TST-ARCHMAKER-CORE-CORE_CONTRACT-OPEN_DRAFT_REHYDRATES_FROM_SEED",
         "TST-ARCHMAKER-CORE-CORE_CONTRACT-SAVE_DRAFT_APPLIES_CHANGESET_REPLACE",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_FS_OUTSIDE_SCOPE_NEVER_WRITTEN",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_ERRORS_ARE_TYPED_CATALOG_CODES",
@@ -121,15 +124,16 @@
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_UNKNOWN_COMMAND_YIELDS_TYPED_PROTO_ERROR",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_UNKNOWN_WINDOW_YIELDS_TYPED_PROTO_ERROR",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-DIALOG_AND_PICKER_CAPABILITY_FILES_ABSENT_IN_MVP",
-        "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_ALLOWLIST_COVERS_ALL_EIGHT_OPS_EXACTLY_ONCE",
+        "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_ALLOWLIST_COVERS_ALL_NINE_OPS_EXACTLY_ONCE",
         "TST-WEB-FORGE-HELPERS.PLAYWRIGHT",
+        "TST-WEB-WASM-FLOW.PLAYWRIGHT",
         "TST-WEB-MOCK-FLOW.PLAYWRIGHT"
       ],
       "validators": ["VAL-SCHEMA-REFS", "VAL-NEG-CAPABILITIES"],
-      "evidence_count": 43,
+      "evidence_count": 45,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["unit", "integration", "schema", "negative"],
+      "evidence_types": ["unit", "integration", "negative", "schema"],
       "coverage_status": "covered"
     },
     {
@@ -161,6 +165,7 @@
         "TST-ARCHMAKER-CORE-CORE_CONTRACT-EXPORT_ADAPTERS_DIVERGE_BYTES_AND_FILL_CONTENT",
         "TST-ARCHMAKER-CORE-CORE_CONTRACT-EXPORT_ARTIFACT_REJECTS_BAD_TARGET_AND_HANDLE",
         "TST-ARCHMAKER-CORE-CORE_CONTRACT-END_TO_END_CREATE_SAVE_RESOLVE_VALIDATE_BUILD_EXPORT",
+        "TST-ARCHMAKER-CORE-CORE_CONTRACT-EXPORT_ARTIFACT_WITHOUT_STORE_DIR_RETURNS_CONTENT",
         "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-APPLICATION_CONTRACT_ACCEPTS_VALID_AND_REJECTS_INVALID",
         "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_BASE_001_ACCEPTS_VALID_AND_REJECTS_INVALID",
         "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_MANIFEST_001_DIGEST_STABLE_ACROSS_FORMATS",
@@ -169,13 +174,14 @@
         "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_BYTES_001_IDEMPOTENT_EXPORT_SAME_SELECTION",
         "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_HOST_001_NO_SPAWN_NO_ROOT_NO_NETWORK_FOR_MANIFEST",
         "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_BOOT_001_REJECTS_SATISFIED_UNTIL_IMAGE_ADMITTED",
+        "TST-WEB-WASM-FLOW.PLAYWRIGHT",
         "TST-WEB-MOCK-FLOW.PLAYWRIGHT"
       ],
       "validators": [],
-      "evidence_count": 13,
+      "evidence_count": 15,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["unit", "contract", "integration"],
+      "evidence_types": ["contract", "integration", "unit"],
       "coverage_status": "covered"
     },
     {
@@ -207,6 +213,7 @@
       "tests": [
         "TST-ARCHMAKER-CANONICALIZATION-VECTORS-N_NEGATIVE_ZERO_BYTE_IDENTITY",
         "TST-ARCHMAKER-WASM-PARITY-PARITY_RESOLVE_AND_MANIFEST",
+        "TST-ARCHMAKER-WASM-PARITY-PARITY_DESKTOP_CATALOG_MANIFEST_CANONICAL_BYTES",
         "TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-DENIED_INVOKE_RETURNS_TYPED_PROTO_001",
         "TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-ALLOWED_INVOKE_PASSES_CAPABILITY_GATE",
         "TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-UNKNOWN_COMMAND_RETURNS_TYPED_PROTO_002",
@@ -242,7 +249,8 @@
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_UNKNOWN_COMMAND_YIELDS_TYPED_PROTO_ERROR",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_UNKNOWN_WINDOW_YIELDS_TYPED_PROTO_ERROR",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-DIALOG_AND_PICKER_CAPABILITY_FILES_ABSENT_IN_MVP",
-        "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_ALLOWLIST_COVERS_ALL_EIGHT_OPS_EXACTLY_ONCE",
+        "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_ALLOWLIST_COVERS_ALL_NINE_OPS_EXACTLY_ONCE",
+        "TST-WEB-WASM-FLOW.PLAYWRIGHT",
         "TST-WEB-MOCK-FLOW.PLAYWRIGHT"
       ],
       "validators": [
@@ -250,16 +258,16 @@
         "VAL-SCHEMA-REFS",
         "VAL-NEG-CAPABILITIES"
       ],
-      "evidence_count": 42,
+      "evidence_count": 44,
       "has_executable_evidence": true,
       "passes_ci": true,
       "evidence_types": [
-        "integration",
-        "canonicalize",
-        "unit",
-        "schema",
         "contract",
-        "negative"
+        "schema",
+        "unit",
+        "negative",
+        "integration",
+        "canonicalize"
       ],
       "coverage_status": "covered"
     },
@@ -294,10 +302,11 @@
         "TST-ARCHMAKER-CORE-CORE_CONTRACT-RESOLVE_DRAFT_REJECTS_UNKNOWN_OPTION",
         "TST-ARCHMAKER-CORE-CORE_CONTRACT-END_TO_END_CREATE_SAVE_RESOLVE_VALIDATE_BUILD_EXPORT",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_NAMED_ALLOWED_INVOKE_RESOLVES_OP",
+        "TST-WEB-WASM-FLOW.PLAYWRIGHT",
         "TST-WEB-MOCK-FLOW.PLAYWRIGHT"
       ],
       "validators": [],
-      "evidence_count": 7,
+      "evidence_count": 8,
       "has_executable_evidence": true,
       "passes_ci": true,
       "evidence_types": ["unit", "integration", "negative"],
@@ -339,13 +348,14 @@
         "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_BYTES_001_IDEMPOTENT_EXPORT_SAME_SELECTION",
         "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_HOST_001_NO_SPAWN_NO_ROOT_NO_NETWORK_FOR_MANIFEST",
         "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_BOOT_001_REJECTS_SATISFIED_UNTIL_IMAGE_ADMITTED",
+        "TST-WEB-WASM-FLOW.PLAYWRIGHT",
         "TST-WEB-MOCK-FLOW.PLAYWRIGHT"
       ],
       "validators": [],
-      "evidence_count": 12,
+      "evidence_count": 13,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["unit", "contract", "integration"],
+      "evidence_types": ["contract", "integration", "unit"],
       "coverage_status": "covered"
     },
     {
@@ -383,6 +393,7 @@
         "TST-ARCHMAKER-WASM-PARITY-PARITY_CREATE_DRAFT_DETERMINISTIC_BYTES",
         "TST-ARCHMAKER-WASM-PARITY-PARITY_VALIDATE_DIAGNOSTICS",
         "TST-ARCHMAKER-WASM-PARITY-PARITY_RESOLVE_AND_MANIFEST",
+        "TST-ARCHMAKER-WASM-PARITY-PARITY_DESKTOP_CATALOG_MANIFEST_CANONICAL_BYTES",
         "TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-MALFORMED_JSON_RETURNS_TYPED_SCHEMA_ERROR",
         "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-APPLICATION_CONTRACT_ACCEPTS_VALID_AND_REJECTS_INVALID",
         "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_BASE_001_ACCEPTS_VALID_AND_REJECTS_INVALID",
@@ -396,15 +407,15 @@
         "TST-WEB-FORGE-HELPERS.PLAYWRIGHT"
       ],
       "validators": ["VAL-CANONICALIZE"],
-      "evidence_count": 22,
+      "evidence_count": 23,
       "has_executable_evidence": true,
       "passes_ci": true,
       "evidence_types": [
-        "integration",
-        "canonicalize",
-        "unit",
         "contract",
-        "negative"
+        "unit",
+        "negative",
+        "integration",
+        "canonicalize"
       ],
       "coverage_status": "covered"
     },
@@ -459,14 +470,15 @@
         "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_BYTES_001_IDEMPOTENT_EXPORT_SAME_SELECTION",
         "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_HOST_001_NO_SPAWN_NO_ROOT_NO_NETWORK_FOR_MANIFEST",
         "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_BOOT_001_REJECTS_SATISFIED_UNTIL_IMAGE_ADMITTED",
+        "TST-WEB-WASM-FLOW.PLAYWRIGHT",
         "TST-WEB-MOCK-FLOW.PLAYWRIGHT",
         "TST-WEB-VISUAL-REGRESSION"
       ],
       "validators": [],
-      "evidence_count": 10,
+      "evidence_count": 11,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["unit", "contract", "visual"],
+      "evidence_types": ["contract", "unit", "visual"],
       "coverage_status": "covered"
     },
     {
@@ -483,10 +495,11 @@
         "TST-ARCHMAKER-WASM-PARITY-PARITY_UNICODE_VECTORS",
         "TST-ARCHMAKER-WASM-PARITY-PARITY_CREATE_DRAFT_DETERMINISTIC_BYTES",
         "TST-ARCHMAKER-WASM-PARITY-PARITY_VALIDATE_DIAGNOSTICS",
-        "TST-ARCHMAKER-WASM-PARITY-PARITY_RESOLVE_AND_MANIFEST"
+        "TST-ARCHMAKER-WASM-PARITY-PARITY_RESOLVE_AND_MANIFEST",
+        "TST-ARCHMAKER-WASM-PARITY-PARITY_DESKTOP_CATALOG_MANIFEST_CANONICAL_BYTES"
       ],
       "validators": [],
-      "evidence_count": 6,
+      "evidence_count": 7,
       "has_executable_evidence": true,
       "passes_ci": true,
       "evidence_types": ["integration"],
@@ -527,7 +540,7 @@
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_UNKNOWN_COMMAND_YIELDS_TYPED_PROTO_ERROR",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_UNKNOWN_WINDOW_YIELDS_TYPED_PROTO_ERROR",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-DIALOG_AND_PICKER_CAPABILITY_FILES_ABSENT_IN_MVP",
-        "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_ALLOWLIST_COVERS_ALL_EIGHT_OPS_EXACTLY_ONCE"
+        "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_ALLOWLIST_COVERS_ALL_NINE_OPS_EXACTLY_ONCE"
       ],
       "validators": ["VAL-NEG-CAPABILITIES"],
       "evidence_count": 28,
