@@ -76,15 +76,15 @@ Jobs de `ci.yml`: 10 (`rust`, `security-runtime`, `frontend`, `web-wasm-prod`, `
 
 Clasificación estática y de comportamiento en el árbol de pruebas. No es una certificación de navegador ni de WebView.
 
-| Id   | Clasificación        | Qué quedó demostrado                                                                                                                                             |
-| ---- | -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| C-01 | confirmado           | `create_draft` pisa un id ya guardado. En wasm el UUID sale de `UUID_COUNTER` en 0. El primer id de contador es `b8178f96-e05d-4c4c-9574-864fca3fdb7d`.          |
-| C-02 | confirmado           | `binaryDigest` es el SHA-256 de `rendered.bytes`. El DTO no tiene `bytes`. `JSON.stringify` de la cadena `report` no es el markdown.                             |
-| C-03 | corregido en F3      | Hostname y cifrado (intención) llegan al manifiesto. number/secretRef emiten `AM-FACE-001`. Exclusiones face visibles. Ver `field-matrix.md` y `f3_fidelity.rs`. |
-| C-04 | corregido en F4      | `file.size` antes de leer (`IMPORT_MAX_BYTES = 2_000_000`). Análisis con `confirmBlockingLosses: false`; informe y confirmación antes de aplicar.                |
-| C-05 | corregido en F4      | Estados tipados `guardando` / `guardado` / `error`; escrituras serializadas; copia exportable y reintento si el almacén falla.                                   |
-| C-06 | confirmado en fuente | Exportar llama a `downloadArtifact`. No existen `dialog.json` ni `picker.json`. El `catch` de WASM no construye `MockCorePort`.                                  |
-| C-07 | corregido en F6      | Sin base fija 650 ni aviso Sway/kernel inventado. Suma solo paquetes de catálogo. Ver `honest-ux.md`.                                                            |
+| Id   | Clasificación   | Qué quedó demostrado                                                                                                                                                                               |
+| ---- | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| C-01 | confirmado      | `create_draft` pisa un id ya guardado. En wasm el UUID sale de `UUID_COUNTER` en 0. El primer id de contador es `b8178f96-e05d-4c4c-9574-864fca3fdb7d`.                                            |
+| C-02 | confirmado      | `binaryDigest` es el SHA-256 de `rendered.bytes`. El DTO no tiene `bytes`. `JSON.stringify` de la cadena `report` no es el markdown.                                                               |
+| C-03 | corregido en F3 | Hostname y cifrado (intención) llegan al manifiesto. number/secretRef emiten `AM-FACE-001`. Exclusiones face visibles. Ver `field-matrix.md` y `f3_fidelity.rs`.                                   |
+| C-04 | corregido en F4 | `file.size` antes de leer (`IMPORT_MAX_BYTES = 2_000_000`). Análisis con `confirmBlockingLosses: false`; informe y confirmación antes de aplicar.                                                  |
+| C-05 | corregido en F4 | Estados tipados `guardando` / `guardado` / `error`; escrituras serializadas; copia exportable y reintento si el almacén falla.                                                                     |
+| C-06 | corregido en F5 | Escritorio: `deliverArtifact` → `save_export_bytes` (diálogo acotado, atómico). Web: descarga. Solo `allow-save-export-bytes`; sin `dialog.json`/`picker.json`/FS global. Fallo IPC/WASM sin mock. |
+| C-07 | corregido en F6 | Sin base fija 650 ni aviso Sway/kernel inventado. Suma solo paquetes de catálogo. Ver `honest-ux.md`.                                                                                              |
 
 Pruebas: `crates/archmaker-core/tests/f0_findings.rs`. Corpus: `crates/archmaker-core/tests/fixtures/closure/` (1 positivo, 1 negativo, 1 binario). Eso no cumple el umbral de 20 casos por target; ese umbral queda propuesto, no medido como cumplido.
 

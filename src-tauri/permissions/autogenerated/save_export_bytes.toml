@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-save-export-bytes"
+description = "Enables the save_export_bytes command without any pre-configured scope."
+commands.allow = ["save_export_bytes"]
+
+[[permission]]
+identifier = "deny-save-export-bytes"
+description = "Denies the save_export_bytes command without any pre-configured scope."
+commands.deny = ["save_export_bytes"]

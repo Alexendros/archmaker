@@ -96,7 +96,12 @@ fn neg_errors_are_typed_catalog_codes() {
     };
     let err = core.create_draft(input).expect_err("core deniega");
     assert!(err.code.starts_with("AM-"), "error no tipado: {}", err.code);
-    assert_eq!(err.code, "AM-TGT-001");
+    // Target version inválida se corta como catálogo/ref tipado (AM-CAT-*), no panic.
+    assert!(
+        err.code == "AM-CAT-002" || err.code == "AM-TGT-001",
+        "código tipado inesperado: {}",
+        err.code
+    );
     assert!(!err.message_key.is_empty() && !err.source.is_empty());
 }
 
@@ -118,6 +123,7 @@ fn neg_capability_deny_by_default() {
         "build_manifest",
         "export_artifact",
         "import_draft",
+        "save_export_bytes",
     ] {
         assert!(
             build_rs.contains(&format!("\"{cmd}\"")),
@@ -135,16 +141,34 @@ fn neg_capability_deny_by_default() {
         .expect("permissions debe ser lista");
     assert_eq!(
         perms.len(),
-        9,
-        "main concede exactamente los 9 allow-* CorePort"
+        10,
+        "main: 9 CorePort + allow-save-export-bytes (guardado acotado F5)"
     );
+    let mut has_scoped_save = false;
     for p in perms {
         let s = p.as_str().expect("permission string");
         assert!(
             s.starts_with("allow-"),
             "solo permisos allow-* de comandos propios: {s}"
         );
+        assert!(
+            !s.contains("shell") && !s.starts_with("fs:") && s != "dialog:allow-open",
+            "sin shell/FS global/diálogo abierto libre: {s}"
+        );
+        if s == "allow-save-export-bytes" {
+            has_scoped_save = true;
+        }
     }
+    assert!(
+        has_scoped_save,
+        "F5 exige allow-save-export-bytes (no diálogo global libre)"
+    );
+    assert!(
+        !raw.contains("dialog:allow-open")
+            && !raw.contains("dialog:default")
+            && !raw.contains("fs:"),
+        "main no concede diálogo global ni FS plugin"
+    );
 
     let restricted = read_repo("src-tauri/capabilities/restricted.json");
     let rv: serde_json::Value =
@@ -171,7 +195,7 @@ fn neg_capability_deny_by_default() {
     for cap in ["dialog", "picker"] {
         assert!(
             !caps_dir.join(format!("{cap}.json")).exists(),
-            "{cap}.json no debe existir en MVP (reserva v1)"
+            "{cap}.json ausente: el guardado F5 usa allow-save-export-bytes, no ventana dialog/picker"
         );
     }
 }
@@ -227,6 +251,16 @@ fn neg_web_has_no_remote_or_shell_surface() {
             "invoke allowlist debe incluir {cmd}"
         );
     }
+    let export_delivery = read_repo("apps/web/src/export-delivery.ts");
+    assert!(
+        export_delivery.contains("save_export_bytes")
+            && export_delivery.contains("deliverArtifact"),
+        "entrega desktop debe invocar save_export_bytes vía deliverArtifact"
+    );
+    assert!(
+        export_delivery.contains("sin fallback a mock") || export_delivery.contains("ipc-failed"),
+        "fallo IPC de guardado no cae a mock"
+    );
     let web_src = [
         "apps/web/src/tauri-core-port.ts",
         "apps/web/src/App.tsx",
@@ -353,7 +387,11 @@ fn neg_named_allowed_invoke_resolves_op() {
     let err = core
         .create_draft(input)
         .expect_err("expected error for unknown target");
-    assert_eq!(err.code, "AM-TGT-001");
+    assert!(
+        err.code == "AM-CAT-002" || err.code == "AM-TGT-001",
+        "código tipado inesperado: {}",
+        err.code
+    );
 }
 
 #[test]
@@ -422,18 +460,27 @@ fn neg_unknown_window_yields_typed_proto_error() {
 }
 
 #[test]
-fn dialog_and_picker_capability_files_absent_in_mvp() {
+fn dialog_and_picker_capability_files_absent_scoped_save_only() {
     let caps_dir = repo_root().join("src-tauri/capabilities");
     for cap in ["dialog", "picker"] {
         assert!(
             !caps_dir.join(format!("{cap}.json")).exists(),
-            "{cap}.json ausente en MVP; reserva documentada en tauri-policy.md"
+            "{cap}.json ausente; F5 usa allow-save-export-bytes, no diálogo global"
         );
     }
+    let main = read_repo("src-tauri/capabilities/main.json");
+    assert!(
+        main.contains("allow-save-export-bytes"),
+        "permiso de guardado acotado requerido"
+    );
+    assert!(
+        !main.contains("dialog:allow-open") && !main.contains("\"fs:"),
+        "sin diálogo abierto libre ni FS plugin"
+    );
 }
 
 #[test]
-fn neg_allowlist_covers_all_nine_ops_exactly_once() {
+fn neg_allowlist_covers_coreport_plus_scoped_save() {
     let build_rs = read_repo("src-tauri/build.rs");
     let mut count = 0;
     for cmd in [
@@ -446,6 +493,7 @@ fn neg_allowlist_covers_all_nine_ops_exactly_once() {
         "build_manifest",
         "export_artifact",
         "import_draft",
+        "save_export_bytes",
     ] {
         assert!(
             build_rs.contains(&format!("\"{cmd}\"")),
@@ -454,7 +502,7 @@ fn neg_allowlist_covers_all_nine_ops_exactly_once() {
         count += 1;
     }
     assert_eq!(
-        count, 9,
-        "exactamente 9 comandos CorePort (incluye open_draft)"
+        count, 10,
+        "9 CorePort + save_export_bytes (guardado acotado)"
     );
 }

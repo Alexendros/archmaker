@@ -4,7 +4,19 @@ export type DeliveryErrorCode =
   | "bytes-missing"
   | "bytes-digest-mismatch"
   | "digest-altered"
-  | "target-incompatible";
+  | "target-incompatible"
+  | "save-cancelled"
+  | "save-failed"
+  | "ipc-failed";
+
+export type SaveExportResult =
+  | {
+      status: "saved";
+      fileName: string;
+      bytesWritten: number;
+      overwritten: boolean;
+    }
+  | { status: "cancelled" };
 
 export class DeliveryError extends Error {
   readonly code: DeliveryErrorCode;
@@ -131,10 +143,14 @@ export type DeliveryOutcome =
       kind: "file-saved";
       filename: string;
       digestShort: string;
-    };
+    }
+  | { kind: "cancelled" };
 
 /** Toast copy: web cannot verify disk write; desktop only after confirmation. */
 export function exportStatusMessage(outcome: DeliveryOutcome): string {
+  if (outcome.kind === "cancelled") {
+    return "Guardado cancelado.";
+  }
   const digest = outcome.digestShort;
   if (outcome.kind === "file-saved") {
     return `Archivo guardado (${digest}…): ${outcome.filename}`;
@@ -179,4 +195,48 @@ export async function downloadArtifact(
     filename: prepared.filename,
     digestShort: artifact.binaryDigest.value.slice(0, 12),
   };
+}
+
+async function isTauriHost(): Promise<boolean> {
+  try {
+    const { isTauri } = await import("@tauri-apps/api/core");
+    return isTauri();
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Desktop: diálogo nativo acotado (`save_export_bytes`) → file-saved.
+ * Web: descarga del navegador → download-started.
+ * Fallo IPC no cae a mock ni a descarga silenciosa.
+ */
+export async function deliverArtifact(
+  artifact: Artifact,
+  filename: string,
+): Promise<DeliveryOutcome> {
+  if (await isTauriHost()) {
+    const prepared = await prepareDelivery(artifact, filename);
+    try {
+      const { invoke } = await import("@tauri-apps/api/core");
+      const result = await invoke<SaveExportResult>("save_export_bytes", {
+        input: {
+          bytes: Array.from(prepared.bytes),
+          suggestedName: prepared.filename,
+          expectedDigest: artifact.binaryDigest.value,
+        },
+      });
+      if (result.status === "cancelled") {
+        return { kind: "cancelled" };
+      }
+      return confirmedSaveOutcome(result.fileName, artifact.binaryDigest.value);
+    } catch (e) {
+      const message = e instanceof Error ? e.message : String(e);
+      throw new DeliveryError(
+        "ipc-failed",
+        `Fallo IPC de guardado nativo (sin fallback a mock): ${message}`,
+      );
+    }
+  }
+  return downloadArtifact(artifact, filename);
 }

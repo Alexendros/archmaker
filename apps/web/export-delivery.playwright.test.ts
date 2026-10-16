@@ -153,4 +153,10 @@ test.describe("export-delivery F2 bytes", () => {
     expect(saved).toContain("abcdef012345");
     expect(saved).not.toMatch(/Descarga iniciada/);
   });
+
+  test("F5: cancelación de guardado nativo", () => {
+    expect(exportStatusMessage({ kind: "cancelled" })).toBe(
+      "Guardado cancelado.",
+    );
+  });
 });

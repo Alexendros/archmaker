@@ -10,6 +10,7 @@ fn main() {
             "build_manifest",
             "export_artifact",
             "import_draft",
+            "save_export_bytes",
         ]),
     ))
     .expect("tauri_build with AppManifest::commands");
