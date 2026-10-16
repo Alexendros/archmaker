@@ -271,38 +271,62 @@ fn c03_resolve_hostname_encrypt_preserved_as_intention() {
 }
 
 #[test]
-fn c04_import_size_limit_after_array_buffer() {
+fn c04_import_checks_file_size_before_read_with_consent() {
+    // F4 corrige C-04: file.size antes de leer; sin confirmBlockingLosses hardcodeado.
+    let consented = read_repo("apps/web/src/consented-import.ts");
+    assert!(consented.contains("IMPORT_MAX_BYTES = 2_000_000"));
+    assert!(consented.contains("file.size"));
+    assert!(consented.contains("checkImportFileSize"));
+    assert!(consented.contains("confirmBlockingLosses: false"));
+    assert!(consented.contains("analyzeImportFile"));
+    assert!(consented.contains("applyConsentedImport"));
+    let size_fn = consented
+        .find("export function checkImportFileSize")
+        .expect("checkImportFileSize");
+    let read_fn = consented
+        .find("export async function readImportBytes")
+        .expect("readImportBytes");
+    assert!(
+        size_fn < read_fn,
+        "la comprobación de tamaño precede a la lectura"
+    );
+
     let app = read_repo("apps/web/src/App.tsx");
     let start = app
         .find("async function onImportFile")
         .expect("onImportFile");
     let end = app[start..]
-        .find("function nav")
+        .find("async function onConfirmImport")
         .map(|offset| start + offset)
-        .expect("nav");
-    let body = &app[start..end];
-    assert!(body.contains("confirmBlockingLosses: true"));
-    let read_at = body.find("arrayBuffer()").expect("arrayBuffer");
-    let limit_at = body.find("2_000_000").expect("límite");
+        .expect("onConfirmImport");
+    let analyze_body = &app[start..end];
     assert!(
-        read_at < limit_at,
-        "el límite se mira después de leer el archivo"
+        !analyze_body.contains("confirmBlockingLosses: true"),
+        "el análisis no confirma pérdidas bloqueantes"
     );
-    assert!(!body.contains("file.size"));
+    assert!(analyze_body.contains("analyzeImportFile"));
+    assert!(app.contains("onConfirmImport"));
+    assert!(app.contains("Informe de importación"));
 }
 
 #[test]
-fn c05_draft_edits_persist_locally_not_core_save() {
+fn c05_persist_has_typed_save_states_and_serialized_writes() {
+    // F4 corrige C-05: estados guardando/guardado/error y cola serializada.
     let app = read_repo("apps/web/src/App.tsx");
-    assert!(!app.contains("guardando"));
-    assert!(!app.contains("guardado"));
-    assert_eq!(app.matches("port.saveDraft").count(), 2);
-    let import_at = app.find("async function onImportFile").expect("import");
-    assert_eq!(app[..import_at].matches("port.saveDraft").count(), 1);
-    assert_eq!(app[import_at..].matches("port.saveDraft").count(), 1);
-    assert!(app.contains("void persistDraftLocal(next)"));
+    assert!(app.contains("guardando"));
+    assert!(app.contains("guardado"));
+    assert!(app.contains("persistStatus"));
+    assert!(app.contains("onRetryPersist"));
+    assert!(app.contains("Descargar copia"));
     let persistence = read_repo("apps/web/src/draft-persistence.ts");
     assert!(persistence.contains("indexedDB.open"));
+    assert!(persistence.contains("PersistStatus"));
+    assert!(persistence.contains("\"saving\""));
+    assert!(persistence.contains("\"saved\""));
+    assert!(persistence.contains("\"error\""));
+    assert!(persistence.contains("writeChain"));
+    assert!(persistence.contains("exportDraftCopy"));
+    assert!(persistence.contains("retryPersistDraftLocal"));
 }
 
 #[test]

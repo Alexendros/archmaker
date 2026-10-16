@@ -1,5 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import type { CorePort, Diagnostic, Draft, Manifest } from "./coreport.js";
+import type {
+  CoreError,
+  CorePort,
+  Diagnostic,
+  Draft,
+  Manifest,
+} from "./coreport.js";
 import {
   DESKTOP_CATALOG_REF,
   DRAFT_TARGET,
@@ -8,8 +14,22 @@ import {
 } from "./coreport.js";
 import type { PortKind } from "./create-core-port.js";
 import { CommandPalette } from "./CommandPalette.js";
+import {
+  analyzeImportFile,
+  applyConsentedImport,
+  summarizeReport,
+  type ImportDraftPayload,
+} from "./consented-import.js";
 import { draftForCore, listFaceExclusions } from "./draft-for-core.js";
-import { loadLastDraftLocal, persistDraftLocal } from "./draft-persistence.js";
+import {
+  exportDraftCopy,
+  loadLastDraftLocal,
+  persistDraftLocal,
+  retryPersistDraftLocal,
+  subscribePersistStatus,
+  type PersistResult,
+  type PersistStatus,
+} from "./draft-persistence.js";
 import {
   DeliveryError,
   destinationTokenFor,
@@ -62,6 +82,34 @@ type ToastState = {
   message: string;
   undo?: () => void;
 } | null;
+
+type ImportPending =
+  | {
+      kind: "ready";
+      sourceBytes: number[];
+      generation: number;
+      payload: ImportDraftPayload;
+      needsBlockingConfirm: boolean;
+    }
+  | {
+      kind: "needs_blocking_confirm";
+      sourceBytes: number[];
+      generation: number;
+      error: CoreError;
+    };
+
+function persistStatusLabel(status: PersistStatus): string {
+  switch (status) {
+    case "saving":
+      return "guardando";
+    case "saved":
+      return "guardado";
+    case "error":
+      return "error";
+    default:
+      return "";
+  }
+}
 
 function announce(kind: "status" | "alert", message: string): void {
   const region = document.getElementById(
@@ -130,8 +178,30 @@ export function App({ port, portKind }: Props) {
   const [cmdOpen, setCmdOpen] = useState(false);
   const [glossaryOpen, setGlossaryOpen] = useState(false);
   const [ready, setReady] = useState(false);
+  const [persistStatus, setPersistStatus] = useState<PersistStatus>("idle");
+  const [persistExportable, setPersistExportable] = useState<string | null>(
+    null,
+  );
+  const [importPending, setImportPending] = useState<ImportPending | null>(
+    null,
+  );
+  const [importBusy, setImportBusy] = useState(false);
   const generationRef = useRef(0);
   const preparedGenerationRef = useRef<number | null>(null);
+
+  useEffect(() => subscribePersistStatus(setPersistStatus), []);
+
+  const handlePersistResult = useCallback(
+    (result: PersistResult) => {
+      if (result.ok) {
+        setPersistExportable(null);
+        return;
+      }
+      setPersistExportable(result.exportable);
+      announce("alert", result.message);
+    },
+    [],
+  );
 
   const bootId =
     singleId(draft, STEP_IDS.boot) ?? "archmaker.boot.systemd-boot";
@@ -209,9 +279,9 @@ export function App({ port, portKind }: Props) {
     (next: Draft) => {
       setDraft(next);
       invalidateDerived();
-      void persistDraftLocal(next);
+      void persistDraftLocal(next).then(handlePersistResult);
     },
-    [invalidateDerived],
+    [handlePersistResult, invalidateDerived],
   );
 
   useEffect(() => {
@@ -265,7 +335,7 @@ export function App({ port, portKind }: Props) {
         next = saved.value;
       }
       setDraft(next);
-      void persistDraftLocal(next);
+      void persistDraftLocal(next).then(handlePersistResult);
       setReady(true);
       announce("status", `Draft listo (${portKind}). Arranque: systemd-boot.`);
     })();
@@ -288,6 +358,7 @@ export function App({ port, portKind }: Props) {
         setCmdOpen(false);
         setPkgModal(null);
         setGlossaryOpen(false);
+        setImportPending(null);
       }
     };
     window.addEventListener("keydown", onKey);
@@ -328,7 +399,7 @@ export function App({ port, portKind }: Props) {
         if (!prev) return prev;
         const undone = toggleApp(prev, pkg.optionId).draft;
         invalidateDerived();
-        void persistDraftLocal(undone);
+        void persistDraftLocal(undone).then(handlePersistResult);
         return undone;
       });
     });
@@ -474,40 +545,111 @@ export function App({ port, portKind }: Props) {
   }
 
   async function onImportFile(file: File): Promise<void> {
-    const previous = draft;
-    const buf = new Uint8Array(await file.arrayBuffer());
-    if (buf.byteLength > 2_000_000) {
-      announce("alert", "Archivo demasiado grande.");
+    setImportBusy(true);
+    try {
+      const analysis = await analyzeImportFile({
+        file,
+        port,
+        catalogRef,
+        targetRef: DRAFT_TARGET,
+      });
+      if (analysis.kind === "too-large") {
+        announce(
+          "alert",
+          `Archivo demasiado grande (${analysis.size} > ${analysis.max} bytes).`,
+        );
+        return;
+      }
+      if (analysis.kind === "rejected") {
+        fail(analysis.error, "Importar");
+        return;
+      }
+      const generation = generationRef.current;
+      if (analysis.kind === "needs_blocking_confirm") {
+        setImportPending({
+          kind: "needs_blocking_confirm",
+          sourceBytes: analysis.sourceBytes,
+          generation,
+          error: analysis.error,
+        });
+        announce(
+          "status",
+          "La importación tiene pérdidas bloqueantes; confirma para continuar.",
+        );
+        return;
+      }
+      setImportPending({
+        kind: "ready",
+        sourceBytes: analysis.sourceBytes,
+        generation,
+        payload: analysis.payload,
+        needsBlockingConfirm: analysis.needsBlockingConfirm,
+      });
+      announce(
+        "status",
+        `Informe de importación: ${summarizeReport(analysis.payload.report)}`,
+      );
+    } finally {
+      setImportBusy(false);
+    }
+  }
+
+  async function onConfirmImport(confirmBlockingLosses: boolean): Promise<void> {
+    if (!importPending) return;
+    setImportBusy(true);
+    try {
+      const applied = await applyConsentedImport({
+        port,
+        catalogRef,
+        targetRef: DRAFT_TARGET,
+        sourceBytes: importPending.sourceBytes,
+        confirmBlockingLosses,
+        expectedGeneration: importPending.generation,
+        getCurrentGeneration: () => generationRef.current,
+      });
+      if (!applied.ok) {
+        if (applied.error) {
+          fail(applied.error, "Importar");
+        } else {
+          announce("alert", applied.message);
+        }
+        return;
+      }
+      setImportPending(null);
+      applyDraft(applied.draft);
+      showToast("Perfil importado.");
+    } finally {
+      setImportBusy(false);
+    }
+  }
+
+  async function onRetryPersist(): Promise<void> {
+    if (!draft) return;
+    const result = await retryPersistDraftLocal(draft);
+    handlePersistResult(result);
+    if (result.ok) {
+      showToast("Perfil guardado localmente.");
+    }
+  }
+
+  function onDownloadPersistCopy(): void {
+    const text =
+      persistExportable ?? (draft ? exportDraftCopy(draft) : null);
+    if (!text) {
+      announce("alert", "No hay copia exportable.");
       return;
     }
-    const res = await port.importDraft({
-      sourceBytes: Array.from(buf),
-      catalogRef,
-      targetRef: DRAFT_TARGET,
-      confirmBlockingLosses: true,
-    });
-    if (!res.ok) {
-      fail(res.error, "Importar");
-      if (previous) setDraft(previous);
-      return;
-    }
-    const value = res.value as { draft?: Draft };
-    if (!value.draft) {
-      announce("alert", "Importación sin draft.");
-      if (previous) setDraft(previous);
-      return;
-    }
-    const saved = await port.saveDraft({
-      draft: value.draft,
-      expectedRevision: 0,
-    });
-    if (!saved.ok) {
-      fail(saved.error, "Importar");
-      if (previous) setDraft(previous);
-      return;
-    }
-    applyDraft(saved.value);
-    showToast("Perfil importado.");
+    const blob = new Blob([text], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "archmaker-draft-copy.json";
+    a.rel = "noopener";
+    document.body.append(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    showToast("Copia exportable descargada.");
   }
 
   function nav(delta: number): void {
@@ -985,6 +1127,30 @@ export function App({ port, portKind }: Props) {
                 {portKind === "mock" ? (
                   <p role="status">Modo demostración (MockCorePort).</p>
                 ) : null}
+                {persistStatus !== "idle" ? (
+                  <p role="status" data-persist-status={persistStatus}>
+                    Persistencia local: {persistStatusLabel(persistStatus)}
+                    {persistStatus === "error" ? (
+                      <>
+                        {" "}
+                        <button
+                          type="button"
+                          className="forge-btn-ghost"
+                          onClick={() => void onRetryPersist()}
+                        >
+                          Reintentar
+                        </button>{" "}
+                        <button
+                          type="button"
+                          className="forge-btn-ghost"
+                          onClick={onDownloadPersistCopy}
+                        >
+                          Descargar copia
+                        </button>
+                      </>
+                    ) : null}
+                  </p>
+                ) : null}
               </div>
               <div className="forge-nav-row">
                 <button
@@ -995,11 +1161,12 @@ export function App({ port, portKind }: Props) {
                   ← Atrás
                 </button>
                 <label className="forge-btn-ghost">
-                  Importar
+                  {importBusy ? "Analizando…" : "Importar"}
                   <input
                     type="file"
                     accept="application/json,.json"
                     hidden
+                    disabled={importBusy || Boolean(importPending)}
                     onChange={(e) => {
                       const file = e.target.files?.[0];
                       if (file) void onImportFile(file);
@@ -1056,6 +1223,88 @@ export function App({ port, portKind }: Props) {
           }}
           onClose={() => setPkgModal(null)}
         />
+      ) : null}
+
+      {importPending ? (
+        <div className="forge-modal-backdrop">
+          <button
+            type="button"
+            className="forge-modal-scrim"
+            aria-label="Cancelar importación"
+            onClick={() => setImportPending(null)}
+          />
+          <div
+            className="forge-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="import-report-title"
+          >
+            <div className="forge-modal-head">
+              <div>
+                <h2 id="import-report-title">Informe de importación</h2>
+                <p className="forge-muted">
+                  El perfil actual no se sustituye hasta que confirmes.
+                </p>
+              </div>
+              <button
+                type="button"
+                className="forge-btn-icon"
+                onClick={() => setImportPending(null)}
+              >
+                Cerrar
+              </button>
+            </div>
+            {importPending.kind === "needs_blocking_confirm" ? (
+              <p role="alert">
+                Hay pérdidas bloqueantes ({importPending.error.code}). Confirma
+                para aplicarlas o cancela para conservar el perfil actual.
+              </p>
+            ) : (
+              <>
+                <p role="status">
+                  {summarizeReport(importPending.payload.report)}
+                </p>
+                {importPending.payload.report.entries.length > 0 ? (
+                  <ul className="forge-stack">
+                    {importPending.payload.report.entries.map((entry) => (
+                      <li key={`${entry.path}-${entry.messageKey}`}>
+                        <strong>{entry.path}</strong>: {entry.messageKey}
+                        {entry.blocking ? " (bloqueante)" : ""}
+                        {entry.detail ? ` — ${entry.detail}` : ""}
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>Sin entradas de migración detalladas.</p>
+                )}
+              </>
+            )}
+            <div className="forge-modal-actions">
+              <button
+                type="button"
+                className="forge-btn-primary"
+                disabled={importBusy}
+                onClick={() =>
+                  void onConfirmImport(
+                    importPending.kind === "needs_blocking_confirm" ||
+                      (importPending.kind === "ready" &&
+                        importPending.needsBlockingConfirm),
+                  )
+                }
+              >
+                {importBusy ? "Aplicando…" : "Confirmar e importar"}
+              </button>
+              <button
+                type="button"
+                className="forge-btn-ghost"
+                disabled={importBusy}
+                onClick={() => setImportPending(null)}
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
       ) : null}
 
       {cmdOpen ? (
