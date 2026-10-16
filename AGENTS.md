@@ -43,8 +43,8 @@
 
 - Remoto canónico: `https://github.com/Alexendros/archmaker`. Licencia Apache-2.0.
 - Baseline vigente: `implementation-baseline-mvp4`. En el árbol están el walking skeleton MVP-0 y los slices MVP-1 (dominio, catálogo y migración v5.1), MVP-2 (reglas, resolución y validación), MVP-3 (adapters de exportación) y MVP-4 (React + MockCorePort + cara NEUBAT en `apps/web`).
-- Alcance MVP-5 `accepted` (`mvp5-scope.md`, MVP-5-01); catálogo (02), UI cinco pasos (03) y paridad (04) cerrados. Queda el tag (MVP-5-05). Hueco: `docs/10-delivery/mvp5-gap-spec.md` (draft). MVP-6 e `iso-scope.md` siguen sin `accepted`.
-- `reference/v5.1/` es evidencia inmutable verificada por SHA-256. La UI React vive en `apps/web/` (`neubat-face.ts`); el dominio está en `crates/archmaker-core` y se expone por CorePort.
+- Alcance MVP-5 `accepted` (`mvp5-scope.md`, MVP-5-01); catálogo (02), UI cinco pasos (03) y paridad (04) cerrados. Queda el tag (MVP-5-05). Hueco: `docs/10-delivery/mvp5-gap-spec.md` (draft). Remediación operativa: `docs/10-delivery/remediation/`. MVP-6 e `iso-scope.md` siguen sin `accepted`.
+- `reference/v5.1/` es evidencia inmutable verificada por SHA-256. La UI React vive en `apps/web/` (`neubat-face.ts`); el dominio está en `crates/archmaker-core` y se expone por CorePort. Producción: Tauri (`invoke` de `@tauri-apps/api/core`) o WASM (`WasmCorePort` + `tools/build-wasm.sh`); mock solo con `?mock=1`.
 - ADR-0011 (propuesto, `in-review`): la selección del configurador produce un contrato JSON de aplicación; cada cláusula tiene schema en `contracts/json-schema/`, issue `kind:clause` y tests verificados en Rust. No añade target de imagen.
 - La revisión auditada de arranque (UEFI / systemd-boot) vive en `docs/12-research/bootloader-review.md`.
 - La referencia visual NEUBAT vive fuera del repo, en `/home/alexendros/Aplicaciones/Repertorio/archmaker_neubat.html` (no en Descargas).

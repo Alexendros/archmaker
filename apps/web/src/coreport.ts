@@ -133,6 +133,12 @@ export type SaveDraftInput = {
   requestId?: string;
 };
 
+export type OpenDraftInput = {
+  draftId: string;
+  seed?: Draft;
+  requestId?: string;
+};
+
 export type ResolveDraftInput = {
   draft: Draft;
   catalogRef: CatalogRef;
@@ -157,7 +163,7 @@ export type BuildManifestInput = {
 export type ExportArtifactInput = {
   manifest: Manifest;
   targetRef: TargetRef;
-  /** Opaque destinationHandle from the picker; never an arbitrary filesystem path. */
+  /** Opaque destination handle token; never an arbitrary filesystem path from React. */
   destination: { token: string };
   requestId?: string;
 };
@@ -175,6 +181,7 @@ export interface CorePort {
   createDraft(input: CreateDraftInput): Promise<Result<Draft>>;
   loadCatalog(input: LoadCatalogInput): Promise<Result<unknown>>;
   saveDraft(input: SaveDraftInput): Promise<Result<Draft>>;
+  openDraft(input: OpenDraftInput): Promise<Result<Draft>>;
   resolveDraft(input: ResolveDraftInput): Promise<Result<ResolveResult>>;
   validateDraft(input: ValidateDraftInput): Promise<Result<ValidationResult>>;
   buildManifest(input: BuildManifestInput): Promise<Result<Manifest>>;
@@ -197,15 +204,19 @@ export function typedError(
   };
 }
 
-export const FIXED_CATALOG_REF: CatalogRef = {
+/** Product catalog identity (local-catalog-mvp1). Digest is content digest from Rust. */
+export const DESKTOP_CATALOG_REF: CatalogRef = {
   namespace: "archmaker.core",
-  id: "minimal",
-  version: "0.1.0",
+  id: "desktop",
+  version: "1.0.0",
   digest: {
     algorithm: "sha256",
-    value: "0000000000000000000000000000000000000000000000000000000000000000",
+    value: "e3b7eda1106b270ffe04866b3d838ea9201070da6a79c64e9914c6d081ab8cca",
   },
 };
+
+/** @deprecated Use DESKTOP_CATALOG_REF */
+export const FIXED_CATALOG_REF = DESKTOP_CATALOG_REF;
 
 export const DRAFT_TARGET: TargetRef = {
   id: "arch-x86_64",

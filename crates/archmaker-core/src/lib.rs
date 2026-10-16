@@ -25,15 +25,16 @@ pub use archmaker_domain::{
 pub use archmaker_rules::Diagnostic as RuleDiagnostic;
 pub use core::{
     catalog_content_digest, draft_content_digest, is_uuid, manifest_content_digest, new_uuid_v4,
-    render_artifact_bytes, RealCore, RenderedArtifact, EMBEDDED_CATALOG_JSON, PIPELINE_VERSION,
+    render_artifact_bytes, RealCore, RenderedArtifact, DESKTOP_CATALOG_JSON, EMBEDDED_CATALOG_JSON,
+    PIPELINE_VERSION,
 };
 pub use error::{CoreError, ErrorCategory, ErrorFamily, Result, Severity};
 pub use inputs::{
     sort_diagnostics, BuildManifestInput, CatalogSource, ChangeSet, ChangeSetOp,
     ChangeSetOperation, ChangeSetOrigin, ChangeSetSummary, CreateDraftInput, DestinationHandle,
     ExportArtifactInput, ImportDraftInput, ImportDraftResult, LoadCatalogInput, MigrationEntry,
-    MigrationFate, MigrationReport, ResolveDraftInput, ResolveResult, SaveDraftInput,
-    ValidateDraftInput, ValidationResult,
+    MigrationFate, MigrationReport, OpenDraftInput, ResolveDraftInput, ResolveResult,
+    SaveDraftInput, ValidateDraftInput, ValidationResult,
 };
 pub use io::atomic_write_bytes;
 pub use limits::{IoClass, Limits, DEFAULT_LIMITS};

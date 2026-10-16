@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
-const BASE_URL = process.env.BASE_URL || "http://localhost:5173";
+const BASE_URL = process.env.BASE_URL || "http://localhost:5173/?mock=1";
 
 test.describe("WCAG 2.2 AA - axe-core", () => {
   test.beforeEach(async ({ page }) => {

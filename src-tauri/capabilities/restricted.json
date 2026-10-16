@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "restricted-capability",
+  "description": "Ventana de prueba ACL: sin permisos de comandos propios.",
+  "windows": ["restricted"],
+  "permissions": []
+}

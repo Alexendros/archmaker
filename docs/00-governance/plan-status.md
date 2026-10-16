@@ -19,14 +19,16 @@ reviewers:
 - Gate global: CONDITIONAL-CLEAR — walking skeleton MVP-0 + slices MVP-1..MVP-5 (sin runner)
 - Baseline vigente: `implementation-baseline-mvp4` (predecesores mvp0.1..mvp3 intactos; tag MVP-5 pendiente de MVP-5-05)
 - Alcance MVP-5 `accepted` (MVP-5-01): `docs/10-delivery/mvp5-scope.md`. Catálogo (02), UI (03) y paridad (04) cerrados. Tag pendiente (MVP-5-05). Hueco: `docs/10-delivery/mvp5-gap-spec.md` (draft).
+- Remediación operativa en curso (transportes reales, ACL, ciclo de edición, exportación): `docs/10-delivery/remediation/findings-r0.md`.
 - Borradores posteriores, sin ampliar el veredicto al runner/ISO: `docs/10-delivery/mvp6-scope.md`, `docs/10-delivery/iso-scope.md`
 - Fecha de corte: 2026-10-16
 
 ## Bloqueos P0
 
-Sin bloqueos P0 activos. El estado, la autoridad, la fecha y las consecuencias de las decisiones
-`DEC-001..DEC-010` se leen en `docs/00-governance/decision-register.md` (autoridad única); este
-documento no los repite.
+Los hallazgos P0 de integración (mock silencioso, ACL ambigua, WASM sin sesión, manifiesto
+obsoleto, token de export fijo) están clasificados en `docs/10-delivery/remediation/findings-r0.md`
+y se cierran con la remediación; no reabren runner/ISO. El estado de `DEC-001..DEC-010` se lee en
+`docs/00-governance/decision-register.md`.
 
 ## Regla de avance
 

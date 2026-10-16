@@ -77,8 +77,8 @@ function initialSelections(): Selection[] {
 function faceCatalog() {
   return {
     namespace: "archmaker.core",
-    id: "minimal",
-    version: "0.1.0",
+    id: "desktop",
+    version: "1.0.0",
     documentVersion: "vNext",
     schemaVersion: "1",
     face: "neubat-forge",
@@ -208,7 +208,10 @@ export class MockCorePort implements CorePort {
   private drafts = new Map<string, Draft>();
 
   async createDraft(input: CreateDraftInput): Promise<Result<Draft>> {
-    if (input.catalogRef.id !== "minimal") {
+    if (
+      input.catalogRef.id !== "desktop" &&
+      input.catalogRef.id !== "minimal"
+    ) {
       return {
         ok: false,
         error: typedError(
@@ -248,7 +251,18 @@ export class MockCorePort implements CorePort {
 
   async saveDraft(input: SaveDraftInput): Promise<Result<Draft>> {
     const stored = this.drafts.get(input.draft.id);
-    if (!stored || stored.revision !== input.expectedRevision) {
+    if (!stored) {
+      if (input.expectedRevision !== 0) {
+        return {
+          ok: false,
+          error: typedError(
+            "AM-DOC-002",
+            "mock-core",
+            "error.draft.revisionConflict",
+          ),
+        };
+      }
+    } else if (stored.revision !== input.expectedRevision) {
       return {
         ok: false,
         error: typedError(
@@ -258,9 +272,33 @@ export class MockCorePort implements CorePort {
         ),
       };
     }
-    const next = { ...input.draft, revision: stored.revision + 1 };
+    const baseRev = stored?.revision ?? 0;
+    const next = { ...input.draft, revision: baseRev + 1 };
     this.drafts.set(next.id, next);
     return { ok: true, value: { ...next } };
+  }
+
+  async openDraft(input: {
+    draftId: string;
+    seed?: Draft;
+    requestId?: string;
+  }): Promise<Result<Draft>> {
+    const stored = this.drafts.get(input.draftId);
+    if (stored) {
+      return { ok: true, value: { ...stored } };
+    }
+    if (input.seed && input.seed.id === input.draftId) {
+      this.drafts.set(input.draftId, input.seed);
+      return { ok: true, value: { ...input.seed } };
+    }
+    return {
+      ok: false,
+      error: typedError(
+        "AM-DOC-002",
+        "mock-core",
+        "error.draft.revisionConflict",
+      ),
+    };
   }
 
   async resolveDraft(input: ResolveDraftInput): Promise<Result<ResolveResult>> {

@@ -6,7 +6,8 @@
   "license": "Apache-2.0",
   "scripts": {
     "dev": "vite",
-    "build": "tsc --noEmit && vite build",
+    "build:wasm": "bash ../../tools/build-wasm.sh",
+    "build": "pnpm build:wasm && tsc --noEmit && vite build",
     "check": "tsc --noEmit",
     "test-a11y": "python3 ./a11y-check.py",
     "test-a11y:axe": "playwright test a11y-playwright.test.ts",

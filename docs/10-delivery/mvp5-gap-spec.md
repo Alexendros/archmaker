@@ -106,7 +106,7 @@ RULE-GPU-001 (Sway + NVIDIA) sigue no implementable. No entran avisos de tamaño
 
 ## Paridad y contratos
 
-Las operaciones CorePort ya existentes devuelven el mismo manifiesto en Tauri y WASM (NFR-DET-001, NFR-PORT-001). No hay target `wasm-pack` nuevo, ni se borra MockCorePort en este documento. La exportación sigue siendo proyección del manifiesto. Ningún adapter ejecuta shell.
+Las operaciones CorePort ya existentes devuelven el mismo manifiesto en Tauri y WASM (NFR-DET-001, NFR-PORT-001). La remediación operativa añade build WASM de navegador (`tools/build-wasm.sh`), `WasmCorePort` y selección explícita de adaptador; `MockCorePort` queda solo para `?mock=1` / pruebas. La exportación entrega bytes al usuario. Ningún adapter ejecuta shell.
 
 ## Comandos (cuando el slice esté autorizado)
 
@@ -115,15 +115,14 @@ Las operaciones CorePort ya existentes devuelven el mismo manifiesto en Tauri y 
 - `python3 tools/html_catalog_matrix.py` y el job que regenera la matriz
 - `sha256sum --check --strict reference/v5.1/SHA256SUMS`
 
-No forman parte de esta especificación: `wasm-pack`, `cargo tauri build`, tag `implementation-baseline-mvp5`.
+No forman parte de esta especificación de hueco: `cargo tauri build` de release firmado, tag `implementation-baseline-mvp5` (MVP-5-05). El build WASM de desarrollo/CI sí forma parte de la remediación operativa.
 
 ## Estructura que este ciclo no toca
 
 - `reference/v5.1/` y sus hashes
-- `crates/archmaker-core/`, contratos en `contracts/json-schema/`, reglas en `docs/07-validation/rule-inventory.md`
-- `apps/web/src/` y `src-tauri/`
-- `docs/00-governance/go-no-go.md`
-- `docs/10-delivery/mvp5-scope.md` (sigue `in-review`; MVP-5-01 no se cierra aquí)
+- Contratos en `contracts/json-schema/` salvo extensiones mínimas de CorePort documentadas
+- `docs/00-governance/go-no-go.md` (veredicto sin ampliar a runner/ISO)
+- `docs/10-delivery/mvp5-scope.md` (accepted; no reescribir issues cerrados)
 
 ## Estilo
 

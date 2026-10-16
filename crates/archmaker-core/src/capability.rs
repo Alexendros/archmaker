@@ -33,6 +33,7 @@ impl CoreOp {
             CoreOp::CreateDraft => "create_draft",
             CoreOp::LoadCatalog => "load_catalog",
             CoreOp::SaveDraft => "save_draft",
+            CoreOp::OpenDraft => "open_draft",
             CoreOp::ResolveDraft => "resolve_draft",
             CoreOp::ValidateDraft => "validate_draft",
             CoreOp::BuildManifest => "build_manifest",
@@ -46,6 +47,7 @@ impl CoreOp {
             "create_draft" => Some(CoreOp::CreateDraft),
             "load_catalog" => Some(CoreOp::LoadCatalog),
             "save_draft" => Some(CoreOp::SaveDraft),
+            "open_draft" => Some(CoreOp::OpenDraft),
             "resolve_draft" => Some(CoreOp::ResolveDraft),
             "validate_draft" => Some(CoreOp::ValidateDraft),
             "build_manifest" => Some(CoreOp::BuildManifest),
@@ -60,6 +62,7 @@ impl CoreOp {
             CoreOp::CreateDraft => "PERM-CMD-CREATE-DRAFT",
             CoreOp::LoadCatalog => "PERM-CMD-LOAD-CATALOG",
             CoreOp::SaveDraft => "PERM-CMD-SAVE-DRAFT",
+            CoreOp::OpenDraft => "PERM-CMD-OPEN-DRAFT",
             CoreOp::ResolveDraft => "PERM-CMD-RESOLVE-DRAFT",
             CoreOp::ValidateDraft => "PERM-CMD-VALIDATE-DRAFT",
             CoreOp::BuildManifest => "PERM-CMD-BUILD-MANIFEST",
@@ -69,10 +72,11 @@ impl CoreOp {
     }
 }
 
-pub const ALL_OPS: [CoreOp; 8] = [
+pub const ALL_OPS: [CoreOp; 9] = [
     CoreOp::CreateDraft,
     CoreOp::LoadCatalog,
     CoreOp::SaveDraft,
+    CoreOp::OpenDraft,
     CoreOp::ResolveDraft,
     CoreOp::ValidateDraft,
     CoreOp::BuildManifest,
@@ -86,6 +90,7 @@ pub fn allowed_ops(window: Window) -> &'static [CoreOp] {
             CoreOp::CreateDraft,
             CoreOp::LoadCatalog,
             CoreOp::SaveDraft,
+            CoreOp::OpenDraft,
             CoreOp::ResolveDraft,
             CoreOp::ValidateDraft,
             CoreOp::BuildManifest,

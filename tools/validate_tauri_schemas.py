@@ -3,7 +3,7 @@
 
 - Rechaza app.security.devtools (fuera de SecurityConfig v2).
 - Valida cada capability JSON contra src-tauri/gen/schemas/desktop-schema.json.
-- Exige solo main.json en capabilities/ (MVP).
+- Exige main.json (producto) y restricted.json (prueba ACL) en capabilities/.
 """
 from __future__ import annotations
 
@@ -63,10 +63,10 @@ def main() -> int:
 
     cap_files = sorted(caps_dir.glob("*.json"))
     names = [p.name for p in cap_files]
-    if names != ["main.json"]:
-        fail(f"capabilities MVP debe ser solo main.json, got {names}")
+    if names != ["main.json", "restricted.json"]:
+        fail(f"capabilities debe ser main.json+restricted.json, got {names}")
     else:
-        ok("capabilities/ solo main.json")
+        ok("capabilities/ main + restricted")
 
     for cap_path in cap_files:
         instance = json.loads(cap_path.read_text(encoding="utf-8"))
@@ -80,19 +80,29 @@ def main() -> int:
                 fail(f"{cap_path.name}: {err.message}")
         else:
             ok(f"capability valida contra desktop-schema: {cap_path.name}")
-        if instance.get("permissions") != []:
-            fail(f"{cap_path.name}: permissions debe ser [] en MVP")
-        else:
-            ok(f"{cap_path.name} permissions vacía (deny-by-default)")
+        perms = instance.get("permissions")
+        if cap_path.name == "restricted.json":
+            if perms != []:
+                fail(f"{cap_path.name}: permissions debe ser [] (ACL negativa)")
+            else:
+                ok(f"{cap_path.name} permissions vacía")
+        elif cap_path.name == "main.json":
+            if not isinstance(perms, list) or len(perms) == 0:
+                fail(f"{cap_path.name}: debe conceder allow-* de CorePort")
+            elif not all(isinstance(p, str) and p.startswith("allow-") for p in perms):
+                fail(f"{cap_path.name}: permisos inesperados {perms}")
+            else:
+                ok(f"{cap_path.name} concede {len(perms)} allow-*")
 
     caps_gen = ROOT / "src-tauri/gen/schemas/capabilities.json"
     if caps_gen.is_file():
         gen = json.loads(caps_gen.read_text(encoding="utf-8"))
         keys = sorted(gen.keys())
-        if keys != ["main-capability"]:
-            fail(f"gen/schemas/capabilities.json keys={keys}, esperado ['main-capability']")
+        expected = ["main-capability", "restricted-capability"]
+        if keys != expected:
+            fail(f"gen/schemas/capabilities.json keys={keys}, esperado {expected}")
         else:
-            ok("gen/schemas/capabilities.json solo main-capability")
+            ok("gen/schemas/capabilities.json main+restricted")
 
     print(f"\n{len(fails)} fallos.")
     return 1 if fails else 0

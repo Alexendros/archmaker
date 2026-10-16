@@ -102,39 +102,29 @@ fn neg_errors_are_typed_catalog_codes() {
 
 #[test]
 fn neg_capability_deny_by_default() {
-    // Check permission TOML files define the 8 CorePort commands (v0 + importDraft)
-    let mut found_permissions = Vec::new();
-    for cmd in [
-        "create-draft",
-        "load-catalog",
-        "save-draft",
-        "resolve-draft",
-        "validate-draft",
-        "build-manifest",
-        "export-artifact",
-        "import-draft",
-    ] {
-        let toml_path = format!("src-tauri/permissions/{}.toml", cmd);
-        let raw = read_repo(&toml_path);
-        let v: toml::Value =
-            toml::from_str(&raw).unwrap_or_else(|_| panic!("permission TOML {} invalido", cmd));
-        let identifier = v["identifier"].as_str().expect("identifier requerido");
-        assert_eq!(
-            identifier,
-            format!("core:{}", cmd),
-            "permission identifier debe ser core:{}",
-            cmd
-        );
-        found_permissions.push(cmd);
-    }
-    assert_eq!(
-        found_permissions.len(),
-        8,
-        "solo los 8 comandos CorePort v0+MVP-1"
+    // AppManifest::commands in build.rs is the source of command ACL surface.
+    let build_rs = read_repo("src-tauri/build.rs");
+    assert!(
+        build_rs.contains("AppManifest::new().commands"),
+        "build.rs debe registrar comandos propios vía AppManifest"
     );
+    for cmd in [
+        "create_draft",
+        "load_catalog",
+        "save_draft",
+        "open_draft",
+        "resolve_draft",
+        "validate_draft",
+        "build_manifest",
+        "export_artifact",
+        "import_draft",
+    ] {
+        assert!(
+            build_rs.contains(&format!("\"{cmd}\"")),
+            "AppManifest debe listar {cmd}"
+        );
+    }
 
-    // Lista vacía = denegación definitiva del slice. Los TOML definen
-    // identificadores core:* y no los conceden en el JSON.
     let raw = read_repo("src-tauri/capabilities/main.json");
     let v: serde_json::Value = serde_json::from_str(&raw).expect("capability JSON invalido");
     let windows = v["windows"].as_array().expect("windows debe ser lista");
@@ -145,11 +135,26 @@ fn neg_capability_deny_by_default() {
         .expect("permissions debe ser lista");
     assert_eq!(
         perms.len(),
+        9,
+        "main concede exactamente los 9 allow-* CorePort"
+    );
+    for p in perms {
+        let s = p.as_str().expect("permission string");
+        assert!(
+            s.starts_with("allow-"),
+            "solo permisos allow-* de comandos propios: {s}"
+        );
+    }
+
+    let restricted = read_repo("src-tauri/capabilities/restricted.json");
+    let rv: serde_json::Value =
+        serde_json::from_str(&restricted).expect("restricted capability JSON");
+    assert_eq!(
+        rv["permissions"].as_array().expect("list").len(),
         0,
-        "permissions vacia: denegacion definitiva; los TOML no conceden"
+        "restricted permissions vacía = denegación ACL"
     );
 
-    // MVP: solo main.json. dialog/picker son reserva v1 sin fichero en el árbol.
     let caps_dir = repo_root().join("src-tauri/capabilities");
     let mut names: Vec<_> = std::fs::read_dir(&caps_dir)
         .expect("capabilities dir")
@@ -158,7 +163,11 @@ fn neg_capability_deny_by_default() {
         .filter(|n| n.ends_with(".json"))
         .collect();
     names.sort();
-    assert_eq!(names, vec!["main.json".to_string()], "solo main en MVP");
+    assert_eq!(
+        names,
+        vec!["main.json".to_string(), "restricted.json".to_string()],
+        "main + restricted (prueba ACL)"
+    );
     for cap in ["dialog", "picker"] {
         assert!(
             !caps_dir.join(format!("{cap}.json")).exists(),
@@ -206,6 +215,7 @@ fn neg_web_has_no_remote_or_shell_surface() {
         "create_draft",
         "load_catalog",
         "save_draft",
+        "open_draft",
         "resolve_draft",
         "validate_draft",
         "build_manifest",
@@ -223,6 +233,8 @@ fn neg_web_has_no_remote_or_shell_surface() {
         "apps/web/src/main.tsx",
         "apps/web/src/mock-core-port.ts",
         "apps/web/src/coreport.ts",
+        "apps/web/src/export-delivery.ts",
+        "apps/web/src/create-core-port.ts",
     ]
     .into_iter()
     .map(read_repo)
@@ -421,26 +433,28 @@ fn dialog_and_picker_capability_files_absent_in_mvp() {
 }
 
 #[test]
-fn neg_allowlist_covers_all_eight_ops_exactly_once() {
-    // Verify each of the 8 CorePort commands has a corresponding permission TOML
+fn neg_allowlist_covers_all_nine_ops_exactly_once() {
+    let build_rs = read_repo("src-tauri/build.rs");
     let mut count = 0;
     for cmd in [
-        "create-draft",
-        "load-catalog",
-        "save-draft",
-        "resolve-draft",
-        "validate-draft",
-        "build-manifest",
-        "export-artifact",
-        "import-draft",
+        "create_draft",
+        "load_catalog",
+        "save_draft",
+        "open_draft",
+        "resolve_draft",
+        "validate_draft",
+        "build_manifest",
+        "export_artifact",
+        "import_draft",
     ] {
-        let toml_path = format!("src-tauri/permissions/{}.toml", cmd);
-        let raw = read_repo(&toml_path);
-        let v: toml::Value =
-            toml::from_str(&raw).unwrap_or_else(|_| panic!("permission TOML {} invalido", cmd));
-        let identifier = v["identifier"].as_str().expect("identifier requerido");
-        assert_eq!(identifier, format!("core:{}", cmd));
+        assert!(
+            build_rs.contains(&format!("\"{cmd}\"")),
+            "AppManifest debe incluir {cmd}"
+        );
         count += 1;
     }
-    assert_eq!(count, 8, "exactamente 8 permisos CorePort v0+MVP-1");
+    assert_eq!(
+        count, 9,
+        "exactamente 9 comandos CorePort (incluye open_draft)"
+    );
 }

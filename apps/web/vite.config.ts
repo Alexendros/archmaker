@@ -7,5 +7,13 @@ export default defineConfig({
   server: {
     port: 5173,
     strictPort: true,
+    fs: {
+      // Allow serving wasm-pack / wasm-bindgen output from the monorepo crate.
+      allow: ["../.."],
+    },
   },
+  optimizeDeps: {
+    exclude: ["archmaker_wasm"],
+  },
+  assetsInclude: ["**/*.wasm"],
 });

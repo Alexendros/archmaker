@@ -118,6 +118,17 @@ pub struct SaveDraftInput {
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
+pub struct OpenDraftInput {
+    pub draft_id: String,
+    /// When the store has no copy (browser session), adapters may pass the
+    /// previously persisted draft to rehydrate memory without bumping revision.
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    pub seed: Option<Draft>,
+    pub request_id: Option<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields, rename_all = "camelCase")]
 pub struct ImportDraftInput {
     /// Exact bytes of the legacy document. Never written back.
     pub source_bytes: Vec<u8>,

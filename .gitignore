@@ -13,6 +13,8 @@ node_modules/
 dist/
 target/
 .cargo-target/
+.cargo-home/
+crates/archmaker-wasm/pkg/
 *.log
 
 # Playwright

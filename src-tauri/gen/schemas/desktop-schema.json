@@ -21,9 +21,7 @@
     {
       "description": "A list of capabilities.",
       "type": "object",
-      "required": [
-        "capabilities"
-      ],
+      "required": ["capabilities"],
       "properties": {
         "capabilities": {
           "description": "The list of capabilities.",
@@ -39,10 +37,7 @@
     "Capability": {
       "description": "A grouping and boundary mechanism developers can use to isolate access to the IPC layer.\n\nIt controls application windows' and webviews' fine grained access to the Tauri core, application, or plugin commands. If a webview or its window is not matching any capability then it has no access to the IPC layer at all.\n\nThis can be done to create groups of windows, based on their required system access, which can reduce impact of frontend vulnerabilities in less privileged windows. Windows can be added to a capability by exact name (e.g. `main-window`) or glob patterns like `*` or `admin-*`. A Window can have none, one, or multiple associated capabilities.\n\n## Example\n\n```json { \"identifier\": \"main-user-files-write\", \"description\": \"This capability allows the `main` window on macOS and Windows access to `filesystem` write related commands and `dialog` commands to enable programmatic access to files selected by the user.\", \"windows\": [ \"main\" ], \"permissions\": [ \"core:default\", \"dialog:open\", { \"identifier\": \"fs:allow-write-text-file\", \"allow\": [{ \"path\": \"$HOME/test.txt\" }] }, ], \"platforms\": [\"macOS\",\"windows\"] } ```",
       "type": "object",
-      "required": [
-        "identifier",
-        "permissions"
-      ],
+      "required": ["identifier", "permissions"],
       "properties": {
         "identifier": {
           "description": "Identifier of the capability.\n\n## Example\n\n`main-user-files-write`",
@@ -93,10 +88,7 @@
         },
         "platforms": {
           "description": "Limit which target platforms this capability applies to.\n\nBy default all platforms are targeted.\n\n## Example\n\n`[\"macOS\",\"windows\"]`",
-          "type": [
-            "array",
-            "null"
-          ],
+          "type": ["array", "null"],
           "items": {
             "$ref": "#/definitions/Target"
           }
@@ -106,9 +98,7 @@
     "CapabilityRemote": {
       "description": "Configuration for remote URLs that are associated with the capability.",
       "type": "object",
-      "required": [
-        "urls"
-      ],
+      "required": ["urls"],
       "properties": {
         "urls": {
           "description": "Remote domains this capability refers to using the [URLPattern standard](https://urlpattern.spec.whatwg.org/).\n\n## Examples\n\n- \"https://*.mydomain.dev\": allows subdomains of mydomain.dev - \"https://mydomain.dev/api/*\": allows any subpath of mydomain.dev/api",
@@ -146,20 +136,14 @@
                 },
                 "allow": {
                   "description": "Data that defines what is allowed by the scope.",
-                  "type": [
-                    "array",
-                    "null"
-                  ],
+                  "type": ["array", "null"],
                   "items": {
                     "$ref": "#/definitions/Value"
                   }
                 },
                 "deny": {
                   "description": "Data that defines what is denied by the scope. This should be prioritized by validation logic.",
-                  "type": [
-                    "array",
-                    "null"
-                  ],
+                  "type": ["array", "null"],
                   "items": {
                     "$ref": "#/definitions/Value"
                   }
@@ -167,15 +151,121 @@
               }
             }
           ],
-          "required": [
-            "identifier"
-          ]
+          "required": ["identifier"]
         }
       ]
     },
     "Identifier": {
       "description": "Permission identifier",
       "oneOf": [
+        {
+          "description": "Enables the build_manifest command without any pre-configured scope.",
+          "type": "string",
+          "const": "allow-build-manifest",
+          "markdownDescription": "Enables the build_manifest command without any pre-configured scope."
+        },
+        {
+          "description": "Enables the create_draft command without any pre-configured scope.",
+          "type": "string",
+          "const": "allow-create-draft",
+          "markdownDescription": "Enables the create_draft command without any pre-configured scope."
+        },
+        {
+          "description": "Enables the export_artifact command without any pre-configured scope.",
+          "type": "string",
+          "const": "allow-export-artifact",
+          "markdownDescription": "Enables the export_artifact command without any pre-configured scope."
+        },
+        {
+          "description": "Enables the import_draft command without any pre-configured scope.",
+          "type": "string",
+          "const": "allow-import-draft",
+          "markdownDescription": "Enables the import_draft command without any pre-configured scope."
+        },
+        {
+          "description": "Enables the load_catalog command without any pre-configured scope.",
+          "type": "string",
+          "const": "allow-load-catalog",
+          "markdownDescription": "Enables the load_catalog command without any pre-configured scope."
+        },
+        {
+          "description": "Enables the open_draft command without any pre-configured scope.",
+          "type": "string",
+          "const": "allow-open-draft",
+          "markdownDescription": "Enables the open_draft command without any pre-configured scope."
+        },
+        {
+          "description": "Enables the resolve_draft command without any pre-configured scope.",
+          "type": "string",
+          "const": "allow-resolve-draft",
+          "markdownDescription": "Enables the resolve_draft command without any pre-configured scope."
+        },
+        {
+          "description": "Enables the save_draft command without any pre-configured scope.",
+          "type": "string",
+          "const": "allow-save-draft",
+          "markdownDescription": "Enables the save_draft command without any pre-configured scope."
+        },
+        {
+          "description": "Enables the validate_draft command without any pre-configured scope.",
+          "type": "string",
+          "const": "allow-validate-draft",
+          "markdownDescription": "Enables the validate_draft command without any pre-configured scope."
+        },
+        {
+          "description": "Denies the build_manifest command without any pre-configured scope.",
+          "type": "string",
+          "const": "deny-build-manifest",
+          "markdownDescription": "Denies the build_manifest command without any pre-configured scope."
+        },
+        {
+          "description": "Denies the create_draft command without any pre-configured scope.",
+          "type": "string",
+          "const": "deny-create-draft",
+          "markdownDescription": "Denies the create_draft command without any pre-configured scope."
+        },
+        {
+          "description": "Denies the export_artifact command without any pre-configured scope.",
+          "type": "string",
+          "const": "deny-export-artifact",
+          "markdownDescription": "Denies the export_artifact command without any pre-configured scope."
+        },
+        {
+          "description": "Denies the import_draft command without any pre-configured scope.",
+          "type": "string",
+          "const": "deny-import-draft",
+          "markdownDescription": "Denies the import_draft command without any pre-configured scope."
+        },
+        {
+          "description": "Denies the load_catalog command without any pre-configured scope.",
+          "type": "string",
+          "const": "deny-load-catalog",
+          "markdownDescription": "Denies the load_catalog command without any pre-configured scope."
+        },
+        {
+          "description": "Denies the open_draft command without any pre-configured scope.",
+          "type": "string",
+          "const": "deny-open-draft",
+          "markdownDescription": "Denies the open_draft command without any pre-configured scope."
+        },
+        {
+          "description": "Denies the resolve_draft command without any pre-configured scope.",
+          "type": "string",
+          "const": "deny-resolve-draft",
+          "markdownDescription": "Denies the resolve_draft command without any pre-configured scope."
+        },
+        {
+          "description": "Denies the save_draft command without any pre-configured scope.",
+          "type": "string",
+          "const": "deny-save-draft",
+          "markdownDescription": "Denies the save_draft command without any pre-configured scope."
+        },
+        {
+          "description": "Denies the validate_draft command without any pre-configured scope.",
+          "type": "string",
+          "const": "deny-validate-draft",
+          "markdownDescription": "Denies the validate_draft command without any pre-configured scope."
+        },
         {
           "description": "Default core plugins set.\n#### This default permission set includes:\n\n- `core:path:default`\n- `core:event:default`\n- `core:window:default`\n- `core:webview:default`\n- `core:app:default`\n- `core:image:default`\n- `core:resources:default`\n- `core:menu:default`\n- `core:tray:default`",
           "type": "string",
@@ -2278,37 +2368,27 @@
         {
           "description": "MacOS.",
           "type": "string",
-          "enum": [
-            "macOS"
-          ]
+          "enum": ["macOS"]
         },
         {
           "description": "Windows.",
           "type": "string",
-          "enum": [
-            "windows"
-          ]
+          "enum": ["windows"]
         },
         {
           "description": "Linux.",
           "type": "string",
-          "enum": [
-            "linux"
-          ]
+          "enum": ["linux"]
         },
         {
           "description": "Android.",
           "type": "string",
-          "enum": [
-            "android"
-          ]
+          "enum": ["android"]
         },
         {
           "description": "iOS.",
           "type": "string",
-          "enum": [
-            "iOS"
-          ]
+          "enum": ["iOS"]
         }
       ]
     }
