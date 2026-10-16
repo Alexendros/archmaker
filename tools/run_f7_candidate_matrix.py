@@ -577,13 +577,20 @@ def execute_matrix(
                         }
                     )
                 else:
-                    # blocked: no cuenta como passed; en strict es partial/bloqueo.
+                    # blocked: no cuenta como passed; strict_gate exige passed.
                     results.append(
                         {
                             "id": cid,
-                            "status": "partial" if strict else "pending",
+                            "status": "blocked",
                             "commands": [],
-                            "note": "evidencia desktop blocked (sin GUI/portal)",
+                            "note": "evidencia desktop blocked (sin GUI/portal/AppImage Forge)",
+                            "desktopEvidence": {
+                                "sourceSha": desktop_evidence.get("sourceSha"),
+                                "artifactSha256": (desktop_evidence.get("artifact") or {}).get(
+                                    "sha256"
+                                ),
+                                "status": desk_status,
+                            },
                         }
                     )
             else:
@@ -708,7 +715,8 @@ def execute_matrix(
     passed = sum(1 for r in results if r["status"] == "passed")
     failed = sum(1 for r in results if r["status"] == "failed")
     partial = sum(1 for r in results if r["status"] == "partial")
-    skipped = sum(1 for r in results if r["status"] == "pending")
+    # pending = aún no ejercitado; blocked = evidencia honesta de imposibilidad.
+    skipped = sum(1 for r in results if r["status"] in {"pending", "blocked"})
     retries_total = 0
     test_total = 0
     for case in results:
@@ -775,7 +783,9 @@ def build_pending_manifest(
             continue
         if case.get("id") == "F7-OFFLINE-DESKTOP":
             residuals.append(
-                "F7-OFFLINE-DESKTOP: escritorio offline pending (sin humo de red/portal)"
+                "F7-OFFLINE-DESKTOP: escritorio offline blocked "
+                "(portal E2E / offline / 3x install ausentes; "
+                "AppImage histórico v0.1.0 y MockCorePort no cierran)"
             )
         residual = case.get("residual")
         if case.get("id") == "F7-P95" and residual:

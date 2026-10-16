@@ -22,24 +22,42 @@ dependsOn:
 
 ## Resultado
 
-**`blocked`** (no `pending` ambiguo). Hay sesión gráfica y `xdg-desktop-portal`, pero
-**no** hay binario de producción del `SOURCE_SHA` del tip bajo prueba. El AppImage
-histórico `v0.1.0` (nombre público retirado) **no** cierra este gate. Una captura con MockCorePort
-**no** cierra este gate. La aceptación web **no** se presenta como aceptación desktop.
+**`blocked`** (no `pending` ambiguo; no `passed`). Hay sesión gráfica (`DISPLAY=:0`,
+`WAYLAND_DISPLAY=wayland-0`), `xdg-desktop-portal` activo (FileChooser v4) y humo
+local del AppImage Forge del tip (`Forge_0.1.0_amd64.AppImage`, no publicado). El
+AppImage histórico `v0.1.0` (nombre público retirado) **no** cierra este gate. Una
+captura con MockCorePort **no** cierra este gate. La aceptación web **no** se
+presenta como aceptación desktop. Identidad técnica intacta (`dev.archmaker.app`).
+
+## Casos (2026-10-17, `SOURCE_SHA` af31f8b2…)
+
+| Id | Estado | Evidencia |
+| --- | --- | --- |
+| env-display | passed | `DISPLAY=:0` / `WAYLAND_DISPLAY=wayland-0` |
+| env-portal | passed | `xdg-desktop-portal` + FileChooser v4 |
+| appimage-build | passed | Forge AppImage local sha256 `a064aee2…` (no published) |
+| appimage-launch | passed | proceso vivo ≥5s con display |
+| ipc-allowed | passed | `cargo test -p archmaker --lib` (gate main) |
+| ipc-denied | passed | restricted / unknown cmd denegados |
+| gui-dialog-real | blocked | falta E2E rfd vía portal |
+| gui-cancel | blocked | falta cancelación nativa |
+| gui-overwrite | blocked | falta sobrescritura nativa |
+| gui-destination-noperms | blocked | falta destino sin permisos |
+| boot-offline | blocked | falta arranque con red aislada (`unshare -n` no disponible) |
+| clean-install-x3 | blocked | faltan 3 instalaciones limpias independientes |
 
 ## Evidencia ausente nombrada
 
-1. AppImage o binario de release del `SOURCE_SHA` candidato (tip de `main` tras P0–P5).
-2. E2E portal real: diálogo nativo cancelar / guardar / sobrescribir / destino sin permisos.
-3. IPC permitido (`main`) y denegado (`restricted`) sobre ese binario.
-4. Arranque sin red (`F7-OFFLINE-DESKTOP`) sobre ese binario.
-5. Tres instalaciones limpias independientes (no tres aperturas de la misma sesión).
+1. E2E portal real: diálogo nativo cancelar / guardar / sobrescribir / destino sin permisos.
+2. Arranque sin red (`F7-OFFLINE-DESKTOP`) sobre el AppImage del tip (netns / host offline).
+3. Tres instalaciones limpias independientes (no tres aperturas de la misma sesión).
 
 Registro versionado: [`examples/desktop-evidence.p6-blocked.json`](examples/desktop-evidence.p6-blocked.json)
 (probe: [`examples/desktop-offline-p6-probe.json`](examples/desktop-offline-p6-probe.json)).
+Verificador: `python3 tools/check_desktop_offline_gate.py`.
 
 ## Condición de cierre
 
-Re-ejecutar el probe con un artefacto de producción del SHA, importar evidencia
+Completar los tres residuales con evidencia GUI/offline del operador, importar
 `status=passed` vía `--desktop-evidence` (schema + hash + identidad; sin bypass) y
-actualizar este documento. Owner: architecture.
+actualizar este documento. Owner: architecture. No publicar release ni mover tags.

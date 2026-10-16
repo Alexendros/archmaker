@@ -1,28 +1,29 @@
 {
   "schemaVersion": "1",
   "caseId": "F7-OFFLINE-DESKTOP",
-  "sourceSha": "535393dbcb997f46a47ae252d73f3e86ff5a4c06",
+  "sourceSha": "af31f8b2b48d35af9770de64413d42db83d6528b",
   "status": "blocked",
-  "capturedAt": "2026-10-16T23:38:51Z",
+  "capturedAt": "2026-10-16T23:48:00Z",
   "artifact": {
     "name": "desktop-offline-p6-probe.json",
-    "sizeBytes": 747,
-    "sha256": "9511339593f72c326522d9539bdcf8e0820593f1c9a3b6fc8a88f8474170a229",
+    "sizeBytes": 1470,
+    "sha256": "e6b220e8583778fd84c0e474e3d7d1cfa0611d69acc6e4579d013a46caee4229",
     "mediaType": "application/json"
   },
   "identity": {
     "host": "alexendros-aerox16",
-    "operator": "archmaker-cierre-agent"
+    "operator": "archmaker-agent-p6"
   },
   "notes": [
-    "DISPLAY=:0 — sesión gráfica detectada=sí",
-    "xdg-desktop-portal en ejecución=no",
-    "AppImage histórico v0.1.0 presente=True (SHA distinto; nombre histórico; NO cierra P6 del tip)",
+    "DISPLAY=:0 WAYLAND_DISPLAY=wayland-0 — sesión gráfica detectada=sí",
+    "xdg-desktop-portal en ejecución=sí (FileChooser version=4)",
+    "AppImage Forge local del tip construido=sí (Forge_0.1.0_amd64.AppImage sha256=a064aee282eaef72f0e5185dc282f537cda9a38cd7eaa1d2ef09da0c363e8fbd; humo launch=passed; no publicado)",
+    "AppImage histórico v0.1.0 presente (SHA distinto; NO cierra P6 del tip)",
+    "IPC permitido/denegado=passed vía cargo test -p archmaker --lib (no MockCorePort)",
     "MockCorePort no se usa como cierre",
-    "Estado=blocked: evidencia ausente nombrada abajo; no pending ambiguo",
-    "AUSENTE: AppImage o binario de producción del SOURCE_SHA 535393dbcb997f46a47ae252d73f3e86ff5a4c06 (no existe en ~/archmaker-closure ni target/release bundle del tip)",
-    "AUSENTE: E2E portal rfd: cancelar / guardar / sobrescribir / destino sin permisos sobre ese binario",
-    "AUSENTE: Arranque offline de escritorio (F7-OFFLINE-DESKTOP) con red deshabilitada sobre ese binario",
+    "Estado=blocked: evidencia ausente nombrada abajo; no pending ambiguo; gate no aprobado",
+    "AUSENTE: E2E portal rfd cancelar / guardar / sobrescribir / destino sin permisos sobre el AppImage del SOURCE_SHA",
+    "AUSENTE: Arranque offline de escritorio (F7-OFFLINE-DESKTOP) con red deshabilitada / netns sobre ese binario",
     "AUSENTE: Tres instalaciones limpias independientes del candidato (no reuso de v0.1.0 histórico)"
   ]
 }

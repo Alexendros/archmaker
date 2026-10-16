@@ -1,14 +1,37 @@
 {
-  "sourceSha": "535393dbcb997f46a47ae252d73f3e86ff5a4c06",
+  "sourceSha": "af31f8b2b48d35af9770de64413d42db83d6528b",
   "display": ":0",
-  "portal": false,
-  "historicalAppImage": "v0.1.0 AppImage (ruta local; identidad artefacto histórico)",
-  "shaHits": [],
+  "waylandDisplay": "wayland-0",
+  "portal": true,
+  "portalFileChooserVersion": 4,
+  "forgeAppImageLocal": {
+    "name": "Forge_0.1.0_amd64.AppImage",
+    "sha256": "a064aee282eaef72f0e5185dc282f537cda9a38cd7eaa1d2ef09da0c363e8fbd",
+    "sizeBytes": 91142648,
+    "note": "Humo local bajo CARGO_TARGET_DIR; no publicado; no sustituye el AppImage histórico v0.1.0"
+  },
+  "cases": {
+    "env-display": "passed",
+    "env-portal": "passed",
+    "appimage-build": "passed",
+    "appimage-launch": "passed",
+    "ipc-allowed": "passed",
+    "ipc-denied": "passed",
+    "gui-dialog-real": "blocked",
+    "gui-cancel": "blocked",
+    "gui-overwrite": "blocked",
+    "gui-destination-noperms": "blocked",
+    "boot-offline": "blocked",
+    "clean-install-x3": "blocked"
+  },
+  "historicalAppImage": "v0.1.0 AppImage histórico (NO cierra P6 del tip)",
+  "mockCorePortClosesGate": false,
+  "webAcceptanceImpliesDesktop": false,
   "missingEvidence": [
-    "AppImage o binario de producción del SOURCE_SHA 535393dbcb997f46a47ae252d73f3e86ff5a4c06 (no existe en ~/archmaker-closure ni target/release bundle del tip)",
-    "E2E portal rfd: cancelar / guardar / sobrescribir / destino sin permisos sobre ese binario",
-    "Arranque offline de escritorio (F7-OFFLINE-DESKTOP) con red deshabilitada sobre ese binario",
-    "Tres instalaciones limpias independientes del candidato (no reuso de v0.1.0 histórico)"
+    "E2E portal rfd: diálogo nativo cancelar / guardar / sobrescribir / destino sin permisos sobre Forge AppImage del SOURCE_SHA",
+    "Arranque offline de escritorio (F7-OFFLINE-DESKTOP) con red deshabilitada / netns sobre ese binario",
+    "Tres instalaciones limpias independientes del candidato (no tres aperturas de la misma sesión; no reuso de v0.1.0 histórico)"
   ],
-  "capturedAt": "2026-10-16T23:38:51Z"
+  "gateStatus": "blocked",
+  "capturedAt": "2026-10-16T23:48:00Z"
 }
