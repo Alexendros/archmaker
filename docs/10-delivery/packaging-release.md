@@ -5,7 +5,7 @@ priority: P1
 documentStatus: in-review
 approvalStatus: approved
 implementationStatus: partial
-verificationStatus: not-verified
+verificationStatus: partial
 releaseStatus: ineligible
 owners:
   - release
@@ -15,7 +15,7 @@ reviewers:
 
 # Packaging y release
 
-- Estado: in-review (canal F8 authorized; pipeline F9)
+- Estado: in-review (canal F8 accepted; F9 published `v0.1.0` con verificación parcial)
 - Propietario: Release
 - Última revisión: 2026-10-16
 - Requisitos relacionados: FR-EXPORT-001, NFR-OBS-001, NFR-SEC-001, NFR-PORT-001, NFR-MARK-001, NFR-COST-001
@@ -24,7 +24,8 @@ reviewers:
 
 ## Dos actos de release
 
-Hay dos actos distintos. Este documento los separa; el segundo no se ejecuta mientras MVP-6 no esté `accepted`.
+Hay dos actos distintos. Este documento los separa. La release de paquete AppImage Neubat
+`v0.1.0` ya se publicó bajo MVP-6/`accepted` (solo esa plataforma); ver `closure/f9-release.md`.
 
 ### Release de plan
 
@@ -55,9 +56,10 @@ DEC-011 / MVP-6 accepted):**
 | Hosting          | GitHub Release del tag `v*` (`release.yml`)          |
 | Familias no Done | `.deb`, `.rpm`, OBS, AUR, Flatpak → deferred/blocked |
 
-F9 ejecuta el build desde el `RC_SHA` de `main`, produce el AppImage (más SBOM, checksums,
-firma/atestación según este documento y `release.yml`) y publica sin alterar bytes tras el
-digest. Residual DEC-006 (Etapa C) se cierra en esa corrida.
+F9 construyó desde `RC_SHA` `9297ed7…`, publicó
+[`v0.1.0`](https://github.com/Alexendros/archmaker/releases/tag/v0.1.0) (AppImage + SBOM +
+checksums + provenance) sin alterar bytes tras el digest. Residual DEC-006 / cosign local y
+3× install GUI siguen abiertos; R2 mantiene `releaseStatus=ineligible` en el doc F9.
 
 Canales `nightly` / `beta` / `stable` son política de promoción del paquete. No son tags que
 `plan-release.yml` dispare. El AUR, si se reabre, es PKGBUILD fuente, no repositorio binario
@@ -81,21 +83,22 @@ Cada release publica, como mínimo:
 
 | Artefacto         | Descripción                                                              | Estado                              |
 | ----------------- | ------------------------------------------------------------------------ | ----------------------------------- |
-| Binarios/paquetes | **AppImage Linux x86_64 (Neubat)**; `.deb`/`.rpm` deferred.              | authorized (F9)                     |
-| Checksums         | `SHA256SUMS` por release; verificación `sha256sum --check`.              | authorized (F9)                     |
-| Firmas            | Firma de artefactos y de `SHA256SUMS` con Sigstore (+ offline evaluada). | Resuelto por DEC-006; Etapa C en F9 |
-| SBOM              | CycloneDX y/o SPDX con el inventario de dependencias.                    | authorized (F9 / `release.yml`)     |
-| Provenance        | Atestación SLSA v1 / in-toto ligada a commit y workflow.                 | authorized (F9 / `release.yml`)     |
-| Source tarball    | Código fuente reproducible del commit taggeado.                          | authorized (F9)                     |
-| Changelog         | Formato Keep a Changelog; cambios por versión.                           | authorized (F9)                     |
-| Compatibilidad    | Matriz: Neubat AppImage / Linux x86_64 (DEC-008).                        | authorized (F9)                     |
+| Binarios/paquetes | **AppImage Linux x86_64 (Neubat)**; `.deb`/`.rpm` deferred.              | published (`v0.1.0`)                |
+| Checksums         | `SHA256SUMS` por release; verificación `sha256sum --check`.              | published (`v0.1.0`)                |
+| Firmas            | Firma de artefactos y de `SHA256SUMS` con Sigstore (+ offline evaluada). | parcial (cosign local deferred)     |
+| SBOM              | CycloneDX y/o SPDX con el inventario de dependencias.                    | published (`sbom.cdx.json`)         |
+| Provenance        | Atestación SLSA v1 / in-toto ligada a commit y workflow.                 | published (`slsa-provenance.json`)  |
+| Source tarball    | Código fuente reproducible del commit taggeado.                          | via GitHub Release source           |
+| Changelog         | Formato Keep a Changelog; cambios por versión.                           | `CHANGELOG.md` (`[0.1.0]`)          |
+| Compatibilidad    | Matriz: Neubat AppImage / Linux x86_64 (DEC-008).                        | published (canal único)             |
 
 - **Checksums**: el digest es la identidad del artefacto y se reutiliza en la promoción (sin rebuild).
 - **Firmas**: la firma se aplica una vez; la verificación es requisito de instalación del updater.
 - **SBOM y provenance**: se generan en el mismo job de build/attest (ver `docs/09-quality/ci-cd.md`).
 - **Source tarball**: garantiza reproducibilidad y auditoría independiente del binario.
 - **Compatibilidad**: matriz mínima Arch Linux **x86_64 únicamente** (DEC-008, aceptada 2026-10-05); aarch64 fuera de alcance.
-- Pendiente de implementación: el pipeline de build/attest/SBOM y la firma real (DEC-005 y DEC-006 aceptadas; falta la Etapa C).
+- Etapa C parcial en `v0.1.0`: SBOM + provenance + checksums publicados; cosign local y
+  verificación offline con raíz real siguen pendientes (DEC-006).
 
 ## Canales
 

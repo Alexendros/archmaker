@@ -15,8 +15,8 @@ reviewers:
 
 # ArchMaker — Índice documental (planning-v1)
 
-- Estado del plan: in-review · Gate global: **CONDITIONAL-GO** (walking skeleton MVP-0) · Baseline: planning-v1.1 · Corte: 2026-10-06
-- Autonomía documental: permitida. Código funcional de producto: **bloqueado** hasta aprobar G0–G10.
+- Estado del plan: in-review · Gate global: **CONDITIONAL-CLEAR** (walking skeleton MVP-0 + slices MVP-1..MVP-5) · Baseline: `implementation-baseline-mvp5` · Corte: 2026-10-16
+- Release de paquete: Neubat AppImage [`v0.1.0`](https://github.com/Alexendros/archmaker/releases/tag/v0.1.0) (F9; verificación parcial). Aprobación funcional F7: pending.
 - Estados válidos (`docs/00-governance/document-control.md`): `draft`, `in-review`, `accepted`, `superseded`, `deferred`, `rejected`.
 - Regla de reemplazo: copiar por rutas canónicas; `reference/v5.1/` debe permanecer byte a byte.
 

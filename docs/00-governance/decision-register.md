@@ -206,13 +206,13 @@ DEC-010, DEC-011).
 | DEC-004 | Transporte y elevación fijados; runner v1 diferido a su gate.        | aplicada (diseño)   | AUD-018          |
 | DEC-005 | Licencia Apache-2.0 única en `LICENSE`.                              | aplicada            | AUD-022          |
 | DEC-006 | Firma keyless y verificación offline definidas.                      | parcial (política)  | AUD-019, AUD-022 |
-| DEC-006 | Pipeline real de build/attest/SBOM y firmas.                         | no aplicada         | AUD-022          |
+| DEC-006 | Pipeline real de build/attest/SBOM y firmas.                         | parcial (F9 `v0.1.0`: SBOM/provenance/checksums; cosign local deferred) | AUD-022 |
 | DEC-007 | `THR-UPD-001` cerrado antes de MVP-0.                                | no aplicada         | AUD-019          |
 | DEC-007 | Updater deshabilitado por defecto en builds de desarrollo.           | aplicada            | AUD-019          |
 | DEC-008 | Matriz de soporte y pruebas reducida a x86_64.                       | aplicada            | AUD-020          |
 | DEC-009 | Sin CDN en runtime; CSP `self` y recursos empaquetados.              | aplicada            | AUD-020          |
 | DEC-010 | MVP sin telemetría; solo eventos locales redactados.                 | aplicada            | —                |
-| DEC-011 | Nombre público Neubat; AppImage x86_64 como único canal inicial.     | aplicada (gobierno) | MVP-6-02/03 (F9) |
+| DEC-011 | Nombre público Neubat; AppImage x86_64 como único canal inicial.     | aplicada (gobierno + release `v0.1.0`) | MVP-6-02/03 (F9) |
 
 ## Reglas de validación (R2)
 

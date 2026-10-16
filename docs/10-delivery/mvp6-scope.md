@@ -5,7 +5,7 @@ priority: P0
 documentStatus: accepted
 approvalStatus: approved
 implementationStatus: partial
-verificationStatus: not-verified
+verificationStatus: partial
 releaseStatus: ineligible
 owners:
   - release
@@ -24,7 +24,10 @@ dependsOn:
 - Documento: DOC-DEL-MVP6-001 · Estado: **accepted** · Propietario: Release · Fecha: 2026-10-14
 - Aceptación de canal: 2026-10-16 (DEC-011, ADR-0010 opción 3).
 - Entrada: política de empaquetado en `docs/10-delivery/packaging-release.md` y residual de
-  DEC-006 (firma definida; pipeline Etapa C en F9).
+  DEC-006 (firma definida; Etapa C parcial en F9 `v0.1.0`: SBOM/provenance/checksums;
+  cosign local deferred).
+- Primera publicación: tag [`v0.1.0`](https://github.com/Alexendros/archmaker/releases/tag/v0.1.0)
+  (`RC_SHA` `9297ed7…`). Detalle: `closure/f9-release.md`.
 - Este alcance autoriza **una sola plataforma inicial**. No anuncia cinco familias como Done.
 
 ## Objetivo
@@ -105,8 +108,8 @@ release F9.
 | #        | Issue                                               | Depende de | Gate   | Owner   | Criterio Done                                           | Estado    |
 | -------- | --------------------------------------------------- | ---------- | ------ | ------- | ------------------------------------------------------- | --------- |
 | MVP-6-01 | Aceptar este alcance y ADR-0010 (opción 3)          | —          | G2, G8 | product | Ambos `accepted`; DEC-011; plataforma AppImage única    | **done**  |
-| MVP-6-02 | Pipeline real de SBOM, provenance y firma (Etapa C) | 01         | G9     | release | DEC-006 deja de estar solo en política; F9              | open (F9) |
-| MVP-6-03 | AppImage Linux x86_64 + checksums                   | 02         | G10    | release | Artefacto publicado; smoke/checksums                    | open (F9) |
+| MVP-6-02 | Pipeline real de SBOM, provenance y firma (Etapa C) | 01         | G9     | release | DEC-006 deja de estar solo en política; F9              | **partial** (SBOM/provenance OK; cosign local deferred) |
+| MVP-6-03 | AppImage Linux x86_64 + checksums                   | 02         | G10    | release | Artefacto publicado; smoke/checksums                    | **done** (`v0.1.0`; GUI ×3 not-verified)                |
 | MVP-6-04 | Repo OBS / ficha AUR / `.deb` / `.rpm`              | —          | G10    | release | **deferred** — no parte del accepted de esta plataforma | deferred  |
 
 ## Excluido

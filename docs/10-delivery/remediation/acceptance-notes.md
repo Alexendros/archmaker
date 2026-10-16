@@ -31,17 +31,17 @@ reviewers:
 | OP-9   | not-applicable | Fuera de remediación (MVP-6 / empaquetado); no es fallo                   |
 
 Estados: `passed` | `failed` | `pending` | `blocked` | `not-applicable`. OP-9 no se marca
-`failed`: el empaquetado pertenece a otro alcance (`mvp6-scope.md`, aún `in-review`).
+`failed`: el empaquetado pertenece a otro alcance (`mvp6-scope.md` / F9), no a esta remediación.
 
-## Capas posteriores a la remediación (F8)
+## Capas posteriores a la remediación (F8 / F9)
 
 No confundir cierre OP con aceptación funcional ni con release:
 
-| Capa                                                                  | Estado  | Ancla                                                 |
-| --------------------------------------------------------------------- | ------- | ----------------------------------------------------- |
-| Baseline de código (`implementation-baseline-mvp5` + F0–F7 en `main`) | passed  | Tag `b13c200…`; cierre en `docs/10-delivery/closure/` |
-| Aprobación funcional (matriz F7 / revisor)                            | pending | `closure/f7-candidate.md`                             |
-| Release binaria (F9)                                                  | blocked | Sin MVP-6/`accepted`, sin ADR-0010/`accepted`         |
+| Capa                                                                  | Estado    | Ancla                                                                 |
+| --------------------------------------------------------------------- | --------- | --------------------------------------------------------------------- |
+| Baseline de código (`implementation-baseline-mvp5` + F0–F8 en `main`) | passed    | Tag `b13c200…`; cierre en `docs/10-delivery/closure/`                 |
+| Aprobación funcional (matriz F7 / revisor)                            | pending   | `closure/f7-candidate.md` (sin `RC_SHA_FUNCIONAL`)                    |
+| Release binaria (F9)                                                  | published | Neubat AppImage `v0.1.0`; verificación parcial (`closure/f9-release.md`) |
 
 Gobierno: [`../closure/f8-governance.md`](../closure/f8-governance.md).
 
@@ -63,8 +63,9 @@ cd apps/web && pnpm test-a11y:flow   # ?mock=1
 cd apps/web && pnpm exec playwright test wasm-flow.playwright.test.ts forge-helpers.playwright.test.ts
 ```
 
-## Exclusiones
+## Exclusiones (de esta remediación OP)
 
-Sin ISO, runner, root, discos, `pacstrap`, canales MVP-6, tags/releases binarios ni F9.
+Sin ISO, runner, root, discos ni `pacstrap` en el cierre OP. El canal AppImage Neubat
+`v0.1.0` se publica en F9 (capa distinta); no cierra aceptación funcional F7 ni imagen Arch.
 Tag `implementation-baseline-mvp5` (MVP-5-05) emitido en `b13c200a8747290e03383c6b76cbe31752741a31`
 (objeto de tag anotado distinto del commit; el commit apuntado es el citado).

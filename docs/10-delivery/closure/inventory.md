@@ -104,9 +104,12 @@ Residuales de ejecución (agente / `--with-e2e`):
 | F7-OFFLINE | web passed (`wasm-offline`)                          | escritorio sin humo de red/portal                  |
 | F7-REG-F6  | mensajes F6 executable                               | P95 n=30 (sin muestras; no se fabrican cifras)     |
 
-## F8 — gobierno
+## F8 — gobierno / F9 — publicación
 
-Alineación documental (sin distribución): `f8-governance.md`. Capas: baseline de código **passed**; aprobación funcional **pending**; release binaria **blocked**. F9 no abierto.
+Gobierno: `f8-governance.md` (**accepted**). Capas: baseline de código **passed**;
+aprobación funcional **pending** (sin `RC_SHA_FUNCIONAL`); release binaria **published**
+(Neubat AppImage `v0.1.0`, `RC_SHA` `9297ed7…`) con verificación parcial (sin cosign
+local, sin 3× install GUI). Procedimiento y residuales: `f9-release.md`. Sin imagen Arch.
 
 ## Umbrales propuestos, no resultados
 

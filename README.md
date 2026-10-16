@@ -6,12 +6,17 @@ Configurador local para diseñar, validar y exportar un perfil. Rust es la autor
 
 Tres capas distintas (detalle: [`docs/10-delivery/closure/f8-governance.md`](docs/10-delivery/closure/f8-governance.md)):
 
-| Capa                 | Estado                                                                                                     |
-| -------------------- | ---------------------------------------------------------------------------------------------------------- |
-| Baseline de código   | **passed** — tag `implementation-baseline-mvp5`; F0–F7 fusionados en `main`                                |
-| Aprobación funcional | **pending** — matriz F7 ejecutable; sin `RC_SHA_FUNCIONAL` ni aceptación independiente (`f7-candidate.md`) |
-| Release binaria      | **authorized** — AppImage Linux x86_64, nombre público **Neubat** (MVP-6 / ADR-0010 / DEC-011); F9 abierto |
+| Capa                 | Estado                                                                                                                          |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| Baseline de código   | **passed** — tag `implementation-baseline-mvp5`; F0–F8 fusionados en `main`                                                     |
+| Aprobación funcional | **pending** — matriz F7 ejecutable; sin `RC_SHA_FUNCIONAL` ni aceptación independiente (`f7-candidate.md`)                      |
+| Release binaria      | **published** — [Neubat v0.1.0](https://github.com/Alexendros/archmaker/releases/tag/v0.1.0) AppImage x86_64; verificación parcial |
 
+- Canal publicado: AppImage Linux x86_64, nombre público **Neubat**. `RC_SHA` de la release:
+  `9297ed7…`. Changelog: [`CHANGELOG.md`](CHANGELOG.md).
+- Limitaciones honestas de v0.1.0: sin cosign verificado en host local; sin tres instalaciones GUI;
+  F7 sin `RC_SHA_FUNCIONAL`; sin imagen Arch / runner / `.deb`/`.rpm`. Detalle:
+  [`docs/10-delivery/closure/f9-release.md`](docs/10-delivery/closure/f9-release.md).
 - Gate global (mecánico): **Clear** — todos los gates G0–G10 están `complete`. Autoridad: [`docs/00-governance/go-no-go.md`](docs/00-governance/go-no-go.md) y [`docs/10-delivery/gates.md`](docs/10-delivery/gates.md).
 - Veredicto de gobierno: **CONDITIONAL-CLEAR** hasta MVP-5 (sin runner). Autoriza el walking skeleton, los slices MVP-1..MVP-5 y el canal AppImage de MVP-6; runner, privilegios, ISO y Enterprise siguen bloqueados.
 - Baseline vigente: `implementation-baseline-mvp5` (commit anotado `b13c200…`; tags previos intactos). Remediación operativa: [`docs/10-delivery/remediation/`](docs/10-delivery/remediation/).
