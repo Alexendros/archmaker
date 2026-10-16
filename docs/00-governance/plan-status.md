@@ -77,3 +77,4 @@ anuncia `.deb`/`.rpm`/AUR.
 - Próximos pasos ordenados: `docs/10-delivery/next-issues.md` (ISSUE-001..010).
 - Índice documental: `docs/index.md`.
 - Desktop/offline P6: `docs/10-delivery/closure/p6-desktop-offline.md`.
+- Candidato sin publicar (P8–P9): `docs/10-delivery/closure/release-candidate.md` / `closure-handoff.md`.

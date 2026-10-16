@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Candidato y handoff P8–P9: `docs/10-delivery/closure/release-candidate.md` y
+  `closure-handoff.md` identifican el tip post-P0–P7 sin publicar, firmar ni mover
+  `v0.1.0`; firma/SBOM/revisión independiente y distribución quedan pending.
 - Gobernanza documental P7: manual de instalación de Forge, capas en plan-status/go-no-go,
   reglas de nombre/evidencia en AGENTS.md, enlaces README/índice; historia `v0.1.0` intacta.
 - Gate desktop/offline P6: el verificador admite `sourceSha` retrasado respecto de HEAD cuando

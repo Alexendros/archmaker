@@ -16,9 +16,14 @@ dependsOn:
     expectedDocumentStatus: accepted
   - id: DOC-DEL-CLO-F9-001
     expectedDocumentStatus: in-review
+  - id: DOC-DEL-CLO-P6-001
+    expectedDocumentStatus: draft
 ---
 
 # P8 — Candidato de cierre (sin publicar)
+
+- Documento: DOC-DEL-CLO-RC-001 · Estado: draft · Propietario: Release · Fecha: 2026-10-17
+- Handoff: [`closure-handoff.md`](closure-handoff.md) (DOC-DEL-CLO-HAND-001).
 
 ## Definición
 
@@ -27,14 +32,17 @@ fusionar P0–P7 (CI front-matter, naming, evidencia, perf web, Archify, aceptac
 desktop blocked, docs). No se crea tag nuevo. No se mueve `v0.1.0`. No se sustituyen
 assets de la release histórica.
 
-## SHA separados (plantilla)
+## SHA registrados
 
 | Rol | Valor | Notas |
 | --- | --- | --- |
-| Fuente (candidato) | tip de `main` post-P7 | Registrar con `git rev-parse origin/main` al cerrar |
-| Harness | tip que contiene `tools/run_*` usados | Puede coincidir con fuente |
+| Fuente (candidato) | `6440b03acf27140c410b77d3f81f43c3d9b21898` | `origin/main` post-P7 (merge PR #136); tip al fijar este documento |
+| Harness | `6440b03acf27140c410b77d3f81f43c3d9b21898` | Coincide con fuente (herramientas en el mismo tip) |
 | Renderer Archify | `ca67c9f16be0c8cad409cd45190aa052e0649b84` | Pin; no actualizar sin revalidar |
-| Artefacto publicado | `v0.1.0` / `9297ed7…` | Histórico Neubat; **no** es este candidato |
+| Artefacto publicado | `9297ed7cc47f42a9611aed0093b5ab040daca512` | Histórico `v0.1.0` Neubat; **no** es este candidato |
+
+Digest AppImage histórico: ver [`f9-release.md`](f9-release.md). Este documento **no**
+reclama digest, SBOM ni firma del tip candidato: no se produjeron bytes de canal nuevo.
 
 ## Qué queda pending / blocked
 
@@ -43,7 +51,7 @@ assets de la release histórica.
 | Firma / SBOM del candidato nuevo | pending | Bytes producidos + sí explícito de publicación |
 | Revisión independiente | pending | Revisor distinto del autor |
 | Distribución (tag/channel nuevo) | pending | Autorización explícita |
-| Desktop/offline del tip | blocked | Binario prod del tip + portal E2E (P6) |
+| Desktop/offline del tip | blocked | Binario prod del tip + portal E2E ([`p6-desktop-offline.md`](p6-desktop-offline.md)) |
 | P95 desktop | blocked | GUI + medición n≥30 |
 | Runner / ISO | out of scope | Alcance `accepted` adicional |
 
