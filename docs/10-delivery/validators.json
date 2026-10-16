@@ -86,6 +86,16 @@
       "covers": [],
       "description": "Manifiesto de evidencia de cierre: rechaza incompletos y no trata un ejemplo como evidencia",
       "transversal": true
+    },
+    {
+      "id": "VAL-F7-CANDIDATE",
+      "type": "doc",
+      "location": "tools/run_f7_candidate_matrix.py",
+      "command": "python3 tools/run_f7_candidate_matrix.py --validate-only",
+      "workflow": "ci",
+      "covers": [],
+      "description": "Matriz F7 de candidato: inventario obligatorio, result=pending, sin RC_SHA_FUNCIONAL ni aceptación independiente",
+      "transversal": true
     }
   ]
 }

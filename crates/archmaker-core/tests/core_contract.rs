@@ -52,9 +52,10 @@ fn single(step: &str, option: &str) -> Selection {
 }
 
 fn valid_draft(core: &RealCore) -> Draft {
+    // F1: create_draft no sobrescribe; cada llamada necesita un id nuevo.
     let mut draft = core
         .create_draft(CreateDraftInput {
-            draft_id: Some("0d5e6b1a-1111-4a2b-9c3d-111111111111".to_string()),
+            draft_id: None,
             catalog_ref: catalog_ref(),
             target_ref: draft_target(),
             preset_ref: None,

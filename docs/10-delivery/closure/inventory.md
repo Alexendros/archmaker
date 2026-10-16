@@ -92,6 +92,10 @@ Pruebas: `crates/archmaker-core/tests/f0_findings.rs`. Corpus: `crates/archmaker
 
 `.cursor/hooks/state/` y `target-tools/` son cachés locales no versionadas. F0 no las incluye y no cambia `.gitignore`. El vacío exigible antes de un build de aceptación es el de cambios versionados, no el de esas rutas.
 
+## F7 — matriz de candidato
+
+Tras F1–F6 en `main`, la reejecución obligatoria vive en `f7-candidate.md` + `f7-required-cases.json` (`VAL-F7-CANDIDATE`). El manifiesto de evidencia permanece `result=pending`; no declara `RC_SHA_FUNCIONAL` ni aceptación independiente.
+
 ## Umbrales propuestos, no resultados
 
 Quedan `pending`. No se usaron para aprobar nada.

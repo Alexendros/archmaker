@@ -7,14 +7,29 @@ export type PortKind = "tauri" | "wasm" | "mock";
 export type CreateCorePortResult =
   { ok: true; port: CorePort; kind: PortKind } | { ok: false; error: string };
 
-function allowMock(): boolean {
-  if (import.meta.env.PROD) return false;
-  if (typeof window === "undefined") return false;
-  const params = new URLSearchParams(window.location.search);
-  return (
-    params.get("mock") === "1" ||
-    window.localStorage.getItem("archmaker.mock") === "1"
+/**
+ * Mock solo con opt-in explícito en desarrollo. Producción nunca admite mock.
+ * Usado por F7 para demostrar fallo cerrado sin motor real.
+ */
+export function mockAllowed(input: {
+  isProd: boolean;
+  search: string;
+  localStorageMock: string | null;
+}): boolean {
+  if (input.isProd) return false;
+  const params = new URLSearchParams(
+    input.search.startsWith("?") ? input.search : `?${input.search}`,
   );
+  return params.get("mock") === "1" || input.localStorageMock === "1";
+}
+
+function allowMock(): boolean {
+  if (typeof window === "undefined") return false;
+  return mockAllowed({
+    isProd: import.meta.env.PROD,
+    search: window.location.search,
+    localStorageMock: window.localStorage.getItem("archmaker.mock"),
+  });
 }
 
 /**
