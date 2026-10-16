@@ -7,18 +7,18 @@
       "class": "delivery"
     },
     "profile-sample.json": {
-      "sha256": "49dc601567bd8c52d00cc774f383857048ba9ccfc681352e3b3d05ee1b4ce25a",
-      "sizeBytes": 57,
+      "sha256": "0712705493ea51cff62c2c060f51657cc4c8c7b02cf1112c6456bae598cc3205",
+      "sizeBytes": 62,
       "class": "delivery"
     },
     "archinstall-sample.json": {
-      "sha256": "2319cd5c2ed9a5478d10fcc60da2f048121caa47eddecdf3328ef18edc7acca0",
-      "sizeBytes": 52,
+      "sha256": "0559120ba6677a144c4e0b31470507db5e9124dfa329fd55b6b174b3a1b6413e",
+      "sizeBytes": 57,
       "class": "delivery"
     },
     "reject-empty.meta.json": {
-      "sha256": "6b5d53182a7f11aac3e26a57e5d53430b22f631e9f68e5734eddeb9486f7aa14",
-      "sizeBytes": 146,
+      "sha256": "4e3bb1b3f4d482f59d0c58e5420b5d13a236b0f4ee7838c1d26afa0df027784e",
+      "sizeBytes": 170,
       "class": "negative-bytes"
     }
   },

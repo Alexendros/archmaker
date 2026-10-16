@@ -7,10 +7,7 @@ use archmaker_core::{
     render_artifact_bytes, BuildManifestInput, CorePort, CreateDraftInput, DestinationHandle,
     ExportArtifactInput, RealCore,
 };
-use archmaker_domain::{
-    CatalogRef, ContentDigest, ContentKind, DigestAlgorithm, Draft, Selection, SelectionValue,
-    TargetRef,
-};
+use archmaker_domain::{CatalogRef, Draft, Selection, SelectionValue, TargetRef};
 use sha2::{Digest, Sha256};
 
 fn sha256_hex(bytes: &[u8]) -> String {
@@ -21,16 +18,10 @@ fn sha256_hex(bytes: &[u8]) -> String {
 }
 
 fn catalog_ref() -> CatalogRef {
-    CatalogRef {
-        namespace: "archmaker.core".to_string(),
-        id: "minimal".to_string(),
-        version: "0.1.0".to_string(),
-        digest: ContentDigest {
-            algorithm: DigestAlgorithm::Sha256,
-            value: "0".repeat(64),
-            kind: Some(ContentKind::Content),
-        },
-    }
+    RealCore::with_embedded()
+        .expect("embedded")
+        .active_catalog_ref()
+        .expect("active catalog ref")
 }
 
 fn draft_target() -> TargetRef {
