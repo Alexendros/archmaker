@@ -3,25 +3,25 @@
   "ok": true,
   "command": "validate",
   "type": "architecture",
-  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D04-frontend-coreport.architecture.json",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D04-frontend-coreport.architecture.json",
   "candidate": {
-    "path": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D04-frontend-coreport.architecture.json",
-    "sha256": "0f61b365c3c56da45b95ac954bd256553c9645bc0c3294635931f113cd488c78",
-    "bytes": 2701
+    "path": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D04-frontend-coreport.architecture.json",
+    "sha256": "d28ade597c61d9370190abb686e84ac902d6da19c873be6e5e55aca684947ace",
+    "bytes": 2695
   },
   "candidateFrozen": true,
   "nextAction": {
     "command": "finalize",
     "arguments": [
       "architecture",
-      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D04-frontend-coreport.architecture.json",
+      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D04-frontend-coreport.architecture.json",
       "<output.html>",
       "--quality",
       "showcase",
       "--repo-root",
-      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1",
+      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify",
       "--candidate-sha256",
-      "0f61b365c3c56da45b95ac954bd256553c9645bc0c3294635931f113cd488c78",
+      "d28ade597c61d9370190abb686e84ac902d6da19c873be6e5e55aca684947ace",
       "--json"
     ]
   },

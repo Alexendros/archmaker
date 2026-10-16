@@ -2,7 +2,7 @@
   "schema_version": 1,
   "diagram_type": "architecture",
   "meta": {
-    "title": "D01 Contexto del configurador Forge",
+    "title": "D01 Contexto de ArchMaker, Forge y actores",
     "output": "rendered/D01.html",
     "quality_profile": "showcase",
     "subtitle": "Forge as-built (MVP); runner/ISO/Enterprise fuera de alcance"
@@ -92,16 +92,16 @@
     },
     {
       "id": "n-docs",
-      "from": "forge",
+      "from": "user",
       "to": "arch_docs",
-      "label": "lee documentación",
+      "label": "consulta docs",
       "variant": "dashed"
     },
     {
       "id": "n-rel",
-      "from": "forge",
+      "from": "user",
       "to": "gh_release",
-      "label": "descarga AppImage",
+      "label": "descarga AppImage (fuera de runtime)",
       "variant": "dashed"
     },
     {
@@ -125,8 +125,9 @@
       "dot": "amber",
       "title": "Límites",
       "items": [
-        "Runner, ISO, root y discos no están implementados",
-        "Enterprise documentado solo en C4 aspiracional"
+        "La descarga del AppImage la hace el usuario en el canal de release",
+        "Forge no invoca GitHub Release en runtime",
+        "Runner, ISO, root y discos no están implementados"
       ]
     }
   ]

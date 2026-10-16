@@ -1,7 +1,8 @@
 {
   "schemaVersion": "1",
   "title": "Catálogo de diagramas Archify (Forge / ArchMaker)",
-  "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+  "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
+  "asBuiltSourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
   "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
   "rendererPin": "$HOME/.local/share/archify/ca67c9f16be0c8cad409cd45190aa052e0649b84",
   "requiredIds": [
@@ -37,93 +38,126 @@
   "entries": [
     {
       "id": "D01",
-      "title": "Contexto del configurador y actores",
+      "title": "Contexto de ArchMaker, Forge y actores",
       "type": "architecture",
       "source": "sources/D01-context.architecture.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
-      "codeRefs": [],
+      "codeRefs": [
+        "apps/web/src/App.tsx",
+        "apps/web/src/forge-face.ts",
+        "README.md"
+      ],
       "validation": {
         "status": "pending",
         "reviewer": null
-      }
+      },
+      "asBuiltSourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b"
     },
     {
       "id": "D02",
-      "title": "Contenedores web/WASM/Tauri/almacenamiento",
+      "title": "Web, WASM, Tauri y almacenamiento",
       "type": "architecture",
       "source": "sources/D02-containers.architecture.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
-      "codeRefs": [],
+      "codeRefs": [
+        "apps/web/src/create-core-port.ts",
+        "crates/archmaker-wasm/src/lib.rs",
+        "src-tauri/src/lib.rs",
+        "crates/archmaker-core/src/lib.rs"
+      ],
       "validation": {
         "status": "pending",
         "reviewer": null
-      }
+      },
+      "asBuiltSourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b"
     },
     {
       "id": "D03",
-      "title": "Componentes del core Rust",
+      "title": "Componentes del motor ArchMaker",
       "type": "architecture",
       "source": "sources/D03-core-components.architecture.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
-      "codeRefs": [],
+      "codeRefs": [
+        "crates/archmaker-core/src/lib.rs",
+        "crates/archmaker-domain/src/lib.rs",
+        "crates/archmaker-rules/src/lib.rs",
+        "crates/archmaker-resolution/src/lib.rs"
+      ],
       "validation": {
         "status": "pending",
         "reviewer": null
-      }
+      },
+      "asBuiltSourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b"
     },
     {
       "id": "D04",
-      "title": "Frontend y adaptadores CorePort",
+      "title": "Forge y adaptadores CorePort",
       "type": "architecture",
       "source": "sources/D04-frontend-coreport.architecture.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
-      "codeRefs": [],
+      "codeRefs": [
+        "apps/web/src/create-core-port.ts",
+        "apps/web/src/App.tsx",
+        "apps/web/src/forge-face.ts",
+        "apps/web/src/coreport.ts"
+      ],
       "validation": {
         "status": "pending",
         "reviewer": null
-      }
+      },
+      "asBuiltSourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b"
     },
     {
       "id": "D05",
-      "title": "Despliegue desktop Linux",
+      "title": "Despliegue desktop",
       "type": "architecture",
       "source": "sources/D05-desktop-linux.architecture.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
-      "codeRefs": [],
+      "codeRefs": [
+        "src-tauri/tauri.conf.json",
+        "src-tauri/src/lib.rs",
+        ".github/workflows/release.yml"
+      ],
       "validation": {
         "status": "pending",
         "reviewer": null
-      }
+      },
+      "asBuiltSourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b"
     },
     {
       "id": "D06",
-      "title": "Despliegue web y carga WASM",
+      "title": "Despliegue web/WASM",
       "type": "architecture",
       "source": "sources/D06-web-wasm.architecture.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
-      "codeRefs": [],
+      "codeRefs": [
+        "tools/build-wasm.sh",
+        "apps/web/src/create-core-port.ts",
+        "crates/archmaker-wasm/src/lib.rs"
+      ],
       "validation": {
         "status": "pending",
         "reviewer": null
-      }
+      },
+      "asBuiltSourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b"
     },
     {
       "id": "D07",
@@ -132,28 +166,36 @@
       "source": "sources/D07-init.sequence.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
-      "codeRefs": [],
+      "codeRefs": [
+        "apps/web/src/App.tsx",
+        "apps/web/src/create-core-port.ts"
+      ],
       "validation": {
         "status": "pending",
         "reviewer": null
-      }
+      },
+      "asBuiltSourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b"
     },
     {
       "id": "D08",
-      "title": "Resolver → validar → manifiesto",
+      "title": "Resolver, validar y construir manifiesto",
       "type": "sequence",
       "source": "sources/D08-resolve-validate-manifest.sequence.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
-      "codeRefs": [],
+      "codeRefs": [
+        "crates/archmaker-core/src/lib.rs",
+        "crates/archmaker-resolution/src/lib.rs"
+      ],
       "validation": {
         "status": "pending",
         "reviewer": null
-      }
+      },
+      "asBuiltSourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b"
     },
     {
       "id": "D09",
@@ -162,43 +204,55 @@
       "source": "sources/D09-export-web.sequence.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
-      "codeRefs": [],
+      "codeRefs": [
+        "apps/web/src/App.tsx",
+        "crates/archmaker-core/src/lib.rs"
+      ],
       "validation": {
         "status": "pending",
         "reviewer": null
-      }
+      },
+      "asBuiltSourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b"
     },
     {
       "id": "D10",
-      "title": "Guardado desktop y cancelación",
+      "title": "Guardado desktop/cancelación",
       "type": "sequence",
       "source": "sources/D10-desktop-save.sequence.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
-      "codeRefs": [],
+      "codeRefs": [
+        "src-tauri/src/save_export.rs",
+        "src-tauri/src/lib.rs"
+      ],
       "validation": {
         "status": "pending",
         "reviewer": null
-      }
+      },
+      "asBuiltSourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b"
     },
     {
       "id": "D11",
-      "title": "Importación con consentimiento",
+      "title": "Importación y consentimiento",
       "type": "sequence",
       "source": "sources/D11-import-consent.sequence.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
-      "codeRefs": [],
+      "codeRefs": [
+        "apps/web/src/App.tsx",
+        "crates/archmaker-core/src/lib.rs"
+      ],
       "validation": {
         "status": "pending",
         "reviewer": null
-      }
+      },
+      "asBuiltSourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b"
     },
     {
       "id": "D12",
@@ -207,13 +261,17 @@
       "source": "sources/D12-persistence.sequence.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
-      "codeRefs": [],
+      "codeRefs": [
+        "apps/web/src/draft-persistence.ts",
+        "src-tauri/src/lib.rs"
+      ],
       "validation": {
         "status": "pending",
         "reviewer": null
-      }
+      },
+      "asBuiltSourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b"
     },
     {
       "id": "D13",
@@ -222,13 +280,17 @@
       "source": "sources/D13-draft-lifecycle.lifecycle.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
-      "codeRefs": [],
+      "codeRefs": [
+        "apps/web/src/App.tsx",
+        "crates/archmaker-core/src/lib.rs"
+      ],
       "validation": {
         "status": "pending",
         "reviewer": null
-      }
+      },
+      "asBuiltSourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b"
     },
     {
       "id": "D14",
@@ -237,58 +299,75 @@
       "source": "sources/D14-prepare-export.lifecycle.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
-      "codeRefs": [],
+      "codeRefs": [
+        "apps/web/src/App.tsx",
+        "crates/archmaker-core/src/lib.rs"
+      ],
       "validation": {
         "status": "pending",
         "reviewer": null
-      }
+      },
+      "asBuiltSourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b"
     },
     {
       "id": "D15",
-      "title": "Importación lifecycle",
+      "title": "Ciclo de importación",
       "type": "lifecycle",
       "source": "sources/D15-import-lifecycle.lifecycle.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
-      "codeRefs": [],
+      "codeRefs": [
+        "apps/web/src/App.tsx",
+        "crates/archmaker-core/src/lib.rs"
+      ],
       "validation": {
         "status": "pending",
         "reviewer": null
-      }
+      },
+      "asBuiltSourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b"
     },
     {
       "id": "D16",
-      "title": "Tipos dominio/DTO/CorePort",
+      "title": "Tipos, DTO y CorePort",
       "type": "class",
       "source": "sources/D16-domain-coreport.class.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
-      "codeRefs": [],
+      "codeRefs": [
+        "crates/archmaker-domain/src/lib.rs",
+        "apps/web/src/coreport.ts"
+      ],
       "validation": {
         "status": "pending",
         "reviewer": null
-      }
+      },
+      "asBuiltSourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b"
     },
     {
       "id": "D17",
-      "title": "Flujo de datos del perfil",
+      "title": "Datos de perfil y persistencia",
       "type": "dataflow",
       "source": "sources/D17-profile-persist.dataflow.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
-      "codeRefs": [],
+      "codeRefs": [
+        "apps/web/src/draft-persistence.ts",
+        "apps/web/src/draft-for-core.ts",
+        "crates/archmaker-core/src/lib.rs"
+      ],
       "validation": {
         "status": "pending",
         "reviewer": null
-      }
+      },
+      "asBuiltSourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b"
     },
     {
       "id": "D18",
@@ -297,13 +376,17 @@
       "source": "sources/D18-canonicalization.dataflow.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
-      "codeRefs": [],
+      "codeRefs": [
+        "crates/archmaker-canonicalization/src/lib.rs",
+        "crates/archmaker-core/src/lib.rs"
+      ],
       "validation": {
         "status": "pending",
         "reviewer": null
-      }
+      },
+      "asBuiltSourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b"
     },
     {
       "id": "D19",
@@ -312,88 +395,116 @@
       "source": "sources/D19-trust-ipc.dataflow.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
-      "codeRefs": [],
+      "codeRefs": [
+        "src-tauri/capabilities/main.json",
+        "src-tauri/src/lib.rs",
+        "apps/web/src/create-core-port.ts"
+      ],
       "validation": {
         "status": "pending",
         "reviewer": null
-      }
+      },
+      "asBuiltSourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b"
     },
     {
       "id": "D20",
-      "title": "Pipeline CI y validadores",
+      "title": "CI y validadores",
       "type": "workflow",
       "source": "sources/D20-ci-pipeline.workflow.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
-      "codeRefs": [],
+      "codeRefs": [
+        ".github/workflows/ci.yml",
+        "tools/gates.py",
+        "tools/run_f7_candidate_matrix.py"
+      ],
       "validation": {
         "status": "pending",
         "reviewer": null
-      }
+      },
+      "asBuiltSourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b"
     },
     {
       "id": "D21",
-      "title": "Build firma publicación",
+      "title": "Build/firma/publicación",
       "type": "workflow",
       "source": "sources/D21-release-sign.workflow.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
-      "codeRefs": [],
+      "codeRefs": [
+        ".github/workflows/release.yml",
+        "docs/10-delivery/closure/f9-release.md"
+      ],
       "validation": {
         "status": "pending",
         "reviewer": null
-      }
+      },
+      "asBuiltSourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b"
     },
     {
       "id": "D22",
-      "title": "Aceptación F0–F9",
+      "title": "Aceptación y aprobaciones",
       "type": "workflow",
       "source": "sources/D22-f0-f9.workflow.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
-      "codeRefs": [],
+      "codeRefs": [
+        "docs/10-delivery/closure/f7-candidate.md",
+        "docs/00-governance/go-no-go.md"
+      ],
       "validation": {
         "status": "pending",
         "reviewer": null
-      }
+      },
+      "asBuiltSourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b"
     },
     {
       "id": "D23",
-      "title": "Árbol crates/apps/docs",
+      "title": "Crates/apps/docs",
       "type": "tree",
       "source": "sources/D23-crates-tree.tree.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
-      "codeRefs": [],
+      "codeRefs": [
+        "Cargo.toml",
+        "apps/web/package.json",
+        "docs/02-architecture/diagrams/README.md"
+      ],
       "validation": {
         "status": "pending",
         "reviewer": null
-      }
+      },
+      "asBuiltSourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b"
     },
     {
       "id": "D24",
-      "title": "Historial baselines y releases",
+      "title": "Baselines y releases históricas",
       "type": "timeline",
       "source": "sources/D24-baselines.timeline.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
-      "codeRefs": [],
+      "codeRefs": [
+        "docs/10-delivery/closure/f9-release.md",
+        "CHANGELOG.md"
+      ],
       "validation": {
         "status": "pending",
         "reviewer": null
-      }
+      },
+      "asBuiltSourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b"
     }
-  ]
+  ],
+  "harnessNote": "AS_BUILT_SOURCE_SHA fija el código descrito; no exige igualdad con HEAD"
 }

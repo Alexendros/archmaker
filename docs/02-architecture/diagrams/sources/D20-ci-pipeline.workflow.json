@@ -2,10 +2,14 @@
   "schema_version": 1,
   "diagram_type": "workflow",
   "meta": {
-    "title": "D20 Pipeline de CI y validadores",
+    "title": "D20 CI y validadores",
     "output": "rendered/D20.html",
     "quality_profile": "showcase",
-    "animation": "trace"
+    "animation": "trace",
+    "viewBox": [
+      820,
+      528
+    ]
   },
   "lanes": [
     {

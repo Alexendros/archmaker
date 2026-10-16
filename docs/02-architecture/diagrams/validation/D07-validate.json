@@ -3,25 +3,25 @@
   "ok": true,
   "command": "validate",
   "type": "sequence",
-  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D07-init.sequence.json",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D07-init.sequence.json",
   "candidate": {
-    "path": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D07-init.sequence.json",
-    "sha256": "37a84155c5dcc73cdbb54086df734c8dd57b138f0e31323426c02975c8d67a08",
-    "bytes": 1191
+    "path": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D07-init.sequence.json",
+    "sha256": "0270c8e2fb42c7ca366193a9fb47ceae7ab1c129b98e74c53e7db7abd10816dd",
+    "bytes": 1178
   },
   "candidateFrozen": true,
   "nextAction": {
     "command": "finalize",
     "arguments": [
       "sequence",
-      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D07-init.sequence.json",
+      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D07-init.sequence.json",
       "<output.html>",
       "--quality",
       "showcase",
       "--repo-root",
-      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1",
+      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify",
       "--candidate-sha256",
-      "37a84155c5dcc73cdbb54086df734c8dd57b138f0e31323426c02975c8d67a08",
+      "0270c8e2fb42c7ca366193a9fb47ceae7ab1c129b98e74c53e7db7abd10816dd",
       "--json"
     ]
   },

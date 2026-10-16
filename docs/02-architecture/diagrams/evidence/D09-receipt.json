@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "receiptId": "3b4ad835-60f2-44e2-9aef-276f68f5c1dc",
+  "receiptId": "979afe69-d8cb-4308-a8b8-8706cb7567ff",
   "ok": true,
   "command": "deliver",
   "type": "sequence",
-  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D09-export-web.sequence.json",
-  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/rendered/D09.html",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D09-export-web.sequence.json",
+  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/rendered/D09.html",
   "specification": {
     "sha256": "5ba697db36b73ae3e2bc84f561617e50bbcdff62ce0ce3bb121fdab211763b85",
     "bytes": 1140

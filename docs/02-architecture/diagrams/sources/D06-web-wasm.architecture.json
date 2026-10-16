@@ -2,7 +2,7 @@
   "schema_version": 1,
   "diagram_type": "architecture",
   "meta": {
-    "title": "D06 Despliegue web y carga WASM",
+    "title": "D06 Despliegue web/WASM",
     "output": "rendered/D06.html",
     "quality_profile": "showcase",
     "subtitle": "Forge as-built (MVP); runner/ISO/Enterprise fuera de alcance"

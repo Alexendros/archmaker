@@ -1,18 +1,18 @@
 {
   "schemaVersion": 1,
-  "receiptId": "e630277c-38b0-43e7-a380-bd7520a19252",
+  "receiptId": "4d2fd384-9dff-431f-9cce-3458d3d78a2e",
   "ok": true,
   "command": "deliver",
   "type": "architecture",
-  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D04-frontend-coreport.architecture.json",
-  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/rendered/D04.html",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D04-frontend-coreport.architecture.json",
+  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/rendered/D04.html",
   "specification": {
-    "sha256": "0f61b365c3c56da45b95ac954bd256553c9645bc0c3294635931f113cd488c78",
-    "bytes": 2701
+    "sha256": "d28ade597c61d9370190abb686e84ac902d6da19c873be6e5e55aca684947ace",
+    "bytes": 2695
   },
   "artifact": {
-    "sha256": "1bc41fa7c006541c991ab1ad999228b217aeefce713e1a832973bb8f6d349880",
-    "bytes": 813755
+    "sha256": "51dbb09869e8a299a9c5923d9f2078997658ad01a4c4450a44d1518a00fbdd4c",
+    "bytes": 813736
   },
   "validation": {
     "checksPassed": 9,

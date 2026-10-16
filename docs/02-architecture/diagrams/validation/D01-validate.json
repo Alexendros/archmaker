@@ -3,25 +3,25 @@
   "ok": true,
   "command": "validate",
   "type": "architecture",
-  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D01-context.architecture.json",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D01-context.architecture.json",
   "candidate": {
-    "path": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D01-context.architecture.json",
-    "sha256": "05d7a98939e2233c26d6c14a17de99d6271272eaeb57afc8e8bb77efebe11b18",
-    "bytes": 2515
+    "path": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D01-context.architecture.json",
+    "sha256": "229e0c9ae4cceb6fcce85872c43458ab7aa9ba3533d5917b9b8fe8de5428b39a",
+    "bytes": 2596
   },
   "candidateFrozen": true,
   "nextAction": {
     "command": "finalize",
     "arguments": [
       "architecture",
-      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D01-context.architecture.json",
+      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D01-context.architecture.json",
       "<output.html>",
       "--quality",
       "showcase",
       "--repo-root",
-      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1",
+      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify",
       "--candidate-sha256",
-      "05d7a98939e2233c26d6c14a17de99d6271272eaeb57afc8e8bb77efebe11b18",
+      "229e0c9ae4cceb6fcce85872c43458ab7aa9ba3533d5917b9b8fe8de5428b39a",
       "--json"
     ]
   },
@@ -84,22 +84,22 @@
     },
     "metrics": {
       "properCrossings": 0,
-      "resolvedCrossovers": 0,
+      "resolvedCrossovers": 1,
       "ambiguousCorridors": 0,
       "arrowheadCollisions": 0,
       "containerBorderRuns": 0,
       "labelRouteClearanceIssues": 0,
       "labelCanvasOverflowIssues": 0,
-      "minLabelRouteClearance": 40.9,
+      "minLabelRouteClearance": 20.9,
       "desktopReadabilityIssues": 0,
       "viewportHeightIssues": 0,
       "minProjectedNodeTextPx": 8,
-      "maxBends": 1,
-      "routesOverSuggestedBends": 0,
-      "maxStretch": 1,
+      "maxBends": 3,
+      "routesOverSuggestedBends": 1,
+      "maxStretch": 1.107,
       "routesOverSuggestedStretch": 0,
-      "minSegmentPx": 90,
-      "minInteriorSegmentPx": null,
+      "minSegmentPx": 24,
+      "minInteriorSegmentPx": 56,
       "shortSegmentCount": 0,
       "shortEndpointSegmentCount": 0,
       "shortInteriorSegmentCount": 0,
@@ -112,8 +112,56 @@
       "microSegmentPx": 8
     },
     "routeReview": {
-      "crossings": [],
-      "detours": []
+      "crossings": [
+        {
+          "left": {
+            "id": "n-rel",
+            "from": "user",
+            "to": "gh_release",
+            "label": "descarga AppImage (fuera de runtime)",
+            "collectionIndex": 2,
+            "artifactIndex": 3
+          },
+          "right": {
+            "id": "n-fut",
+            "from": "forge",
+            "to": "future",
+            "label": "fuera de veredicto",
+            "collectionIndex": 3,
+            "artifactIndex": 4
+          },
+          "point": [
+            355,
+            368
+          ]
+        }
+      ],
+      "detours": [
+        {
+          "relationship": {
+            "id": "n-rel",
+            "from": "user",
+            "to": "gh_release",
+            "label": "descarga AppImage (fuera de runtime)",
+            "collectionIndex": 2,
+            "artifactIndex": 3
+          },
+          "bends": 3,
+          "stretch": 1.107,
+          "directCorridorBlockers": [
+            {
+              "id": "forge",
+              "label": "Forge",
+              "box": [
+                280,
+                280,
+                150,
+                64
+              ]
+            }
+          ]
+        }
+      ]
     },
     "leadingSpace": {
       "measured": true,

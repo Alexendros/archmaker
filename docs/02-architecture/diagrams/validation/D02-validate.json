@@ -3,25 +3,25 @@
   "ok": true,
   "command": "validate",
   "type": "architecture",
-  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D02-containers.architecture.json",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D02-containers.architecture.json",
   "candidate": {
-    "path": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D02-containers.architecture.json",
-    "sha256": "2fcdc5b6f24351361ac17071bda4c4179923328a86ac21615db8243b9ab9f075",
-    "bytes": 3623
+    "path": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D02-containers.architecture.json",
+    "sha256": "4c13f2d7f431622f31907562206693cea5be6464ca9141288bdea8c1100d5225",
+    "bytes": 3609
   },
   "candidateFrozen": true,
   "nextAction": {
     "command": "finalize",
     "arguments": [
       "architecture",
-      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D02-containers.architecture.json",
+      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D02-containers.architecture.json",
       "<output.html>",
       "--quality",
       "showcase",
       "--repo-root",
-      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1",
+      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify",
       "--candidate-sha256",
-      "2fcdc5b6f24351361ac17071bda4c4179923328a86ac21615db8243b9ab9f075",
+      "4c13f2d7f431622f31907562206693cea5be6464ca9141288bdea8c1100d5225",
       "--json"
     ]
   },

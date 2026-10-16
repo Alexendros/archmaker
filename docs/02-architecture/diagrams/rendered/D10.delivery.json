@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "receiptId": "08a11e55-fa03-4087-8778-35a2960402de",
+  "receiptId": "71a5c5ae-e5be-44b1-94d7-67f1a2094f98",
   "status": "current",
   "command": "deliver",
   "type": "sequence",
-  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D10-desktop-save.sequence.json",
-  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/rendered/D10.html",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D10-desktop-save.sequence.json",
+  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/rendered/D10.html",
   "specification": {
-    "sha256": "e55f8ac52d3923c75abda7b27969dc08f52fb1861d8e0bb1ff29b6c4ca5737fb",
-    "bytes": 1461
+    "sha256": "47682b60395484cede4f74f56317eed8ad34938e2170d094fe04c8ea5755ebf1",
+    "bytes": 1459
   },
   "artifact": {
-    "sha256": "c2e42d2acf5219c54ee892e4ae1568d83857916732c4143d2c0439fc26eeaa56",
-    "bytes": 804867
+    "sha256": "5236c929b1ac82dc90a57f2b7cc5adb033a3b391deaff98eec522e6572b91b19",
+    "bytes": 804861
   }
 }

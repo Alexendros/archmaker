@@ -2,7 +2,7 @@
   "schema_version": 1,
   "diagram_type": "sequence",
   "meta": {
-    "title": "D11 Importación con informe y consentimiento",
+    "title": "D11 Importación y consentimiento",
     "output": "rendered/D11.html",
     "quality_profile": "showcase",
     "animation": "trace",

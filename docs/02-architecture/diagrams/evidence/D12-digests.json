@@ -1,9 +1,9 @@
 {
   "id": "D12",
   "source": "sources/D12-persistence.sequence.json",
-  "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+  "asBuiltSourceSha": "cb626dbb6cf7a50e66ebefd0bbd7b9982c9ec63d",
   "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
-  "sourceSha256": "0f60e58df99b6a942e238636abf967a3d8c4216db8556554e15c65c8f3343de0",
-  "htmlSha256": "424a6b6bdc07881c300b022351ba086f653b82d4f59503a0248e3d207a20519b",
+  "sourceSha256": "3a6ebf78b33740d241d3f7b2d52c0cb6cefebe2f83e3c93300093132f73cdcdd",
+  "htmlSha256": "f9ea179db5147edb7a697c6ba0191873061bb729d2e39479e0edb83fd86e0f21",
   "html": "rendered/D12.html"
 }

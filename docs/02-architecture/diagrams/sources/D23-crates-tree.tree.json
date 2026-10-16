@@ -2,7 +2,7 @@
   "schema_version": 1,
   "diagram_type": "tree",
   "meta": {
-    "title": "D23 Árbol de crates, apps y documentación",
+    "title": "D23 Crates/apps/docs",
     "subtitle": "Contención as-built; enlaces no son llamadas runtime",
     "output": "rendered/D23.html",
     "quality_profile": "showcase"

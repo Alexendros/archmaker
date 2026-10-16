@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "receiptId": "41537419-91ac-40b9-a83b-c3bf8f425454",
+  "receiptId": "6a731cea-2fad-4023-bbe3-8abc1f802c40",
   "ok": true,
   "command": "deliver",
   "type": "dataflow",
-  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D18-canonicalization.dataflow.json",
-  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/rendered/D18.html",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D18-canonicalization.dataflow.json",
+  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/rendered/D18.html",
   "specification": {
-    "sha256": "bfa6d124916636ed2bbc1314f0ac7932fb2cacb4ddd72a4b7b30f2dbef42338a",
+    "sha256": "28ba1b571e1ce96d8352a8cdfee4e7fa1415bd37187deb608e5db7c69c487b24",
     "bytes": 1915
   },
   "artifact": {
-    "sha256": "332d1de91da1946ea677d2c45cf3dc08b60486cd7cf9e5e26c48859dbd691ab5",
+    "sha256": "de64d82fc4ef07109bc9a2d7b97a2f932cd12a7f1ccb4ee6ab8aeeb38f3afd8d",
     "bytes": 805051
   },
   "validation": {
@@ -20,26 +20,7 @@
     "compositionProfile": "showcase",
     "compositionStatus": "pass",
     "errors": 0,
-    "warnings": 1,
-    "compositionIssues": [
-      {
-        "severity": "warning",
-        "code": "composition/viewport-height",
-        "readerFit": null,
-        "viewBoxWidth": 1100,
-        "viewBoxHeight": 720,
-        "viewportWidth": 1440,
-        "viewportHeight": 900,
-        "ratio": 1.53,
-        "wideRatio": 1.55,
-        "svgWidthPx": 1346,
-        "svgHeightPx": 881,
-        "fixedChromePx": 126,
-        "pageHeightPx": 1007,
-        "overflowPx": 107,
-        "detail": "[composition/viewport-height] Preserve every node, relationship, and label. This 1100x720 canvas (ratio 1.53) declares no intrinsic-height fit and is below the 1.55 wide ratio, so the desktop Reader can neither narrow it nor accept vertical scroll: it renders 881px tall at the full 1346px width and the page reaches 1007px before cards against 900px, a certain visual-check failure. Either compact vertical spacing so meta.viewBox height is at most 709 at this width, or spread content sideways so the width is at least 1116 at this height; for architecture and readable-v2 workflow, omitting meta.viewBox lets the renderer size the canvas and declare the fit."
-      }
-    ]
+    "warnings": 0
   },
   "update": {
     "status": "unavailable",

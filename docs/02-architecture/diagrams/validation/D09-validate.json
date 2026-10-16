@@ -3,9 +3,9 @@
   "ok": true,
   "command": "validate",
   "type": "sequence",
-  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D09-export-web.sequence.json",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D09-export-web.sequence.json",
   "candidate": {
-    "path": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D09-export-web.sequence.json",
+    "path": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D09-export-web.sequence.json",
     "sha256": "5ba697db36b73ae3e2bc84f561617e50bbcdff62ce0ce3bb121fdab211763b85",
     "bytes": 1140
   },
@@ -14,12 +14,12 @@
     "command": "finalize",
     "arguments": [
       "sequence",
-      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D09-export-web.sequence.json",
+      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D09-export-web.sequence.json",
       "<output.html>",
       "--quality",
       "showcase",
       "--repo-root",
-      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1",
+      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify",
       "--candidate-sha256",
       "5ba697db36b73ae3e2bc84f561617e50bbcdff62ce0ce3bb121fdab211763b85",
       "--json"

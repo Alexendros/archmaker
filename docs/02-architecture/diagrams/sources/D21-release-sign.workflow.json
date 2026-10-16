@@ -2,10 +2,14 @@
   "schema_version": 1,
   "diagram_type": "workflow",
   "meta": {
-    "title": "D21 Build, firma, publicación y verificación",
+    "title": "D21 Build/firma/publicación",
     "output": "rendered/D21.html",
     "quality_profile": "showcase",
-    "animation": "trace"
+    "animation": "trace",
+    "viewBox": [
+      1020,
+      652
+    ]
   },
   "lanes": [
     {

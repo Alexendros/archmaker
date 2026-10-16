@@ -3,25 +3,25 @@
   "ok": true,
   "command": "validate",
   "type": "architecture",
-  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D05-desktop-linux.architecture.json",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D05-desktop-linux.architecture.json",
   "candidate": {
-    "path": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D05-desktop-linux.architecture.json",
-    "sha256": "0e18a32c4ac39a9f38630fea41ba5082c0e486226300ed58808c6679ac0139b0",
-    "bytes": 2475
+    "path": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D05-desktop-linux.architecture.json",
+    "sha256": "306003456037b658544c197e0eb91214e58435debb791ea8a8636a9c8d1cc962",
+    "bytes": 2449
   },
   "candidateFrozen": true,
   "nextAction": {
     "command": "finalize",
     "arguments": [
       "architecture",
-      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D05-desktop-linux.architecture.json",
+      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D05-desktop-linux.architecture.json",
       "<output.html>",
       "--quality",
       "showcase",
       "--repo-root",
-      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1",
+      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify",
       "--candidate-sha256",
-      "0e18a32c4ac39a9f38630fea41ba5082c0e486226300ed58808c6679ac0139b0",
+      "306003456037b658544c197e0eb91214e58435debb791ea8a8636a9c8d1cc962",
       "--json"
     ]
   },

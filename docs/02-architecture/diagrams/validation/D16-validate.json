@@ -3,25 +3,25 @@
   "ok": true,
   "command": "validate",
   "type": "class",
-  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D16-domain-coreport.class.json",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D16-domain-coreport.class.json",
   "candidate": {
-    "path": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D16-domain-coreport.class.json",
-    "sha256": "3d2302941804ae72e609a752903d3133a07c9e709082d2ca4719ac546ccd50e3",
-    "bytes": 2981
+    "path": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D16-domain-coreport.class.json",
+    "sha256": "1ff9ff91644002bf68b755ca39eb9a1b6189a5dce200dbb420c758e6ac28cc0d",
+    "bytes": 2979
   },
   "candidateFrozen": true,
   "nextAction": {
     "command": "finalize",
     "arguments": [
       "class",
-      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D16-domain-coreport.class.json",
+      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D16-domain-coreport.class.json",
       "<output.html>",
       "--quality",
       "showcase",
       "--repo-root",
-      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1",
+      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify",
       "--candidate-sha256",
-      "3d2302941804ae72e609a752903d3133a07c9e709082d2ca4719ac546ccd50e3",
+      "1ff9ff91644002bf68b755ca39eb9a1b6189a5dce200dbb420c758e6ac28cc0d",
       "--json"
     ]
   },

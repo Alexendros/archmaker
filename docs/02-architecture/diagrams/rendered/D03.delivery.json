@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "receiptId": "d9cfa921-81f3-4b05-b8a7-b9abbaf522ea",
+  "receiptId": "163fdf44-3c71-48b4-b2e3-850025714dbe",
   "status": "current",
   "command": "deliver",
   "type": "architecture",
-  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D03-core-components.architecture.json",
-  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/rendered/D03.html",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D03-core-components.architecture.json",
+  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/rendered/D03.html",
   "specification": {
-    "sha256": "bf399a87771b8b7d362b0c051e38a4f7435afd63b532b35077e49edc5140ddfd",
-    "bytes": 2662
+    "sha256": "e275387c1d4adf136754691b53589ae5b9fa3d681846692d432c0b084aab2d82",
+    "bytes": 2656
   },
   "artifact": {
-    "sha256": "64ca315efa2f3bb1a5832aca48856c7ecb3bf64d666e9e1f7734d60e76673e45",
-    "bytes": 813571
+    "sha256": "7fc7d6244d11e6b8cf4d88e82f47358267dffb95670122765b9dad4cb8d98e17",
+    "bytes": 813554
   }
 }

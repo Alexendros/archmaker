@@ -3,25 +3,25 @@
   "ok": true,
   "command": "validate",
   "type": "architecture",
-  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D06-web-wasm.architecture.json",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D06-web-wasm.architecture.json",
   "candidate": {
-    "path": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D06-web-wasm.architecture.json",
-    "sha256": "039a0071728fe1d14c2555fb55658ae7893562923a376d51df55ee9b53fdd452",
-    "bytes": 2194
+    "path": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D06-web-wasm.architecture.json",
+    "sha256": "1d566155f69ff8d96034c96abf57c2b3d2f43c7c6d79499f10b444d139cb2fe4",
+    "bytes": 2185
   },
   "candidateFrozen": true,
   "nextAction": {
     "command": "finalize",
     "arguments": [
       "architecture",
-      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D06-web-wasm.architecture.json",
+      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D06-web-wasm.architecture.json",
       "<output.html>",
       "--quality",
       "showcase",
       "--repo-root",
-      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1",
+      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify",
       "--candidate-sha256",
-      "039a0071728fe1d14c2555fb55658ae7893562923a376d51df55ee9b53fdd452",
+      "1d566155f69ff8d96034c96abf57c2b3d2f43c7c6d79499f10b444d139cb2fe4",
       "--json"
     ]
   },

@@ -1,9 +1,9 @@
 {
   "id": "D03",
   "source": "sources/D03-core-components.architecture.json",
-  "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+  "asBuiltSourceSha": "cb626dbb6cf7a50e66ebefd0bbd7b9982c9ec63d",
   "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
-  "sourceSha256": "bf399a87771b8b7d362b0c051e38a4f7435afd63b532b35077e49edc5140ddfd",
-  "htmlSha256": "64ca315efa2f3bb1a5832aca48856c7ecb3bf64d666e9e1f7734d60e76673e45",
+  "sourceSha256": "e275387c1d4adf136754691b53589ae5b9fa3d681846692d432c0b084aab2d82",
+  "htmlSha256": "7fc7d6244d11e6b8cf4d88e82f47358267dffb95670122765b9dad4cb8d98e17",
   "html": "rendered/D03.html"
 }

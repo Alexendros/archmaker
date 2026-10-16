@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "receiptId": "61c852ed-de95-4246-9a65-149e12346198",
+  "receiptId": "72c0b568-db46-4a8c-85e0-096dd4bf2c53",
   "status": "current",
   "command": "deliver",
   "type": "lifecycle",
-  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D15-import-lifecycle.lifecycle.json",
-  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/rendered/D15.html",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D15-import-lifecycle.lifecycle.json",
+  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/rendered/D15.html",
   "specification": {
-    "sha256": "137c2bb66aa7f4a076f64ffdd65ca88adac94f4c34ad3c78496299cc92caec40",
-    "bytes": 1636
+    "sha256": "b19ce0ca04e941e2b4b07b25e56fc0a97623b26d6d318cbe45b2ce266d6d413e",
+    "bytes": 1613
   },
   "artifact": {
-    "sha256": "247e6fc81beca24db5c916662036940849f11f25fa761b647e5ff2d4e054760a",
-    "bytes": 808507
+    "sha256": "5d72583036eab62901cb97e9f32d7abd8878880bec9ddda5ba155e2ffd225889",
+    "bytes": 808438
   }
 }

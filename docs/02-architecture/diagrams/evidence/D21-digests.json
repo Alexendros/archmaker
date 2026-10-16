@@ -1,9 +1,9 @@
 {
   "id": "D21",
   "source": "sources/D21-release-sign.workflow.json",
-  "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+  "asBuiltSourceSha": "cb626dbb6cf7a50e66ebefd0bbd7b9982c9ec63d",
   "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
-  "sourceSha256": "2151f0c323d676ed4d8495ab711e1b6384b703ac7e94ecb574d0ebcd95758478",
-  "htmlSha256": "ee1aaa04abf9244008b66f9dbc59cca449647ac63056385981bb02664b3605c5",
+  "sourceSha256": "1b57f58df79079a011a3368f6704f83ade363f68aaa1c05e6e41a94beba7b8f6",
+  "htmlSha256": "8e668e5ced12b3217ece7802d9e2be86401a16e4fd1fa268c33da4d28dc09b58",
   "html": "rendered/D21.html"
 }

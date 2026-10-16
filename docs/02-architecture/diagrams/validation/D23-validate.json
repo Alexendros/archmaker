@@ -3,25 +3,25 @@
   "ok": true,
   "command": "validate",
   "type": "tree",
-  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D23-crates-tree.tree.json",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D23-crates-tree.tree.json",
   "candidate": {
-    "path": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D23-crates-tree.tree.json",
-    "sha256": "14272cb291ca03ee9763b03d21cab201b3322fb599af285cf9b3d022d493569c",
-    "bytes": 1572
+    "path": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D23-crates-tree.tree.json",
+    "sha256": "4938c610f00836e6f6f8c724e128c848222d1b5baf148cf5148e580f056446dc",
+    "bytes": 1549
   },
   "candidateFrozen": true,
   "nextAction": {
     "command": "finalize",
     "arguments": [
       "tree",
-      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D23-crates-tree.tree.json",
+      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D23-crates-tree.tree.json",
       "<output.html>",
       "--quality",
       "showcase",
       "--repo-root",
-      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1",
+      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify",
       "--candidate-sha256",
-      "14272cb291ca03ee9763b03d21cab201b3322fb599af285cf9b3d022d493569c",
+      "4938c610f00836e6f6f8c724e128c848222d1b5baf148cf5148e580f056446dc",
       "--json"
     ]
   },
