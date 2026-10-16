@@ -2,7 +2,7 @@
   "schema_version": 1,
   "diagram_type": "class",
   "meta": {
-    "title": "D16 Dominio, DTO y CorePort",
+    "title": "D16 Tipos, DTO y CorePort",
     "subtitle": "9 operaciones reales en port.rs; TypeScript mirror en coreport.ts",
     "output": "rendered/D16.html",
     "quality_profile": "showcase"

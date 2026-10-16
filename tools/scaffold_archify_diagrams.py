@@ -7,6 +7,7 @@ D25/D26 no se generan (condicionados a mediciones / ERD real).
 
 from __future__ import annotations
 
+import hashlib
 import json
 import subprocess
 from pathlib import Path
@@ -15,6 +16,87 @@ ROOT = Path(__file__).resolve().parents[1]
 DIAG = ROOT / "docs/02-architecture/diagrams"
 SOURCES = DIAG / "sources"
 RENDERER_SHA = "ca67c9f16be0c8cad409cd45190aa052e0649b84"
+
+# SHA del producto descrito por las vistas (no se exige == HEAD).
+AS_BUILT_SOURCE_SHA = "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b"
+
+TITLES = {
+    "D01": "Contexto de ArchMaker, Forge y actores",
+    "D02": "Web, WASM, Tauri y almacenamiento",
+    "D03": "Componentes del motor ArchMaker",
+    "D04": "Forge y adaptadores CorePort",
+    "D05": "Despliegue desktop",
+    "D06": "Despliegue web/WASM",
+    "D07": "Inicialización, catálogo y perfil",
+    "D08": "Resolver, validar y construir manifiesto",
+    "D09": "Exportación web y digest",
+    "D10": "Guardado desktop/cancelación",
+    "D11": "Importación y consentimiento",
+    "D12": "Persistencia y recuperación",
+    "D13": "Ciclo de vida del draft",
+    "D14": "Preparación/exportación e invalidación",
+    "D15": "Ciclo de importación",
+    "D16": "Tipos, DTO y CorePort",
+    "D17": "Datos de perfil y persistencia",
+    "D18": "Canonicalización y digests",
+    "D19": "Fronteras de confianza e IPC",
+    "D20": "CI y validadores",
+    "D21": "Build/firma/publicación",
+    "D22": "Aceptación y aprobaciones",
+    "D23": "Crates/apps/docs",
+    "D24": "Baselines y releases históricas",
+}
+
+CODE_REFS = {
+    "D01": ["apps/web/src/App.tsx", "apps/web/src/forge-face.ts", "README.md"],
+    "D02": [
+        "apps/web/src/create-core-port.ts",
+        "crates/archmaker-wasm/src/lib.rs",
+        "src-tauri/src/lib.rs",
+        "crates/archmaker-core/src/lib.rs",
+    ],
+    "D03": [
+        "crates/archmaker-core/src/lib.rs",
+        "crates/archmaker-domain/src/lib.rs",
+        "crates/archmaker-rules/src/lib.rs",
+        "crates/archmaker-resolution/src/lib.rs",
+    ],
+    "D04": [
+        "apps/web/src/create-core-port.ts",
+        "apps/web/src/App.tsx",
+        "apps/web/src/forge-face.ts",
+        "apps/web/src/coreport.ts",
+    ],
+    "D05": ["src-tauri/tauri.conf.json", "src-tauri/src/lib.rs", ".github/workflows/release.yml"],
+    "D06": ["tools/build-wasm.sh", "apps/web/src/create-core-port.ts", "crates/archmaker-wasm/src/lib.rs"],
+    "D07": ["apps/web/src/App.tsx", "apps/web/src/create-core-port.ts"],
+    "D08": ["crates/archmaker-core/src/lib.rs", "crates/archmaker-resolution/src/lib.rs"],
+    "D09": ["apps/web/src/App.tsx", "crates/archmaker-core/src/lib.rs"],
+    "D10": ["src-tauri/src/save_export.rs", "src-tauri/src/lib.rs"],
+    "D11": ["apps/web/src/App.tsx", "crates/archmaker-core/src/lib.rs"],
+    "D12": ["apps/web/src/draft-persistence.ts", "src-tauri/src/lib.rs"],
+    "D13": ["apps/web/src/App.tsx", "crates/archmaker-core/src/lib.rs"],
+    "D14": ["apps/web/src/App.tsx", "crates/archmaker-core/src/lib.rs"],
+    "D15": ["apps/web/src/App.tsx", "crates/archmaker-core/src/lib.rs"],
+    "D16": ["crates/archmaker-domain/src/lib.rs", "apps/web/src/coreport.ts"],
+    "D17": [
+        "apps/web/src/draft-persistence.ts",
+        "apps/web/src/draft-for-core.ts",
+        "crates/archmaker-core/src/lib.rs",
+    ],
+    "D18": ["crates/archmaker-canonicalization/src/lib.rs", "crates/archmaker-core/src/lib.rs"],
+    "D19": [
+        "src-tauri/capabilities/main.json",
+        "src-tauri/src/lib.rs",
+        "apps/web/src/create-core-port.ts",
+    ],
+    "D20": [".github/workflows/ci.yml", "tools/gates.py", "tools/run_f7_candidate_matrix.py"],
+    "D21": [".github/workflows/release.yml", "docs/10-delivery/closure/f9-release.md"],
+    "D22": ["docs/10-delivery/closure/f7-candidate.md", "docs/00-governance/go-no-go.md"],
+    "D23": ["Cargo.toml", "apps/web/package.json", "docs/02-architecture/diagrams/README.md"],
+    "D24": ["docs/10-delivery/closure/f9-release.md", "CHANGELOG.md"],
+}
+
 
 
 def git_sha() -> str:
@@ -61,7 +143,7 @@ def main() -> int:
         "D01-context.architecture.json",
         arch(
             "D01",
-            "D01 Contexto del configurador Forge",
+            "D01 Contexto de ArchMaker, Forge y actores",
             [
                 {"id": "user", "type": "external", "label": "Usuario", "sublabel": "Sencillo / Avanzado", "pos": [40, 280], "size": [130, 64]},
                 {"id": "forge", "type": "frontend", "label": "Forge", "sublabel": "configurador", "pos": [280, 280], "size": [150, 64], "tag": "público"},
@@ -72,23 +154,23 @@ def main() -> int:
             [
                 {"id": "u-n", "from": "user", "to": "forge", "label": "selección → export", "variant": "emphasis"},
                 {"id": "n-docs", "from": "forge", "to": "arch_docs", "label": "lee documentación", "variant": "dashed"},
-                {"id": "n-rel", "from": "forge", "to": "gh_release", "label": "descarga AppImage", "variant": "dashed"},
+                {"id": "n-rel", "from": "user", "to": "gh_release", "label": "descarga canal publicado", "variant": "dashed"},
                 {"id": "n-fut", "from": "forge", "to": "future", "label": "fuera de veredicto", "variant": "dashed"},
             ],
             [
-                {"dot": "cyan", "title": "Producto", "items": ["Forge es la interfaz gráfica de ArchMaker", "Archify es herramienta de diagramación, no el producto"]},
+                {"dot": "cyan", "title": "Producto", "items": ["Forge es la interfaz gráfica de ArchMaker", "Archify es herramienta de diagramación, no el producto", "La descarga del AppImage es del usuario vía GitHub Release, no una llamada runtime de Forge"]},
                 {"dot": "amber", "title": "Límites", "items": ["Runner, ISO, root y discos no están implementados", "Enterprise documentado solo en C4 aspiracional"]},
             ],
         ),
     )
-    catalog_entries.append({"id": "D01", "title": "Contexto del configurador y actores", "type": "architecture", "source": "sources/D01-context.architecture.json", "status": "actual"})
+    catalog_entries.append({"id": "D01", "title": TITLES["D01"], "type": "architecture", "source": "sources/D01-context.architecture.json", "status": "actual"})
 
     # D02 containers
     write(
         "D02-containers.architecture.json",
         arch(
             "D02",
-            "D02 Contenedores: web, WASM, Tauri, almacenamiento",
+            "D02 Web, WASM, Tauri y almacenamiento",
             [
                 {"id": "browser", "type": "frontend", "label": "Navegador", "sublabel": "Vite + React", "pos": [40, 120], "size": [140, 64]},
                 {"id": "webview", "type": "frontend", "label": "WebView", "sublabel": "Tauri 2", "pos": [40, 280], "size": [140, 64]},
@@ -115,14 +197,14 @@ def main() -> int:
             [{"kind": "region", "label": "Producto shipped", "wraps": ["browser", "webview", "wasm", "tauri", "core", "idb", "fs", "ls"]}],
         ),
     )
-    catalog_entries.append({"id": "D02", "title": "Contenedores web/WASM/Tauri/almacenamiento", "type": "architecture", "source": "sources/D02-containers.architecture.json", "status": "actual"})
+    catalog_entries.append({"id": "D02", "title": TITLES["D02"], "type": "architecture", "source": "sources/D02-containers.architecture.json", "status": "actual"})
 
     # D03 core components
     write(
         "D03-core-components.architecture.json",
         arch(
             "D03",
-            "D03 Componentes del core Rust (as-built)",
+            "D03 Componentes del motor ArchMaker",
             [
                 {"id": "domain", "type": "backend", "label": "archmaker-domain", "sublabel": "tipos", "pos": [40, 200], "size": [150, 60]},
                 {"id": "canon", "type": "backend", "label": "canonicalization", "sublabel": "bytes canónicos", "pos": [220, 80], "size": [160, 60]},
@@ -145,14 +227,14 @@ def main() -> int:
             ],
         ),
     )
-    catalog_entries.append({"id": "D03", "title": "Componentes del core Rust", "type": "architecture", "source": "sources/D03-core-components.architecture.json", "status": "actual"})
+    catalog_entries.append({"id": "D03", "title": TITLES["D03"], "type": "architecture", "source": "sources/D03-core-components.architecture.json", "status": "actual"})
 
     # D04 frontend adapters
     write(
         "D04-frontend-coreport.architecture.json",
         arch(
             "D04",
-            "D04 Frontend y adaptadores CorePort",
+            "D04 Forge y adaptadores CorePort",
             [
                 {"id": "app", "type": "frontend", "label": "App.tsx", "sublabel": "Forge face", "pos": [40, 220], "size": [140, 64]},
                 {"id": "face", "type": "frontend", "label": "forge-face", "sublabel": "UI state", "pos": [40, 80], "size": [140, 60]},
@@ -173,14 +255,14 @@ def main() -> int:
             [{"dot": "emerald", "title": "Arranque", "items": ["Desktop → Tauri", "Browser → WASM", "Mock nunca por fallo silencioso"]}],
         ),
     )
-    catalog_entries.append({"id": "D04", "title": "Frontend y adaptadores CorePort", "type": "architecture", "source": "sources/D04-frontend-coreport.architecture.json", "status": "actual"})
+    catalog_entries.append({"id": "D04", "title": TITLES["D04"], "type": "architecture", "source": "sources/D04-frontend-coreport.architecture.json", "status": "actual"})
 
     # D05 desktop deploy
     write(
         "D05-desktop-linux.architecture.json",
         arch(
             "D05",
-            "D05 Despliegue desktop Linux (AppImage Forge)",
+            "D05 Despliegue desktop",
             [
                 {"id": "user", "type": "external", "label": "Usuario Linux", "sublabel": "x86_64", "pos": [40, 220], "size": [140, 60]},
                 {"id": "appimage", "type": "cloud", "label": "Forge AppImage", "sublabel": "bundle", "pos": [260, 220], "size": [170, 64], "tag": "v0.1.0"},
@@ -202,14 +284,14 @@ def main() -> int:
             ],
         ),
     )
-    catalog_entries.append({"id": "D05", "title": "Despliegue desktop Linux", "type": "architecture", "source": "sources/D05-desktop-linux.architecture.json", "status": "actual"})
+    catalog_entries.append({"id": "D05", "title": TITLES["D05"], "type": "architecture", "source": "sources/D05-desktop-linux.architecture.json", "status": "actual"})
 
     # D06 web wasm
     write(
         "D06-web-wasm.architecture.json",
         arch(
             "D06",
-            "D06 Despliegue web y carga WASM",
+            "D06 Despliegue web/WASM",
             [
                 {"id": "browser", "type": "frontend", "label": "Navegador", "pos": [40, 220], "size": [130, 60]},
                 {"id": "vite", "type": "frontend", "label": "Vite app", "sublabel": "apps/web", "pos": [240, 220], "size": [140, 60]},
@@ -228,7 +310,7 @@ def main() -> int:
             [{"dot": "cyan", "title": "Build", "items": ["tools/build-wasm.sh → wasm-bindgen --target web", "Paridad nativo/WASM en tests"]}],
         ),
     )
-    catalog_entries.append({"id": "D06", "title": "Despliegue web y carga WASM", "type": "architecture", "source": "sources/D06-web-wasm.architecture.json", "status": "actual"})
+    catalog_entries.append({"id": "D06", "title": TITLES["D06"], "type": "architecture", "source": "sources/D06-web-wasm.architecture.json", "status": "actual"})
 
     def seq(diagram_id: str, title: str, participants: list, messages: list, cards: list) -> dict:
         ys = [180 + i * 42 for i in range(len(messages))]
@@ -258,7 +340,7 @@ def main() -> int:
         "D07-init.sequence.json",
         seq(
             "D07",
-            "D07 Inicialización, catálogo y creación de perfil",
+            "D07 Inicialización, catálogo y perfil",
             [
                 {"id": "ui", "type": "frontend", "label": "UI", "sublabel": "App"},
                 {"id": "factory", "type": "backend", "label": "create-core-port"},
@@ -272,13 +354,13 @@ def main() -> int:
             [{"dot": "cyan", "title": "Inicio", "items": ["Adapter según entorno", "Catálogo embebido / producto"]}],
         ),
     )
-    catalog_entries.append({"id": "D07", "title": "Inicialización, catálogo y perfil", "type": "sequence", "source": "sources/D07-init.sequence.json", "status": "actual"})
+    catalog_entries.append({"id": "D07", "title": TITLES["D07"], "type": "sequence", "source": "sources/D07-init.sequence.json", "status": "actual"})
 
     write(
         "D08-resolve-validate-manifest.sequence.json",
         seq(
             "D08",
-            "D08 Resolver → validar → construir manifiesto",
+            "D08 Resolver, validar y construir manifiesto",
             [
                 {"id": "ui", "type": "frontend", "label": "UI"},
                 {"id": "core", "type": "backend", "label": "RealCore"},
@@ -294,7 +376,7 @@ def main() -> int:
             [{"dot": "emerald", "title": "Pipeline", "items": ["Autoridad en Rust", "Invalidación si el draft cambia"]}],
         ),
     )
-    catalog_entries.append({"id": "D08", "title": "Resolver → validar → manifiesto", "type": "sequence", "source": "sources/D08-resolve-validate-manifest.sequence.json", "status": "actual"})
+    catalog_entries.append({"id": "D08", "title": TITLES["D08"], "type": "sequence", "source": "sources/D08-resolve-validate-manifest.sequence.json", "status": "actual"})
 
     write(
         "D09-export-web.sequence.json",
@@ -314,13 +396,13 @@ def main() -> int:
             [{"dot": "cyan", "title": "Digests", "items": ["contentDigest ≠ binaryDigest", "Comprobación en tests de fidelidad"]}],
         ),
     )
-    catalog_entries.append({"id": "D09", "title": "Exportación web y digest", "type": "sequence", "source": "sources/D09-export-web.sequence.json", "status": "actual"})
+    catalog_entries.append({"id": "D09", "title": TITLES["D09"], "type": "sequence", "source": "sources/D09-export-web.sequence.json", "status": "actual"})
 
     write(
         "D10-desktop-save.sequence.json",
         seq(
             "D10",
-            "D10 Guardado desktop y cancelación",
+            "D10 Guardado desktop/cancelación",
             [
                 {"id": "ui", "type": "frontend", "label": "WebView"},
                 {"id": "host", "type": "backend", "label": "save_export"},
@@ -337,13 +419,13 @@ def main() -> int:
             [{"dot": "amber", "title": "Cancelación", "items": ["Cancelar no escribe", "Sobrescritura explícita"]}],
         ),
     )
-    catalog_entries.append({"id": "D10", "title": "Guardado desktop y cancelación", "type": "sequence", "source": "sources/D10-desktop-save.sequence.json", "status": "actual"})
+    catalog_entries.append({"id": "D10", "title": TITLES["D10"], "type": "sequence", "source": "sources/D10-desktop-save.sequence.json", "status": "actual"})
 
     write(
         "D11-import-consent.sequence.json",
         seq(
             "D11",
-            "D11 Importación con informe y consentimiento",
+            "D11 Importación y consentimiento",
             [
                 {"id": "ui", "type": "frontend", "label": "UI"},
                 {"id": "import", "type": "backend", "label": "consented-import"},
@@ -359,7 +441,7 @@ def main() -> int:
             [{"dot": "rose", "title": "Consentimiento", "items": ["Sin aceptación no se aplica", "Informe visible antes"]}],
         ),
     )
-    catalog_entries.append({"id": "D11", "title": "Importación con consentimiento", "type": "sequence", "source": "sources/D11-import-consent.sequence.json", "status": "actual"})
+    catalog_entries.append({"id": "D11", "title": TITLES["D11"], "type": "sequence", "source": "sources/D11-import-consent.sequence.json", "status": "actual"})
 
     write(
         "D12-persistence.sequence.json",
@@ -381,7 +463,7 @@ def main() -> int:
             [{"dot": "emerald", "title": "Persistencia", "items": ["Desktop FS", "Web IndexedDB", "Sin tablas SQL"]}],
         ),
     )
-    catalog_entries.append({"id": "D12", "title": "Persistencia y recuperación", "type": "sequence", "source": "sources/D12-persistence.sequence.json", "status": "actual"})
+    catalog_entries.append({"id": "D12", "title": TITLES["D12"], "type": "sequence", "source": "sources/D12-persistence.sequence.json", "status": "actual"})
 
     def life(diagram_id: str, title: str, states: list, transitions: list, main: list, cards: list) -> dict:
         return {
@@ -422,13 +504,13 @@ def main() -> int:
             [{"dot": "cyan", "title": "Draft", "items": ["Estados según lifecycles.md", "Migración solo con consentimiento"]}],
         ),
     )
-    catalog_entries.append({"id": "D13", "title": "Ciclo de vida del draft", "type": "lifecycle", "source": "sources/D13-draft-lifecycle.lifecycle.json", "status": "actual"})
+    catalog_entries.append({"id": "D13", "title": TITLES["D13"], "type": "lifecycle", "source": "sources/D13-draft-lifecycle.lifecycle.json", "status": "actual"})
 
     write(
         "D14-prepare-export.lifecycle.json",
         life(
             "D14",
-            "D14 Preparación y exportación con invalidación",
+            "D14 Preparación/exportación e invalidación",
             [
                 {"id": "idle", "type": "start", "label": "Idle", "step": "01"},
                 {"id": "resolving", "type": "active", "label": "Resolving", "step": "02"},
@@ -448,7 +530,7 @@ def main() -> int:
             [{"dot": "amber", "title": "Invalidación", "items": ["isPreparedCurrent en App.tsx", "No reutilizar manifiesto obsoleto"]}],
         ),
     )
-    catalog_entries.append({"id": "D14", "title": "Preparación/exportación e invalidación", "type": "lifecycle", "source": "sources/D14-prepare-export.lifecycle.json", "status": "actual"})
+    catalog_entries.append({"id": "D14", "title": TITLES["D14"], "type": "lifecycle", "source": "sources/D14-prepare-export.lifecycle.json", "status": "actual"})
 
     write(
         "D15-import-lifecycle.lifecycle.json",
@@ -473,7 +555,7 @@ def main() -> int:
             [{"dot": "rose", "title": "Fallo", "items": ["Rechazo deja el perfil previo", "Sin consentimiento no hay write"]}],
         ),
     )
-    catalog_entries.append({"id": "D15", "title": "Importación lifecycle", "type": "lifecycle", "source": "sources/D15-import-lifecycle.lifecycle.json", "status": "actual"})
+    catalog_entries.append({"id": "D15", "title": TITLES["D15"], "type": "lifecycle", "source": "sources/D15-import-lifecycle.lifecycle.json", "status": "actual"})
 
     write(
         "D16-domain-coreport.class.json",
@@ -481,7 +563,7 @@ def main() -> int:
             "schema_version": 1,
             "diagram_type": "class",
             "meta": {
-                "title": "D16 Dominio, DTO y CorePort",
+                "title": "D16 Tipos, DTO y CorePort",
                 "subtitle": "9 operaciones reales en port.rs; TypeScript mirror en coreport.ts",
                 "output": "rendered/D16.html",
                 "quality_profile": "showcase",
@@ -545,7 +627,7 @@ def main() -> int:
             ],
         },
     )
-    catalog_entries.append({"id": "D16", "title": "Tipos dominio/DTO/CorePort", "type": "class", "source": "sources/D16-domain-coreport.class.json", "status": "actual"})
+    catalog_entries.append({"id": "D16", "title": TITLES["D16"], "type": "class", "source": "sources/D16-domain-coreport.class.json", "status": "actual"})
 
     def dataflow(diagram_id: str, title: str, stages: list, nodes: list, flows: list, cards: list) -> dict:
         return {
@@ -556,7 +638,7 @@ def main() -> int:
                 "output": f"rendered/{diagram_id}.html",
                 "quality_profile": "showcase",
                 "animation": "trace",
-                "viewBox": [1100, 720],
+                "viewBox": [1120, 720],
             },
             "stages": [{"label": s} for s in stages],
             "nodes": nodes,
@@ -568,7 +650,7 @@ def main() -> int:
         "D17-profile-persist.dataflow.json",
         dataflow(
             "D17",
-            "D17 Flujo de datos del perfil y persistencia",
+            "D17 Datos de perfil y persistencia",
             ["UI", "Adapter", "Core", "Store"],
             [
                 {"id": "face", "type": "frontend", "label": "forge-face", "stage": 0, "row": 1},
@@ -595,7 +677,7 @@ def main() -> int:
             [{"dot": "cyan", "title": "Autoridad", "items": ["Rust decide semántica", "TS solo presenta y adapta"]}],
         ),
     )
-    catalog_entries.append({"id": "D17", "title": "Flujo de datos del perfil", "type": "dataflow", "source": "sources/D17-profile-persist.dataflow.json", "status": "actual"})
+    catalog_entries.append({"id": "D17", "title": TITLES["D17"], "type": "dataflow", "source": "sources/D17-profile-persist.dataflow.json", "status": "actual"})
 
     write(
         "D18-canonicalization.dataflow.json",
@@ -629,13 +711,13 @@ def main() -> int:
             ],
         ),
     )
-    catalog_entries.append({"id": "D18", "title": "Canonicalización y digests", "type": "dataflow", "source": "sources/D18-canonicalization.dataflow.json", "status": "actual"})
+    catalog_entries.append({"id": "D18", "title": TITLES["D18"], "type": "dataflow", "source": "sources/D18-canonicalization.dataflow.json", "status": "actual"})
 
     write(
         "D19-trust-ipc.dataflow.json",
         dataflow(
             "D19",
-            "D19 Fronteras de confianza, IPC y destinos",
+            "D19 Fronteras de confianza e IPC",
             ["Untrusted UI", "IPC", "Privileged host", "Destinations"],
             [
                 {"id": "ui", "type": "frontend", "label": "WebView / Browser", "stage": 0, "row": 2},
@@ -662,18 +744,21 @@ def main() -> int:
             [{"dot": "rose", "title": "Confianza", "items": ["Capabilities mínimas", "Sin scripts arbitrarios", "Runner no implementado"]}],
         ),
     )
-    catalog_entries.append({"id": "D19", "title": "Fronteras de confianza e IPC", "type": "dataflow", "source": "sources/D19-trust-ipc.dataflow.json", "status": "actual"})
+    catalog_entries.append({"id": "D19", "title": TITLES["D19"], "type": "dataflow", "source": "sources/D19-trust-ipc.dataflow.json", "status": "actual"})
 
-    def workflow(diagram_id: str, title: str, lanes: list, nodes: list, edges: list, main: list, cards: list) -> dict:
-        return {
-            "schema_version": 1,
-            "diagram_type": "workflow",
-            "meta": {
+    def workflow(diagram_id: str, title: str, lanes: list, nodes: list, edges: list, main: list, cards: list, view_box: list | None = None) -> dict:
+        meta = {
                 "title": title,
                 "output": f"rendered/{diagram_id}.html",
                 "quality_profile": "showcase",
                 "animation": "trace",
-            },
+            }
+        if view_box:
+            meta["viewBox"] = view_box
+        return {
+            "schema_version": 1,
+            "diagram_type": "workflow",
+            "meta": meta,
             "lanes": lanes,
             "mainPath": main,
             "nodes": nodes,
@@ -685,7 +770,7 @@ def main() -> int:
         "D20-ci-pipeline.workflow.json",
         workflow(
             "D20",
-            "D20 Pipeline de CI y validadores",
+            "D20 CI y validadores",
             [
                 {"id": "dev", "label": "Developer"},
                 {"id": "ci", "label": "GitHub Actions"},
@@ -708,15 +793,16 @@ def main() -> int:
             ],
             ["push", "ci_job", "rust", "web", "f7", "docs"],
             [{"dot": "emerald", "title": "CI", "items": ["--strict F7 es evidencia local, no job CI", "Verde CI ≠ RC_SHA_FUNCIONAL"]}],
+            [820, 528],
         ),
     )
-    catalog_entries.append({"id": "D20", "title": "Pipeline CI y validadores", "type": "workflow", "source": "sources/D20-ci-pipeline.workflow.json", "status": "actual"})
+    catalog_entries.append({"id": "D20", "title": TITLES["D20"], "type": "workflow", "source": "sources/D20-ci-pipeline.workflow.json", "status": "actual"})
 
     write(
         "D21-release-sign.workflow.json",
         workflow(
             "D21",
-            "D21 Build, firma, publicación y verificación",
+            "D21 Build/firma/publicación",
             [
                 {"id": "build", "label": "Build"},
                 {"id": "sign", "label": "Sigstore"},
@@ -747,15 +833,16 @@ def main() -> int:
                     ],
                 }
             ],
+            [1020, 652],
         ),
     )
-    catalog_entries.append({"id": "D21", "title": "Build firma publicación", "type": "workflow", "source": "sources/D21-release-sign.workflow.json", "status": "actual"})
+    catalog_entries.append({"id": "D21", "title": TITLES["D21"], "type": "workflow", "source": "sources/D21-release-sign.workflow.json", "status": "actual"})
 
     write(
         "D22-f0-f9.workflow.json",
         workflow(
             "D22",
-            "D22 Aceptación F0–F9 y aprobaciones",
+            "D22 Aceptación y aprobaciones",
             [
                 {"id": "code", "label": "Código"},
                 {"id": "func", "label": "Funcional F7"},
@@ -785,9 +872,10 @@ def main() -> int:
                     ],
                 }
             ],
+            [820, 528],
         ),
     )
-    catalog_entries.append({"id": "D22", "title": "Aceptación F0–F9", "type": "workflow", "source": "sources/D22-f0-f9.workflow.json", "status": "actual"})
+    catalog_entries.append({"id": "D22", "title": TITLES["D22"], "type": "workflow", "source": "sources/D22-f0-f9.workflow.json", "status": "actual"})
 
     write(
         "D23-crates-tree.tree.json",
@@ -795,7 +883,7 @@ def main() -> int:
             "schema_version": 1,
             "diagram_type": "tree",
             "meta": {
-                "title": "D23 Árbol de crates, apps y documentación",
+                "title": "D23 Crates/apps/docs",
                 "subtitle": "Contención as-built; enlaces no son llamadas runtime",
                 "output": "rendered/D23.html",
                 "quality_profile": "showcase",
@@ -818,7 +906,7 @@ def main() -> int:
             ],
         },
     )
-    catalog_entries.append({"id": "D23", "title": "Árbol crates/apps/docs", "type": "tree", "source": "sources/D23-crates-tree.tree.json", "status": "actual"})
+    catalog_entries.append({"id": "D23", "title": TITLES["D23"], "type": "tree", "source": "sources/D23-crates-tree.tree.json", "status": "actual"})
 
     write(
         "D24-baselines.timeline.json",
@@ -826,7 +914,7 @@ def main() -> int:
             "schema_version": 1,
             "diagram_type": "timeline",
             "meta": {
-                "title": "D24 Baselines y releases",
+                "title": "D24 Baselines y releases históricas",
                 "subtitle": "Hitos documentados; v0.1.0 inamovible",
                 "timezone": "Europe/Madrid",
                 "quality_profile": "showcase",
@@ -874,19 +962,21 @@ def main() -> int:
             ],
         },
     )
-    catalog_entries.append({"id": "D24", "title": "Historial baselines y releases", "type": "timeline", "source": "sources/D24-baselines.timeline.json", "status": "actual"})
+    catalog_entries.append({"id": "D24", "title": TITLES["D24"], "type": "timeline", "source": "sources/D24-baselines.timeline.json", "status": "actual"})
 
     for entry in catalog_entries:
+        eid = entry["id"]
         entry["scope"] = "forge-mvp-as-built"
-        entry["sourceSha"] = source_sha
+        entry["sourceSha"] = AS_BUILT_SOURCE_SHA
         entry["rendererSha"] = RENDERER_SHA
-        entry["codeRefs"] = []
+        entry["codeRefs"] = list(CODE_REFS[eid])
         entry["validation"] = {"status": "pending", "reviewer": None}
 
     catalog = {
         "schemaVersion": "1",
         "title": "Catálogo de diagramas Archify (Forge / ArchMaker)",
-        "sourceSha": source_sha,
+        "sourceSha": AS_BUILT_SOURCE_SHA,
+        "asBuiltSourceSha": AS_BUILT_SOURCE_SHA,
         "rendererSha": RENDERER_SHA,
         "rendererPin": f"$HOME/.local/share/archify/{RENDERER_SHA}",
         "requiredIds": [f"D{i:02d}" for i in range(1, 25)],
@@ -900,7 +990,34 @@ def main() -> int:
     (DIAG / "catalog.json").write_text(
         json.dumps(catalog, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
     )
-    print(f"wrote catalog with {len(catalog_entries)} entries @ {source_sha[:12]}")
+    # Manifiesto de superficie as-built (rutas/hashes); no exige HEAD == AS_BUILT.
+
+    def _sha256(path: Path) -> str:
+        h = hashlib.sha256()
+        h.update(path.read_bytes())
+        return h.hexdigest()
+
+    paths: dict[str, str] = {}
+    for src in sorted(SOURCES.glob("D*.json")):
+        rel = src.relative_to(ROOT).as_posix()
+        paths[rel] = _sha256(src)
+    paths["docs/02-architecture/diagrams/catalog.json"] = _sha256(DIAG / "catalog.json")
+    for refs in CODE_REFS.values():
+        for rel in refs:
+            paths[rel] = _sha256(ROOT / rel)
+    manifest = {
+        "schemaVersion": "1",
+        "asBuiltSourceSha": AS_BUILT_SOURCE_SHA,
+        "rendererSha": RENDERER_SHA,
+        "paths": dict(sorted(paths.items())),
+    }
+    (DIAG / "as-built-manifest.json").write_text(
+        json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+    )
+    print(
+        f"wrote catalog with {len(catalog_entries)} entries AS_BUILT={AS_BUILT_SOURCE_SHA[:12]} "
+        f"(HEAD={source_sha[:12]})"
+    )
     return 0
 
 

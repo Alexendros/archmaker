@@ -44,4 +44,13 @@ python3 tools/scaffold_archify_diagrams.py
 python3 tools/run_archify_diagrams.py
 ```
 
-El catálogo exige `sourceSha == HEAD` y `rendererSha` del pin. D25/D26 no se generan.
+Comprobación de solo lectura (no escribe en el árbol; salida en `/tmp`):
+
+```bash
+python3 tools/run_archify_diagrams.py --check
+```
+
+El catálogo usa `AS_BUILT_SOURCE_SHA` (`sourceSha` / `asBuiltSourceSha`) más
+`docs/02-architecture/diagrams/as-built-manifest.json` (rutas y SHA-256). No exige
+`sourceSha == HEAD`. Antes de validar/entregar se comprueba que el checkout de Archify
+está en el `rendererSha` fijado. D25/D26 no se generan.

@@ -1,9 +1,9 @@
 {
   "id": "D11",
   "source": "sources/D11-import-consent.sequence.json",
-  "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+  "asBuiltSourceSha": "cb626dbb6cf7a50e66ebefd0bbd7b9982c9ec63d",
   "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
-  "sourceSha256": "ca2c4cc5ee449cf145fb33237f134ac0923602d7b5f13c184fba2470db253727",
-  "htmlSha256": "829a8522fba27f87845616de586a9d656948034e51e90403a18a9b10eb51f687",
+  "sourceSha256": "6caec2b491e07be7986d8c35ca93c0db666c70964bc3f702e9c3ffd87cfe49a6",
+  "htmlSha256": "b34a9ed89bdf9413a72ddd029ebc50ab9c3e220b8cdf2a9d45dddc68fc8329e0",
   "html": "rendered/D11.html"
 }

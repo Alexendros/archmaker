@@ -22,7 +22,8 @@ reviewers:
 
 | Campo | Uso |
 | --- | --- |
-| `sourceSha` | Commit de ArchMaker al que se fijan las vistas |
+| `AS_BUILT_SOURCE_SHA` / `sourceSha` | Código descrito por las vistas (no exige == HEAD) |
+| `as-built-manifest.json` | Rutas/hashes de la superficie verificable |
 | `rendererSha` | Commit de Archify (`tt-a1i/archify`) usado para validar/entregar |
 | Catálogo | [`catalog.json`](catalog.json) |
 | Índice HTML | [`index.md`](index.md) tras `tools/run_archify_diagrams.py` |
@@ -37,6 +38,7 @@ export ARCHIFY_UPDATE_CHECK_DISABLED=1
 
 python3 tools/scaffold_archify_diagrams.py   # reescribe sources + catalog al HEAD
 python3 tools/run_archify_diagrams.py         # validate + deliver 24/24
+python3 tools/run_archify_diagrams.py --check # solo lectura (salida en /tmp)
 ```
 
 ## Reglas

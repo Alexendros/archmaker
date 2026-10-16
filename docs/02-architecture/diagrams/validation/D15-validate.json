@@ -3,25 +3,25 @@
   "ok": true,
   "command": "validate",
   "type": "lifecycle",
-  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D15-import-lifecycle.lifecycle.json",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D15-import-lifecycle.lifecycle.json",
   "candidate": {
-    "path": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D15-import-lifecycle.lifecycle.json",
-    "sha256": "137c2bb66aa7f4a076f64ffdd65ca88adac94f4c34ad3c78496299cc92caec40",
-    "bytes": 1636
+    "path": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D15-import-lifecycle.lifecycle.json",
+    "sha256": "b19ce0ca04e941e2b4b07b25e56fc0a97623b26d6d318cbe45b2ce266d6d413e",
+    "bytes": 1613
   },
   "candidateFrozen": true,
   "nextAction": {
     "command": "finalize",
     "arguments": [
       "lifecycle",
-      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D15-import-lifecycle.lifecycle.json",
+      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D15-import-lifecycle.lifecycle.json",
       "<output.html>",
       "--quality",
       "showcase",
       "--repo-root",
-      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1",
+      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify",
       "--candidate-sha256",
-      "137c2bb66aa7f4a076f64ffdd65ca88adac94f4c34ad3c78496299cc92caec40",
+      "b19ce0ca04e941e2b4b07b25e56fc0a97623b26d6d318cbe45b2ce266d6d413e",
       "--json"
     ]
   },

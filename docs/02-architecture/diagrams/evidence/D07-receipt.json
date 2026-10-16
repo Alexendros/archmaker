@@ -1,18 +1,18 @@
 {
   "schemaVersion": 1,
-  "receiptId": "e41dd0bf-f518-4cec-b295-a8d0f24f218d",
+  "receiptId": "9268c9db-54d4-403b-95b9-94e7156df312",
   "ok": true,
   "command": "deliver",
   "type": "sequence",
-  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D07-init.sequence.json",
-  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/rendered/D07.html",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D07-init.sequence.json",
+  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/rendered/D07.html",
   "specification": {
-    "sha256": "37a84155c5dcc73cdbb54086df734c8dd57b138f0e31323426c02975c8d67a08",
-    "bytes": 1191
+    "sha256": "0270c8e2fb42c7ca366193a9fb47ceae7ab1c129b98e74c53e7db7abd10816dd",
+    "bytes": 1178
   },
   "artifact": {
-    "sha256": "51c9d687fdd77d63f33b1cf763b0860e4725a8160dad14baf2d56cd8d7eeeb75",
-    "bytes": 801558
+    "sha256": "b59985d653d7e8eece1caf44e0bbd4b3f0f38a318ea04a5cd80d00dd8c6701ec",
+    "bytes": 801519
   },
   "validation": {
     "checksPassed": 9,

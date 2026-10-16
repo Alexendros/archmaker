@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "receiptId": "41537419-91ac-40b9-a83b-c3bf8f425454",
+  "receiptId": "6a731cea-2fad-4023-bbe3-8abc1f802c40",
   "status": "current",
   "command": "deliver",
   "type": "dataflow",
-  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D18-canonicalization.dataflow.json",
-  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/rendered/D18.html",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D18-canonicalization.dataflow.json",
+  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/rendered/D18.html",
   "specification": {
-    "sha256": "bfa6d124916636ed2bbc1314f0ac7932fb2cacb4ddd72a4b7b30f2dbef42338a",
+    "sha256": "28ba1b571e1ce96d8352a8cdfee4e7fa1415bd37187deb608e5db7c69c487b24",
     "bytes": 1915
   },
   "artifact": {
-    "sha256": "332d1de91da1946ea677d2c45cf3dc08b60486cd7cf9e5e26c48859dbd691ab5",
+    "sha256": "de64d82fc4ef07109bc9a2d7b97a2f932cd12a7f1ccb4ee6ab8aeeb38f3afd8d",
     "bytes": 805051
   }
 }

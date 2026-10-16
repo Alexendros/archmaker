@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "receiptId": "f103e288-ee73-48ee-8b16-52011b668e45",
+  "receiptId": "01509b00-136b-4539-9074-dc03e21ff3ae",
   "status": "current",
   "command": "deliver",
   "type": "workflow",
-  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D22-f0-f9.workflow.json",
-  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/rendered/D22.html",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D22-f0-f9.workflow.json",
+  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/rendered/D22.html",
   "specification": {
-    "sha256": "1a9f17b05cfc0e2c6675f8fefd6f86a8e9d9db103b1b42d220d84f2f32e4d35e",
-    "bytes": 1696
+    "sha256": "54db9f687eb4a4babe17ff4e1048bb728795decfeff8b8f2a0f348176dc53a90",
+    "bytes": 1733
   },
   "artifact": {
-    "sha256": "04a00c082a04deffb25facfc30d1a244594785b941128538f4ce5e6866693241",
-    "bytes": 807567
+    "sha256": "2697d7d754cb65a3f831bdf8faf1438a59908a327e1cbe3f26596737ab06093e",
+    "bytes": 807543
   }
 }

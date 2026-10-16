@@ -3,25 +3,25 @@
   "ok": true,
   "command": "validate",
   "type": "sequence",
-  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D10-desktop-save.sequence.json",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D10-desktop-save.sequence.json",
   "candidate": {
-    "path": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D10-desktop-save.sequence.json",
-    "sha256": "e55f8ac52d3923c75abda7b27969dc08f52fb1861d8e0bb1ff29b6c4ca5737fb",
-    "bytes": 1461
+    "path": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D10-desktop-save.sequence.json",
+    "sha256": "47682b60395484cede4f74f56317eed8ad34938e2170d094fe04c8ea5755ebf1",
+    "bytes": 1459
   },
   "candidateFrozen": true,
   "nextAction": {
     "command": "finalize",
     "arguments": [
       "sequence",
-      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D10-desktop-save.sequence.json",
+      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D10-desktop-save.sequence.json",
       "<output.html>",
       "--quality",
       "showcase",
       "--repo-root",
-      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1",
+      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify",
       "--candidate-sha256",
-      "e55f8ac52d3923c75abda7b27969dc08f52fb1861d8e0bb1ff29b6c4ca5737fb",
+      "47682b60395484cede4f74f56317eed8ad34938e2170d094fe04c8ea5755ebf1",
       "--json"
     ]
   },

@@ -2,10 +2,14 @@
   "schema_version": 1,
   "diagram_type": "workflow",
   "meta": {
-    "title": "D22 Aceptación F0–F9 y aprobaciones",
+    "title": "D22 Aceptación y aprobaciones",
     "output": "rendered/D22.html",
     "quality_profile": "showcase",
-    "animation": "trace"
+    "animation": "trace",
+    "viewBox": [
+      820,
+      528
+    ]
   },
   "lanes": [
     {

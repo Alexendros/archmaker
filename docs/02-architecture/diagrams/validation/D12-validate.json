@@ -3,25 +3,25 @@
   "ok": true,
   "command": "validate",
   "type": "sequence",
-  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D12-persistence.sequence.json",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D12-persistence.sequence.json",
   "candidate": {
-    "path": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D12-persistence.sequence.json",
-    "sha256": "0f60e58df99b6a942e238636abf967a3d8c4216db8556554e15c65c8f3343de0",
-    "bytes": 1352
+    "path": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D12-persistence.sequence.json",
+    "sha256": "3a6ebf78b33740d241d3f7b2d52c0cb6cefebe2f83e3c93300093132f73cdcdd",
+    "bytes": 1345
   },
   "candidateFrozen": true,
   "nextAction": {
     "command": "finalize",
     "arguments": [
       "sequence",
-      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D12-persistence.sequence.json",
+      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D12-persistence.sequence.json",
       "<output.html>",
       "--quality",
       "showcase",
       "--repo-root",
-      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1",
+      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify",
       "--candidate-sha256",
-      "0f60e58df99b6a942e238636abf967a3d8c4216db8556554e15c65c8f3343de0",
+      "3a6ebf78b33740d241d3f7b2d52c0cb6cefebe2f83e3c93300093132f73cdcdd",
       "--json"
     ]
   },

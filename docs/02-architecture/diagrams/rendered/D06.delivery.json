@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "receiptId": "0c414add-2cc1-42fe-893d-7f560d6081f3",
+  "receiptId": "8492db6c-c81d-45c3-ab42-edc8585a89a1",
   "status": "current",
   "command": "deliver",
   "type": "architecture",
-  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D06-web-wasm.architecture.json",
-  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/rendered/D06.html",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D06-web-wasm.architecture.json",
+  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/rendered/D06.html",
   "specification": {
-    "sha256": "039a0071728fe1d14c2555fb55658ae7893562923a376d51df55ee9b53fdd452",
-    "bytes": 2194
+    "sha256": "1d566155f69ff8d96034c96abf57c2b3d2f43c7c6d79499f10b444d139cb2fe4",
+    "bytes": 2185
   },
   "artifact": {
-    "sha256": "9a5e9ba51a6ea53fdb0e2eab8eb76ca1050f3afd4b38f9227210e3b4108dd0e7",
-    "bytes": 811057
+    "sha256": "885fdb21de6b51bdd0d2c2aaa792a61ad9d98b97f4b17ebfe75a56dcc7e159ab",
+    "bytes": 811031
   }
 }

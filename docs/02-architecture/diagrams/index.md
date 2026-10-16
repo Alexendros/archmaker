@@ -1,5 +1,5 @@
 ---
-id: DOC-ARCH-DIAG-002
+id: DOC-ARCH-DIAG-INDEX-001
 phase: MVP
 priority: P1
 documentStatus: draft
@@ -11,40 +11,37 @@ owners:
   - architecture
 reviewers:
   - independent-reviewer
-dependsOn:
-  - id: DOC-ARCH-DIAG-001
-    expectedDocumentStatus: draft
 ---
 
 # Diagramas Archify (Forge / ArchMaker)
 
-- sourceSha: `d50d3414857175f1ff4b0b11f146065f8f1377da`
+- AS_BUILT_SOURCE_SHA: `cb626dbb6cf7a50e66ebefd0bbd7b9982c9ec63d`
 - rendererSha: `ca67c9f16be0c8cad409cd45190aa052e0649b84`
-- generado: `2026-10-16T22:22:28Z`
+- generado: `2026-10-16T23:35:09Z`
 
 | ID | Título | HTML |
 | --- | --- | --- |
-| D01 | Contexto del configurador y actores | [HTML](rendered/D01.html) |
-| D02 | Contenedores web/WASM/Tauri/almacenamiento | [HTML](rendered/D02.html) |
-| D03 | Componentes del core Rust | [HTML](rendered/D03.html) |
-| D04 | Frontend y adaptadores CorePort | [HTML](rendered/D04.html) |
-| D05 | Despliegue desktop Linux | [HTML](rendered/D05.html) |
-| D06 | Despliegue web y carga WASM | [HTML](rendered/D06.html) |
-| D07 | Inicialización, catálogo y perfil | [HTML](rendered/D07.html) |
-| D08 | Resolver → validar → manifiesto | [HTML](rendered/D08.html) |
-| D09 | Exportación web y digest | [HTML](rendered/D09.html) |
-| D10 | Guardado desktop y cancelación | [HTML](rendered/D10.html) |
-| D11 | Importación con consentimiento | [HTML](rendered/D11.html) |
-| D12 | Persistencia y recuperación | [HTML](rendered/D12.html) |
-| D13 | Ciclo de vida del draft | [HTML](rendered/D13.html) |
-| D14 | Preparación/exportación e invalidación | [HTML](rendered/D14.html) |
-| D15 | Importación lifecycle | [HTML](rendered/D15.html) |
-| D16 | Tipos dominio/DTO/CorePort | [HTML](rendered/D16.html) |
-| D17 | Flujo de datos del perfil | [HTML](rendered/D17.html) |
-| D18 | Canonicalización y digests | [HTML](rendered/D18.html) |
-| D19 | Fronteras de confianza e IPC | [HTML](rendered/D19.html) |
-| D20 | Pipeline CI y validadores | [HTML](rendered/D20.html) |
-| D21 | Build firma publicación | [HTML](rendered/D21.html) |
-| D22 | Aceptación F0–F9 | [HTML](rendered/D22.html) |
-| D23 | Árbol crates/apps/docs | [HTML](rendered/D23.html) |
-| D24 | Historial baselines y releases | [HTML](rendered/D24.html) |
+| D01 | Contexto de ArchMaker, Forge y actores | _(skip deliver)_ |
+| D02 | Web, WASM, Tauri y almacenamiento | _(skip deliver)_ |
+| D03 | Componentes del motor ArchMaker | _(skip deliver)_ |
+| D04 | Forge y adaptadores CorePort | _(skip deliver)_ |
+| D05 | Despliegue desktop | _(skip deliver)_ |
+| D06 | Despliegue web/WASM | _(skip deliver)_ |
+| D07 | Inicialización, catálogo y perfil | _(skip deliver)_ |
+| D08 | Resolver, validar y construir manifiesto | _(skip deliver)_ |
+| D09 | Exportación web y digest | _(skip deliver)_ |
+| D10 | Guardado desktop/cancelación | _(skip deliver)_ |
+| D11 | Importación y consentimiento | _(skip deliver)_ |
+| D12 | Persistencia y recuperación | _(skip deliver)_ |
+| D13 | Ciclo de vida del draft | _(skip deliver)_ |
+| D14 | Preparación/exportación e invalidación | _(skip deliver)_ |
+| D15 | Ciclo de importación | _(skip deliver)_ |
+| D16 | Tipos, DTO y CorePort | _(skip deliver)_ |
+| D17 | Datos de perfil y persistencia | _(skip deliver)_ |
+| D18 | Canonicalización y digests | _(skip deliver)_ |
+| D19 | Fronteras de confianza e IPC | _(skip deliver)_ |
+| D20 | CI y validadores | _(skip deliver)_ |
+| D21 | Build/firma/publicación | _(skip deliver)_ |
+| D22 | Aceptación y aprobaciones | _(skip deliver)_ |
+| D23 | Crates/apps/docs | _(skip deliver)_ |
+| D24 | Baselines y releases históricas | _(skip deliver)_ |

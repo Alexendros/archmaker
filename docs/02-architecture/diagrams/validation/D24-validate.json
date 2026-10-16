@@ -3,25 +3,25 @@
   "ok": true,
   "command": "validate",
   "type": "timeline",
-  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D24-baselines.timeline.json",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D24-baselines.timeline.json",
   "candidate": {
-    "path": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D24-baselines.timeline.json",
-    "sha256": "e616908951066b845d94e53b4a2737f2198a3f17552ebd7297acc4a92cdb14ee",
-    "bytes": 1400
+    "path": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D24-baselines.timeline.json",
+    "sha256": "9917ce5389de6178cdc11ed056f47e9e598b32172f748b359f51a9fe62485be4",
+    "bytes": 1412
   },
   "candidateFrozen": true,
   "nextAction": {
     "command": "finalize",
     "arguments": [
       "timeline",
-      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D24-baselines.timeline.json",
+      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D24-baselines.timeline.json",
       "<output.html>",
       "--quality",
       "showcase",
       "--repo-root",
-      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1",
+      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify",
       "--candidate-sha256",
-      "e616908951066b845d94e53b4a2737f2198a3f17552ebd7297acc4a92cdb14ee",
+      "9917ce5389de6178cdc11ed056f47e9e598b32172f748b359f51a9fe62485be4",
       "--json"
     ]
   },

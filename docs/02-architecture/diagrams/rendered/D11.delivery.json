@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "receiptId": "63d57f41-b5b4-42b9-8acb-51cd24a111cb",
+  "receiptId": "fb8a809b-80a5-4425-b336-97f238cb0743",
   "status": "current",
   "command": "deliver",
   "type": "sequence",
-  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D11-import-consent.sequence.json",
-  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/rendered/D11.html",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D11-import-consent.sequence.json",
+  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/rendered/D11.html",
   "specification": {
-    "sha256": "ca2c4cc5ee449cf145fb33237f134ac0923602d7b5f13c184fba2470db253727",
-    "bytes": 1411
+    "sha256": "6caec2b491e07be7986d8c35ca93c0db666c70964bc3f702e9c3ffd87cfe49a6",
+    "bytes": 1399
   },
   "artifact": {
-    "sha256": "829a8522fba27f87845616de586a9d656948034e51e90403a18a9b10eb51f687",
-    "bytes": 802968
+    "sha256": "b34a9ed89bdf9413a72ddd029ebc50ab9c3e220b8cdf2a9d45dddc68fc8329e0",
+    "bytes": 802932
   }
 }

@@ -1,18 +1,18 @@
 {
   "schemaVersion": 1,
-  "receiptId": "d71054d7-10f9-4a2b-aa59-5b26a18305c8",
+  "receiptId": "a5709b24-e4c7-4629-adf4-a6bc8b778343",
   "ok": true,
   "command": "deliver",
   "type": "architecture",
-  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D02-containers.architecture.json",
-  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/rendered/D02.html",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D02-containers.architecture.json",
+  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/rendered/D02.html",
   "specification": {
-    "sha256": "2fcdc5b6f24351361ac17071bda4c4179923328a86ac21615db8243b9ab9f075",
-    "bytes": 3623
+    "sha256": "4c13f2d7f431622f31907562206693cea5be6464ca9141288bdea8c1100d5225",
+    "bytes": 3609
   },
   "artifact": {
-    "sha256": "61d57d1c0132fe1b10079e3c0d35031c18c433f1640641a7392036f758c52b87",
-    "bytes": 819000
+    "sha256": "82d8b6bf9df9163974feca59a5f65a522c1d286ad0a3207d6b6d76111ee05507",
+    "bytes": 818959
   },
   "validation": {
     "checksPassed": 9,

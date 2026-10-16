@@ -3,25 +3,25 @@
   "ok": true,
   "command": "validate",
   "type": "workflow",
-  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D20-ci-pipeline.workflow.json",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D20-ci-pipeline.workflow.json",
   "candidate": {
-    "path": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D20-ci-pipeline.workflow.json",
-    "sha256": "5684eb36c648793b2d70af6786e39059de6e2087661bc3ee79cca58a2810d937",
-    "bytes": 1788
+    "path": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D20-ci-pipeline.workflow.json",
+    "sha256": "bef5b3941d83b438424f91f43ab9d6895e9c51efe6107ea88cf63b354e4dc3d8",
+    "bytes": 1821
   },
   "candidateFrozen": true,
   "nextAction": {
     "command": "finalize",
     "arguments": [
       "workflow",
-      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D20-ci-pipeline.workflow.json",
+      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D20-ci-pipeline.workflow.json",
       "<output.html>",
       "--quality",
       "showcase",
       "--repo-root",
-      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1",
+      "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify",
       "--candidate-sha256",
-      "5684eb36c648793b2d70af6786e39059de6e2087661bc3ee79cca58a2810d937",
+      "bef5b3941d83b438424f91f43ab9d6895e9c51efe6107ea88cf63b354e4dc3d8",
       "--json"
     ]
   },
@@ -80,7 +80,7 @@
     "status": "pass",
     "summary": {
       "errors": 0,
-      "warnings": 1
+      "warnings": 0
     },
     "metrics": {
       "properCrossings": 0,
@@ -92,7 +92,7 @@
       "labelCanvasOverflowIssues": 0,
       "minLabelRouteClearance": null,
       "desktopReadabilityIssues": 0,
-      "viewportHeightIssues": 1,
+      "viewportHeightIssues": 0,
       "minProjectedNodeTextPx": 11,
       "maxBends": 2,
       "routesOverSuggestedBends": 0,
@@ -137,25 +137,7 @@
       "minimumProjectedTextPx": 11,
       "semanticTextCount": 6
     },
-    "issues": [
-      {
-        "severity": "warning",
-        "code": "composition/viewport-height",
-        "readerFit": null,
-        "viewBoxWidth": 720,
-        "viewBoxHeight": 528,
-        "viewportWidth": 1440,
-        "viewportHeight": 900,
-        "ratio": 1.36,
-        "wideRatio": 1.55,
-        "svgWidthPx": 1346,
-        "svgHeightPx": 987,
-        "fixedChromePx": 126,
-        "pageHeightPx": 1113,
-        "overflowPx": 213,
-        "detail": "[composition/viewport-height] Preserve every node, relationship, and label. This 720x528 canvas (ratio 1.36) declares no intrinsic-height fit and is below the 1.55 wide ratio, so the desktop Reader can neither narrow it nor accept vertical scroll: it renders 987px tall at the full 1346px width and the page reaches 1113px before cards against 900px, a certain visual-check failure. Either compact vertical spacing so meta.viewBox height is at most 464 at this width, or spread content sideways so the width is at least 819 at this height; for architecture and readable-v2 workflow, omitting meta.viewBox lets the renderer size the canvas and declare the fit."
-      }
-    ]
+    "issues": []
   }
 }
 

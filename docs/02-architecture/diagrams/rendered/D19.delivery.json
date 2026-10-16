@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "receiptId": "f7b5a2eb-67ef-4faa-b9a0-4c21d34e6c4a",
+  "receiptId": "d7d379c7-b6fb-4cf7-a667-35e5ba1eb32b",
   "status": "current",
   "command": "deliver",
   "type": "dataflow",
-  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D19-trust-ipc.dataflow.json",
-  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/rendered/D19.html",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D19-trust-ipc.dataflow.json",
+  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/rendered/D19.html",
   "specification": {
-    "sha256": "bf9144dcc0c1c24ab1464fbac8714a48e4ceca9f1f4a1068b90b84fc50fca0f4",
-    "bytes": 2145
+    "sha256": "4424bfd2849a95732781ace4de7044a570b7154d30c912f9782f1b130e1d53f1",
+    "bytes": 2135
   },
   "artifact": {
-    "sha256": "09929bf3811e12011927a00c57e3cfd8be502d0da5207c999b555a7a3b023509",
-    "bytes": 807833
+    "sha256": "4609b2e58b33057757284928210d2994774154a838f86c3d620d5347caad149f",
+    "bytes": 807803
   }
 }

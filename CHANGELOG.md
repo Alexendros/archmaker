@@ -26,6 +26,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Pipeline Archify P4: `AS_BUILT_SOURCE_SHA` + manifiesto de rutas/hashes (ya no exige
+  `sourceSha == HEAD`); `--check` de solo lectura; verificación del checkout del renderer;
+  codeRefs verificables D01–D24; D01 sin descarga de distribución como llamada runtime;
+  corrección viewport D17–D22; títulos Forge/ArchMaker (ADR-0012); pruebas negativas en
+  `tools/test_run_archify_diagrams.py`.
 - Nombre visible de la GUI: **Forge** (interfaz gráfica de ArchMaker); el motor y los
   ids técnicos `archmaker*` no cambian (ADR-0012 / DEC-012). La release `[0.1.0]`
   permanece con el nombre público histórico **Neubat**.

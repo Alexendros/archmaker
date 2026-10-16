@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "receiptId": "d0f600f2-e437-43b7-b7c9-0bf2a527bb1d",
+  "receiptId": "2f4ef0e6-1638-4623-8f70-22f9fe46111d",
   "status": "current",
   "command": "deliver",
   "type": "tree",
-  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/sources/D23-crates-tree.tree.json",
-  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/f1/docs/02-architecture/diagrams/rendered/D23.html",
+  "input": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/sources/D23-crates-tree.tree.json",
+  "output": "/home/alexendros/Aplicaciones/Repertorio/archmaker/.worktrees/p4-archify/docs/02-architecture/diagrams/rendered/D23.html",
   "specification": {
-    "sha256": "14272cb291ca03ee9763b03d21cab201b3322fb599af285cf9b3d022d493569c",
-    "bytes": 1572
+    "sha256": "4938c610f00836e6f6f8c724e128c848222d1b5baf148cf5148e580f056446dc",
+    "bytes": 1549
   },
   "artifact": {
-    "sha256": "b094611b3e6ddc280deace3371a1ff1efba6abc23994b815fd27a6ee5347a45a",
-    "bytes": 820511
+    "sha256": "e554e4deca5f76c32e40996890de7b0f4e3943e097ae6be121adcc4ccd2c5ae0",
+    "bytes": 820442
   }
 }

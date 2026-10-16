@@ -201,6 +201,8 @@ jobs:
           python3 tools/test_check_product_closure.py
           # P3: harness P95 de producto (unitario; n=30 web no corre en CI).
           python3 tools/test_run_product_p95_harness.py
+          # P4: pipeline Archify (negativos AS_BUILT/--check/codeRefs).
+          python3 tools/test_run_archify_diagrams.py
 
   traceability:
     name: Matriz de trazabilidad FR/NFR -> TST/VAL (G2/G9)

@@ -1,9 +1,9 @@
 {
   "id": "D04",
   "source": "sources/D04-frontend-coreport.architecture.json",
-  "sourceSha": "d50d3414857175f1ff4b0b11f146065f8f1377da",
+  "asBuiltSourceSha": "cb626dbb6cf7a50e66ebefd0bbd7b9982c9ec63d",
   "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
-  "sourceSha256": "0f61b365c3c56da45b95ac954bd256553c9645bc0c3294635931f113cd488c78",
-  "htmlSha256": "1bc41fa7c006541c991ab1ad999228b217aeefce713e1a832973bb8f6d349880",
+  "sourceSha256": "d28ade597c61d9370190abb686e84ac902d6da19c873be6e5e55aca684947ace",
+  "htmlSha256": "51dbb09869e8a299a9c5923d9f2078997658ad01a4c4450a44d1518a00fbdd4c",
   "html": "rendered/D04.html"
 }
