@@ -1,7 +1,19 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { CorePort, Diagnostic, Draft, Manifest } from "./coreport.js";
-import { DRAFT_TARGET, FIXED_CATALOG_REF, exportTarget } from "./coreport.js";
+import {
+  DESKTOP_CATALOG_REF,
+  DRAFT_TARGET,
+  exportTarget,
+  type CatalogRef,
+} from "./coreport.js";
+import type { PortKind } from "./create-core-port.js";
 import { CommandPalette } from "./CommandPalette.js";
+import { loadLastDraftLocal, persistDraftLocal } from "./draft-persistence.js";
+import {
+  destinationTokenFor,
+  downloadArtifact,
+  exportFilename,
+} from "./export-delivery.js";
 import { ForgeAside } from "./ForgeAside.js";
 import { ForgeHeader } from "./ForgeHeader.js";
 import { ForgeRail } from "./ForgeRail.js";
@@ -21,6 +33,8 @@ import {
   ENVIRONMENTS,
   FILESYSTEMS,
   GLOSSARY,
+  INITIAL_APP_OPTION_IDS,
+  INITIAL_SINGLE,
   INTENTS,
   KERNELS,
   STEP_IDS,
@@ -30,7 +44,16 @@ import {
   type FacePackage,
 } from "./neubat-face.js";
 
-type Props = { port: CorePort };
+type Props = { port: CorePort; portKind: PortKind };
+
+type PrepareOk = {
+  ok: true;
+  manifest: Manifest;
+  diagnostics: Diagnostic[];
+  generation: number;
+};
+type PrepareErr = { ok: false; reason: string };
+type PrepareResult = PrepareOk | PrepareErr;
 
 type ToastState = {
   message: string;
@@ -53,10 +76,49 @@ function fail(err: { code: string; messageKey: string }, where: string): void {
   announce("alert", `${where}: ${err.code} (${err.messageKey})`);
 }
 
-export function App({ port }: Props) {
+function withInitialSelections(draft: Draft): Draft {
+  if (draft.selections.length > 0) return draft;
+  return {
+    ...draft,
+    selections: [
+      {
+        stepId: STEP_IDS.intent,
+        value: { kind: "single", optionId: INITIAL_SINGLE.intent },
+      },
+      {
+        stepId: STEP_IDS.kernel,
+        value: { kind: "single", optionId: INITIAL_SINGLE.kernel },
+      },
+      {
+        stepId: STEP_IDS.boot,
+        value: { kind: "single", optionId: INITIAL_SINGLE.boot },
+      },
+      {
+        stepId: STEP_IDS.filesystem,
+        value: { kind: "single", optionId: INITIAL_SINGLE.filesystem },
+      },
+      {
+        stepId: STEP_IDS.compositor,
+        value: { kind: "single", optionId: INITIAL_SINGLE.compositor },
+      },
+      {
+        stepId: STEP_IDS.apps,
+        value: {
+          kind: "multiple",
+          optionIds: [...INITIAL_APP_OPTION_IDS],
+        },
+      },
+    ],
+  };
+}
+
+export function App({ port, portKind }: Props) {
   const [draft, setDraft] = useState<Draft | null>(null);
+  const [catalogRef, setCatalogRef] = useState<CatalogRef>(DESKTOP_CATALOG_REF);
   const [manifest, setManifest] = useState<Manifest | null>(null);
   const [diagnostics, setDiagnostics] = useState<Diagnostic[]>([]);
+  const [validated, setValidated] = useState(false);
+  const [busy, setBusy] = useState(false);
   const [step, setStep] = useState(0);
   const [simpleMode, setSimpleMode] = useState(true);
   const [dark, setDark] = useState(false);
@@ -65,6 +127,8 @@ export function App({ port }: Props) {
   const [cmdOpen, setCmdOpen] = useState(false);
   const [glossaryOpen, setGlossaryOpen] = useState(false);
   const [ready, setReady] = useState(false);
+  const generationRef = useRef(0);
+  const preparedGenerationRef = useRef<number | null>(null);
 
   const bootId =
     singleId(draft, STEP_IDS.boot) ?? "archmaker.boot.systemd-boot";
@@ -130,11 +194,53 @@ export function App({ port }: Props) {
     window.setTimeout(() => setToast(null), 2800);
   }, []);
 
+  const invalidateDerived = useCallback(() => {
+    generationRef.current += 1;
+    preparedGenerationRef.current = null;
+    setManifest(null);
+    setDiagnostics([]);
+    setValidated(false);
+  }, []);
+
+  const applyDraft = useCallback(
+    (next: Draft) => {
+      setDraft(next);
+      invalidateDerived();
+      void persistDraftLocal(next);
+    },
+    [invalidateDerived],
+  );
+
   useEffect(() => {
     let cancelled = false;
     void (async () => {
+      const loaded = await port.loadCatalog({ source: "embedded" });
+      if (cancelled) return;
+      if (!loaded.ok) {
+        fail(loaded.error, "Cargar catálogo");
+        return;
+      }
+      const ref = DESKTOP_CATALOG_REF;
+      setCatalogRef(ref);
+
+      const local = await loadLastDraftLocal();
+      if (cancelled) return;
+      if (local) {
+        const opened = await port.openDraft({
+          draftId: local.id,
+          seed: local,
+        });
+        if (cancelled) return;
+        if (opened.ok) {
+          setDraft(opened.value);
+          setReady(true);
+          announce("status", "Perfil recuperado.");
+          return;
+        }
+      }
+
       const res = await port.createDraft({
-        catalogRef: FIXED_CATALOG_REF,
+        catalogRef: ref,
         targetRef: DRAFT_TARGET,
       });
       if (cancelled) return;
@@ -142,14 +248,28 @@ export function App({ port }: Props) {
         fail(res.error, "Crear draft");
         return;
       }
-      setDraft(res.value);
+      let next = withInitialSelections(res.value);
+      if (next.selections !== res.value.selections) {
+        const saved = await port.saveDraft({
+          draft: next,
+          expectedRevision: next.revision,
+        });
+        if (cancelled) return;
+        if (!saved.ok) {
+          fail(saved.error, "Guardar selecciones iniciales");
+          return;
+        }
+        next = saved.value;
+      }
+      setDraft(next);
+      void persistDraftLocal(next);
       setReady(true);
-      announce("status", "Draft listo. Arranque: systemd-boot.");
+      announce("status", `Draft listo (${portKind}). Arranque: systemd-boot.`);
     })();
     return () => {
       cancelled = true;
     };
-  }, [port]);
+  }, [port, portKind]);
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", dark);
@@ -187,7 +307,7 @@ export function App({ port }: Props) {
       announce("alert", "Opción aún no disponible en el catálogo.");
       return;
     }
-    setDraft(chooseSingle(d, stepId, optionId));
+    applyDraft(chooseSingle(d, stepId, optionId));
     showToast(`${opt && "title" in opt ? opt.title : optionId} seleccionada.`);
   }
 
@@ -199,94 +319,169 @@ export function App({ port }: Props) {
       return;
     }
     const { draft: next, added } = toggleApp(d, pkg.optionId);
-    setDraft(next);
+    applyDraft(next);
     showToast(added ? `Añadido ${pkg.title}` : `Quitado ${pkg.title}`, () => {
       setDraft((prev) => {
         if (!prev) return prev;
-        return toggleApp(prev, pkg.optionId).draft;
+        const undone = toggleApp(prev, pkg.optionId).draft;
+        invalidateDerived();
+        void persistDraftLocal(undone);
+        return undone;
       });
     });
   }
 
-  async function onGenerate(): Promise<void> {
+  async function prepareExport(): Promise<PrepareResult> {
     const d = requireDraft();
-    if (!d) return;
-    setStep(5);
+    if (!d) return { ok: false, reason: "draft-missing" };
+    const generation = generationRef.current;
+    const snapshot = structuredClone(d);
     const resolved = await port.resolveDraft({
-      draft: d,
-      catalogRef: FIXED_CATALOG_REF,
+      draft: snapshot,
+      catalogRef,
     });
+    if (generation !== generationRef.current) {
+      return { ok: false, reason: "stale" };
+    }
     if (!resolved.ok) {
       fail(resolved.error, "Resolver");
-      return;
+      return { ok: false, reason: "resolve" };
     }
-    const validated = await port.validateDraft({
-      draft: d,
-      catalogRef: FIXED_CATALOG_REF,
+    const validatedRes = await port.validateDraft({
+      draft: snapshot,
+      catalogRef,
     });
-    if (!validated.ok) {
-      fail(validated.error, "Validar");
-      return;
+    if (generation !== generationRef.current) {
+      return { ok: false, reason: "stale" };
     }
-    setDiagnostics(validated.value.diagnostics);
-    if (validated.value.blocking) {
+    if (!validatedRes.ok) {
+      fail(validatedRes.error, "Validar");
+      return { ok: false, reason: "validate" };
+    }
+    setDiagnostics(validatedRes.value.diagnostics);
+    setValidated(true);
+    if (validatedRes.value.blocking) {
+      setManifest(null);
+      preparedGenerationRef.current = null;
       announce("alert", "Validación con bloqueos.");
-      return;
+      return { ok: false, reason: "blocked" };
     }
     const built = await port.buildManifest({
-      draft: d,
-      catalogRef: FIXED_CATALOG_REF,
+      draft: snapshot,
+      catalogRef,
       targetRef: exportTarget("archmaker-profile"),
       expectedResolutionDigest: resolved.value.resolutionDigest,
     });
+    if (generation !== generationRef.current) {
+      return { ok: false, reason: "stale" };
+    }
     if (!built.ok) {
       fail(built.error, "Manifest");
-      return;
+      return { ok: false, reason: "manifest" };
     }
     setManifest(built.value);
-    showToast("Validación sin bloqueos. Manifest listo.");
+    preparedGenerationRef.current = generation;
+    return {
+      ok: true,
+      manifest: built.value,
+      diagnostics: validatedRes.value.diagnostics,
+      generation,
+    };
+  }
+
+  async function onGenerate(): Promise<void> {
+    if (busy) return;
+    setBusy(true);
+    setStep(5);
+    try {
+      const prepared = await prepareExport();
+      if (prepared.ok) {
+        showToast("Validación sin bloqueos. Manifest listo.");
+      }
+    } finally {
+      setBusy(false);
+    }
   }
 
   async function onForge(): Promise<void> {
+    if (busy) return;
     const d = requireDraft();
     if (!d) return;
-    let man = manifest;
-    if (!man) {
-      await onGenerate();
-      man = null;
-      const resolved = await port.resolveDraft({
-        draft: d,
-        catalogRef: FIXED_CATALOG_REF,
-      });
-      if (!resolved.ok) {
-        fail(resolved.error, "Forjar");
+    setBusy(true);
+    try {
+      let man = manifest;
+      const preparedGen = preparedGenerationRef.current;
+      if (!man || preparedGen !== generationRef.current) {
+        const prepared = await prepareExport();
+        if (!prepared.ok) return;
+        man = prepared.manifest;
+      }
+      if (preparedGenerationRef.current !== generationRef.current) {
+        announce("alert", "La configuración cambió; vuelve a generar.");
         return;
       }
-      const built = await port.buildManifest({
-        draft: d,
-        catalogRef: FIXED_CATALOG_REF,
+      const token = destinationTokenFor(d.id);
+      const res = await port.exportArtifact({
+        manifest: man,
         targetRef: exportTarget("archmaker-profile"),
-        expectedResolutionDigest: resolved.value.resolutionDigest,
+        destination: { token },
       });
-      if (!built.ok) {
-        fail(built.error, "Forjar");
+      if (!res.ok) {
+        fail(res.error, "Exportar");
         return;
       }
-      man = built.value;
-      setManifest(man);
+      if (preparedGenerationRef.current !== generationRef.current) {
+        announce(
+          "alert",
+          "Resultado de exportación descartado (edición concurrente).",
+        );
+        return;
+      }
+      downloadArtifact(res.value, exportFilename(token));
+      const digestShort = res.value.binaryDigest.value.slice(0, 12);
+      showToast(
+        `Archivo entregado (${digestShort}…): ${exportFilename(token)}`,
+      );
+    } finally {
+      setBusy(false);
     }
-    const res = await port.exportArtifact({
-      manifest: man,
-      targetRef: exportTarget("archmaker-profile"),
-      destination: { token: "opaque-handle.json" },
-    });
-    if (!res.ok) {
-      fail(res.error, "Forjar");
+  }
+
+  async function onImportFile(file: File): Promise<void> {
+    const previous = draft;
+    const buf = new Uint8Array(await file.arrayBuffer());
+    if (buf.byteLength > 2_000_000) {
+      announce("alert", "Archivo demasiado grande.");
       return;
     }
-    showToast(
-      `Artefacto exportado: ${kernel?.title ?? "—"} + ${boot?.title ?? "—"} + ${filesystem?.title ?? "—"} + ${env?.title ?? "—"}`,
-    );
+    const res = await port.importDraft({
+      sourceBytes: Array.from(buf),
+      catalogRef,
+      targetRef: DRAFT_TARGET,
+      confirmBlockingLosses: true,
+    });
+    if (!res.ok) {
+      fail(res.error, "Importar");
+      if (previous) setDraft(previous);
+      return;
+    }
+    const value = res.value as { draft?: Draft };
+    if (!value.draft) {
+      announce("alert", "Importación sin draft.");
+      if (previous) setDraft(previous);
+      return;
+    }
+    const saved = await port.saveDraft({
+      draft: value.draft,
+      expectedRevision: 0,
+    });
+    if (!saved.ok) {
+      fail(saved.error, "Importar");
+      if (previous) setDraft(previous);
+      return;
+    }
+    applyDraft(saved.value);
+    showToast("Perfil importado.");
   }
 
   function nav(delta: number): void {
@@ -683,7 +878,7 @@ export function App({ port }: Props) {
                     onChange={(e) => {
                       const d = requireDraft();
                       if (!d) return;
-                      setDraft(setText(d, STEP_IDS.hostname, e.target.value));
+                      applyDraft(setText(d, STEP_IDS.hostname, e.target.value));
                     }}
                   />
                 </label>
@@ -701,7 +896,7 @@ export function App({ port }: Props) {
                       onChange={(e) => {
                         const d = requireDraft();
                         if (!d) return;
-                        setDraft(
+                        applyDraft(
                           setBool(d, STEP_IDS.encrypt, e.target.checked),
                         );
                       }}
@@ -739,11 +934,16 @@ export function App({ port }: Props) {
                   · {filesystem?.title ?? "—"} · {selectedApps.size} apps ·{" "}
                   {env?.title ?? "—"} {env?.version ?? ""}
                 </p>
-                {diagnostics.length > 0 ? (
+                {!validated ? (
+                  <p role="status">Pendiente de validar.</p>
+                ) : diagnostics.length > 0 ? (
                   <p role="status">{diagnostics.length} diagnósticos.</p>
                 ) : (
-                  <p role="status">Sin incidencias.</p>
+                  <p role="status">Sin incidencias en la última validación.</p>
                 )}
+                {portKind === "mock" ? (
+                  <p role="status">Modo demostración (MockCorePort).</p>
+                ) : null}
               </div>
               <div className="forge-nav-row">
                 <button
@@ -753,13 +953,27 @@ export function App({ port }: Props) {
                 >
                   ← Atrás
                 </button>
+                <label className="forge-btn-ghost">
+                  Importar
+                  <input
+                    type="file"
+                    accept="application/json,.json"
+                    hidden
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) void onImportFile(file);
+                      e.target.value = "";
+                    }}
+                  />
+                </label>
                 <button
                   type="button"
                   className="forge-btn-primary"
                   id="btn-export"
+                  disabled={busy}
                   onClick={() => void onForge()}
                 >
-                  Forjar
+                  {busy ? "Exportando…" : "Exportar"}
                 </button>
               </div>
             </section>

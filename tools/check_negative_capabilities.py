@@ -1,18 +1,11 @@
 #!/usr/bin/env python3
-"""Verificador estatico de controles Tauri/CSP/shell (I9, TST-NEG-001..008 diseno->evidencia).
+"""Verificador estatico de controles Tauri/CSP/shell (I9, TST-NEG-001..008).
 
-Espejo Python del test Rust `crates/archmaker-core/tests/negative_capabilities.rs`,
-que es la autoridad semantica (AGENTS.md: Rust decide, TS/Python no duplican reglas).
-Cualquier divergencia entre este checker y el test Rust es un bug de este checker.
-Resuelve CON-021/D-09: `app.security.devtools` no existe en el schema Tauri v2
-(`SecurityConfig` = csp, dev_csp, freeze_prototype, ...; `devtools` solo vive en
-`WindowConfig` por ventana) — la CLI 2.x rechaza la clave, PR-02 la elimino y el
-deny-by-default es implicito.
+Espejo Python del test Rust `crates/archmaker-core/tests/negative_capabilities.rs`.
 """
 import json
 import re
 import sys
-import tomllib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -25,35 +18,47 @@ def check(name: str, ok: bool, detail: str = "") -> None:
         fails.append(name)
 
 
-CORE_CMDS = ["create-draft", "load-catalog", "save-draft", "resolve-draft",
-             "validate-draft", "build-manifest", "export-artifact", "import-draft"]
+CORE_CMDS = [
+    "create_draft",
+    "load_catalog",
+    "save_draft",
+    "open_draft",
+    "resolve_draft",
+    "validate_draft",
+    "build_manifest",
+    "export_artifact",
+    "import_draft",
+]
+
+build_rs = (ROOT / "src-tauri/build.rs").read_text()
+check(
+    "NEG-001 AppManifest::commands",
+    "AppManifest::new().commands" in build_rs,
+)
+for cmd in CORE_CMDS:
+    check(f"NEG-001 AppManifest lista {cmd}", f'"{cmd}"' in build_rs)
 
 cap = json.loads((ROOT / "src-tauri/capabilities/main.json").read_text())
 check("NEG-001 deny-by-default por ventana", cap.get("windows") == ["main"])
-# Los 8 identificadores core:* viven en permissions/*.toml. La lista JSON
-# vacía es la denegación definitiva del slice: no se auto-conceden.
-# Espejo de neg_capability_deny_by_default.
+perms = cap.get("permissions") or []
 check(
-    "NEG-001 capability JSON sin permisos inline",
-    cap.get("permissions") == [],
-    str(cap.get("permissions")),
+    "NEG-001 main concede allow-* CorePort (9)",
+    len(perms) == 9 and all(isinstance(p, str) and p.startswith("allow-") for p in perms),
+    str(perms),
 )
-found = []
-for cmd in CORE_CMDS:
-    with open(ROOT / f"src-tauri/permissions/{cmd}.toml", "rb") as f:
-        ident = tomllib.load(f).get("identifier")
-    if ident == f"core:{cmd}":
-        found.append(cmd)
+
+restricted = json.loads((ROOT / "src-tauri/capabilities/restricted.json").read_text())
 check(
-    "NEG-001 solo 8 comandos CorePort v0+MVP-1 (core:*)",
-    found == CORE_CMDS,
-    str(found),
+    "NEG-001 restricted permissions vacía",
+    restricted.get("permissions") == [],
+    str(restricted.get("permissions")),
 )
+
 caps_dir = ROOT / "src-tauri/capabilities"
 cap_files = sorted(p.name for p in caps_dir.glob("*.json"))
 check(
-    "NEG-001 solo capability main en MVP",
-    cap_files == ["main.json"],
+    "NEG-001 capabilities main+restricted",
+    cap_files == ["main.json", "restricted.json"],
     str(cap_files),
 )
 for reserved in ["dialog", "picker"]:
@@ -67,13 +72,10 @@ conf = json.loads(raw_conf)
 csp = conf["app"]["security"]["csp"]
 check("NEG-005 CSP default-src self", "default-src 'self'" in csp, csp)
 check("NEG-005 sin unsafe-eval/inline", "unsafe-eval" not in csp and "unsafe-inline" not in csp)
-# CON-021/D-09: sin plugin shell salvo denegacion explicita (espejo Rust).
 check(
     "NEG-004 shell denegado (ausencia estructural)",
     '"shell"' not in raw_conf or "shell:*" in raw_conf,
 )
-# CON-021/D-09: la clave no existe en SecurityConfig v2; su ausencia ES el control
-# (deny-by-default implicito). Anadirla rompe la validacion de la CLI (PR-02).
 check(
     "NEG-devtools ausente en app.security (CON-021)",
     "devtools" not in conf["app"]["security"],
@@ -91,15 +93,14 @@ check(
     "NEG-005/007 sin CDN ni red en WebView",
     not re.search(r"https://(unpkg|cdn\.|fonts\.google)", html),
 )
-# MVP-4: invokes viven en TauriCorePort; el flujo React usa MockCorePort offline.
+
 tauri_port = (ROOT / "apps/web/src/tauri-core-port.ts").read_text()
 web_src = "".join(
     p.read_text() for p in sorted((ROOT / "apps/web/src").glob("*.ts*"))
 )
-allowed = {"create_draft", "load_catalog", "save_draft", "resolve_draft",
-           "validate_draft", "build_manifest", "export_artifact", "import_draft"}
+allowed = set(CORE_CMDS)
 invokes = set(re.findall(r'"([a-z_]+)"', tauri_port)) & allowed
-check("NEG-001 invoke solo allowlist (8)", invokes == allowed, str(sorted(invokes)))
+check("NEG-001 invoke solo allowlist (9)", invokes == allowed, str(sorted(invokes)))
 check(
     "NEG-004 sin superficie shell en TS",
     not re.search(r"pacstrap|sidecar|Command::|\.spawn\(|sh -c", web_src),

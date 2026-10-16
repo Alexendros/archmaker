@@ -1,14 +1,14 @@
-//! Crate de escritorio Tauri: comandos CorePort y denegación deny-by-default.
+//! Crate de escritorio Tauri: comandos CorePort.
 //!
-//! La allow-list de `capabilities/main.json` está vacía: Tauri deniega IPC no
-//! concedido. El gate de aplicación (`check_invoke`) es una segunda capa.
+//! ACL Tauri (AppManifest::commands + capabilities) es la primera capa.
+//! `check_invoke` en Rust es la segunda (matriz ventana × operación).
 
 use std::sync::Mutex;
 
 use archmaker_core::{
     check_invoke, unknown_command_error, BuildManifestInput, CoreError, CoreOp, CorePort,
-    CreateDraftInput, ExportArtifactInput, ImportDraftInput, LoadCatalogInput, RealCore,
-    ResolveDraftInput, SaveDraftInput, ValidateDraftInput, Window,
+    CreateDraftInput, ExportArtifactInput, ImportDraftInput, LoadCatalogInput, OpenDraftInput,
+    RealCore, ResolveDraftInput, SaveDraftInput, ValidateDraftInput, Window,
 };
 use tauri::Manager;
 
@@ -74,6 +74,7 @@ core_command!(
     load_catalog
 );
 core_command!(save_draft, CoreOp::SaveDraft, SaveDraftInput, save_draft);
+core_command!(open_draft, CoreOp::OpenDraft, OpenDraftInput, open_draft);
 core_command!(
     resolve_draft,
     CoreOp::ResolveDraft,
@@ -111,8 +112,8 @@ pub fn run() {
         .setup(|app| {
             let data_dir = app.path().app_data_dir().expect("app data dir resolves");
             std::fs::create_dir_all(&data_dir).expect("app data dir is writable");
-            let core = RealCore::with_embedded()
-                .expect("embedded catalog loads")
+            let core = RealCore::with_desktop()
+                .expect("desktop catalog loads")
                 .with_store_dir(data_dir);
             app.manage(CoreState(Mutex::new(core)));
             Ok(())
@@ -121,6 +122,7 @@ pub fn run() {
             create_draft,
             load_catalog,
             save_draft,
+            open_draft,
             resolve_draft,
             validate_draft,
             build_manifest,
@@ -133,6 +135,9 @@ pub fn run() {
 
 #[cfg(test)]
 mod tests {
+    use archmaker_core::{
+        check_invoke, CatalogSource, CoreOp, CorePort, LoadCatalogInput, RealCore, Window,
+    };
     use tauri::webview::InvokeRequest;
     use tauri::WebviewWindowBuilder;
 
@@ -144,23 +149,55 @@ mod tests {
         }
     }
 
-    /// Negativo runtime: comando no concedido en capability → denegación IPC de Tauri.
-    /// El job CI `security-runtime` ejecuta este nombre; si falta, falla.
+    fn is_acl_denial(err: &impl std::fmt::Debug) -> bool {
+        let msg = format!("{err:?}").to_lowercase();
+        let aclish = msg.contains("denied")
+            || msg.contains("not allowed")
+            || msg.contains("forbidden")
+            || msg.contains("permission")
+            || msg.contains("capability")
+            || msg.contains("acl");
+        // Reject bare "command" matches that do not indicate ACL.
+        aclish && !msg.contains("unknown command")
+    }
+
+    /// Positiva (gate + core de producción) y negativa ACL (IPC sin permiso).
+    ///
+    /// MockRuntime no inyecta `tauri::Window` en handlers; la positiva ejercita
+    /// el mismo `RealCore::with_desktop` y `check_invoke` que los handlers.
+    /// La negativa usa la capability `restricted` con permissions vacía.
     #[test]
     fn security_runtime_deny_ungranted_command() {
-        // MockRuntime + contexto real (capabilities/main.json con permissions: []).
+        assert!(
+            check_invoke(Window::Main, CoreOp::LoadCatalog).is_ok(),
+            "main must allow load_catalog at the application gate"
+        );
+        let core = RealCore::with_desktop().expect("desktop catalog");
+        let catalog = core
+            .load_catalog(LoadCatalogInput {
+                source: CatalogSource::Embedded,
+                catalog_ref: None,
+                expected_digest: None,
+                file_path: None,
+                expected_provenance: None,
+                limits: None,
+                request_id: None,
+            })
+            .expect("authorized load_catalog must succeed");
+        assert_eq!(catalog.id, "desktop");
+
         let app = tauri::test::mock_builder()
             .build(tauri::generate_context!())
             .expect("mock app builds with real capabilities");
 
-        let webview = WebviewWindowBuilder::new(&app, "main", Default::default())
+        let restricted = WebviewWindowBuilder::new(&app, "restricted", Default::default())
             .build()
-            .expect("main webview");
+            .expect("restricted webview");
 
         let err = tauri::test::get_ipc_response(
-            &webview,
+            &restricted,
             InvokeRequest {
-                cmd: "create_draft".into(),
+                cmd: "load_catalog".into(),
                 callback: tauri::ipc::CallbackFn(0),
                 error: tauri::ipc::CallbackFn(1),
                 url: invoke_url(),
@@ -169,22 +206,18 @@ mod tests {
                 invoke_key: tauri::test::INVOKE_KEY.to_string(),
             },
         )
-        .expect_err("create_draft must be denied: main capability grants nothing");
+        .expect_err("restricted window must be denied by ACL");
 
-        let msg = format!("{err:?}").to_lowercase();
         assert!(
-            msg.contains("denied")
-                || msg.contains("not allowed")
-                || msg.contains("forbidden")
-                || msg.contains("permission")
-                || msg.contains("capability")
-                || msg.contains("acl")
-                || msg.contains("command"),
-            "expected ACL/permission denial, got: {err:?}"
+            is_acl_denial(&err),
+            "expected ACL/permission denial (not a generic 'command' match), got: {err:?}"
         );
 
+        let main = WebviewWindowBuilder::new(&app, "main", Default::default())
+            .build()
+            .expect("main webview");
         let unknown = tauri::test::get_ipc_response(
-            &webview,
+            &main,
             InvokeRequest {
                 cmd: "shell_execute".into(),
                 callback: tauri::ipc::CallbackFn(0),

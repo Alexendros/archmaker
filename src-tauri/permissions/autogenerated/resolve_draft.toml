@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-resolve-draft"
+description = "Enables the resolve_draft command without any pre-configured scope."
+commands.allow = ["resolve_draft"]
+
+[[permission]]
+identifier = "deny-resolve-draft"
+description = "Denies the resolve_draft command without any pre-configured scope."
+commands.deny = ["resolve_draft"]

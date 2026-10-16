@@ -3,8 +3,8 @@ use archmaker_domain::{Artifact, Catalog, Draft, Manifest};
 use crate::error::Result;
 use crate::inputs::{
     BuildManifestInput, CreateDraftInput, ExportArtifactInput, ImportDraftInput, ImportDraftResult,
-    LoadCatalogInput, ResolveDraftInput, ResolveResult, SaveDraftInput, ValidateDraftInput,
-    ValidationResult,
+    LoadCatalogInput, OpenDraftInput, ResolveDraftInput, ResolveResult, SaveDraftInput,
+    ValidateDraftInput, ValidationResult,
 };
 use crate::limits::IoClass;
 
@@ -12,6 +12,8 @@ pub trait CorePort {
     fn create_draft(&self, input: CreateDraftInput) -> Result<Draft>;
     fn load_catalog(&self, input: LoadCatalogInput) -> Result<Catalog>;
     fn save_draft(&self, input: SaveDraftInput) -> Result<Draft>;
+    /// Rehydrate a previously saved draft (memory or store_dir) without bumping revision.
+    fn open_draft(&self, input: OpenDraftInput) -> Result<Draft>;
     fn resolve_draft(&self, input: ResolveDraftInput) -> Result<ResolveResult>;
     fn validate_draft(&self, input: ValidateDraftInput) -> Result<ValidationResult>;
     fn build_manifest(&self, input: BuildManifestInput) -> Result<Manifest>;
@@ -25,6 +27,7 @@ pub enum CoreOp {
     CreateDraft,
     LoadCatalog,
     SaveDraft,
+    OpenDraft,
     ResolveDraft,
     ValidateDraft,
     BuildManifest,
@@ -40,7 +43,7 @@ impl CoreOp {
             | CoreOp::ValidateDraft
             | CoreOp::BuildManifest
             | CoreOp::ImportDraft => IoClass::Pure,
-            CoreOp::LoadCatalog => IoClass::Mixed,
+            CoreOp::LoadCatalog | CoreOp::OpenDraft => IoClass::Mixed,
             CoreOp::SaveDraft | CoreOp::ExportArtifact => IoClass::Io,
         }
     }
@@ -50,6 +53,7 @@ impl CoreOp {
             CoreOp::CreateDraft => "archmaker-core.create-draft",
             CoreOp::LoadCatalog => "archmaker-core.load-catalog",
             CoreOp::SaveDraft => "archmaker-core.save-draft",
+            CoreOp::OpenDraft => "archmaker-core.open-draft",
             CoreOp::ResolveDraft => "archmaker-core.resolve-draft",
             CoreOp::ValidateDraft => "archmaker-core.validate-draft",
             CoreOp::BuildManifest => "archmaker-core.build-manifest",

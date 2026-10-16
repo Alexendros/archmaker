@@ -1,6 +1,6 @@
 {
-  "generated_at": "1792137450",
-  "git_sha": "cd086afa2e331e561a7cfc04bcefae3650f3a996",
+  "generated_at": "1792163426",
+  "git_sha": "af56a8912a33e22715a015188fde5a08adfcafa2",
   "tests": [
     {
       "id": "TST-ARCHMAKER-CANONICALIZATION-VECTORS-GOLDEN_CORPUS_BYTE_IDENTITY_AND_DIGEST",
@@ -102,6 +102,20 @@
         "NFR-PORT-001"
       ],
       "description": "parity::parity_resolve_and_manifest"
+    },
+    {
+      "id": "TST-ARCHMAKER-WASM-PARITY-PARITY_DESKTOP_CATALOG_MANIFEST_CANONICAL_BYTES",
+      "type": "integration",
+      "location": "crates/archmaker-wasm/tests/parity.rs",
+      "command": "cargo test -p archmaker-wasm --test parity parity_desktop_catalog_manifest_canonical_bytes",
+      "workflow": "ci",
+      "covers": [
+        "FR-CAT-001",
+        "FR-MANIFEST-001",
+        "NFR-DET-001",
+        "NFR-PORT-001"
+      ],
+      "description": "parity::parity_desktop_catalog_manifest_canonical_bytes"
     },
     {
       "id": "TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-DENIED_INVOKE_RETURNS_TYPED_PROTO_001",
@@ -482,6 +496,24 @@
       "description": "core_contract::import_draft_migrates_v51_sample"
     },
     {
+      "id": "TST-ARCHMAKER-CORE-CORE_CONTRACT-EXPORT_ARTIFACT_WITHOUT_STORE_DIR_RETURNS_CONTENT",
+      "type": "integration",
+      "location": "crates/archmaker-core/tests/core_contract.rs",
+      "command": "cargo test -p archmaker-core --test core_contract export_artifact_without_store_dir_returns_content",
+      "workflow": "ci",
+      "covers": ["FR-EXPORT-001"],
+      "description": "core_contract::export_artifact_without_store_dir_returns_content"
+    },
+    {
+      "id": "TST-ARCHMAKER-CORE-CORE_CONTRACT-OPEN_DRAFT_REHYDRATES_FROM_SEED",
+      "type": "integration",
+      "location": "crates/archmaker-core/tests/core_contract.rs",
+      "command": "cargo test -p archmaker-core --test core_contract open_draft_rehydrates_from_seed",
+      "workflow": "ci",
+      "covers": ["FR-DRAFT-001"],
+      "description": "core_contract::open_draft_rehydrates_from_seed"
+    },
+    {
       "id": "TST-ARCHMAKER-CORE-CORE_CONTRACT-SAVE_DRAFT_APPLIES_CHANGESET_REPLACE",
       "type": "integration",
       "location": "crates/archmaker-core/tests/core_contract.rs",
@@ -767,10 +799,10 @@
       "description": "negative_capabilities::dialog_and_picker_capability_files_absent_in_mvp"
     },
     {
-      "id": "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_ALLOWLIST_COVERS_ALL_EIGHT_OPS_EXACTLY_ONCE",
+      "id": "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_ALLOWLIST_COVERS_ALL_NINE_OPS_EXACTLY_ONCE",
       "type": "negative",
       "location": "crates/archmaker-core/tests/negative_capabilities.rs",
-      "command": "cargo test -p archmaker-core --test negative_capabilities neg_allowlist_covers_all_eight_ops_exactly_once",
+      "command": "cargo test -p archmaker-core --test negative_capabilities neg_allowlist_covers_all_nine_ops_exactly_once",
       "workflow": "ci",
       "covers": [
         "NFR-SEC-001",
@@ -778,7 +810,7 @@
         "FR-CAT-001",
         "FR-MANIFEST-001"
       ],
-      "description": "negative_capabilities::neg_allowlist_covers_all_eight_ops_exactly_once"
+      "description": "negative_capabilities::neg_allowlist_covers_all_nine_ops_exactly_once"
     },
     {
       "id": "TST-WEB-FORGE-HELPERS.PLAYWRIGHT",
@@ -788,6 +820,15 @@
       "workflow": "ci",
       "covers": ["FR-DRAFT-001", "NFR-DET-001"],
       "description": "Web test forge-helpers.playwright"
+    },
+    {
+      "id": "TST-WEB-WASM-FLOW.PLAYWRIGHT",
+      "type": "unit",
+      "location": "apps/web/wasm-flow.playwright.test.ts",
+      "command": "cd apps/web && pnpm test wasm-flow.playwright",
+      "workflow": "ci",
+      "covers": [],
+      "description": "Web test wasm-flow.playwright"
     },
     {
       "id": "TST-WEB-A11Y-PLAYWRIGHT",

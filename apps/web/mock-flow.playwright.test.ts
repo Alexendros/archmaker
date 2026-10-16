@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-const BASE_URL = process.env.BASE_URL || "http://localhost:5173";
+const BASE_URL = process.env.BASE_URL || "http://localhost:5173/?mock=1";
 
 test.describe("NEUBAT FORGE face — rutas del plan", () => {
   test.beforeEach(async ({ page }) => {
@@ -170,16 +170,21 @@ test.describe("NEUBAT FORGE face — rutas del plan", () => {
     ).toBeChecked();
   });
 
-  test("revisión: Generar valida y Forjar exporta", async ({ page }) => {
+  test("revisión: Generar valida y Exportar entrega archivo", async ({
+    page,
+  }) => {
     await page.getByRole("button", { name: "Generar" }).click();
     await expect(page.getByRole("heading", { name: "Revisión" })).toBeVisible();
     await expect(page.locator("#toast-region")).toContainText(
       /Manifest listo|Validación/i,
     );
     await expect(page.getByText(/Arranque systemd-boot/i)).toBeVisible();
-    await page.getByRole("button", { name: "Forjar" }).click();
+    const downloadPromise = page.waitForEvent("download");
+    await page.getByRole("button", { name: "Exportar" }).click();
+    const download = await downloadPromise;
+    expect(download.suggestedFilename()).toMatch(/archmaker-profile-.*\.json/);
     await expect(page.locator("#toast-region")).toContainText(
-      "Artefacto exportado",
+      /Archivo entregado/i,
     );
   });
 

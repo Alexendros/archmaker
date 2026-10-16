@@ -28,6 +28,17 @@
   .skip-link:focus-visible {
     top: var(--ds-space-2);
   }
+  .forge-boot-error {
+    max-width: 40rem;
+    margin: 4rem auto;
+    padding: var(--ds-space-6);
+    border: var(--ds-border-thin) var(--color-danger, #b00020);
+    border-radius: var(--ds-radius-md);
+    background: var(--color-surface);
+  }
+  .forge-boot-error h1 {
+    margin-top: 0;
+  }
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,

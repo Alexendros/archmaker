@@ -8,7 +8,7 @@ import pixelmatch from "pixelmatch";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const BASE_URL = process.env.BASE_URL || "http://localhost:5173";
+const BASE_URL = process.env.BASE_URL || "http://localhost:5173/?mock=1";
 const BASELINE_DIR = path.resolve(__dirname, "visual-baselines");
 const DIFF_DIR = path.resolve(__dirname, "visual-diffs");
 

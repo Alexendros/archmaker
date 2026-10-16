@@ -16,8 +16,11 @@ reviewers:
 # Política Tauri
 
 - Deny-by-default.
-- En MVP solo existe la ventana `main` y su capability (`src-tauri/capabilities/main.json`) con `permissions: []`: esa lista vacía es la denegación definitiva del slice. Los ocho ficheros `src-tauri/permissions/*.toml` definen identificadores `core:*` y no se conceden en el JSON. No hay campo raíz `denied` (el schema Tauri 2 no lo soporta; la ausencia de permiso basta).
-- Reserva v1: las ventanas `dialog` y `picker` no tienen ficheros de capability en el árbol MVP; se reintroducirán solo con alcance `accepted` de v1, cada una con allow-list vacía hasta conceder permisos tipados.
+- Los comandos propios se registran en `src-tauri/build.rs` vía `AppManifest::commands` (Tauri 2). Sin ese registro, la ACL de aplicación no restringe la superficie de invoke.
+- La ventana `main` (`capabilities/main.json`) concede únicamente los `allow-*` de CorePort (nueve operaciones, incluido `open_draft`).
+- `capabilities/restricted.json` tiene `permissions: []` para pruebas ACL negativas (ventana `restricted`).
+- `check_invoke` en Rust es una segunda capa (matriz ventana × operación) tras la ACL de Tauri.
+- Reserva v1: las ventanas `dialog` y `picker` no tienen ficheros de capability; se reintroducirán solo con alcance `accepted` de v1.
 - Capabilities separadas por ventana y plataforma.
 - Permisos custom con allow/deny explícitos cuando se concedan.
 - Scopes de filesystem mínimos; negar rutas sensibles.

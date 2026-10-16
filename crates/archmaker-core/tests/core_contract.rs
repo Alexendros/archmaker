@@ -4,8 +4,8 @@ use std::time::{SystemTime, UNIX_EPOCH};
 use archmaker_core::{
     catalog_content_digest, is_uuid, render_artifact_bytes, BuildManifestInput, CatalogSource,
     ChangeSet, ChangeSetOp, ChangeSetOperation, ChangeSetOrigin, CorePort, CreateDraftInput,
-    DestinationHandle, ExportArtifactInput, ImportDraftInput, LoadCatalogInput, RealCore,
-    ResolveDraftInput, SaveDraftInput, ValidateDraftInput,
+    DestinationHandle, ExportArtifactInput, ImportDraftInput, LoadCatalogInput, OpenDraftInput,
+    RealCore, ResolveDraftInput, SaveDraftInput, ValidateDraftInput,
 };
 use archmaker_domain::{
     CatalogRef, ContentDigest, ContentKind, DigestAlgorithm, Draft, Selection, SelectionValue,
@@ -825,6 +825,86 @@ fn import_draft_migrates_v51_sample() {
         result.original_digest,
         archmaker_canonicalization::digest(bytes, "archmaker:import:original:v1")
     );
+}
+
+#[test]
+fn export_artifact_without_store_dir_returns_content() {
+    let core = RealCore::with_desktop().expect("desktop");
+    let mut draft = core
+        .create_draft(CreateDraftInput {
+            draft_id: Some("aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa".into()),
+            catalog_ref: desktop_catalog_ref(),
+            target_ref: draft_target(),
+            preset_ref: None,
+            request_id: None,
+        })
+        .expect("create");
+    draft.selections = vec![
+        single("archmaker.base.kernel", "archmaker.kernel.linux"),
+        single("archmaker.base.boot", "archmaker.boot.systemd-boot"),
+        single("archmaker.base.filesystem", "archmaker.filesystem.btrfs"),
+        single(
+            "archmaker.environment.compositor",
+            "archmaker.compositor.gnome",
+        ),
+        single("archmaker.apps.browser", "archmaker.browser.firefox"),
+    ];
+    let resolved = core
+        .resolve_draft(ResolveDraftInput {
+            draft: draft.clone(),
+            catalog_ref: desktop_catalog_ref(),
+            request_id: None,
+        })
+        .expect("resolve");
+    let manifest = core
+        .build_manifest(BuildManifestInput {
+            draft,
+            catalog_ref: desktop_catalog_ref(),
+            target_ref: TargetRef {
+                id: "archmaker-profile".into(),
+                version: "0.1.0".into(),
+            },
+            expected_resolution_digest: Some(resolved.resolution_digest),
+            request_id: None,
+        })
+        .expect("manifest");
+    let artifact = core
+        .export_artifact(ExportArtifactInput {
+            manifest,
+            target_ref: TargetRef {
+                id: "archmaker-profile".into(),
+                version: "0.1.0".into(),
+            },
+            destination: DestinationHandle::new("profile-out.json".into()).expect("token"),
+            request_id: None,
+        })
+        .expect("export without store_dir");
+    assert!(artifact.content.is_some());
+    assert_eq!(artifact.binary_digest.value.len(), 64);
+}
+
+#[test]
+fn open_draft_rehydrates_from_seed() {
+    let core = RealCore::with_desktop().expect("desktop");
+    let draft = core
+        .create_draft(CreateDraftInput {
+            draft_id: Some("bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb".into()),
+            catalog_ref: desktop_catalog_ref(),
+            target_ref: draft_target(),
+            preset_ref: None,
+            request_id: None,
+        })
+        .expect("create");
+    let other = RealCore::with_desktop().expect("fresh session");
+    let opened = other
+        .open_draft(OpenDraftInput {
+            draft_id: draft.id.clone(),
+            seed: Some(draft.clone()),
+            request_id: None,
+        })
+        .expect("seed hydrate");
+    assert_eq!(opened.id, draft.id);
+    assert_eq!(opened.revision, draft.revision);
 }
 
 #[test]

@@ -131,6 +131,33 @@ jobs:
           pnpm install --frozen-lockfile
           pnpm check
 
+  web-wasm-prod:
+    name: Web production build + WASM (OP-1/OP-7)
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Toolchain pinned
+        run: rustup show active-toolchain
+      - name: Install wasm-bindgen-cli (match Cargo.lock)
+        run: cargo install wasm-bindgen-cli --locked --version 0.2.129
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "20"
+      - name: Build WASM + Vite production
+        run: |
+          corepack enable
+          pnpm install --frozen-lockfile
+          cd apps/web
+          pnpm build
+      - name: E2E WASM (sin mock)
+        run: |
+          cd apps/web
+          pnpm exec playwright install --with-deps chromium
+          pnpm exec playwright test wasm-flow.playwright.test.ts
+
   docs-python:
     name: Validadores Python + canonicalización (G0/G4/G5/G7/G9)
     runs-on: ubuntu-latest

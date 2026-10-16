@@ -20,8 +20,8 @@ use archmaker_rules::{
 use crate::error::{CoreError, Result};
 use crate::inputs::{
     sort_diagnostics, BuildManifestInput, CatalogSource, ChangeSet, ChangeSetOp, CreateDraftInput,
-    ExportArtifactInput, ImportDraftInput, ImportDraftResult, LoadCatalogInput, ResolveDraftInput,
-    ResolveResult, SaveDraftInput, ValidateDraftInput, ValidationResult,
+    ExportArtifactInput, ImportDraftInput, ImportDraftResult, LoadCatalogInput, OpenDraftInput,
+    ResolveDraftInput, ResolveResult, SaveDraftInput, ValidateDraftInput, ValidationResult,
 };
 use crate::io::atomic_write_bytes;
 use crate::limits::DEFAULT_LIMITS;
@@ -66,6 +66,8 @@ fn check_json_depth(bytes: &[u8], max_depth: u32) -> Result<()> {
 }
 
 pub const EMBEDDED_CATALOG_JSON: &str = include_str!("../fixtures/embedded-catalog.json");
+/// Product catalog (matrix / NEUBAT ids). Used by Tauri and WASM session cores.
+pub const DESKTOP_CATALOG_JSON: &str = include_str!("../fixtures/local-catalog-mvp1.json");
 
 const DRAFT_DOMAIN: &str = "archmaker:draft:v1";
 const CATALOG_DOMAIN: &str = "archmaker:catalog:v1";
@@ -113,9 +115,18 @@ impl RealCore {
     }
 
     pub fn with_embedded() -> Result<Self> {
+        Self::from_catalog_json(EMBEDDED_CATALOG_JSON)
+    }
+
+    /// Product runtime catalog (`local-catalog-mvp1.json`).
+    pub fn with_desktop() -> Result<Self> {
+        Self::from_catalog_json(DESKTOP_CATALOG_JSON)
+    }
+
+    fn from_catalog_json(json: &str) -> Result<Self> {
         let source = CoreOp::LoadCatalog.source();
-        let value: serde_json::Value = serde_json::from_str(EMBEDDED_CATALOG_JSON)
-            .map_err(|_| CoreError::schema_invalid(source))?;
+        let value: serde_json::Value =
+            serde_json::from_str(json).map_err(|_| CoreError::schema_invalid(source))?;
         let catalog: Catalog =
             serde_json::from_value(value).map_err(|_| CoreError::schema_invalid(source))?;
         let active_rules = rules_from_catalog(&catalog)?;
@@ -130,6 +141,17 @@ impl RealCore {
     pub fn with_store_dir(mut self, dir: PathBuf) -> Self {
         self.store_dir = Some(dir);
         self
+    }
+
+    /// CatalogRef for the active embedded/product catalog, with content digest.
+    pub fn active_catalog_ref(&self) -> Result<CatalogRef> {
+        let c = &self.catalog_embedded;
+        Ok(CatalogRef {
+            namespace: c.namespace.clone(),
+            id: c.id.clone(),
+            version: c.version.clone(),
+            digest: catalog_content_digest(c)?,
+        })
     }
 
     pub fn catalog(&self) -> &Catalog {
@@ -834,8 +856,8 @@ impl CorePort for RealCore {
                 return Err(CoreError::schema_invalid(source));
             }
         }
-        Ok(Draft {
-            id,
+        let draft = Draft {
+            id: id.clone(),
             document_version: "vNext".to_string(),
             schema_version: "1".to_string(),
             revision: 0,
@@ -846,7 +868,9 @@ impl CorePort for RealCore {
             preset_refs: input.preset_ref.map(|preset: PresetRef| vec![preset]),
             created_at: None,
             updated_at: None,
-        })
+        };
+        self.drafts.borrow_mut().insert(id, draft.clone());
+        Ok(draft)
     }
 
     fn load_catalog(&self, input: LoadCatalogInput) -> Result<Catalog> {
@@ -960,6 +984,43 @@ impl CorePort for RealCore {
         Ok(draft)
     }
 
+    fn open_draft(&self, input: OpenDraftInput) -> Result<Draft> {
+        let source = CoreOp::OpenDraft.source();
+        if !is_uuid(&input.draft_id) {
+            return Err(CoreError::schema_invalid(source));
+        }
+        if let Some(draft) = self.drafts.borrow().get(&input.draft_id).cloned() {
+            return Ok(draft);
+        }
+        if let Some(seed) = input.seed {
+            if seed.id != input.draft_id {
+                return Err(CoreError::schema_invalid(source));
+            }
+            ensure_draft_shape(&seed, source)?;
+            self.ensure_catalog_match(&seed.catalog_ref, source)?;
+            self.drafts
+                .borrow_mut()
+                .insert(seed.id.clone(), seed.clone());
+            return Ok(seed);
+        }
+        let Some(dir) = &self.store_dir else {
+            return Err(CoreError::doc_conflict(source));
+        };
+        let path = dir.join(format!("{}.json", input.draft_id));
+        let bytes = std::fs::read(&path).map_err(|_| CoreError::io_failed(source))?;
+        let draft: Draft =
+            serde_json::from_slice(&bytes).map_err(|_| CoreError::schema_invalid(source))?;
+        if draft.id != input.draft_id {
+            return Err(CoreError::schema_invalid(source));
+        }
+        ensure_draft_shape(&draft, source)?;
+        self.ensure_catalog_match(&draft.catalog_ref, source)?;
+        self.drafts
+            .borrow_mut()
+            .insert(draft.id.clone(), draft.clone());
+        Ok(draft)
+    }
+
     fn resolve_draft(&self, input: ResolveDraftInput) -> Result<ResolveResult> {
         let source = CoreOp::ResolveDraft.source();
         let internal = resolve_internal(self, &input.draft, &input.catalog_ref, source)?;
@@ -1058,15 +1119,13 @@ impl CorePort for RealCore {
             value: sha256_hex(&rendered.bytes),
             kind: Some(BinaryKind::Binary),
         };
-        let dir = self
-            .store_dir
-            .as_ref()
-            .ok_or_else(|| CoreError::io_failed(source))?;
-        atomic_write_bytes(
-            CoreOp::ExportArtifact,
-            &dir.join(input.destination.token()),
-            &rendered.bytes,
-        )?;
+        if let Some(dir) = &self.store_dir {
+            atomic_write_bytes(
+                CoreOp::ExportArtifact,
+                &dir.join(input.destination.token()),
+                &rendered.bytes,
+            )?;
+        }
         let experimental = if input.target_ref.id == "archinstall-profile" {
             Some(true)
         } else {

@@ -1,12 +1,18 @@
+use std::cell::RefCell;
+
 use archmaker_canonicalization as canon;
 use archmaker_core::{
     check_invoke_named, BuildManifestInput, CoreError, CoreOp, CorePort, CreateDraftInput,
-    ExportArtifactInput, ImportDraftInput, LoadCatalogInput, RealCore, ResolveDraftInput,
-    SaveDraftInput, ValidateDraftInput,
+    ExportArtifactInput, ImportDraftInput, LoadCatalogInput, OpenDraftInput, RealCore,
+    ResolveDraftInput, SaveDraftInput, ValidateDraftInput,
 };
 use wasm_bindgen::prelude::*;
 
 pub const DEFAULT_DOMAIN: &str = "archmaker:manifest:v1";
+
+thread_local! {
+    static SESSION_CORE: RefCell<Option<RealCore>> = const { RefCell::new(None) };
+}
 
 fn invalid_json_error(source: &str) -> CoreError {
     CoreError::schema_invalid(source)
@@ -14,6 +20,28 @@ fn invalid_json_error(source: &str) -> CoreError {
 
 fn error_json(err: &CoreError) -> String {
     serde_json::to_string(err).expect("CoreError is serializable")
+}
+
+fn session_core() -> Result<(), String> {
+    SESSION_CORE.with(|cell| {
+        let mut slot = cell.borrow_mut();
+        if slot.is_none() {
+            *slot = Some(RealCore::with_desktop().map_err(|e| error_json(&e))?);
+        }
+        Ok(())
+    })
+}
+
+fn with_session<F>(f: F) -> Result<String, String>
+where
+    F: FnOnce(&RealCore) -> Result<String, String>,
+{
+    session_core()?;
+    SESSION_CORE.with(|cell| {
+        let slot = cell.borrow();
+        let core = slot.as_ref().expect("session core initialized");
+        f(core)
+    })
 }
 
 pub fn canonicalize_json(input_json: &str) -> Result<String, String> {
@@ -50,6 +78,11 @@ fn dispatch(core: &RealCore, op: CoreOp, input: serde_json::Value) -> Result<Str
             serde_json::to_value(core.save_draft(typed).map_err(|e| error_json(&e))?)
                 .expect("DTO is serializable")
         }
+        CoreOp::OpenDraft => {
+            let typed: OpenDraftInput = serde_json::from_value(input).map_err(bad)?;
+            serde_json::to_value(core.open_draft(typed).map_err(|e| error_json(&e))?)
+                .expect("DTO is serializable")
+        }
         CoreOp::ResolveDraft => {
             let typed: ResolveDraftInput = serde_json::from_value(input).map_err(bad)?;
             serde_json::to_value(core.resolve_draft(typed).map_err(|e| error_json(&e))?)
@@ -79,28 +112,34 @@ fn dispatch(core: &RealCore, op: CoreOp, input: serde_json::Value) -> Result<Str
     Ok(out.to_string())
 }
 
-fn embedded_core() -> Result<RealCore, String> {
-    RealCore::with_embedded().map_err(|e| error_json(&e))
-}
-
 pub fn core_op_json(op_name: &str, input_json: &str) -> Result<String, String> {
     let op = CoreOp::parse_command(op_name)
         .ok_or_else(|| error_json(&invalid_json_error("archmaker-wasm.op")))?;
     let input: serde_json::Value = serde_json::from_str(input_json)
         .map_err(|_| error_json(&invalid_json_error("archmaker-wasm.op")))?;
-    dispatch(&embedded_core()?, op, input)
+    with_session(|core| dispatch(core, op, input))
 }
 
+/// One-shot invoke against a fresh embedded catalog (native tests / parity harness).
 pub fn guarded_invoke(
     window_label: &str,
     op_name: &str,
     input_json: &str,
 ) -> Result<String, String> {
-    guarded_invoke_with_core(&embedded_core()?, window_label, op_name, input_json)
+    let core = RealCore::with_embedded().map_err(|e| error_json(&e))?;
+    guarded_invoke_with_core(&core, window_label, op_name, input_json)
+}
+
+/// Browser production path: session core + desktop catalog.
+pub fn guarded_invoke_session(
+    window_label: &str,
+    op_name: &str,
+    input_json: &str,
+) -> Result<String, String> {
+    with_session(|core| guarded_invoke_with_core(core, window_label, op_name, input_json))
 }
 
 /// Dispatch WASM guarded by window allowlist against an injected `RealCore`.
-/// Production browser bindings keep using [`guarded_invoke`] (embedded catalog).
 pub fn guarded_invoke_with_core(
     core: &RealCore,
     window_label: &str,
@@ -125,7 +164,7 @@ pub fn wasm_digest(domain: &str, canonical: &str) -> String {
 
 #[wasm_bindgen]
 pub fn wasm_invoke(window_label: &str, op_name: &str, input_json: &str) -> Result<String, JsValue> {
-    guarded_invoke(window_label, op_name, input_json).map_err(|e| JsValue::from_str(&e))
+    guarded_invoke_session(window_label, op_name, input_json).map_err(|e| JsValue::from_str(&e))
 }
 
 #[wasm_bindgen]
@@ -141,6 +180,11 @@ pub fn wasm_load_catalog(input_json: &str) -> Result<String, JsValue> {
 #[wasm_bindgen]
 pub fn wasm_save_draft(input_json: &str) -> Result<String, JsValue> {
     core_op_json("save_draft", input_json).map_err(|e| JsValue::from_str(&e))
+}
+
+#[wasm_bindgen]
+pub fn wasm_open_draft(input_json: &str) -> Result<String, JsValue> {
+    core_op_json("open_draft", input_json).map_err(|e| JsValue::from_str(&e))
 }
 
 #[wasm_bindgen]
@@ -161,4 +205,9 @@ pub fn wasm_build_manifest(input_json: &str) -> Result<String, JsValue> {
 #[wasm_bindgen]
 pub fn wasm_export_artifact(input_json: &str) -> Result<String, JsValue> {
     core_op_json("export_artifact", input_json).map_err(|e| JsValue::from_str(&e))
+}
+
+#[wasm_bindgen]
+pub fn wasm_import_draft(input_json: &str) -> Result<String, JsValue> {
+    core_op_json("import_draft", input_json).map_err(|e| JsValue::from_str(&e))
 }

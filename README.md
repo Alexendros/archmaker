@@ -5,14 +5,14 @@ Configurador local para diseñar, validar y exportar un perfil. Rust es la autor
 ## Estado
 
 - Gate global (mecánico): **Clear** — todos los gates G0–G10 están `complete`. Autoridad: [`docs/00-governance/go-no-go.md`](docs/00-governance/go-no-go.md) y [`docs/10-delivery/gates.md`](docs/10-delivery/gates.md).
-- Veredicto de gobierno: **CONDITIONAL-CLEAR** hasta MVP-4. Autoriza el walking skeleton y los slices MVP-1..MVP-4; el MVP completo, el runner, los privilegios y Enterprise quedan bloqueados.
-- Baseline vigente: `implementation-baseline-mvp4`. En el árbol están MVP-0 (walking skeleton) y los slices MVP-1..MVP-4.
-- Siguiente slice del roadmap, todavía sin aceptar: MVP-5 ([`docs/10-delivery/mvp5-scope.md`](docs/10-delivery/mvp5-scope.md)). Empaquetado en [`docs/10-delivery/mvp6-scope.md`](docs/10-delivery/mvp6-scope.md). Imagen en [`docs/10-delivery/iso-scope.md`](docs/10-delivery/iso-scope.md). Ninguno de esos borradores autoriza implementación.
+- Veredicto de gobierno: **CONDITIONAL-CLEAR** hasta MVP-5 (sin runner). Autoriza el walking skeleton y los slices MVP-1..MVP-5; runner, privilegios, ISO y Enterprise siguen bloqueados.
+- Baseline vigente: `implementation-baseline-mvp4`. Tag MVP-5 pendiente (MVP-5-05). Remediación operativa: [`docs/10-delivery/remediation/findings-r0.md`](docs/10-delivery/remediation/findings-r0.md).
+- Alcance MVP-5 **accepted**: [`docs/10-delivery/mvp5-scope.md`](docs/10-delivery/mvp5-scope.md). Hueco: [`mvp5-gap-spec.md`](docs/10-delivery/mvp5-gap-spec.md) (draft). Empaquetado ([`mvp6-scope.md`](docs/10-delivery/mvp6-scope.md)) e ISO siguen `in-review`.
 - Fuentes históricas: `reference/v5.1/`, conservadas por hash; walking skeleton en [`docs/10-delivery/walking-skeleton.md`](docs/10-delivery/walking-skeleton.md).
-- Rust: autoridad de dominio y casos de uso (compilable nativo + WASM).
-- React: presentación e interacción (adapters Tauri y WASM).
-- Tauri 2: adaptador de escritorio (deny-by-default, scopes acotados, sin `shell:*`).
-- WASM: adaptador de navegador (paridad golden nativo/WASM).
+- Rust: autoridad de dominio y casos de uso (nativo + WASM).
+- React: cara NEUBAT; escritorio → `TauriCorePort` (`invoke` de `@tauri-apps/api/core`); navegador → `WasmCorePort`. `MockCorePort` solo con `?mock=1` en desarrollo.
+- Tauri 2: ACL vía `AppManifest::commands` + capabilities mínimas; `check_invoke` como segunda capa; sin `shell:*`.
+- WASM: módulo real (`tools/build-wasm.sh`); sesión `RealCore` con catálogo desktop.
 - Runner privilegiado: diferido (ADR-0004 / DEC-004).
 - Manual de uso: [`docs/11-operations/manual/`](docs/11-operations/manual/) y [wiki](https://github.com/Alexendros/archmaker/wiki).
 

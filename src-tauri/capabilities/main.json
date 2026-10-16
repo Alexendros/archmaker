@@ -1,7 +1,17 @@
 {
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "main-capability",
-  "description": "Deny-by-default: permissions vacia es la denegacion definitiva del slice. Los 8 identificadores core:* viven en TOML y no se conceden aqui. Sin shell, sin FS global.",
+  "description": "Ventana main: solo comandos CorePort de producto. Deny-by-default para el resto.",
   "windows": ["main"],
-  "permissions": []
+  "permissions": [
+    "allow-create-draft",
+    "allow-load-catalog",
+    "allow-save-draft",
+    "allow-open-draft",
+    "allow-resolve-draft",
+    "allow-validate-draft",
+    "allow-build-manifest",
+    "allow-export-artifact",
+    "allow-import-draft"
+  ]
 }
