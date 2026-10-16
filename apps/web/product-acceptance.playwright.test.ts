@@ -180,7 +180,7 @@ test.describe("P5 product-acceptance — integridad y recorrido", () => {
       /Manifest listo|Validación|Draft/i,
       { timeout: 60_000 },
     );
-    // Nombre visible Forge (no Neubat activo)
+    // Nombre visible de producto: Forge
     await expect(page.locator("body")).toContainText(/Forge/i);
   });
 });
