@@ -68,12 +68,17 @@ def main() -> int:
         fail("sourceSha inválido")
         errors += 1
     elif source != head:
-        # Permitido si el doc bloquea el tip; pero la evidencia debe nombrar el tip.
-        fail(
-            f"sourceSha de evidencia ({source[:12]}) ≠ HEAD ({head[:12]}); "
-            "regenerar probe sobre el tip bajo prueba"
-        )
-        errors += 1
+        if status == "passed":
+            fail(
+                f"passed exige sourceSha==HEAD ({head[:12]}); evidencia={str(source)[:12]}"
+            )
+            errors += 1
+        else:
+            # blocked/failed: el probe puede quedar detrás tras merges; no autoaprueba.
+            print(
+                f"WARN evidence sourceSha {str(source)[:12]} ≠ HEAD {head[:12]} "
+                f"(ok si status={status})"
+            )
 
     notes = data.get("notes") or []
     joined = " ".join(notes).lower()

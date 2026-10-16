@@ -33,6 +33,8 @@ Tres capas distintas (detalle: [`docs/10-delivery/closure/f8-governance.md`](doc
 - WASM: módulo real (`tools/build-wasm.sh`); sesión `RealCore` con catálogo desktop.
 - Runner privilegiado: diferido (ADR-0004 / DEC-004).
 - Manual de uso: [`docs/11-operations/manual/`](docs/11-operations/manual/) y [wiki](https://github.com/Alexendros/archmaker/wiki).
+- Instalación de Forge: [`docs/11-operations/manual/Instalacion-Forge.md`](docs/11-operations/manual/Instalacion-Forge.md).
+- Desktop/offline del tip: [`docs/10-delivery/closure/p6-desktop-offline.md`](docs/10-delivery/closure/p6-desktop-offline.md) (**blocked** sin binario prod).
 
 ## Documentación
 
