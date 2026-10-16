@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1",
-  "asBuiltSourceSha": "0cc53574388a1da45c3eff07b966e4441650e053",
+  "asBuiltSourceSha": "e61a8f093af61ad51e809ad59b159cd0ab0550fc",
   "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
   "paths": {
     ".github/workflows/ci.yml": "e657ed192c3490a9f85463c3b32e5ca65386617c1ecdce45a534bdc6d5348ffa",
@@ -23,7 +23,7 @@
     "crates/archmaker-wasm/src/lib.rs": "5dfe5c02d2a7dd980cde90fcd9313fddc4738b771fc6293dd429928cb124d9ed",
     "docs/00-governance/go-no-go.md": "97e3b9e68cce185d09818724b9e768856753f798364107937d5d06cec5159373",
     "docs/02-architecture/diagrams/README.md": "c49ee9ecffd0a52101b62d4b95e1d9ffceb6da3a066d66ac60fde6c31a00a59b",
-    "docs/02-architecture/diagrams/catalog.json": "9e944389b3e111996e63a4dd6c983633fbbcafc080d0aa3847c48ccdf519b6a6",
+    "docs/02-architecture/diagrams/catalog.json": "3f28347b82e0ee53d0df91f3ac4d87023d96c67f35ed2f90cc0d2a76b45c1ef8",
     "docs/02-architecture/diagrams/sources/D01-context.architecture.json": "229e0c9ae4cceb6fcce85872c43458ab7aa9ba3533d5917b9b8fe8de5428b39a",
     "docs/02-architecture/diagrams/sources/D02-containers.architecture.json": "4c13f2d7f431622f31907562206693cea5be6464ca9141288bdea8c1100d5225",
     "docs/02-architecture/diagrams/sources/D03-core-components.architecture.json": "e275387c1d4adf136754691b53589ae5b9fa3d681846692d432c0b084aab2d82",
