@@ -245,7 +245,13 @@ def infer_web_covers(test_name: str, path: str) -> List[str]:
         covers.append('NFR-ACC-001')
     if 'visual' in name or 'regression' in name:
         covers.extend(['NFR-ACC-001', 'NFR-OFF-001'])
-    if 'e2e' in name or 'mock-flow' in name or 'mock-flow' in path_lower:
+    if (
+        'e2e' in name
+        or 'mock-flow' in name
+        or 'mock-flow' in path_lower
+        or 'wasm-flow' in name
+        or 'wasm-flow' in path_lower
+    ):
         covers.extend([
             'FR-DRAFT-001',
             'FR-CAT-001',

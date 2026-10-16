@@ -4,11 +4,13 @@ phase: MVP
 priority: P0
 documentStatus: in-review
 approvalStatus: pending
-implementationStatus: in-progress
+implementationStatus: complete
 verificationStatus: partial
 releaseStatus: ineligible
 owners:
   - architecture
+reviewers:
+  - independent-reviewer
 ---
 
 # R0 — Línea base y hallazgos (remediación operativa)
