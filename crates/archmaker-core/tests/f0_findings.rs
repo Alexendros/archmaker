@@ -9,10 +9,7 @@ use archmaker_core::{
     CreateDraftInput, DestinationHandle, ExportArtifactInput, RealCore, ResolveDraftInput,
     SaveDraftInput,
 };
-use archmaker_domain::{
-    CatalogRef, ContentDigest, ContentKind, DigestAlgorithm, Draft, Selection, SelectionValue,
-    TargetRef,
-};
+use archmaker_domain::{CatalogRef, Draft, Selection, SelectionValue, TargetRef};
 use sha2::{Digest, Sha256};
 
 fn repo_root() -> PathBuf {
@@ -33,21 +30,11 @@ fn sha256_hex(bytes: &[u8]) -> String {
         .collect()
 }
 
-fn digest_value(value: &str) -> ContentDigest {
-    ContentDigest {
-        algorithm: DigestAlgorithm::Sha256,
-        value: value.to_string(),
-        kind: Some(ContentKind::Content),
-    }
-}
-
 fn catalog_ref() -> CatalogRef {
-    CatalogRef {
-        namespace: "archmaker.core".to_string(),
-        id: "minimal".to_string(),
-        version: "0.1.0".to_string(),
-        digest: digest_value(&"0".repeat(64)),
-    }
+    RealCore::with_embedded()
+        .expect("embedded")
+        .active_catalog_ref()
+        .expect("active catalog ref")
 }
 
 fn draft_target() -> TargetRef {
@@ -213,7 +200,8 @@ fn c02_export_binary_digest_matches_renderer_bytes() {
 }
 
 #[test]
-fn c03_resolve_hostname_encrypt_absent_from_manifest() {
+fn c03_resolve_hostname_encrypt_preserved_as_intention() {
+    // F3 corrige C-03: hostname y cifrado (intención) llegan al manifiesto.
     let face = read_repo("apps/web/src/draft-for-core.ts");
     assert!(face.contains("STEP_IDS.intent"));
     assert!(
@@ -222,8 +210,8 @@ fn c03_resolve_hostname_encrypt_absent_from_manifest() {
     );
     let app = read_repo("apps/web/src/App.tsx");
     assert!(
-        app.contains("Esta cara no cifra nada."),
-        "la cara ya dice que no cifra"
+        app.contains("no cifra") || app.contains("intención"),
+        "la cara no afirma cifrado aplicado"
     );
 
     let core = RealCore::with_embedded().expect("embedded");
@@ -245,10 +233,15 @@ fn c03_resolve_hostname_encrypt_absent_from_manifest() {
             request_id: None,
         })
         .expect("text y boolean sin option id no fallan el catálogo");
-    for selection in &resolved.effective_selections {
-        assert_ne!(selection.step_id, "archmaker.face.hostname");
-        assert_ne!(selection.step_id, "archmaker.face.encrypt");
-    }
+    assert!(resolved
+        .effective_selections
+        .iter()
+        .any(|s| s.step_id == "archmaker.face.hostname"
+            && matches!(&s.value, SelectionValue::Text { value } if value == "arch-neubat")));
+    assert!(resolved.effective_selections.iter().any(|s| {
+        s.step_id == "archmaker.face.encrypt"
+            && matches!(&s.value, SelectionValue::Boolean { value: true })
+    }));
     let manifest = core
         .build_manifest(BuildManifestInput {
             draft,
@@ -260,12 +253,16 @@ fn c03_resolve_hostname_encrypt_absent_from_manifest() {
         .expect("el manifiesto se construye");
     let json = serde_json::to_string(&manifest).expect("json");
     assert!(
-        !json.contains("arch-neubat"),
-        "el hostname no llega al manifiesto"
+        json.contains("arch-neubat"),
+        "el hostname llega al manifiesto"
     );
     assert!(
-        !json.contains("archmaker.face.encrypt"),
-        "el manifiesto no presenta cifrado aplicado"
+        json.contains("archmaker.face.encrypt"),
+        "el step de cifrado (intención) llega al manifiesto"
+    );
+    assert!(
+        !json.to_lowercase().contains("encrypted") && !json.contains("cifrado aplicado"),
+        "el manifiesto no afirma cifrado aplicado al disco"
     );
 }
 

@@ -173,6 +173,13 @@ impl RealCore {
         {
             return Err(CoreError::cat_not_found(source));
         }
+        if catalog_ref.digest.algorithm != DigestAlgorithm::Sha256 {
+            return Err(CoreError::cat_digest_mismatch(source));
+        }
+        let actual = catalog_content_digest(embedded)?;
+        if catalog_ref.digest.value.to_lowercase() != actual.value {
+            return Err(CoreError::cat_digest_mismatch(source));
+        }
         Ok(())
     }
 }
@@ -411,6 +418,71 @@ fn entity_ids(value: &SelectionValue) -> Vec<String> {
         | SelectionValue::Number { .. }
         | SelectionValue::Text { .. }
         | SelectionValue::SecretRef { .. } => Vec::new(),
+    }
+}
+
+/// Face scalar steps that the product preserves into the sealed manifest as intention.
+const FACE_HOSTNAME_STEP: &str = "archmaker.face.hostname";
+const FACE_ENCRYPT_STEP: &str = "archmaker.face.encrypt";
+
+fn face_exclusion_diagnostic(step_id: &str, kind: &str) -> Diagnostic {
+    Diagnostic {
+        code: "AM-FACE-001".to_string(),
+        severity: archmaker_rules::Severity::Warning,
+        blocking: false,
+        path: format!("/selections/{step_id}"),
+        message_key: "diagnostic.faceSelectionExcluded".to_string(),
+        source: "archmaker-core".to_string(),
+        rule_id: "FACE-EXCLUDE-001".to_string(),
+        suggestions: vec![format!(
+            "selection kind '{kind}' on step '{step_id}' is excluded from the sealed profile"
+        )],
+    }
+}
+
+/// Preserve supported face scalars (hostname text, encrypt boolean intention) and
+/// emit a visible exclusion diagnostic for unsupported scalar kinds.
+fn append_face_scalar_selections(
+    draft: &Draft,
+    effective: &mut Vec<ResolvedSelection>,
+    diagnostics: &mut Vec<Diagnostic>,
+) {
+    for selection in &draft.selections {
+        match &selection.value {
+            SelectionValue::Text { value } if selection.step_id == FACE_HOSTNAME_STEP => {
+                if value.trim().is_empty() {
+                    continue;
+                }
+                effective.push(ResolvedSelection {
+                    step_id: selection.step_id.clone(),
+                    option_id: FACE_HOSTNAME_STEP.to_string(),
+                    value: SelectionValue::Text {
+                        value: value.clone(),
+                    },
+                    origin: SelectionOrigin::Manual,
+                    locked: false,
+                });
+            }
+            SelectionValue::Boolean { value } if selection.step_id == FACE_ENCRYPT_STEP => {
+                effective.push(ResolvedSelection {
+                    step_id: selection.step_id.clone(),
+                    option_id: FACE_ENCRYPT_STEP.to_string(),
+                    value: SelectionValue::Boolean { value: *value },
+                    origin: SelectionOrigin::Manual,
+                    locked: false,
+                });
+            }
+            SelectionValue::Number { .. } => {
+                diagnostics.push(face_exclusion_diagnostic(&selection.step_id, "number"));
+            }
+            SelectionValue::SecretRef { .. } => {
+                diagnostics.push(face_exclusion_diagnostic(&selection.step_id, "secretRef"));
+            }
+            SelectionValue::Text { .. }
+            | SelectionValue::Boolean { .. }
+            | SelectionValue::Single { .. }
+            | SelectionValue::Multiple { .. } => {}
+        }
     }
 }
 
@@ -749,6 +821,8 @@ fn resolve_internal(
             });
         }
     }
+    let mut diagnostics = resolved.diagnostics;
+    append_face_scalar_selections(draft, &mut effective, &mut diagnostics);
     effective.sort_by(|a, b| (&a.step_id, &a.option_id).cmp(&(&b.step_id, &b.option_id)));
     let provided_refs = resolved
         .provided_capabilities
@@ -783,7 +857,7 @@ fn resolve_internal(
         provided: provided_refs,
         required: required_refs,
         conflicts,
-        diagnostics: resolved.diagnostics,
+        diagnostics,
     })
 }
 

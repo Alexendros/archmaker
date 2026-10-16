@@ -41,7 +41,7 @@ La UI exporta 1/3. Los dos call sites de `exportTarget` en `apps/web/src/App.tsx
 
 Denominador de pasos visibles: 6/6 en `RAIL_STEPS` (`Intención`, `Sistema base`, `Entorno`, `Apps`, `Identidad`, `Revisión`).
 
-Denominador de `STEP_IDS`: 8. De ellos, `draftForCore` quita solo `archmaker.face.intent`. Hostname (`archmaker.face.hostname`, texto) y cifrado (`archmaker.face.encrypt`, boolean) siguen en el draft. La cara dice «Esta cara no cifra nada.»
+Denominador de `STEP_IDS`: 8. De ellos, `draftForCore` quita solo `archmaker.face.intent` (y opciones gap). Hostname (`archmaker.face.hostname`, texto) y cifrado (`archmaker.face.encrypt`, boolean) siguen en el draft y F3 los preserva en el manifiesto como intención. Matriz: `field-matrix.md`. La cara no afirma cifrado aplicado al disco.
 
 Denominador de `optionId`: 38 campos. 12 llevan `gap: true`. 26 no.
 
@@ -80,7 +80,7 @@ Clasificación estática y de comportamiento en el árbol de pruebas. No es una 
 | ---- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | C-01 | confirmado           | `create_draft` pisa un id ya guardado. En wasm el UUID sale de `UUID_COUNTER` en 0. El primer id de contador es `b8178f96-e05d-4c4c-9574-864fca3fdb7d`.                        |
 | C-02 | confirmado           | `binaryDigest` es el SHA-256 de `rendered.bytes`. El DTO no tiene `bytes`. `JSON.stringify` de la cadena `report` no es el markdown.                                           |
-| C-03 | confirmado en parte  | `draftForCore` no quita hostname ni encrypt. Resolve acepta el draft. El manifiesto no contiene `arch-neubat` ni el step de cifrado. La UI no dice que el disco quedó cifrado. |
+| C-03 | corregido en F3      | Hostname y cifrado (intención) llegan al manifiesto. number/secretRef emiten `AM-FACE-001`. Exclusiones face visibles. Ver `field-matrix.md` y `f3_fidelity.rs`. |
 | C-04 | confirmado en fuente | `confirmBlockingLosses: true`. El tope `2_000_000` va después de `arrayBuffer()`. No se mira `file.size`.                                                                      |
 | C-05 | confirmado en fuente | No hay estados guardando/guardado. `port.saveDraft` aparece 2 veces (arranque e importación). Las ediciones van a IndexedDB.                                                   |
 | C-06 | confirmado en fuente | Exportar llama a `downloadArtifact`. No existen `dialog.json` ni `picker.json`. El `catch` de WASM no construye `MockCorePort`.                                                |

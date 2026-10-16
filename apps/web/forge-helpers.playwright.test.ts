@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import type { Draft } from "./src/coreport.js";
 import { DRAFT_TARGET, FIXED_CATALOG_REF } from "./src/coreport.js";
-import { draftForCore } from "./src/draft-for-core.js";
+import { draftForCore, listFaceExclusions } from "./src/draft-for-core.js";
 import {
   bumpGeneration,
   isPreparedCurrent,
@@ -104,6 +104,40 @@ test.describe("draftForCore Prove-It", () => {
       kind: "multiple",
       optionIds: ["archmaker.browser.firefox"],
     });
+  });
+
+  test("keeps hostname and encrypt; lists face exclusions", () => {
+    let draft = emptyDraft();
+    draft = chooseSingle(draft, STEP_IDS.intent, "archmaker.intent.desarrollo");
+    draft = setText(draft, STEP_IDS.hostname, "arch-neubat");
+    draft = setBool(draft, STEP_IDS.encrypt, true);
+    draft = {
+      ...draft,
+      selections: [
+        ...draft.selections,
+        {
+          stepId: STEP_IDS.apps,
+          value: {
+            kind: "multiple",
+            optionIds: [
+              "archmaker.browser.firefox",
+              "archmaker.app.grokbot",
+            ],
+          },
+        },
+      ],
+    };
+
+    const exclusions = listFaceExclusions(draft);
+    expect(exclusions.some((e) => e.reason === "face-only-intent")).toBe(true);
+    expect(exclusions.some((e) => e.reason === "gap-option")).toBe(true);
+
+    const forCore = draftForCore(draft);
+    expect(textValue(forCore, STEP_IDS.hostname)).toBe("arch-neubat");
+    expect(boolValue(forCore, STEP_IDS.encrypt)).toBe(true);
+    expect(forCore.selections.some((s) => s.stepId === STEP_IDS.intent)).toBe(
+      false,
+    );
   });
 });
 
