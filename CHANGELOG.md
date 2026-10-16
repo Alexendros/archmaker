@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Gate desktop/offline P6: estado **blocked** explícito con evidencia ausente nombrada
+  (`docs/10-delivery/closure/p6-desktop-offline.md`, `tools/check_desktop_offline_gate.py`);
+  display/portal no bastan sin binario de producción del tip; Mock y AppImage `v0.1.0`
+  histórico no cierran el gate.
+
 - Aceptación de producto P5: corpus de entrega ≥20 fixtures/target + 4 rechazos,
   tres invocaciones Playwright separadas (`--workers=1 --retries=0`, no `--repeat-each`),
   T-MIG 20 ciclos / cuota / sesión previa `archmaker-profiles`, teclado en recorrido esencial,

@@ -54,3 +54,10 @@ Para cerrar el residual hay que, en un entorno con display y portal:
 5. Repetir el recorrido esencial con red deshabilitada (`F7-OFFLINE-DESKTOP`).
 
 Tres aperturas en la misma sesión no cuentan como tres instalaciones independientes (capa F9).
+
+## P6 — Desktop / offline (2026-10-17)
+
+Estado del tip: **blocked**. Ver [`p6-desktop-offline.md`](p6-desktop-offline.md) y
+`examples/desktop-evidence.p6-blocked.json`. Display/portal presentes; falta binario de
+producción del SOURCE_SHA. El AppImage `v0.1.0` histórico no cierra P6.
+

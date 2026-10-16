@@ -1,0 +1,14 @@
+{
+  "sourceSha": "535393dbcb997f46a47ae252d73f3e86ff5a4c06",
+  "display": ":0",
+  "portal": false,
+  "historicalAppImage": "/home/alexendros/archmaker-closure/releases/v0.1.0/Neubat_0.1.0_amd64.AppImage",
+  "shaHits": [],
+  "missingEvidence": [
+    "AppImage o binario de producción del SOURCE_SHA 535393dbcb997f46a47ae252d73f3e86ff5a4c06 (no existe en ~/archmaker-closure ni target/release bundle del tip)",
+    "E2E portal rfd: cancelar / guardar / sobrescribir / destino sin permisos sobre ese binario",
+    "Arranque offline de escritorio (F7-OFFLINE-DESKTOP) con red deshabilitada sobre ese binario",
+    "Tres instalaciones limpias independientes del candidato (no reuso de v0.1.0 histórico)"
+  ],
+  "capturedAt": "2026-10-16T23:38:51Z"
+}

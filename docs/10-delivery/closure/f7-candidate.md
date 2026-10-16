@@ -46,7 +46,7 @@ tag `v0.1.0` **no** demuestra el código de `9297ed7…`; registrar por separado
 | F7-REG-F6 | Mensajes F6 | executable |
 | F7-P95 | P95 producto web-ready/web-prepare n=30 | `tools/run_product_p95_harness.py` |
 | F7-OFFLINE-WEB | Offline web | requiere `--with-e2e` |
-| F7-OFFLINE-DESKTOP | Offline escritorio | **pending** (humo GUI/red) |
+| F7-OFFLINE-DESKTOP | Offline escritorio | **blocked** (P6: sin binario prod del tip) |
 | F7-E2E-X3 | Tres E2E WASM (invocaciones separadas `--workers=1 --retries=0`) | requiere `--with-e2e` |
 
 Un subconjunto de comandos **no** cierra el caso: el runner marca `partial` y `--strict` falla.
