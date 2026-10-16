@@ -24,7 +24,7 @@ dependsOn:
 
 **`blocked`** (no `pending` ambiguo). Hay sesión gráfica y `xdg-desktop-portal`, pero
 **no** hay binario de producción del `SOURCE_SHA` del tip bajo prueba. El AppImage
-histórico `v0.1.0` (Neubat) **no** cierra este gate. Una captura con MockCorePort
+histórico `v0.1.0` (nombre público retirado) **no** cierra este gate. Una captura con MockCorePort
 **no** cierra este gate. La aceptación web **no** se presenta como aceptación desktop.
 
 ## Evidencia ausente nombrada

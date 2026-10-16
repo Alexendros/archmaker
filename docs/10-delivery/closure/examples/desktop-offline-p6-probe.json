@@ -2,7 +2,7 @@
   "sourceSha": "535393dbcb997f46a47ae252d73f3e86ff5a4c06",
   "display": ":0",
   "portal": false,
-  "historicalAppImage": "/home/alexendros/archmaker-closure/releases/v0.1.0/Neubat_0.1.0_amd64.AppImage",
+  "historicalAppImage": "v0.1.0 AppImage (ruta local; identidad artefacto histórico)",
   "shaHits": [],
   "missingEvidence": [
     "AppImage o binario de producción del SOURCE_SHA 535393dbcb997f46a47ae252d73f3e86ff5a4c06 (no existe en ~/archmaker-closure ni target/release bundle del tip)",

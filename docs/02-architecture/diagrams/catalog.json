@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1",
-  "title": "Catálogo de diagramas Archify (Forge / ArchMaker)",
-  "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
+  "title": "Cat\u00e1logo de diagramas Archify (Forge / ArchMaker)",
+  "sourceSha": "e6153d3d309ef25b04f4c209b1b673aae371bbfe",
   "asBuiltSourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
   "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
   "rendererPin": "$HOME/.local/share/archify/ca67c9f16be0c8cad409cd45190aa052e0649b84",
@@ -33,7 +33,7 @@
   ],
   "conditioned": {
     "D25": "Waterfall de rendimiento: solo con 30 muestras reales (ver F7-P95)",
-    "D26": "ERD físico: no aplica; persistencia es FS/IndexedDB, no SQL"
+    "D26": "ERD f\u00edsico: no aplica; persistencia es FS/IndexedDB, no SQL"
   },
   "entries": [
     {
@@ -43,7 +43,7 @@
       "source": "sources/D01-context.architecture.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
+      "sourceSha": "e6153d3d309ef25b04f4c209b1b673aae371bbfe",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
       "codeRefs": [
         "apps/web/src/App.tsx",
@@ -63,7 +63,7 @@
       "source": "sources/D02-containers.architecture.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
+      "sourceSha": "e6153d3d309ef25b04f4c209b1b673aae371bbfe",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
       "codeRefs": [
         "apps/web/src/create-core-port.ts",
@@ -84,7 +84,7 @@
       "source": "sources/D03-core-components.architecture.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
+      "sourceSha": "e6153d3d309ef25b04f4c209b1b673aae371bbfe",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
       "codeRefs": [
         "crates/archmaker-core/src/lib.rs",
@@ -105,7 +105,7 @@
       "source": "sources/D04-frontend-coreport.architecture.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
+      "sourceSha": "e6153d3d309ef25b04f4c209b1b673aae371bbfe",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
       "codeRefs": [
         "apps/web/src/create-core-port.ts",
@@ -126,7 +126,7 @@
       "source": "sources/D05-desktop-linux.architecture.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
+      "sourceSha": "e6153d3d309ef25b04f4c209b1b673aae371bbfe",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
       "codeRefs": [
         "src-tauri/tauri.conf.json",
@@ -146,7 +146,7 @@
       "source": "sources/D06-web-wasm.architecture.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
+      "sourceSha": "e6153d3d309ef25b04f4c209b1b673aae371bbfe",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
       "codeRefs": [
         "tools/build-wasm.sh",
@@ -161,12 +161,12 @@
     },
     {
       "id": "D07",
-      "title": "Inicialización, catálogo y perfil",
+      "title": "Inicializaci\u00f3n, cat\u00e1logo y perfil",
       "type": "sequence",
       "source": "sources/D07-init.sequence.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
+      "sourceSha": "e6153d3d309ef25b04f4c209b1b673aae371bbfe",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
       "codeRefs": [
         "apps/web/src/App.tsx",
@@ -185,7 +185,7 @@
       "source": "sources/D08-resolve-validate-manifest.sequence.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
+      "sourceSha": "e6153d3d309ef25b04f4c209b1b673aae371bbfe",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
       "codeRefs": [
         "crates/archmaker-core/src/lib.rs",
@@ -199,12 +199,12 @@
     },
     {
       "id": "D09",
-      "title": "Exportación web y digest",
+      "title": "Exportaci\u00f3n web y digest",
       "type": "sequence",
       "source": "sources/D09-export-web.sequence.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
+      "sourceSha": "e6153d3d309ef25b04f4c209b1b673aae371bbfe",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
       "codeRefs": [
         "apps/web/src/App.tsx",
@@ -218,12 +218,12 @@
     },
     {
       "id": "D10",
-      "title": "Guardado desktop/cancelación",
+      "title": "Guardado desktop/cancelaci\u00f3n",
       "type": "sequence",
       "source": "sources/D10-desktop-save.sequence.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
+      "sourceSha": "e6153d3d309ef25b04f4c209b1b673aae371bbfe",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
       "codeRefs": [
         "src-tauri/src/save_export.rs",
@@ -237,12 +237,12 @@
     },
     {
       "id": "D11",
-      "title": "Importación y consentimiento",
+      "title": "Importaci\u00f3n y consentimiento",
       "type": "sequence",
       "source": "sources/D11-import-consent.sequence.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
+      "sourceSha": "e6153d3d309ef25b04f4c209b1b673aae371bbfe",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
       "codeRefs": [
         "apps/web/src/App.tsx",
@@ -256,12 +256,12 @@
     },
     {
       "id": "D12",
-      "title": "Persistencia y recuperación",
+      "title": "Persistencia y recuperaci\u00f3n",
       "type": "sequence",
       "source": "sources/D12-persistence.sequence.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
+      "sourceSha": "e6153d3d309ef25b04f4c209b1b673aae371bbfe",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
       "codeRefs": [
         "apps/web/src/draft-persistence.ts",
@@ -280,7 +280,7 @@
       "source": "sources/D13-draft-lifecycle.lifecycle.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
+      "sourceSha": "e6153d3d309ef25b04f4c209b1b673aae371bbfe",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
       "codeRefs": [
         "apps/web/src/App.tsx",
@@ -294,12 +294,12 @@
     },
     {
       "id": "D14",
-      "title": "Preparación/exportación e invalidación",
+      "title": "Preparaci\u00f3n/exportaci\u00f3n e invalidaci\u00f3n",
       "type": "lifecycle",
       "source": "sources/D14-prepare-export.lifecycle.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
+      "sourceSha": "e6153d3d309ef25b04f4c209b1b673aae371bbfe",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
       "codeRefs": [
         "apps/web/src/App.tsx",
@@ -313,12 +313,12 @@
     },
     {
       "id": "D15",
-      "title": "Ciclo de importación",
+      "title": "Ciclo de importaci\u00f3n",
       "type": "lifecycle",
       "source": "sources/D15-import-lifecycle.lifecycle.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
+      "sourceSha": "e6153d3d309ef25b04f4c209b1b673aae371bbfe",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
       "codeRefs": [
         "apps/web/src/App.tsx",
@@ -337,7 +337,7 @@
       "source": "sources/D16-domain-coreport.class.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
+      "sourceSha": "e6153d3d309ef25b04f4c209b1b673aae371bbfe",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
       "codeRefs": [
         "crates/archmaker-domain/src/lib.rs",
@@ -356,7 +356,7 @@
       "source": "sources/D17-profile-persist.dataflow.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
+      "sourceSha": "e6153d3d309ef25b04f4c209b1b673aae371bbfe",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
       "codeRefs": [
         "apps/web/src/draft-persistence.ts",
@@ -371,12 +371,12 @@
     },
     {
       "id": "D18",
-      "title": "Canonicalización y digests",
+      "title": "Canonicalizaci\u00f3n y digests",
       "type": "dataflow",
       "source": "sources/D18-canonicalization.dataflow.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
+      "sourceSha": "e6153d3d309ef25b04f4c209b1b673aae371bbfe",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
       "codeRefs": [
         "crates/archmaker-canonicalization/src/lib.rs",
@@ -395,7 +395,7 @@
       "source": "sources/D19-trust-ipc.dataflow.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
+      "sourceSha": "e6153d3d309ef25b04f4c209b1b673aae371bbfe",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
       "codeRefs": [
         "src-tauri/capabilities/main.json",
@@ -415,7 +415,7 @@
       "source": "sources/D20-ci-pipeline.workflow.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
+      "sourceSha": "e6153d3d309ef25b04f4c209b1b673aae371bbfe",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
       "codeRefs": [
         ".github/workflows/ci.yml",
@@ -430,12 +430,12 @@
     },
     {
       "id": "D21",
-      "title": "Build/firma/publicación",
+      "title": "Build/firma/publicaci\u00f3n",
       "type": "workflow",
       "source": "sources/D21-release-sign.workflow.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
+      "sourceSha": "e6153d3d309ef25b04f4c209b1b673aae371bbfe",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
       "codeRefs": [
         ".github/workflows/release.yml",
@@ -449,12 +449,12 @@
     },
     {
       "id": "D22",
-      "title": "Aceptación y aprobaciones",
+      "title": "Aceptaci\u00f3n y aprobaciones",
       "type": "workflow",
       "source": "sources/D22-f0-f9.workflow.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
+      "sourceSha": "e6153d3d309ef25b04f4c209b1b673aae371bbfe",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
       "codeRefs": [
         "docs/10-delivery/closure/f7-candidate.md",
@@ -473,7 +473,7 @@
       "source": "sources/D23-crates-tree.tree.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
+      "sourceSha": "e6153d3d309ef25b04f4c209b1b673aae371bbfe",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
       "codeRefs": [
         "Cargo.toml",
@@ -488,12 +488,12 @@
     },
     {
       "id": "D24",
-      "title": "Baselines y releases históricas",
+      "title": "Baselines y releases hist\u00f3ricas",
       "type": "timeline",
       "source": "sources/D24-baselines.timeline.json",
       "status": "actual",
       "scope": "forge-mvp-as-built",
-      "sourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b",
+      "sourceSha": "e6153d3d309ef25b04f4c209b1b673aae371bbfe",
       "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
       "codeRefs": [
         "docs/10-delivery/closure/f9-release.md",
@@ -506,5 +506,5 @@
       "asBuiltSourceSha": "a6f91956c51f6f10fd42a16a8bb428ad0e65fe0b"
     }
   ],
-  "harnessNote": "AS_BUILT_SOURCE_SHA fija el código descrito; no exige igualdad con HEAD"
+  "harnessNote": "AS_BUILT_SOURCE_SHA fija el c\u00f3digo descrito; no exige igualdad con HEAD"
 }

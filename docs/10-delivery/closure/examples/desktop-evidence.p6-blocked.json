@@ -17,7 +17,7 @@
   "notes": [
     "DISPLAY=:0 — sesión gráfica detectada=sí",
     "xdg-desktop-portal en ejecución=no",
-    "AppImage histórico v0.1.0 presente=True (SHA distinto; nombre Neubat; NO cierra P6 del tip)",
+    "AppImage histórico v0.1.0 presente=True (SHA distinto; nombre histórico; NO cierra P6 del tip)",
     "MockCorePort no se usa como cierre",
     "Estado=blocked: evidencia ausente nombrada abajo; no pending ambiguo",
     "AUSENTE: AppImage o binario de producción del SOURCE_SHA 535393dbcb997f46a47ae252d73f3e86ff5a4c06 (no existe en ~/archmaker-closure ni target/release bundle del tip)",

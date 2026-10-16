@@ -27,7 +27,7 @@ Mandato de cierre ArchMaker/Forge. Casillas solo con evidencia. **No publicado.*
 
 - Producto: ArchMaker (motor). GUI: Forge. Fórmula: «Forge, la interfaz gráfica de ArchMaker».
 - Alcance: configurador local hasta exportación; sin runner/ISO/root.
-- Historia: release `v0.1.0` Neubat intacta (ADR-0010); nombre visible Forge (ADR-0012).
+- Historia: release `v0.1.0` (nombre histórico) intacta (ADR-0010); nombre visible Forge (ADR-0012).
 
 ## 2. SHA de referencia
 
