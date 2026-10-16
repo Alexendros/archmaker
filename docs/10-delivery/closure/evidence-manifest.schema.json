@@ -1,0 +1,137 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://archmaker.dev/closure/evidence-manifest.schema.json",
+  "title": "Manifiesto de evidencia de cierre",
+  "description": "Un manifiesto no incluye su propio digest. Los valores desconocidos son null y result empieza en pending. Un fichero de ejemplo no es una corrida.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "repository",
+    "phase",
+    "sourceSha",
+    "baseSha",
+    "eventSha",
+    "prHeadSha",
+    "workflowSha",
+    "mergeSha",
+    "workflowRunId",
+    "runAttempt",
+    "eventName",
+    "startedAt",
+    "completedAt",
+    "toolchain",
+    "platform",
+    "dirtyTrackedFiles",
+    "fixtureSetDigest",
+    "requiredTestIds",
+    "executed",
+    "passed",
+    "failed",
+    "skipped",
+    "retries",
+    "artifacts",
+    "result",
+    "reviewer",
+    "reviewedAt",
+    "residuals"
+  ],
+  "properties": {
+    "schemaVersion": { "type": "string", "const": "1" },
+    "repository": { "type": ["string", "null"] },
+    "phase": { "type": ["string", "null"] },
+    "sourceSha": { "type": ["string", "null"], "pattern": "^[0-9a-f]{40}$" },
+    "baseSha": { "type": ["string", "null"], "pattern": "^[0-9a-f]{40}$" },
+    "eventSha": { "type": ["string", "null"], "pattern": "^[0-9a-f]{40}$" },
+    "prHeadSha": { "type": ["string", "null"], "pattern": "^[0-9a-f]{40}$" },
+    "workflowSha": { "type": ["string", "null"], "pattern": "^[0-9a-f]{40}$" },
+    "mergeSha": { "type": ["string", "null"], "pattern": "^[0-9a-f]{40}$" },
+    "workflowRunId": { "type": ["string", "null"] },
+    "runAttempt": { "type": ["integer", "null"], "minimum": 1 },
+    "eventName": { "type": ["string", "null"] },
+    "startedAt": { "type": ["string", "null"] },
+    "completedAt": { "type": ["string", "null"] },
+    "toolchain": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["rustc", "cargo", "node", "pnpm"],
+      "properties": {
+        "rustc": { "type": ["string", "null"] },
+        "cargo": { "type": ["string", "null"] },
+        "node": { "type": ["string", "null"] },
+        "pnpm": { "type": ["string", "null"] }
+      }
+    },
+    "platform": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["os", "cpu", "memoryBytes", "browser", "webview"],
+      "properties": {
+        "os": { "type": ["string", "null"] },
+        "cpu": { "type": ["string", "null"] },
+        "memoryBytes": { "type": ["integer", "null"], "minimum": 0 },
+        "browser": { "type": ["string", "null"] },
+        "webview": { "type": ["string", "null"] }
+      }
+    },
+    "dirtyTrackedFiles": {
+      "type": ["array", "null"],
+      "items": { "type": "string" }
+    },
+    "fixtureSetDigest": {
+      "type": ["string", "null"],
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "requiredTestIds": {
+      "type": ["array", "null"],
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "executed": { "type": ["integer", "null"], "minimum": 0 },
+    "passed": { "type": ["integer", "null"], "minimum": 0 },
+    "failed": { "type": ["integer", "null"], "minimum": 0 },
+    "skipped": { "type": ["integer", "null"], "minimum": 0 },
+    "retries": { "type": ["integer", "null"], "minimum": 0 },
+    "artifacts": {
+      "type": ["array", "null"],
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "sizeBytes",
+          "sha256",
+          "mediaType",
+          "buildSourceSha"
+        ],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "sizeBytes": { "type": "integer", "minimum": 0 },
+          "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "mediaType": { "type": "string", "minLength": 1 },
+          "buildSourceSha": {
+            "type": ["string", "null"],
+            "pattern": "^[0-9a-f]{40}$"
+          }
+        }
+      }
+    },
+    "result": {
+      "type": "string",
+      "enum": [
+        "proposed",
+        "pending",
+        "running",
+        "passed",
+        "failed",
+        "blocked",
+        "not-applicable"
+      ]
+    },
+    "reviewer": { "type": ["string", "null"] },
+    "reviewedAt": { "type": ["string", "null"] },
+    "residuals": {
+      "type": ["array", "null"],
+      "items": { "type": "string" }
+    }
+  }
+}

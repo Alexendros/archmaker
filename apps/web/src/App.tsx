@@ -8,7 +8,7 @@ import {
 } from "./coreport.js";
 import type { PortKind } from "./create-core-port.js";
 import { CommandPalette } from "./CommandPalette.js";
-import { draftForCore } from "./draft-for-core.js";
+import { draftForCore, listFaceExclusions } from "./draft-for-core.js";
 import { loadLastDraftLocal, persistDraftLocal } from "./draft-persistence.js";
 import {
   destinationTokenFor,
@@ -903,7 +903,8 @@ export function App({ port, portKind }: Props) {
                 <div className="forge-info-card">
                   <strong>Protege el disco (cifrado)</strong>
                   <p className="forge-muted">
-                    Marca la intención. Esta cara no cifra nada.
+                    Solo intención en el perfil exportado. Esta cara no cifra el
+                    disco.
                   </p>
                   <label className="forge-check">
                     <input
@@ -959,6 +960,20 @@ export function App({ port, portKind }: Props) {
                 ) : (
                   <p role="status">Sin incidencias en la última validación.</p>
                 )}
+                {draft && listFaceExclusions(draft).length > 0 ? (
+                  <p role="status">
+                    {listFaceExclusions(draft).length} exclusión(es) de cara
+                    (intención o gap) no entran al perfil sellado.
+                  </p>
+                ) : null}
+                {hostname ? (
+                  <p role="status">Hostname: {hostname}</p>
+                ) : null}
+                {encrypt ? (
+                  <p role="status">
+                    Cifrado: intención marcada (no aplicada al disco).
+                  </p>
+                ) : null}
                 {portKind === "mock" ? (
                   <p role="status">Modo demostración (MockCorePort).</p>
                 ) : null}

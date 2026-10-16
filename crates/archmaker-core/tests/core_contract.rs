@@ -22,12 +22,10 @@ fn digest_value(value: &str) -> ContentDigest {
 }
 
 fn catalog_ref() -> CatalogRef {
-    CatalogRef {
-        namespace: "archmaker.core".to_string(),
-        id: "minimal".to_string(),
-        version: "0.1.0".to_string(),
-        digest: digest_value(&"0".repeat(64)),
-    }
+    RealCore::with_embedded()
+        .expect("embedded")
+        .active_catalog_ref()
+        .expect("active catalog ref")
 }
 
 fn draft_target() -> TargetRef {
@@ -795,12 +793,10 @@ fn desktop_catalog() -> archmaker_domain::Catalog {
 }
 
 fn desktop_catalog_ref() -> CatalogRef {
-    CatalogRef {
-        namespace: "archmaker.core".to_string(),
-        id: "desktop".to_string(),
-        version: "1.0.0".to_string(),
-        digest: digest_value(&"1".repeat(64)),
-    }
+    RealCore::with_desktop()
+        .expect("desktop")
+        .active_catalog_ref()
+        .expect("desktop catalog ref")
 }
 
 #[test]

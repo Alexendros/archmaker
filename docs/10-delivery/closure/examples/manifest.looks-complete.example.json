@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "1",
+  "repository": "Alexendros/archmaker",
+  "phase": "F0",
+  "sourceSha": "56c2a198cc36da3a30d727487f082d13fda1b1f5",
+  "baseSha": "56c2a198cc36da3a30d727487f082d13fda1b1f5",
+  "eventSha": "56c2a198cc36da3a30d727487f082d13fda1b1f5",
+  "prHeadSha": null,
+  "workflowSha": "56c2a198cc36da3a30d727487f082d13fda1b1f5",
+  "mergeSha": null,
+  "workflowRunId": null,
+  "runAttempt": null,
+  "eventName": "example",
+  "startedAt": "2026-10-16T18:00:00Z",
+  "completedAt": "2026-10-16T18:05:00Z",
+  "toolchain": {
+    "rustc": null,
+    "cargo": null,
+    "node": null,
+    "pnpm": null
+  },
+  "platform": {
+    "os": null,
+    "cpu": null,
+    "memoryBytes": null,
+    "browser": null,
+    "webview": null
+  },
+  "dirtyTrackedFiles": [],
+  "fixtureSetDigest": "0000000000000000000000000000000000000000000000000000000000000000",
+  "requiredTestIds": ["TST-EXAMPLE"],
+  "executed": 1,
+  "passed": 1,
+  "failed": 0,
+  "skipped": 0,
+  "retries": 0,
+  "artifacts": [],
+  "result": "passed",
+  "reviewer": "example-not-a-person",
+  "reviewedAt": "2026-10-16T18:06:00Z",
+  "residuals": ["specimen"]
+}
