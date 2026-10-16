@@ -41,7 +41,7 @@
 
 - Remoto canónico: `https://github.com/Alexendros/archmaker`. Licencia Apache-2.0.
 - Baseline vigente: `implementation-baseline-mvp4`. En el árbol están el walking skeleton MVP-0 y los slices MVP-1 (dominio, catálogo y migración v5.1), MVP-2 (reglas, resolución y validación), MVP-3 (adapters de exportación) y MVP-4 (React + MockCorePort).
-- MVP-5, MVP-6 (empaquetado) e `iso-scope.md` son borradores sin alcance `accepted` y no autorizan implementación.
+- MVP-5, MVP-6 (empaquetado) e `iso-scope.md` son borradores sin alcance `accepted` y no autorizan implementación. El hueco documentado está en `docs/10-delivery/mvp5-gap-spec.md` (draft); no sustituye `mvp5-scope.md` ni abre código.
 - `reference/v5.1/` es evidencia inmutable verificada por SHA-256. La UI React vive en `apps/web/`; el dominio está en `crates/archmaker-core` y se expone por CorePort.
 - ADR-0011 (propuesto, `in-review`): la selección del configurador produce un contrato JSON de aplicación; cada cláusula tiene schema en `contracts/json-schema/`, issue `kind:clause` y tests verificados en Rust. No añade target de imagen.
 - La referencia visual NEUBAT vive fuera del repo, en `/home/alexendros/Aplicaciones/Repertorio/archmaker_neubat.html` (no en Descargas).
