@@ -7,11 +7,11 @@
   "provenance": {
     "sourceId": "archmaker.repo.fixtures",
     "path": "crates/archmaker-core/fixtures/local-catalog-mvp1.json",
-    "capturedAt": "2026-10-12T00:00:00Z"
+    "capturedAt": "2026-10-16T00:00:00Z"
   },
   "metadata": {
     "owner": "archmaker-core",
-    "note": "MVP-1 local multi-entity catalog with packaged provenance. No commands, hooks, shell or pacstrap."
+    "note": "MVP-5-02 local catalog aligned with html-catalog-matrix. Options are id/title/tags/provides only; no cmd, version or size facts."
   },
   "steps": [
     {
@@ -33,6 +33,12 @@
               "id": "archmaker.kernel.zen",
               "title": "Linux Zen",
               "provides": ["fs.ext4", "fs.btrfs"]
+            },
+            {
+              "id": "archmaker.kernel.linux-hardened",
+              "title": "Linux Hardened",
+              "provides": ["fs.ext4", "fs.btrfs"],
+              "tags": ["cmd-no-migrable"]
             }
           ]
         }
@@ -79,6 +85,10 @@
             {
               "id": "archmaker.boot.grub",
               "title": "GRUB"
+            },
+            {
+              "id": "archmaker.boot.limine",
+              "title": "Limine"
             }
           ]
         }
@@ -114,15 +124,23 @@
           "options": [
             {
               "id": "archmaker.compositor.gnome",
-              "title": "GNOME"
+              "title": "GNOME",
+              "tags": ["DE"]
             },
             {
               "id": "archmaker.compositor.hyprland",
-              "title": "Hyprland"
+              "title": "Hyprland",
+              "tags": ["WM"]
             },
             {
               "id": "archmaker.compositor.sway",
-              "title": "Sway"
+              "title": "Sway",
+              "tags": ["WM"]
+            },
+            {
+              "id": "archmaker.compositor.cosmic",
+              "title": "COSMIC",
+              "tags": ["DE"]
             }
           ]
         }
@@ -145,6 +163,155 @@
             {
               "id": "archmaker.dm.sddm",
               "title": "SDDM"
+            },
+            {
+              "id": "archmaker.dm.greetd-tuigreet",
+              "title": "greetd + tuigreet"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "archmaker.libpacks.office",
+      "title": "Office pack",
+      "mode": "flat",
+      "sections": [
+        {
+          "id": "archmaker.libpacks.office.section",
+          "title": "Office",
+          "cardinality": "many",
+          "options": [
+            {
+              "id": "archmaker.pkg.libreoffice-fresh",
+              "title": "LibreOffice Fresh",
+              "fixed": true,
+              "essentialReason": "Declared fixed in the HTML matrix; not a package fact."
+            },
+            {
+              "id": "archmaker.pkg.hunspell-es",
+              "title": "Hunspell ES",
+              "fixed": true,
+              "essentialReason": "Declared fixed in the HTML matrix; not a package fact."
+            },
+            {
+              "id": "archmaker.pkg.poppler",
+              "title": "Poppler",
+              "fixed": true,
+              "essentialReason": "Declared fixed in the HTML matrix; not a package fact."
+            },
+            {
+              "id": "archmaker.pkg.onlyoffice-bin",
+              "title": "OnlyOffice",
+              "tags": ["no-redistribuible-candidato"]
+            },
+            {
+              "id": "archmaker.pkg.pdfarranger",
+              "title": "PDF Arranger"
+            },
+            {
+              "id": "archmaker.pkg.nextcloud-client",
+              "title": "Nextcloud"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "archmaker.libpacks.dev",
+      "title": "Dev pack",
+      "mode": "flat",
+      "sections": [
+        {
+          "id": "archmaker.libpacks.dev.section",
+          "title": "Development",
+          "cardinality": "many",
+          "options": [
+            {
+              "id": "archmaker.pkg.git",
+              "title": "Git",
+              "fixed": true,
+              "essentialReason": "Declared fixed in the HTML matrix; not a package fact."
+            },
+            {
+              "id": "archmaker.pkg.python",
+              "title": "Python",
+              "fixed": true,
+              "essentialReason": "Declared fixed in the HTML matrix; not a package fact."
+            },
+            {
+              "id": "archmaker.pkg.nodejs",
+              "title": "Node.js",
+              "fixed": true,
+              "essentialReason": "Declared fixed in the HTML matrix; not a package fact."
+            },
+            {
+              "id": "archmaker.pkg.docker",
+              "title": "Docker"
+            },
+            {
+              "id": "archmaker.pkg.podman",
+              "title": "Podman"
+            },
+            {
+              "id": "archmaker.pkg.rustup",
+              "title": "Rustup"
+            },
+            {
+              "id": "archmaker.pkg.go",
+              "title": "Go"
+            },
+            {
+              "id": "archmaker.pkg.jdk-openjdk",
+              "title": "JDK OpenJDK"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "archmaker.libpacks.gaming",
+      "title": "Gaming pack",
+      "mode": "flat",
+      "sections": [
+        {
+          "id": "archmaker.libpacks.gaming.section",
+          "title": "Gaming",
+          "cardinality": "many",
+          "options": [
+            {
+              "id": "archmaker.pkg.vulkan-icd-loader",
+              "title": "Vulkan ICD Loader",
+              "fixed": true,
+              "essentialReason": "Declared fixed in the HTML matrix; not a package fact."
+            },
+            {
+              "id": "archmaker.pkg.lib32-vulkan-icd-loader",
+              "title": "lib32 Vulkan ICD Loader",
+              "fixed": true,
+              "essentialReason": "Declared fixed in the HTML matrix; not a package fact."
+            },
+            {
+              "id": "archmaker.pkg.gamemode",
+              "title": "GameMode",
+              "fixed": true,
+              "essentialReason": "Declared fixed in the HTML matrix; not a package fact."
+            },
+            {
+              "id": "archmaker.pkg.mangohud",
+              "title": "MangoHud"
+            },
+            {
+              "id": "archmaker.pkg.gamescope",
+              "title": "Gamescope"
+            },
+            {
+              "id": "archmaker.pkg.protonup-qt",
+              "title": "ProtonUp-Qt"
+            },
+            {
+              "id": "archmaker.pkg.lutris",
+              "title": "Lutris"
             }
           ]
         }
@@ -169,6 +336,12 @@
               "id": "archmaker.browser.vivaldi",
               "title": "Vivaldi",
               "provides": ["pkg.vivaldi"]
+            },
+            {
+              "id": "archmaker.browser.brave",
+              "title": "Brave",
+              "provides": ["pkg.brave"],
+              "tags": ["no-redistribuible-candidato"]
             }
           ]
         }
@@ -185,9 +358,40 @@
           "cardinality": "many",
           "options": [
             {
-              "id": "archmaker.app.steam",
-              "title": "Steam",
-              "provides": ["pkg.steam"]
+              "id": "archmaker.app.discord",
+              "title": "Discord",
+              "provides": ["pkg.discord"]
+            },
+            {
+              "id": "archmaker.app.telegram",
+              "title": "Telegram",
+              "provides": ["pkg.telegram"]
+            },
+            {
+              "id": "archmaker.app.ghostty",
+              "title": "Ghostty",
+              "provides": ["pkg.ghostty"]
+            },
+            {
+              "id": "archmaker.app.kitty",
+              "title": "Kitty",
+              "provides": ["pkg.kitty"]
+            },
+            {
+              "id": "archmaker.app.micro",
+              "title": "Micro",
+              "provides": ["pkg.micro"]
+            },
+            {
+              "id": "archmaker.app.cursor",
+              "title": "Cursor",
+              "provides": ["pkg.cursor"],
+              "tags": ["no-redistribuible-candidato"]
+            },
+            {
+              "id": "archmaker.app.btop",
+              "title": "btop",
+              "provides": ["pkg.btop"]
             },
             {
               "id": "archmaker.app.vlc",
@@ -198,6 +402,44 @@
               "id": "archmaker.app.gimp",
               "title": "GIMP",
               "provides": ["pkg.gimp"]
+            },
+            {
+              "id": "archmaker.app.obsidian",
+              "title": "Obsidian",
+              "provides": ["pkg.obsidian"]
+            },
+            {
+              "id": "archmaker.app.onlyoffice-standalone",
+              "title": "OnlyOffice Standalone",
+              "provides": ["pkg.onlyoffice-standalone"],
+              "tags": ["no-redistribuible-candidato"]
+            },
+            {
+              "id": "archmaker.app.steam",
+              "title": "Steam",
+              "provides": ["pkg.steam"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "archmaker.build.output",
+      "title": "Build output",
+      "mode": "single",
+      "sections": [
+        {
+          "id": "archmaker.build.output.section",
+          "title": "Compression",
+          "cardinality": "one",
+          "options": [
+            {
+              "id": "archmaker.build.zstd",
+              "title": "zstd"
+            },
+            {
+              "id": "archmaker.build.xz",
+              "title": "xz"
             }
           ]
         }

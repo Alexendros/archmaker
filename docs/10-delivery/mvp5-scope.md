@@ -4,7 +4,7 @@ phase: MVP
 priority: P0
 documentStatus: accepted
 approvalStatus: approved
-implementationStatus: not-started
+implementationStatus: partial
 verificationStatus: not-verified
 releaseStatus: ineligible
 owners:
@@ -55,7 +55,7 @@ Rust. No se construye ISO, no se descarga el espejo y no se llama a pacman.
 | #        | Issue                                                                    | Depende de | Gate    | Owner        | Criterio Done                                              | Estado |
 | -------- | ------------------------------------------------------------------------ | ---------- | ------- | ------------ | ---------------------------------------------------------- | ------ |
 | MVP-5-01 | Aceptar este alcance                                                     | —          | G2, G10 | product      | Documento `accepted`                                       | closed |
-| MVP-5-02 | Ampliar el catálogo local con la matriz, sin afirmaciones no verificadas | 01         | G4      | data         | Cada id HTML está en catálogo o sigue como hueco explícito | open   |
+| MVP-5-02 | Ampliar el catálogo local con la matriz, sin afirmaciones no verificadas | 01         | G4      | data         | Cada id HTML está en catálogo o sigue como hueco explícito | closed |
 | MVP-5-03 | UI de cinco pasos con los contratos existentes                           | 02         | G6      | ux           | Seleccionar, resolver, validar y exportar sin escribir ISO | open   |
 | MVP-5-04 | Paridad Tauri/WASM del mismo draft                                       | 02         | G5, G9  | architecture | Mismos bytes de manifiesto                                 | open   |
 | MVP-5-05 | Tag de baseline solo tras 01–04 y CI verde                               | 04         | G10     | release      | Tag nuevo; los anteriores no se mueven                     | open   |

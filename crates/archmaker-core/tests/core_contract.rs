@@ -777,7 +777,7 @@ fn load_local_catalog_with_provenance() {
     let provenance = CatalogProvenance {
         source_id: "archmaker.repo.fixtures".into(),
         path: "crates/archmaker-core/fixtures/local-catalog-mvp1.json".into(),
-        captured_at: "2026-10-12T00:00:00Z".into(),
+        captured_at: "2026-10-16T00:00:00Z".into(),
     };
     let catalog = core
         .load_catalog(LoadCatalogInput {

@@ -64,7 +64,7 @@ sin verificar y no entran en la cara.
 | BOOT-C-002 | `BootloaderConfiguration.get_default` activa UKI cuando hay UEFI y el gestor declara soporte. En ese commit, todo gestor salvo «sin bootloader» lo declara. | mismo fichero                                                                                               | mismo pin                                                                       | verificado       |
 | BOOT-C-003 | systemd-boot solo arranca ejecutables EFI desde la ESP en la que está instalado o desde XBOOTLDR del mismo disco.                                           | [ArchWiki: systemd-boot](https://wiki.archlinux.org/title/Systemd-boot)                                     | página viva, leída 2026-10-15                                                   | verificado       |
 | BOOT-C-004 | La tabla del proceso de arranque marca GRUB y Limine con BIOS y UEFI; systemd-boot sin BIOS.                                                                | [ArchWiki: Arch boot process](https://wiki.archlinux.org/title/Arch_boot_process)                           | página viva, leída 2026-10-15                                                   | verificado       |
-| BOOT-C-005 | El catálogo local ya carga `archmaker.boot.systemd-boot` y `archmaker.boot.grub`. Limine figura en la matriz HTML y no está cargado.                        | `crates/archmaker-core/fixtures/local-catalog-mvp1.json`, `docs/12-research/html-catalog-matrix.md`         | árbol de trabajo 2026-10-15                                                     | verificado       |
+| BOOT-C-005 | El catálogo local carga `archmaker.boot.systemd-boot`, `archmaker.boot.grub` y `archmaker.boot.limine` (MVP-5-02).                                          | `crates/archmaker-core/fixtures/local-catalog-mvp1.json`, `docs/12-research/html-catalog-matrix.md`         | árbol de trabajo 2026-10-16                                                     | verificado       |
 | BOOT-C-006 | Los presets embebidos en la evidencia v5.1 usan `boot: systemd-boot` en minimal-dev y full-workstation. El preset gaming usa `limine`.                      | `reference/v5.1/presets.json`, `reference/v5.1/App.tsx`                                                     | evidencia inmutable                                                             | verificado       |
 | BOOT-C-007 | La cláusula de arranque del contrato solo admite `arch: x86_64` y `firmware: uefi`, y prohíbe `satisfied` mientras el formato de imagen no esté admitido.   | `contracts/json-schema/clause-boot.schema.json`, ADR-0011                                                   | árbol de trabajo                                                                | verificado       |
 | BOOT-C-008 | systemd-boot viaja dentro del paquete `systemd`, dependencia de `base`. La wiki dice que no hace falta instalar otro paquete a mano.                        | [ArchWiki: systemd-boot](https://wiki.archlinux.org/title/Systemd-boot), sección Installation               | página viva, releída 2026-10-15                                                 | verificado       |
@@ -111,8 +111,8 @@ no se inventa.
   Cubre más firmware. Mantenerlo exige dos lenguajes. Para la cara UEFI de
   esta cláusula, eso lo deja fuera del paso.
 - Limine está en el mismo enum: el modelo lo nombra en ese commit. No se
-  releyó su instalador. No está en el catálogo local. Entra solo con el alta
-  de MVP-5.
+  releyó su instalador. El id `archmaker.boot.limine` ya está en el catálogo
+  local (MVP-5-02).
 - rEFInd está en el enum y en la tabla de la wiki. No está en la matriz HTML
   v5.1 ni en el catálogo. Fuera de esta selección.
 - El paquete llamado `systemd-boot` en la matriz HTML no se toma como hecho:
@@ -126,7 +126,7 @@ lo que deja fuera:
 - Cara UEFI x86_64: una sola tarjeta, `archmaker.boot.systemd-boot`.
 - GRUB permanece en `local-catalog-mvp1.json`. No se borra el id. No se pisa
   en el paso UEFI. Una máquina BIOS no cabe en `CLAUSE-BOOT-001`.
-- Limine espera el id `archmaker.boot.limine` en el catálogo cargado.
+- Limine ya está como `archmaker.boot.limine` en el catálogo local (MVP-5-02).
 - UKI no se ofrece como tercer gestor. Si más adelante hace falta el flag,
   sale de Rust, no de un booleano inventado en TypeScript.
 - El configurador no genera `loader.conf`, no llama a `bootctl` y no escribe
