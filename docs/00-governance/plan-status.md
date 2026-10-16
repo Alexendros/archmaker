@@ -24,7 +24,8 @@ reviewers:
   `docs/10-delivery/closure/f8-governance.md` (**accepted**).
 - Canal de distribución autorizado: AppImage Linux x86_64, nombre público **Neubat**
   (`mvp6-scope.md` accepted solo para esa plataforma; ADR-0010 accepted opción 3; DEC-011).
-  ISO / runner / Enterprise siguen sin `accepted`. F9 **authorized**.
+  ISO / runner / Enterprise siguen sin `accepted`. F9 en ejecución
+  (`docs/10-delivery/closure/f9-release.md`); evidencia y `APPROVAL_RECORD` fuera del árbol.
 - Fecha de corte: 2026-10-16
 
 ## Tres capas (no equiparar)

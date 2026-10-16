@@ -55,7 +55,10 @@ de cierre.
 Toda acción de terceros se referencia por **commit SHA** (no por tag flotante) para que el
 contenido ejecutado sea inmutable. Los SHA ya están fijados en los workflows (Paso 6):
 `actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2`,
-`actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0` y
+`actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0`,
+`actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0`,
+`actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2`,
+`actions/download-artifact@95815c38cf2ff2164869cbab79da8d1f422bc89e # v4.2.1` (release F9) y
 `DavidAnson/markdownlint-cli2-action@992badcdf24e3b8eb7e87ff9287fe931bcb00c6e # v20.0.0`.
 No deben introducirse hashes no verificados contra la fuente.
 
@@ -80,12 +83,12 @@ No deben introducirse hashes no verificados contra la fuente.
 La política de firma queda fijada por DEC-006 (Sigstore para releases + firma offline evaluada);
 el pipeline de build/attest sigue siendo propuesta `draft` hasta implementarse.
 
-| Elemento            | Mecanismo                                                        | Estándar            | Estado             |
-| ------------------- | ---------------------------------------------------------------- | ------------------- | ------------------ |
-| Provenance          | GitHub Artifact Attestations (`actions/attest-build-provenance`) | SLSA v1.2 / in-toto | Propuesto          |
-| SBOM                | Generación CycloneDX y/o SPDX; `actions/attest-sbom`             | CycloneDX / SPDX    | Propuesto          |
-| Firma de artefactos | Sigstore (keyless, ligada a OIDC) + firma offline evaluada       | Sigstore            | Fijado por DEC-006 |
-| Checksums           | `SHA256SUMS` + verificación `sha256sum --check`                  | SHA-256             | Propuesto          |
+| Elemento            | Mecanismo                                                  | Estándar          | Estado             |
+| ------------------- | ---------------------------------------------------------- | ----------------- | ------------------ |
+| Provenance          | `slsa-provenance.json` in-toto en `release.yml` (F9)       | SLSA v1 / in-toto | F9 AppImage        |
+| SBOM                | CycloneDX desde Cargo.lock en `release.yml`                | CycloneDX         | F9 AppImage        |
+| Firma de artefactos | Sigstore (keyless, ligada a OIDC) + firma offline evaluada | Sigstore          | Fijado por DEC-006 |
+| Checksums           | `SHA256SUMS` + verificación `sha256sum --check`            | SHA-256           | F9 AppImage        |
 
 - **Provenance**: se atesta cada artefacto de build para ligar binario, commit y workflow. La
   fuente institucional (NIST SSDF/SLSA/Sigstore) está registrada como `SRC-008`, con captura
