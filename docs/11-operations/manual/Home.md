@@ -21,7 +21,7 @@ Texto canónico: [`docs/11-operations/manual/`](https://github.com/Alexendros/ar
 
 ArchMaker es un **configurador local** para diseñar, validar y exportar un perfil. Rust es la autoridad semántica; la interfaz es React (Tauri en escritorio, WASM en navegador).
 
-Baseline vigente: `implementation-baseline-mvp4` (walking skeleton MVP-0 y slices MVP-1..MVP-4).
+Baseline vigente: `implementation-baseline-mvp5` (walking skeleton MVP-0 y slices MVP-1..MVP-5).
 
 ## Qué no hace
 

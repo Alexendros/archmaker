@@ -26,7 +26,8 @@ dependsOn:
 - MVP-5-01 cerrado. El alcance autoriza el slice (catálogo, UI de cinco pasos, paridad) bajo sus exclusiones; este hueco no abre runner, ISO ni cifras no verificadas del HTML.
 - MVP-5-02 cerrado: las 54 opciones de la matriz están en `local-catalog-mvp1.json` (sin `cmd`/versión/tamaño).
 - MVP-5-03 cerrado: cara NEUBAT conectada (gaps deshabilitados; resolve→validate→export). Residual sin control de cara: `zstd`/`xz`, `greetd-tuigreet`, libpacks office/dev/gaming completos.
-- MVP-5-04 cerrado: manifiesto del catálogo desktop con bytes canónicos idénticos en nativo y dispatch WASM (`parity_desktop_catalog_manifest_canonical_bytes`). Queda MVP-5-05 (tag).
+- MVP-5-04 cerrado: manifiesto del catálogo desktop con bytes canónicos idénticos en nativo y dispatch WASM (`parity_desktop_catalog_manifest_canonical_bytes`).
+- MVP-5-05 cerrado: tag anotado `implementation-baseline-mvp5` (tags previos intactos).
 
 ## Supuestos
 
@@ -115,7 +116,7 @@ Las operaciones CorePort ya existentes devuelven el mismo manifiesto en Tauri y 
 - `python3 tools/html_catalog_matrix.py` y el job que regenera la matriz
 - `sha256sum --check --strict reference/v5.1/SHA256SUMS`
 
-No forman parte de esta especificación de hueco: `cargo tauri build` de release firmado, tag `implementation-baseline-mvp5` (MVP-5-05). El build WASM de desarrollo/CI sí forma parte de la remediación operativa.
+No forman parte de esta especificación de hueco: `cargo tauri build` de release firmado. El tag `implementation-baseline-mvp5` (MVP-5-05) ya está emitido. El build WASM de desarrollo/CI sí forma parte de la remediación operativa.
 
 ## Estructura que este ciclo no toca
 

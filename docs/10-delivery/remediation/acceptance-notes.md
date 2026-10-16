@@ -50,4 +50,4 @@ cd apps/web && pnpm exec playwright test wasm-flow.playwright.test.ts forge-help
 
 ## Exclusiones
 
-Sin ISO, runner, root, discos, `pacstrap`, canales MVP-6. Tag `implementation-baseline-mvp5` (MVP-5-05) aparte, tras CI verde.
+Sin ISO, runner, root, discos, `pacstrap`, canales MVP-6. Tag `implementation-baseline-mvp5` (MVP-5-05) emitido en `b13c200`.

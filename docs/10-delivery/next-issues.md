@@ -104,6 +104,18 @@ Fuente canónica de alcance: [`mvp4-scope.md`](mvp4-scope.md).
 | MVP-4-05 | WCAG + baseline visual sin regresión            | 04         | G6,G9  | UX           | `pnpm test-a11y:all` verde  | closed |
 | MVP-4-06 | Tag `implementation-baseline-mvp4`              | 01–05      | G10    | Release      | Tag + CI verde              | closed |
 
+## Issues MVP-5
+
+Fuente canónica de alcance: [`mvp5-scope.md`](mvp5-scope.md).
+
+| #        | Issue                                          | Depende de | Gate    | Owner        | Criterio Done                                              | Estado |
+| -------- | ---------------------------------------------- | ---------- | ------- | ------------ | ---------------------------------------------------------- | ------ |
+| MVP-5-01 | Aceptar alcance DOC-DEL-MVP5-001               | —          | G2, G10 | Product      | Documento `accepted`                                       | closed |
+| MVP-5-02 | Ampliar el catálogo local con la matriz        | 01         | G4      | Data         | Cada id HTML está en catálogo o hueco explícito            | closed |
+| MVP-5-03 | UI de cinco pasos con los contratos existentes | 02         | G6      | UX           | Seleccionar, resolver, validar y exportar sin escribir ISO | closed |
+| MVP-5-04 | Paridad Tauri/WASM del mismo draft             | 02         | G5, G9  | Architecture | Mismos bytes de manifiesto                                 | closed |
+| MVP-5-05 | Tag `implementation-baseline-mvp5`             | 04         | G10     | Release      | Tag nuevo; los anteriores no se mueven                     | closed |
+
 ## Trazabilidad de los issues
 
 - Requisitos: ISSUE-003 (`FR-*`, `NFR-*`), ISSUE-006 (FR-DRAFT/EXPORT, NFR-MIG), ISSUE-007 (FR-VALIDATE/NFR-DET), ISSUE-008 (NFR-PORT/SEC/OBS).
@@ -114,8 +126,8 @@ Fuente canónica de alcance: [`mvp4-scope.md`](mvp4-scope.md).
 
 ## Regla de cierre del plan
 
-El veredicto vigente es **CONDITIONAL-CLEAR — walking skeleton MVP-0 + slices MVP-1..MVP-4**
+El veredicto vigente es **CONDITIONAL-CLEAR — walking skeleton MVP-0 + slices MVP-1..MVP-5**
 (`docs/00-governance/go-no-go.md`), con gates G0–G10 `complete`. MVP-1-01..08 están `closed`;
-MVP-2-01..07 están `closed`; MVP-3-01..06 están `closed`; MVP-4-01..06 están `closed`; baseline
-`implementation-baseline-mvp4` emitida (tags previos intactos). La autorización del MVP completo
-y del runner exige su propio gate.
+MVP-2-01..07 están `closed`; MVP-3-01..06 están `closed`; MVP-4-01..06 están `closed`;
+MVP-5-01..05 están `closed`; baseline `implementation-baseline-mvp5` emitida (tags previos
+intactos). La autorización del MVP completo y del runner exige su propio gate.
