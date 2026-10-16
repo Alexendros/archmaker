@@ -35,17 +35,19 @@ reviewers:
 - Reevaluación slice MVP-5 (MVP-5-05): **CONDITIONAL-CLEAR — walking skeleton MVP-0 + slices MVP-1..MVP-5**
   (remediación operativa + Prove-It). Baseline emitida: `implementation-baseline-mvp5`
   (tags previos intactos). Exclusiones del alcance vigentes (sin runner/ISO).
-- Post-slice cierre F0–F7 (código en `main`): **no** amplía el veredicto. Capas separadas
-  (DOC-DEL-CLO-F8-001): baseline de código **passed**; aprobación funcional **pending**
-  (limitaciones F7); release binaria **blocked** (MVP-6 `in-review`, ADR-0010 `proposed`, F9
-  no abierto). Ver `docs/10-delivery/closure/f8-governance.md`.
+- Post-slice cierre F0–F7 (código en `main`): **no** amplía el veredicto al runner/ISO.
+  Capas separadas (DOC-DEL-CLO-F8-001): baseline de código **passed**; aprobación funcional
+  **pending** (limitaciones F7); release binaria **authorized** — AppImage Linux x86_64,
+  nombre público Neubat (MVP-6 `accepted` solo para esa plataforma; ADR-0010 `accepted`
+  opción 3; DEC-011). F9 abierto. Ver `docs/10-delivery/closure/f8-governance.md`.
 - Alcance autorizado: `docs/10-delivery/walking-skeleton.md` (DOC-DEL-WSK-001),
   `docs/10-delivery/mvp1-scope.md` (DOC-DEL-MVP1-001), `docs/10-delivery/mvp2-scope.md`
   (DOC-DEL-MVP2-001), `docs/10-delivery/mvp3-scope.md` (DOC-DEL-MVP3-001),
-  `docs/10-delivery/mvp4-scope.md` (DOC-DEL-MVP4-001) y `docs/10-delivery/mvp5-scope.md`
-  (DOC-DEL-MVP5-001). Bloqueados: runner real, root, discos, shell arbitraria, catálogos remotos,
-  firma criptográfica de catálogo en carga, Enterprise, empaquetado/tienda (hasta MVP-6
-  `accepted` + ADR-0010 `accepted`).
+  `docs/10-delivery/mvp4-scope.md` (DOC-DEL-MVP4-001), `docs/10-delivery/mvp5-scope.md`
+  (DOC-DEL-MVP5-001) y empaquetado AppImage de `docs/10-delivery/mvp6-scope.md`
+  (DOC-DEL-MVP6-001, solo esa plataforma). Bloqueados: runner real, root, discos, shell
+  arbitraria, catálogos remotos, firma criptográfica de catálogo en carga, Enterprise, ISO,
+  `.deb`/`.rpm`/OBS/AUR binario como Done de MVP-6.
 
 ## Motivo del resultado mecánico
 
@@ -113,13 +115,15 @@ Resultado derivado: **Clear** — todos los gates G0–G10 están `complete`.
 
 Autorizado: el walking skeleton MVP-0 definido en `docs/10-delivery/walking-skeleton.md`,
 los slices **MVP-1** (`mvp1-scope.md`), **MVP-2** (`mvp2-scope.md`), **MVP-3**
-(`mvp3-scope.md`), **MVP-4** (React + MockCorePort, `mvp4-scope.md`) y **MVP-5**
-(catálogo de matriz, UI de cinco pasos, paridad Tauri/WASM; `mvp5-scope.md`). **No** autorizado:
-runner real, root, discos, shell arbitraria, catálogos remotos, firma criptográfica de
-catálogo en carga, Enterprise, ni release binaria / F9 (MVP-6 y ADR-0010 sin `accepted`).
+(`mvp3-scope.md`), **MVP-4** (React + MockCorePort, `mvp4-scope.md`), **MVP-5**
+(catálogo de matriz, UI de cinco pasos, paridad Tauri/WASM; `mvp5-scope.md`) y el canal
+**MVP-6 AppImage Linux x86_64** con nombre público **Neubat** (`mvp6-scope.md`, ADR-0010,
+DEC-011). **No** autorizado: runner real, root, discos, shell arbitraria, catálogos remotos,
+firma criptográfica de catálogo en carga, Enterprise, ISO, ni `.deb`/`.rpm`/OBS/AUR binario
+como Done.
 
-La presencia de F0–F7 en `main` **no** equivale a aprobación funcional firmada ni a permiso
-de publicación.
+La presencia de F0–F7 en `main` **no** equivale a aprobación funcional firmada. La
+autorización de publicación F9 es el acto de gobierno F8/DEC-011, distinto de esa capa.
 
 ## Decisiones de alcance (C3 — G1-C03)
 

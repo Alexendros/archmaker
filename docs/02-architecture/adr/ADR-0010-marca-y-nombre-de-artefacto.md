@@ -2,11 +2,11 @@
 id: ADR-0010
 phase: planning
 priority: P0
-documentStatus: in-review
-approvalStatus: pending
-implementationStatus: not-started
-verificationStatus: not-verified
-releaseStatus: ineligible
+documentStatus: accepted
+approvalStatus: approved
+implementationStatus: partial
+verificationStatus: partial
+releaseStatus: eligible
 owners:
   - product
 reviewers:
@@ -15,10 +15,11 @@ reviewers:
 
 # ADR-0010: Marca y nombre de artefacto público
 
-- Estado: proposed
+- Estado: accepted
 - Fecha: 2026-10-14
+- Aceptación: 2026-10-16
 - Propietario: Producto
-- Requisitos: NFR-MARK-001, FR-EXPORT-001, DEC-005, DEC-008
+- Requisitos: NFR-MARK-001, FR-EXPORT-001, DEC-005, DEC-008, DEC-011
 
 ## Contexto
 
@@ -36,13 +37,16 @@ kernels alternativos y paquetes `-bin`. Publicar una tienda o una imagen con ese
 el logo de Arch, antes de una respuesta escrita deja el artefacto en el supuesto que la propia
 política marca como pendiente de permiso.
 
+No hay permiso escrito del Project Lead en el expediente. Inventar uno incumple NFR-MARK-001.
+Por tanto la vía viable sin correo a trademarks@ es la opción 3.
+
 ## Drivers
 
 - NFR-MARK-001: ningún artefacto público usa un signo que empiece por ARCH, ni el logo de Arch,
   hasta permiso escrito o un nombre nuevo aceptado en este ADR.
 - DEC-008: el host de la imagen es Arch x86_64; eso no concede la marca.
 - DEC-005: la licencia del código es Apache-2.0 y no sustituye a la política de marcas.
-- Coste: retirar una release ya anunciada sale más caro que congelar el nombre visible.
+- Coste: retirar una release ya anunciada sale más caro que fijar el nombre visible ahora.
 
 ## Opciones
 
@@ -53,32 +57,42 @@ política marca como pendiente de permiso.
 
 ## Decisión
 
-Se adopta la opción 2 como propuesta, no como permiso de publicación. El id técnico en crates,
-contratos y catálogo no se renombra en este ADR. La cadena visible en una ficha de tienda, en
-el nombre de la imagen y en cualquier logo queda congelada hasta que ocurra una de estas dos
-cosas: respuesta escrita del Project Lead, o una revisión accepted de este ADR que fije la
-opción 3. No se abre un `DEC-*` accepted hasta esa aceptación: el registro de decisiones no
-gana una fila nueva en este documento.
+Se adopta la **opción 3** (aceptada 2026-10-16, autoridad `product`, DEC-011):
+
+| Ámbito                                                            | Valor                                                                       |
+| ----------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| Nombre público (metainfo, UI visible, AppImage, notas de release) | **Neubat**                                                                  |
+| Ids técnicos (crates, repo, contratos, catálogo)                  | Sin renombrar (`archmaker*`, rutas del repositorio)                         |
+| Descripción de base OS cuando aplique                             | «derived from Arch Linux» / «based on Arch Linux»; sin logo ni lema oficial |
+
+La opción 2 queda descartada para la primera release verificable porque exige permiso humano
+escrito que no existe en el expediente y no puede inventarse. Una revisión futura puede
+añadir un alias comercial distinto sin reabrir los ids técnicos, mediante nuevo ADR o
+enmienda accepted de este.
 
 ## Consecuencias
 
-- MVP-6 y el alcance de ISO citan NFR-MARK-001 y no dan por hecho el nombre de la imagen.
+- MVP-6 y el alcance de ISO citan NFR-MARK-001 con el nombre público **Neubat**.
 - Los documentos internos pueden nombrar el repositorio. Un artefacto que el usuario descarga
-  no puede presentarse como Arch Linux oficial ni usar el lema «A simple, lightweight Linux
+  no se presenta como Arch Linux oficial ni usa el lema «A simple, lightweight Linux
   distribution».
 - Los paquetes `-bin` no se incrustan en la imagen. Incluirlos aleja el resultado de un remix
   y acerca el conflicto de marca y de licencia.
+- `productName` / título visibles del empaquetado deben decir Neubat; el id de crate y el
+  identificador técnico pueden conservar `archmaker` hasta una migración voluntaria.
 
 ## Riesgos
 
-- Publicar antes de la respuesta: el Project Lead puede exigir el cambio con la release ya fuera.
+- Confusión repo (`archmaker`) vs nombre público (`Neubat`): se mitiga en README y notas de
+  release.
 - Renombrar crates a la vez que la marca: coste de migración que este ADR deja fuera.
 
 ## Verificación
 
-- Ningún workflow de release escribe un nombre de imagen ni un metainfo de tienda hasta que
-  este ADR pase a accepted con la opción 2 cerrada por correo o con la opción 3.
-- Revisión del diff de empaquetado: ausencia de logo de Arch y del lema oficial.
+- Diff de empaquetado y metainfo público: ausencia de signo que empiece por ARCH, del logo de
+  Arch y del lema oficial.
+- Nombre visible del artefacto de la plataforma autorizada = Neubat.
+- DEC-011 aceptada en el registro de decisiones.
 
 ## Sustituye
 

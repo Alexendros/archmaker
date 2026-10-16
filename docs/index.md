@@ -53,7 +53,7 @@ reviewers:
 | `module-map.md` (15 crates)                   | DOC-ARCH-MOD-001 | draft     |
 | `dependency-rules.md`                         | DOC-ARCH-DEP-001 | draft     |
 | `adr/ADR-0001..ADR-0009`                      | ADR-0001..0009   | accepted  |
-| `adr/ADR-0010-marca-y-nombre-de-artefacto.md` | ADR-0010         | in-review |
+| `adr/ADR-0010-marca-y-nombre-de-artefacto.md` | ADR-0010         | accepted  |
 | `adr/ADR-0011-contrato-de-aplicacion.md`      | ADR-0011         | in-review |
 
 ## 03 — Datos
@@ -119,12 +119,12 @@ reviewers:
 | `next-issues.md` (10 issues)        | DOC-DEL-ISS-001      | draft     |
 | `gates.md` (G0–G10)                 | DOC-DEL-GATE-001     | in-review |
 | `walking-skeleton.md` (slice MVP-0) | DOC-DEL-WSK-001      | in-review |
-| `packaging-release.md`              | DOC-DEL-PKG-001      | draft     |
+| `packaging-release.md`              | DOC-DEL-PKG-001      | in-review |
 | `mvp5-scope.md`                     | DOC-DEL-MVP5-001     | accepted  |
 | `mvp5-gap-spec.md`                  | DOC-DEL-MVP5-GAP-001 | draft     |
-| `mvp6-scope.md`                     | DOC-DEL-MVP6-001     | in-review |
+| `mvp6-scope.md`                     | DOC-DEL-MVP6-001     | accepted  |
 | `iso-scope.md`                      | DOC-DEL-ISO-001      | in-review |
-| `closure/f8-governance.md`          | DOC-DEL-CLO-F8-001   | in-review |
+| `closure/f8-governance.md`          | DOC-DEL-CLO-F8-001   | accepted  |
 | `closure/f7-candidate.md`           | DOC-DEL-CLO-F7-001   | draft     |
 | `remediation/acceptance-notes.md`   | DOC-DEL-REM-ACC-001  | in-review |
 

@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "ArchMaker",
+  "productName": "Neubat",
   "version": "0.1.0",
   "identifier": "dev.archmaker.app",
   "build": {
@@ -13,7 +13,7 @@
     "windows": [
       {
         "label": "main",
-        "title": "ArchMaker",
+        "title": "Neubat",
         "width": 1024,
         "height": 768
       }
@@ -24,7 +24,7 @@
   },
   "bundle": {
     "active": true,
-    "targets": "all",
+    "targets": ["appimage"],
     "resources": ["../packages/tokens/tokens.css"],
     "icon": [
       "icons/icon.png",

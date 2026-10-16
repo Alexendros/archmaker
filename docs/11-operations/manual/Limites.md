@@ -23,7 +23,7 @@ El MVP es usable sin CDN ni servidor (NFR-OFF-001). El catálogo y los drafts vi
 
 ## Sin instalación del sistema
 
-ArchMaker no particiona discos, no ejecuta `pacstrap`, no corre hooks ni scripts heredados y no escribe fuera del espacio de la aplicación. La imagen de instalación es otro alcance (`docs/10-delivery/iso-scope.md`), todavía no autorizado.
+Neubat (ids técnicos `archmaker*`) no particiona discos, no ejecuta `pacstrap`, no corre hooks ni scripts heredados y no escribe fuera del espacio de la aplicación. La imagen de instalación es otro alcance (`docs/10-delivery/iso-scope.md`), todavía no autorizado.
 
 ## Sin ejecución del plan
 
@@ -31,8 +31,13 @@ El runner privilegiado (JNY-003 / UC-006) está diferido (ADR-0004 / DEC-004). N
 
 ## Empaquetado
 
-La **release de plan** publica notas y el código del tag. La **release de paquete** (AppImage, `.deb`, `.rpm`, AUR) está documentada en `docs/10-delivery/packaging-release.md` y bloqueada hasta que MVP-6 y el nombre público (ADR-0010) estén aceptados.
+La **release de plan** publica notas y el código del tag. La **release de paquete** autorizada
+es el **AppImage Linux x86_64** con nombre público **Neubat** (ADR-0010 opción 3, DEC-011,
+MVP-6 accepted solo para esa plataforma). `.deb`, `.rpm`, OBS y AUR quedan deferred; AUR no
+es repositorio binario. Detalle: `docs/10-delivery/packaging-release.md` y
+`docs/10-delivery/closure/f8-governance.md`.
 
 ## Veredicto vigente
 
-CONDITIONAL-CLEAR hasta MVP-4. MVP-5, MVP-6 e imagen no autorizan implementación mientras sus alcances no estén `accepted`.
+CONDITIONAL-CLEAR hasta MVP-5 (sin runner). MVP-6 AppImage está `accepted` para el canal
+único; ISO y runner siguen sin `accepted`.
