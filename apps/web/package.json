@@ -17,7 +17,8 @@
     "test-e2e:fidelity": "playwright test mock-flow.playwright.test.ts --grep \"F3 ejercicio|inventario\"",
     "test-f7:unit": "playwright test forge-helpers.playwright.test.ts export-delivery.playwright.test.ts consented-import.playwright.test.ts",
     "test-f7:e2e-wasm": "playwright test wasm-flow.playwright.test.ts --retries=0",
-    "test-f7:offline-web": "playwright test wasm-offline.playwright.test.ts --retries=0"
+    "test-f7:offline-web": "playwright test wasm-offline.playwright.test.ts --retries=0",
+    "test-f7:product-p95-sample": "node scripts/product-p95-sample.mjs"
   },
   "dependencies": {
     "@tauri-apps/api": "2.12.1",

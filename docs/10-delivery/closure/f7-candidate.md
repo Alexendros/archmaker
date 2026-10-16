@@ -44,7 +44,7 @@ tag `v0.1.0` **no** demuestra el código de `9297ed7…`; registrar por separado
 | F7-TARGET-INCOMPATIBLE | Target incompatible | executable |
 | F7-REG-F0…F5 | Regresión F0–F5 | executable |
 | F7-REG-F6 | Mensajes F6 | executable |
-| F7-P95 | P95 n=30 init/prepare | `tools/run_f7_p95_harness.py` |
+| F7-P95 | P95 producto web-ready/web-prepare n=30 | `tools/run_product_p95_harness.py` |
 | F7-OFFLINE-WEB | Offline web | requiere `--with-e2e` |
 | F7-OFFLINE-DESKTOP | Offline escritorio | **pending** (humo GUI/red) |
 | F7-E2E-X3 | Tres E2E WASM consecutivos | requiere `--with-e2e` |
@@ -60,10 +60,13 @@ Un subconjunto de comandos **no** cierra el caso: el runner marca `partial` y `-
 ## P95
 
 Presupuesto de **producto** (`honest-ux.md`): ready ≤ 3.000 ms; prepare ≤ 1.000 ms;
-n ≥ 30; máquina de referencia pendiente de fijar al medir. Estado **pending**.
+n ≥ 30. Harness: `python3 tools/run_product_p95_harness.py` (WASM real, sin mock).
+Informe versionable: `docs/10-delivery/closure/product-p95-report.json`. Desktop
+queda `blocked` sin evidencia nombrada; eso impide aceptación global de rendimiento.
+`--allow-pending` no cierra aceptación.
 
-Harness nativo: `python3 tools/run_f7_p95_harness.py` (microbenchmark; **no certifica**
-producto). Las corridas viven fuera del árbol
+Microbenchmark nativo: `python3 tools/run_f7_p95_harness.py` (`kind=microbenchmark`;
+**no certifica** producto). Sus corridas viven fuera del árbol
 (`~/archmaker-closure/evidence/<source-sha>/…`). No inventar cifras sin informe.
 
 ## Cómo ejecutar

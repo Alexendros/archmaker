@@ -72,8 +72,8 @@ Denominador: `len(cases)` en `f7-required-cases.json`. Estados según inventario
 | F7-REG-F3 | architecture | executable (CI) |
 | F7-REG-F4 | architecture | executable (CI) |
 | F7-REG-F5 | architecture | executable (CI) |
-| F7-REG-F6 | architecture | executable (CI); P95 n=30 sin muestras |
-| F7-P95 | architecture | pending de medición de producto; harness nativo no certifica producto |
+| F7-REG-F6 | architecture | executable (CI) |
+| F7-P95 | architecture | executable (`run_product_p95_harness`); desktop blocked; microbenchmark no certifica |
 | F7-OFFLINE-WEB | architecture | executable (`--with-e2e`); no implica escritorio |
 | F7-OFFLINE-DESKTOP | architecture | pending (humo GUI/red) |
 | F7-E2E-X3 | architecture | executable (`--with-e2e`) |
@@ -84,7 +84,8 @@ Residuales ya observados en inventario (no cierran aceptación):
 | --- | --- | --- |
 | F7-E2E-X3 | passed (3 intentos wasm-flow) | — |
 | F7-OFFLINE | web passed (`wasm-offline`) | escritorio sin humo de red/portal |
-| F7-REG-F6 | mensajes F6 executable | P95 n=30 (sin muestras; no se fabrican cifras) |
+| F7-REG-F6 | mensajes F6 executable | — |
+| F7-P95 | web-ready P95 123 ms; web-prepare P95 58 ms (n=30) | desktop blocked; aceptación global de rendimiento no cerrada |
 
 ## Umbrales propuestos (no resultados)
 
@@ -93,4 +94,4 @@ Quedan `pending`. No se usaron para aprobar nada. Detalle de producto vs harness
 
 - Corpus de entrega: 20 casos por target soportado + 4 rechazos (propuesto).
 - Rendimiento de **producto**: ready ≤ 3.000 ms P95; prepare ≤ 1.000 ms P95; n ≥ 30;
-  máquina de referencia **no fijada**.
+  informe `product-p95-report.json`; desktop blocked impide aceptación global.

@@ -138,6 +138,16 @@
       "covers": [],
       "description": "Verificador de cierre solo lectura; sin autoaprobación; inventario canónico",
       "transversal": true
+    },
+    {
+      "id": "VAL-PRODUCT-P95",
+      "type": "doc",
+      "location": "tools/run_product_p95_harness.py",
+      "command": "python3 tools/test_run_product_p95_harness.py",
+      "workflow": "ci",
+      "covers": [],
+      "description": "P95 de producto web-ready/web-prepare; tests unitarios del harness; microbenchmark nativo no certifica",
+      "transversal": true
     }
   ]
 }

@@ -11,7 +11,7 @@
   },
   "limitations": [
     "El dueño del repositorio puede mergear sin checks bloqueantes; un verde de PR no certifica main solo.",
-    "P95 de rendimiento F6 permanece pending hasta 30 muestras en la máquina fijada en F0 (caso F7-P95).",
+    "P95 de producto (F7-P95): web-ready/web-prepare vía tools/run_product_p95_harness.py; el microbenchmark nativo no certifica; desktop blocked sin AppImage/automatización del SHA.",
     "Humo GUI F5 no es E2E de portal/xdg-desktop-portal; picker nativo cubierto por simulación unitaria hasta evidencia GUI real."
   ],
   "cases": [
@@ -189,17 +189,20 @@
     },
     {
       "id": "F7-P95",
-      "title": "P95 inicialización y preparación (n=30)",
+      "title": "P95 producto web-ready/web-prepare (n=30); microbenchmark nativo no certifica",
       "hooks": [
         "docs/10-delivery/closure/honest-ux.md",
+        "docs/10-delivery/closure/product-p95-report.schema.json",
+        "tools/run_product_p95_harness.py",
+        "apps/web/scripts/product-p95-sample.mjs",
         "tools/run_f7_p95_harness.py",
         "crates/archmaker-core/tests/f7_p95_sample.rs"
       ],
-      "commands": ["python3 tools/run_f7_p95_harness.py"],
+      "commands": ["python3 tools/run_product_p95_harness.py --skip-build"],
       "ci": false,
-      "e2eWasmRequired": false,
+      "e2eWasmRequired": true,
       "defaultStatus": "executable",
-      "residual": "Sin 30 muestras en máquina F0 el harness falla; no se fabrican cifras"
+      "residual": "Desktop-ready/prepare blocked sin AppImage Forge del SHA + automatización; --allow-pending no cierra aceptación; microbenchmark nativo no certifica producto"
     },
     {
       "id": "F7-OFFLINE-WEB",

@@ -102,7 +102,8 @@ Residuales de ejecución (agente / `--with-e2e`):
 | ---------- | ---------------------------------------------------- | -------------------------------------------------- |
 | F7-E2E-X3  | passed (3 intentos consecutivos wasm-flow, retries=0) | —                                                  |
 | F7-OFFLINE | web passed (`wasm-offline`)                          | escritorio sin humo de red/portal                  |
-| F7-REG-F6  | mensajes F6 executable                               | P95 n=30 (sin muestras; no se fabrican cifras)     |
+| F7-REG-F6  | mensajes F6 executable                               | —                                                  |
+| F7-P95     | web-ready P95 123 ms; web-prepare P95 58 ms (n=30)   | desktop blocked; aceptación global no cerrada      |
 
 ## F8 — gobierno / F9 — publicación
 
@@ -117,4 +118,4 @@ Quedan `pending`. No se usaron para aprobar nada.
 
 - Identidad: 100 contextos por 100 ids en el lote; 10.000 ids no demuestran unicidad universal.
 - Corpus de entrega: 20 casos por target soportado, más 4 rechazos. F0 versiona 3 fixtures de clases.
-- Rendimiento de **producto** (ready ≤ 3.000 ms P95; prepare ≤ 1.000 ms P95; n ≥ 30): máquina de referencia **no fijada**; estado **pending**. El harness nativo `run_f7_p95_harness.py` **no certifica** producto (ver `honest-ux.md`).
+- Rendimiento de **producto** (ready ≤ 3.000 ms P95; prepare ≤ 1.000 ms P95; n ≥ 30): web medido (ready P95 123 ms; prepare P95 58 ms) en `product-p95-report.json` vía `tools/run_product_p95_harness.py`. Desktop-ready/prepare **blocked** (evidencia ausente nombrada). Aceptación global de rendimiento **no** cerrada. El microbenchmark nativo `run_f7_p95_harness.py` **no certifica** producto (ver `honest-ux.md`). `--allow-pending` no cierra aceptación.

@@ -37,7 +37,7 @@ No atribuye aceptación al tip de `main` posterior.
 
 | Campo | Nota |
 | --- | --- |
-| P95 n=30 | Informe en `~/archmaker-closure/evidence/<sha>/p95-*/p95-report.json` |
+| P95 producto n=30 | `docs/10-delivery/closure/product-p95-report.json` (web); microbenchmark en `~/archmaker-closure/evidence/<sha>/p95-*/p95-report.json` |
 | Matriz `--strict` | Pendiente de reejecución sobre el SHA **final** del PR (tras merge) |
 | GUI / offline desktop | Compuerta del operador; `F7-OFFLINE-DESKTOP` sigue pending |
 

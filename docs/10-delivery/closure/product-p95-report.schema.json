@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://archmaker.local/schemas/product-p95-report.schema.json",
+  "title": "ArchMaker product P95 report",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "phase",
+    "kind",
+    "certifiesProduct",
+    "acceptanceClosed",
+    "allowPending",
+    "n",
+    "thresholdsMs",
+    "result",
+    "technicalResult",
+    "microbenchmark"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "1" },
+    "phase": { "const": "F7-PRODUCT-P95" },
+    "kind": { "const": "product" },
+    "certifiesProduct": { "type": "boolean" },
+    "acceptanceClosed": { "type": "boolean" },
+    "allowPending": { "type": "boolean" },
+    "sourceSha": { "type": ["string", "null"] },
+    "startedAt": { "type": "string" },
+    "completedAt": { "type": "string" },
+    "n": { "type": "integer", "minimum": 1 },
+    "warmupDiscarded": { "type": "integer", "minimum": 0 },
+    "thresholdsMs": {
+      "type": "object",
+      "required": ["readyP95", "prepareP95"],
+      "properties": {
+        "readyP95": { "type": "number" },
+        "prepareP95": { "type": "number" }
+      }
+    },
+    "buildProfile": { "type": "object" },
+    "baseUrl": { "type": "string" },
+    "platform": { "type": "object" },
+    "web": { "type": "object" },
+    "desktop": { "type": "object" },
+    "microbenchmark": {
+      "type": "object",
+      "required": ["kind", "certifiesProduct"],
+      "properties": {
+        "tool": { "type": "string" },
+        "kind": { "const": "microbenchmark" },
+        "certifiesProduct": { "const": false },
+        "note": { "type": "string" }
+      }
+    },
+    "result": {
+      "type": "string",
+      "enum": ["passed", "failed", "pending", "blocked", "partial"]
+    },
+    "technicalResult": {
+      "type": "string",
+      "enum": ["passed", "failed", "pending", "partial", "blocked"]
+    },
+    "residuals": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "additionalProperties": true
+}

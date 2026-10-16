@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
-"""Harness F7-P95: 30 muestras de inicialización y preparación.
+"""Microbenchmark nativo F7-P95 (NO certifica producto).
 
-Umbrales (honest-ux.md): init P95 ≤ 3000 ms; prepare P95 ≤ 1000 ms; n = 30.
-No fabrica cifras: si no puede medir, falla con residual explícito.
+Mide init/prepare del core sobre fixture embebido (n = 30). Comparte los
+números de umbral de laboratorio con honest-ux.md, pero **no** cierra
+web-ready / web-prepare / desktop-*. Para presupuesto de producto usar
+`tools/run_product_p95_harness.py`.
 
 Uso:
   python3 tools/run_f7_p95_harness.py
@@ -142,7 +144,10 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--allow-pending",
         action="store_true",
-        help="Escribe informe pending y sale 0 sin exigir umbrales (solo diagnóstico)",
+        help=(
+            "Diagnóstico: escribe informe pending y sale 0 sin exigir umbrales; "
+            "NUNCA cierra aceptación de producto"
+        ),
     )
     args = parser.parse_args(argv)
 
@@ -189,7 +194,11 @@ def main(argv: list[str] | None = None) -> int:
 
     report = {
         "schemaVersion": "1",
-        "phase": "F7-P95",
+        "phase": "F7-P95-MICROBENCHMARK",
+        "kind": "microbenchmark",
+        "certifiesProduct": False,
+        "acceptanceClosed": False,
+        "allowPending": bool(args.allow_pending),
         "sourceSha": git_sha(),
         "startedAt": started,
         "completedAt": completed,
@@ -217,18 +226,24 @@ def main(argv: list[str] | None = None) -> int:
             "policy": "one-warmup-then-n-samples-same-binary",
             "binary": str(binary),
         },
+        "productHarness": "tools/run_product_p95_harness.py",
         "result": "pending",
     }
 
     init_ok = init_p95 <= INIT_P95_MS
     prepare_ok = prepare_p95 <= PREPARE_P95_MS
     n_ok = args.samples >= DEFAULT_SAMPLES
-    if init_ok and prepare_ok and n_ok:
+    lab_ok = init_ok and prepare_ok and n_ok
+    report["technicalResult"] = "passed" if lab_ok else "failed"
+    if args.allow_pending:
+        # Diagnóstico: nunca cierra aceptación (ni aunque el laboratorio pase).
+        report["result"] = "pending"
+        report["acceptanceClosed"] = False
+    elif lab_ok:
         report["result"] = "passed"
-        report["technicalResult"] = "passed"
+        report["acceptanceClosed"] = False  # microbenchmark no certifica producto
     else:
-        report["result"] = "failed" if not args.allow_pending else "pending"
-        report["technicalResult"] = "failed" if not (init_ok and prepare_ok and n_ok) else "passed"
+        report["result"] = "failed"
         report["residuals"] = []
         if not n_ok:
             report["residuals"].append(f"n={args.samples} < {DEFAULT_SAMPLES}")
