@@ -38,11 +38,11 @@ reviewers:
 | -------------------- | --------- | --------------------------------------------------------------------------------------------- |
 | Baseline de código   | passed    | Tag MVP-5 + F0–F8 en `main`                                                                   |
 | Aprobación funcional | pending   | F7 estricto + P95 web en árbol; desktop/offline **blocked** (P6); sin `RC_SHA_FUNCIONAL` ni revisor independiente |
-| Release binaria      | published | AppImage `v0.1.0` (`9297ed7…`); verificación parcial (cosign/GUI); ver `f9-release.md` |
+| Release binaria      | published | AppImage `v0.1.0` (`59246f08…`); verificación parcial (cosign/GUI); ver `f9-release.md` |
 
 Detalle y residuales: `docs/10-delivery/closure/f8-governance.md`.
 Candidato tip post-P0–P7 (sin publicar): `docs/10-delivery/closure/release-candidate.md`
-(`a09c4299…`); handoff: `closure-handoff.md`.
+(`59246f08…`); handoff: `closure-handoff.md`.
 
 ## Bloqueos P0
 
