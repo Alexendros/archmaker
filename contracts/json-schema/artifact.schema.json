@@ -68,6 +68,16 @@
     "content": {
       "description": "Adapter-defined exported payload, versioned by targetRef.version (ADR-0003). Documented open payload: its shape is fixed by the target adapter, never by this contract. It must not contain executable fields, commands, hooks or shell.",
       "type": ["object", "array", "string"]
+    },
+    "bytes": {
+      "description": "Exact exported artifact bytes as unsigned 8-bit integers for delivery. SHA-256 of these bytes equals binaryDigest (ADR-0007 decision 11).",
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 255
+      },
+      "minItems": 1
     }
   },
   "$defs": {

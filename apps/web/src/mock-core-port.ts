@@ -399,9 +399,12 @@ export class MockCorePort implements CorePort {
       input.targetRef.id === "archinstall-profile" ? true : undefined;
     let content: unknown;
     let mediaType = "application/json";
+    let raw: Uint8Array;
     if (input.targetRef.id === "report") {
       mediaType = "text/markdown";
-      content = `# ArchMaker report\n\ndomain: archmaker:manifest:v1\n`;
+      const text = `# ArchMaker report\n\ndomain: archmaker:manifest:v1\n`;
+      content = text;
+      raw = new TextEncoder().encode(text);
     } else if (input.targetRef.id === "archinstall-profile") {
       content = {
         adapter: "archinstall-profile",
@@ -409,15 +412,22 @@ export class MockCorePort implements CorePort {
         manifestRef: { contentDigest: input.manifest.contentDigest },
         effectiveSelections: input.manifest.effectiveSelections,
       };
+      raw = new TextEncoder().encode(JSON.stringify(content));
     } else {
       content = input.manifest;
+      raw = new TextEncoder().encode(JSON.stringify(content));
     }
-    const binaryValue =
-      input.targetRef.id === "archmaker-profile"
-        ? "1111111111111111111111111111111111111111111111111111111111111111"
-        : input.targetRef.id === "archinstall-profile"
-          ? "2222222222222222222222222222222222222222222222222222222222222222"
-          : "3333333333333333333333333333333333333333333333333333333333333333";
+    const hash = await crypto.subtle.digest(
+      "SHA-256",
+      raw.buffer.slice(
+        raw.byteOffset,
+        raw.byteOffset + raw.byteLength,
+      ) as ArrayBuffer,
+    );
+    const binaryValue = [...new Uint8Array(hash)]
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("");
+    const bytes = Array.from(raw);
     const artifact: Artifact = {
       documentVersion: input.manifest.documentVersion,
       schemaVersion: input.manifest.schemaVersion,
@@ -440,6 +450,7 @@ export class MockCorePort implements CorePort {
       manifestRef: { contentDigest: input.manifest.contentDigest },
       experimental,
       content,
+      bytes,
     };
     return { ok: true, value: artifact };
   }

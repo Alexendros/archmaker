@@ -112,6 +112,8 @@ export type Artifact = {
   manifestRef: { contentDigest: ContentDigest };
   experimental?: boolean;
   content?: unknown;
+  /** Exact renderer bytes; SHA-256 of these equals binaryDigest. */
+  bytes?: number[];
 };
 
 export type CreateDraftInput = {
