@@ -32,8 +32,8 @@ import {
 } from "./draft-persistence.js";
 import {
   DeliveryError,
+  deliverArtifact,
   destinationTokenFor,
-  downloadArtifact,
   exportFilename,
   exportStatusMessage,
 } from "./export-delivery.js";
@@ -518,9 +518,12 @@ export function App({ port, portKind }: Props) {
       }
       try {
         const name = exportFilename(token, res.value.targetRef.id);
-        // F2: downloadArtifact inicia la descarga del navegador; no confirma
-        // escritura en disco. «Archivo guardado» solo con confirmedSave (F5).
-        const outcome = await downloadArtifact(res.value, name);
+        // Web: download-started. Escritorio F5: file-saved tras diálogo acotado.
+        const outcome = await deliverArtifact(res.value, name);
+        if (outcome.kind === "cancelled") {
+          announce("status", "Guardado cancelado.");
+          return;
+        }
         showToast(exportStatusMessage(outcome));
       } catch (err) {
         const message =

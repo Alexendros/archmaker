@@ -330,12 +330,19 @@ fn c05_persist_has_typed_save_states_and_serialized_writes() {
 }
 
 #[test]
-fn c06_export_capability_dialog_absent() {
+fn c06_export_capability_scoped_save_only() {
+    // F5: guardado nativo acotado; sin dialog.json/picker.json ni FS global.
     let app = read_repo("apps/web/src/App.tsx");
-    assert!(app.contains("downloadArtifact("));
+    assert!(app.contains("deliverArtifact("));
+    let delivery = read_repo("apps/web/src/export-delivery.ts");
+    assert!(delivery.contains("save_export_bytes"));
+    assert!(delivery.contains("confirmedSaveOutcome") || delivery.contains("file-saved"));
     let caps = repo_root().join("src-tauri/capabilities");
     assert!(!caps.join("dialog.json").exists());
     assert!(!caps.join("picker.json").exists());
+    let main = read_repo("src-tauri/capabilities/main.json");
+    assert!(main.contains("allow-save-export-bytes"));
+    assert!(!main.contains("dialog:allow-open"));
     let port = read_repo("apps/web/src/create-core-port.ts");
     let catch_at = port.rfind("catch (e)").expect("catch wasm");
     assert!(

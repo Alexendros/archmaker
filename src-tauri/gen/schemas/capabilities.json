@@ -1,7 +1,7 @@
 {
   "main-capability": {
     "identifier": "main-capability",
-    "description": "Ventana main: solo comandos CorePort de producto. Deny-by-default para el resto.",
+    "description": "Ventana main: CorePort + guardado nativo acotado (save_export_bytes). Sin shell ni FS global.",
     "local": true,
     "windows": ["main"],
     "permissions": [
@@ -13,7 +13,8 @@
       "allow-validate-draft",
       "allow-build-manifest",
       "allow-export-artifact",
-      "allow-import-draft"
+      "allow-import-draft",
+      "allow-save-export-bytes"
     ]
   },
   "restricted-capability": {

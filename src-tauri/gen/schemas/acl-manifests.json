@@ -42,6 +42,11 @@
         "description": "Enables the save_draft command without any pre-configured scope.",
         "commands": { "allow": ["save_draft"], "deny": [] }
       },
+      "allow-save-export-bytes": {
+        "identifier": "allow-save-export-bytes",
+        "description": "Enables the save_export_bytes command without any pre-configured scope.",
+        "commands": { "allow": ["save_export_bytes"], "deny": [] }
+      },
       "allow-validate-draft": {
         "identifier": "allow-validate-draft",
         "description": "Enables the validate_draft command without any pre-configured scope.",
@@ -86,6 +91,11 @@
         "identifier": "deny-save-draft",
         "description": "Denies the save_draft command without any pre-configured scope.",
         "commands": { "allow": [], "deny": ["save_draft"] }
+      },
+      "deny-save-export-bytes": {
+        "identifier": "deny-save-export-bytes",
+        "description": "Denies the save_export_bytes command without any pre-configured scope.",
+        "commands": { "allow": [], "deny": ["save_export_bytes"] }
       },
       "deny-validate-draft": {
         "identifier": "deny-validate-draft",

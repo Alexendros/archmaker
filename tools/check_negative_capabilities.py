@@ -30,20 +30,31 @@ CORE_CMDS = [
     "import_draft",
 ]
 
+APP_CMDS = CORE_CMDS + ["save_export_bytes"]
+
 build_rs = (ROOT / "src-tauri/build.rs").read_text()
 check(
     "NEG-001 AppManifest::commands",
     "AppManifest::new().commands" in build_rs,
 )
-for cmd in CORE_CMDS:
+for cmd in APP_CMDS:
     check(f"NEG-001 AppManifest lista {cmd}", f'"{cmd}"' in build_rs)
 
 cap = json.loads((ROOT / "src-tauri/capabilities/main.json").read_text())
 check("NEG-001 deny-by-default por ventana", cap.get("windows") == ["main"])
 perms = cap.get("permissions") or []
 check(
-    "NEG-001 main concede allow-* CorePort (9)",
-    len(perms) == 9 and all(isinstance(p, str) and p.startswith("allow-") for p in perms),
+    "NEG-001 main concede 9 CorePort + allow-save-export-bytes",
+    len(perms) == 10
+    and all(isinstance(p, str) and p.startswith("allow-") for p in perms)
+    and "allow-save-export-bytes" in perms,
+    str(perms),
+)
+check(
+    "NEG-001 sin diálogo global libre ni FS/shell plugin",
+    "dialog:allow-open" not in perms
+    and "dialog:default" not in perms
+    and not any(isinstance(p, str) and (p.startswith("fs:") or "shell" in p) for p in perms),
     str(perms),
 )
 
@@ -63,7 +74,7 @@ check(
 )
 for reserved in ["dialog", "picker"]:
     check(
-        f"NEG-001 {reserved}.json ausente (reserva v1 sin fichero)",
+        f"NEG-001 {reserved}.json ausente (guardado acotado, no ventana dialog)",
         not (caps_dir / f"{reserved}.json").exists(),
     )
 
@@ -81,6 +92,11 @@ check(
     "devtools" not in conf["app"]["security"],
     "schema v2 sin devtools en SecurityConfig",
 )
+check(
+    "NEG-F5 frontendDist apps/web/dist",
+    conf.get("build", {}).get("frontendDist") == "../apps/web/dist",
+    str(conf.get("build", {}).get("frontendDist")),
+)
 main_rs = (ROOT / "src-tauri/src/main.rs").read_text()
 check(
     "NEG-devtools sin apertura programatica",
@@ -95,12 +111,17 @@ check(
 )
 
 tauri_port = (ROOT / "apps/web/src/tauri-core-port.ts").read_text()
+export_delivery = (ROOT / "apps/web/src/export-delivery.ts").read_text()
 web_src = "".join(
     p.read_text() for p in sorted((ROOT / "apps/web/src").glob("*.ts*"))
 )
 allowed = set(CORE_CMDS)
 invokes = set(re.findall(r'"([a-z_]+)"', tauri_port)) & allowed
-check("NEG-001 invoke solo allowlist (9)", invokes == allowed, str(sorted(invokes)))
+check("NEG-001 invoke CorePort allowlist (9)", invokes == allowed, str(sorted(invokes)))
+check(
+    "NEG-F5 deliverArtifact invoca save_export_bytes",
+    "save_export_bytes" in export_delivery and "deliverArtifact" in export_delivery,
+)
 check(
     "NEG-004 sin superficie shell en TS",
     not re.search(r"pacstrap|sidecar|Command::|\.spawn\(|sh -c", web_src),
