@@ -112,6 +112,34 @@ function withInitialSelections(draft: Draft): Draft {
   };
 }
 
+/**
+ * Face-only selections (intent) and gap packages are kept in the UI draft but
+ * must not reach RealCore resolve/validate/manifest (AM-RES-001).
+ */
+function draftForCore(draft: Draft): Draft {
+  const selections = draft.selections.flatMap((selection) => {
+    if (selection.stepId === STEP_IDS.intent) return [];
+    const value = selection.value;
+    if (value.kind === "single") {
+      const opt = findOptionById(value.optionId);
+      if (opt && "gap" in opt && opt.gap) return [];
+      return [selection];
+    }
+    if (value.kind === "multiple") {
+      const optionIds = value.optionIds.filter((id) => {
+        const opt = findOptionById(id);
+        return !(opt && "gap" in opt && opt.gap);
+      });
+      if (optionIds.length === 0) return [];
+      return [
+        { ...selection, value: { kind: "multiple" as const, optionIds } },
+      ];
+    }
+    return [selection];
+  });
+  return { ...draft, selections };
+}
+
 export function App({ port, portKind }: Props) {
   const [draft, setDraft] = useState<Draft | null>(null);
   const [catalogRef, setCatalogRef] = useState<CatalogRef>(DESKTOP_CATALOG_REF);
@@ -335,7 +363,7 @@ export function App({ port, portKind }: Props) {
     const d = requireDraft();
     if (!d) return { ok: false, reason: "draft-missing" };
     const generation = generationRef.current;
-    const snapshot = structuredClone(d);
+    const snapshot = draftForCore(structuredClone(d));
     const resolved = await port.resolveDraft({
       draft: snapshot,
       catalogRef,
@@ -397,6 +425,9 @@ export function App({ port, portKind }: Props) {
       const prepared = await prepareExport();
       if (prepared.ok) {
         showToast("Validación sin bloqueos. Manifest listo.");
+      } else if (prepared.reason === "draft-missing") {
+        // requireDraft already announced; keep the user on revisión with status.
+        announce("alert", "El draft aún no está listo.");
       }
     } finally {
       setBusy(false);

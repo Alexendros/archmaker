@@ -79,8 +79,15 @@ test.describe("Visual regression", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto(BASE_URL);
     await page.waitForLoadState("networkidle");
+    // Wait for async CorePort boot + draft (not the empty/loading shell).
+    await expect(
+      page.getByRole("heading", { name: /Para qué usarás/i }),
+    ).toBeVisible({ timeout: 60_000 });
     // CSS externo (CSP style-src 'self'); fija Liberation Sans en tests.
-    await page.addStyleTag({ url: `${BASE_URL}/visual-stabilize.css` });
+    // Resolve against origin — BASE_URL includes ?mock=1.
+    const origin = new URL(BASE_URL).origin;
+    await page.addStyleTag({ url: `${origin}/visual-stabilize.css` });
+    await page.waitForTimeout(100);
   });
 
   test("home page - light theme", async ({ page }) => {
