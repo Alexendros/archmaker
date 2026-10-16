@@ -71,3 +71,15 @@ Rust. No se construye ISO, no se descarga el espejo y no se llama a pacman.
 
 Los issues 01–05 cerrados. Tag `implementation-baseline-mvp5` emitido (MVP-5-05); tags
 MVP-0.1..MVP-4 intactos. Runner e ISO siguen fuera del veredicto.
+
+## Post-slice (cierre F0–F7 / gobierno F8)
+
+El trabajo de cierre de producto (identidad, bytes, fidelidad, importación, escritorio, UX,
+candidato) vive en `docs/10-delivery/closure/` y **no** reabre este alcance ni mueve el tag
+MVP-5. Capas tras F8 (`closure/f8-governance.md`):
+
+- Baseline de código: **passed** (este tag + commits F0–F7 en `main`).
+- Aprobación funcional: **pending** (limitaciones F7; sin aceptación independiente).
+- Release binaria: **blocked** (MVP-6 / ADR-0010 sin `accepted`; F9 no abierto).
+
+Nombre público de tienda o imagen (ADR-0010) sigue excluido de MVP-5.

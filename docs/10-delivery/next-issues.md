@@ -130,4 +130,6 @@ El veredicto vigente es **CONDITIONAL-CLEAR — walking skeleton MVP-0 + slices 
 (`docs/00-governance/go-no-go.md`), con gates G0–G10 `complete`. MVP-1-01..08 están `closed`;
 MVP-2-01..07 están `closed`; MVP-3-01..06 están `closed`; MVP-4-01..06 están `closed`;
 MVP-5-01..05 están `closed`; baseline `implementation-baseline-mvp5` emitida (tags previos
-intactos). La autorización del MVP completo y del runner exige su propio gate.
+intactos). Cierre F0–F7 en `main`; gobierno F8 en `closure/f8-governance.md` (aprobación
+funcional **pending**, release binaria **blocked**, F9 no abierto). La autorización del MVP
+completo, del runner y de cualquier paquete exige su propio gate y `accepted` explícito.

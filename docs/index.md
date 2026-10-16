@@ -124,6 +124,9 @@ reviewers:
 | `mvp5-gap-spec.md`                  | DOC-DEL-MVP5-GAP-001 | draft     |
 | `mvp6-scope.md`                     | DOC-DEL-MVP6-001     | in-review |
 | `iso-scope.md`                      | DOC-DEL-ISO-001      | in-review |
+| `closure/f8-governance.md`          | DOC-DEL-CLO-F8-001   | in-review |
+| `closure/f7-candidate.md`           | DOC-DEL-CLO-F7-001   | draft     |
+| `remediation/acceptance-notes.md`   | DOC-DEL-REM-ACC-001  | in-review |
 
 ## 11–12 — Operaciones e investigación
 
