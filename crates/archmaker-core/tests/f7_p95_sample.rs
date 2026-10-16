@@ -1,9 +1,11 @@
-//! Una muestra de tiempos F7-P95: inicialización del core embebido y
-//! resolve + validate + build_manifest sobre el fixture de catálogo embebido.
+//! Una muestra del **microbenchmark nativo** F7-P95 (no certifica producto):
+//! inicialización del core embebido y resolve + validate + build_manifest.
 //!
 //! El harness Python (`tools/run_f7_p95_harness.py`) ejecuta este test N veces
-//! (binario precompilado) y calcula P95. Este binario imprime una línea JSON
-//! con `initMs` y `prepareMs` cuando se invoca con `ARCHMAKER_F7_P95_SAMPLE=1`.
+//! (binario precompilado) y calcula P95 de laboratorio. Para presupuesto de
+//! producto (web-ready / web-prepare) usar `tools/run_product_p95_harness.py`.
+//! Este binario imprime una línea JSON con `initMs` y `prepareMs` cuando se
+//! invoca con `ARCHMAKER_F7_P95_SAMPLE=1`.
 
 use std::time::Instant;
 

@@ -82,7 +82,7 @@ borrador MVP-6; no exige OBS ni ficha AUR; el hosting ya está cableado en `rele
 | Id            | Residual                                                                         | Impacto                                      | Responsable                       | Fecha objetivo |
 | ------------- | -------------------------------------------------------------------------------- | -------------------------------------------- | --------------------------------- | -------------- |
 | RES-F7-E2E    | Tres E2E WASM consecutivos + offline web/escritorio en evidencia fuera del árbol | Aprobación funcional sigue pending           | Architecture                      | 2026-11-15     |
-| RES-F7-P95    | P95 F6 sin medir                                                                 | No se etiqueta rendimiento como passed       | Architecture                      | 2026-11-15     |
+| RES-F7-P95    | Desktop-ready/prepare P95 blocked; aceptación global de rendimiento abierta      | No se etiqueta rendimiento global como passed | Architecture                      | 2026-11-15     |
 | RES-F7-IND    | Revisor independiente o limitación firmada                                       | Sin `APPROVAL_RECORD_SHA` funcional          | Governance + independent-reviewer | 2026-11-30     |
 | RES-F5-PORTAL | Humo GUI F5 no es E2E de `xdg-desktop-portal`                                    | Cobertura de diálogo nativo incompleta en CI | Architecture                      | 2026-12-15     |
 | RES-F0-CORPUS | Corpus de entrega densificado                                                    | Densidad de evidencia                        | Architecture                      | 2026-12-15     |

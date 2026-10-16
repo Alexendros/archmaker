@@ -50,10 +50,10 @@
     "No RC_SHA_FUNCIONAL: candidato documentado, no aceptación firmada",
     "Sin aceptación independiente firmada",
     "Dueño puede mergear sin checks bloqueantes",
-    "P95 F6 pending sin 30 muestras",
+    "P95 producto: desktop blocked sin AppImage Forge del SHA",
     "Humo GUI F5 no E2E portal",
     "F7-OFFLINE-DESKTOP: escritorio offline pending (sin humo de red/portal)",
-    "F7-P95: Sin 30 muestras en máquina F0 el harness falla; no se fabrican cifras"
+    "F7-P95: Desktop-ready/prepare blocked; microbenchmark nativo no certifica; --allow-pending no cierra aceptación"
   ],
   "harness": null,
   "technicalResult": null,

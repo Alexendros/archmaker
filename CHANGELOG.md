@@ -9,9 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Harness P95 de producto (`tools/run_product_p95_harness.py`): web-ready / web-prepare
+  con WASM real (n≥30), informe `docs/10-delivery/closure/product-p95-report.json`;
+  desktop blocked con evidencia ausente nombrada; `--allow-pending` no cierra aceptación.
 - Integridad de evidencia P2: `technicalResult` concordante con `jsonschema==4.23.0`, 20 escenarios adversarios (`tools/test_evidence_adversarial.py`), import de evidencia desktop sin bypass, `tools/check_product_closure.py` de solo lectura.
 - Runner F7 estricto (`--strict`): estados por comando/test, `technicalResult` separado de
-  `result=pending`, pkg WASM completo, harness P95 n=30 (`tools/run_f7_p95_harness.py`).
+  `result=pending`, pkg WASM completo, microbenchmark P95 nativo n=30
+  (`tools/run_f7_p95_harness.py`, no certifica producto).
 - Casos F7 atómicos (motor/export WASM, offline web/desktop, P95).
 - Suite de diagramas Archify D01–D24 bajo `docs/02-architecture/diagrams/` (renderer fijado;
   regenerar con `tools/scaffold_archify_diagrams.py` + `tools/run_archify_diagrams.py`).

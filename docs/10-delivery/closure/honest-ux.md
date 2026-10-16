@@ -60,24 +60,32 @@ Ampliación de `a11y-playwright.test.ts`: viewports 360 / 768 / 1440 px y zoom 2
 
 ## Presupuesto de rendimiento (P95)
 
-### Producto (congelado; pendiente de medición)
+### Producto (congelado)
 
 Umbrales de **producto** (web-ready / web-prepare; desktop-ready / desktop-prepare si hay GUI):
 
 | Métrica | Umbral P95 | n | Estado |
 | --- | --- | --- | --- |
-| ready (Forge interactiva) | ≤ 3.000 ms | ≥ 30 | **pending** — sin medición de producto |
-| prepare (manifiesto válido) | ≤ 1.000 ms | ≥ 30 | **pending** — sin medición de producto |
+| ready (Forge interactiva) | ≤ 3.000 ms | ≥ 30 | **web passed** — P95 123 ms (`product-p95-report.json`) |
+| prepare (manifiesto válido) | ≤ 1.000 ms | ≥ 30 | **web passed** — P95 58 ms (mismo informe) |
+| desktop-ready / desktop-prepare | mismos umbrales | ≥ 30 | **blocked** — faltan `desktop-ready-p95-samples`, `desktop-prepare-p95-samples`, AppImage Forge del SHA |
 
-Máquina de referencia de producto: **no fijada** (pendiente de registro al medir). Sin
-informe de producto con n≥30 no se declara rendimiento `passed`.
+Máquina de la medición web: Ubuntu 26.04.1 LTS, Linux 7.0.0-38-generic x86_64,
+AMD Ryzen AI 7 350 (16 CPUs lógicas), MemTotal 31421388 kB, Node v26.6.0,
+perfil `vite-preview` + pkg WASM (sin `?mock=1`). Informe versionable:
+`docs/10-delivery/closure/product-p95-report.json` (schema
+`product-p95-report.schema.json`). Caso matriz: `F7-P95`. `--allow-pending` es
+diagnóstico y **no** cierra aceptación. Una muestra inválida o ausente cuenta en el
+denominador. La aceptación global de rendimiento exige web **y** desktop; desktop
+`blocked` deja `acceptanceClosed=false` / `result=blocked`.
 
-### Harness nativo (no certifica producto)
+### Harness nativo (microbenchmark; no certifica producto)
 
-`python3 tools/run_f7_p95_harness.py` (caso `F7-P95`) es un **microbenchmark nativo**
-(init/prepare del core sobre fixture embebido). Comparte los mismos números de umbral
-como presupuesto de laboratorio, pero **no certifica** el presupuesto de producto
-anterior. Las cifras del harness viven fuera del árbol
+`python3 tools/run_f7_p95_harness.py` es un **microbenchmark nativo**
+(init/prepare del core sobre fixture embebido; `kind=microbenchmark`,
+`certifiesProduct=false`). Comparte los mismos números de umbral como presupuesto de
+laboratorio, pero **no certifica** el presupuesto de producto anterior. Las cifras del
+microbenchmark viven fuera del árbol
 (`~/archmaker-closure/evidence/<source-sha>/…/p95-report.json`). Un verde local del
-harness en una máquina concreta no sustituye la aceptación independiente F7 ni cierra
+microbenchmark no sustituye la aceptación independiente F7 ni cierra
 web-ready / web-prepare / desktop-*.
