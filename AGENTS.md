@@ -27,7 +27,7 @@
 - No añadir dependencias o contratos sin FR/NFR y ADR cuando proceda.
 - Cada PR declara IDs de requisitos, riesgos, amenazas, validadores y pruebas afectados.
 - No fusionar a `main` mientras exista algún check de CI en fallo o pendiente: la integración solo es válida con la suite completa en verde.
-- Nombre visible: GUI **Forge**; proyecto/motor **ArchMaker**. Neubat solo en historia/`v0.1.0`/allowlist (`tools/check_product_naming.py`).
+- Nombre visible: GUI **Forge**; proyecto/motor **ArchMaker**. El nombre histórico de `v0.1.0` solo en allowlist (`tools/check_product_naming.py`).
 - Evidencia de cierre: sin autoaprobación; `technicalResult=passed` para aprobar; desktop/offline **blocked** sin binario de producción del tip (`p6-desktop-offline.md`); MockCorePort no cierra gates.
 
 ## Learned User Preferences

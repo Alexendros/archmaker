@@ -62,6 +62,16 @@ ALLOWLIST: list[AllowEntry] = [
         1,
     ),
     AllowEntry(
+        "docs/11-operations/manual/Instalacion-Forge.md",
+        "nombre de archivo del AppImage histórico v0.1.0",
+        2,
+    ),
+    AllowEntry(
+        "docs/10-delivery/closure/examples/desktop-offline-p6-probe.json",
+        "ruta local del AppImage histórico en sonda P6",
+        1,
+    ),
+    AllowEntry(
         "docs/10-delivery/closure/f9-release.md",
         "identidad artefacto Neubat_0.1.0_amd64.AppImage",
         1,

@@ -2,7 +2,7 @@
 """P6: comprueba que el gate desktop/offline es blocked explícito o passed con evidencia.
 
 - Rechaza MockCorePort como cierre.
-- Rechaza AppImage histórico v0.1.0 (Neubat) como cierre del tip.
+- Rechaza AppImage histórico v0.1.0 como cierre del tip.
 - Exige evidencia versionada status=blocked|passed alineada al SOURCE_SHA o HEAD.
 """
 
