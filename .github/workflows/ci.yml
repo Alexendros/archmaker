@@ -62,8 +62,10 @@ jobs:
       # en CI no hay build web previo — stub mínimo para compilar el crate.
       - name: Stub frontendDist para generate_context
         run: |
+          # Mismo mount point que apps/web/index.html (id="root") para que
+          # frontend_dist_is_real_web_build_not_mock no falle ante el stub de CI.
           mkdir -p apps/web/dist
-          printf '%s\n' '<!DOCTYPE html><html><head><meta charset="utf-8"><title>archmaker</title></head><body></body></html>' \
+          printf '%s\n' '<!DOCTYPE html><html><head><meta charset="utf-8"><title>NEUBAT FORGE — Configurador</title></head><body><div id="root"></div></body></html>' \
             > apps/web/dist/index.html
       - name: cargo fmt --check
         run: cargo fmt --all -- --check
@@ -99,7 +101,7 @@ jobs:
       - name: Stub frontendDist para generate_context
         run: |
           mkdir -p apps/web/dist
-          printf '%s\n' '<!DOCTYPE html><html><head><meta charset="utf-8"><title>archmaker</title></head><body></body></html>' \
+          printf '%s\n' '<!DOCTYPE html><html><head><meta charset="utf-8"><title>NEUBAT FORGE — Configurador</title></head><body><div id="root"></div></body></html>' \
             > apps/web/dist/index.html
       # Nombre de test obligatorio: si falta, cargo test falla (no skip-if-missing).
       - name: Prueba negativa runtime (capability denegada)
