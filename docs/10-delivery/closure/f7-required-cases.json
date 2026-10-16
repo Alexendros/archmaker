@@ -167,24 +167,46 @@
     {
       "id": "F7-OFFLINE",
       "title": "Offline según contrato (web cargada / escritorio sin red)",
-      "hooks": ["docs/10-delivery/closure/f7-candidate.md"],
-      "commands": [],
+      "hooks": [
+        "apps/web/wasm-offline.playwright.test.ts",
+        "docs/10-delivery/closure/f7-candidate.md"
+      ],
+      "commands": [
+        "pnpm --dir apps/web exec playwright test wasm-offline.playwright.test.ts --retries=0"
+      ],
       "ci": false,
       "e2eWasmRequired": true,
-      "defaultStatus": "pending",
-      "residual": "Requiere Playwright WASM + contexto offline; escritorio sin humo de red en CI"
+      "defaultStatus": "executable",
+      "residual": "Escritorio: sin humo de red / portal en CI (sigue pending). Web: verificable con --with-e2e.",
+      "lastVerified": {
+        "status": "passed",
+        "web": "passed",
+        "desktop": "pending",
+        "retries": 0,
+        "note": "Web setOffline tras carga OK en agente; no declara RC_SHA_FUNCIONAL ni aceptación independiente"
+      }
     },
     {
       "id": "F7-E2E-X3",
       "title": "Tres E2E consecutivos WASM (conservar resultado inicial de cada intento)",
       "hooks": ["apps/web/wasm-flow.playwright.test.ts"],
       "commands": [
-        "pnpm --dir apps/web exec playwright test wasm-flow.playwright.test.ts --repeat-each=3"
+        "pnpm --dir apps/web exec playwright test wasm-flow.playwright.test.ts --repeat-each=3 --retries=0"
       ],
       "ci": false,
       "e2eWasmRequired": true,
-      "defaultStatus": "pending",
-      "residual": "Solo si Playwright WASM está disponible en el ejecutor; si no, pending explícito"
+      "defaultStatus": "executable",
+      "residual": "Sin --with-e2e / pkg WASM el runner deja el caso pending; P95 F6 no forma parte de este id",
+      "lastVerified": {
+        "status": "passed",
+        "retries": 0,
+        "attempts": [
+          { "index": 1, "exitCode": 0, "initialResult": "passed" },
+          { "index": 2, "exitCode": 0, "initialResult": "passed" },
+          { "index": 3, "exitCode": 0, "initialResult": "passed" }
+        ],
+        "note": "Tres intentos consecutivos wasm-flow (E2E-01 + E2E-04/10); resultado inicial de cada intento conservado; no RC_SHA_FUNCIONAL"
+      }
     }
   ]
 }

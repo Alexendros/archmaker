@@ -95,8 +95,28 @@ def validate_inventory(data: dict) -> list[str]:
         ids.append(cid)
         if "title" not in case or "hooks" not in case or "commands" not in case:
             errors.append(f"{cid}: faltan title/hooks/commands")
-        if cid in {"F7-OFFLINE", "F7-E2E-X3"} and case.get("defaultStatus") != "pending":
-            errors.append(f"{cid}: defaultStatus debe ser pending sin WASM garantizado")
+        if cid in {"F7-OFFLINE", "F7-E2E-X3"}:
+            ds = case.get("defaultStatus")
+            if ds not in {"pending", "executable"}:
+                errors.append(
+                    f"{cid}: defaultStatus debe ser pending o executable "
+                    "(executable solo con e2eWasmRequired y comandos)"
+                )
+            if not case.get("e2eWasmRequired"):
+                errors.append(f"{cid}: e2eWasmRequired debe ser true")
+            cmds = case.get("commands") or []
+            if ds == "executable" and not cmds:
+                errors.append(f"{cid}: executable exige commands no vacíos")
+            last = case.get("lastVerified")
+            if last is not None:
+                if not isinstance(last, dict) or last.get("status") not in {
+                    "passed",
+                    "failed",
+                    "pending",
+                }:
+                    errors.append(f"{cid}: lastVerified.status inválido")
+                if last.get("status") == "passed" and last.get("retries") not in (0, None):
+                    errors.append(f"{cid}: lastVerified.retries debe ser 0 si passed")
     missing = REQUIRED_CASE_IDS - set(ids)
     if missing:
         errors.append(f"faltan ids obligatorios: {sorted(missing)}")
@@ -243,9 +263,22 @@ def build_pending_manifest(metrics: dict | None, source_sha: str | None) -> dict
         [
             "No RC_SHA_FUNCIONAL: candidato documentado, no aceptación firmada",
             "Sin aceptación independiente firmada",
-            "F7-OFFLINE y F7-E2E-X3 pending sin Playwright WASM garantizado",
+            "P95 F6 pending sin 30 muestras en máquina fijada en F0",
         ]
     )
+    for case in inventory.get("cases") or []:
+        last = case.get("lastVerified") if isinstance(case, dict) else None
+        if isinstance(last, dict) and last.get("desktop") == "pending":
+            residuals.append(
+                f"{case.get('id')}: escritorio offline pending (sin humo de red/portal)"
+            )
+        residual = case.get("residual") if isinstance(case, dict) else None
+        if (
+            isinstance(case, dict)
+            and case.get("id") == "F7-REG-F6"
+            and residual
+        ):
+            residuals.append(f"F7-REG-F6: {residual}")
     if metrics:
         for case in metrics.get("cases") or []:
             if case.get("status") == "pending" and case.get("note"):

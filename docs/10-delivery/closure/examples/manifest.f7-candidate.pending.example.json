@@ -46,8 +46,9 @@
     "No RC_SHA_FUNCIONAL: candidato documentado, no aceptación firmada",
     "Sin aceptación independiente firmada",
     "Dueño puede mergear sin checks bloqueantes",
-    "P95 F6 pending",
+    "P95 F6 pending sin 30 muestras",
     "Humo GUI F5 no E2E portal",
-    "F7-OFFLINE y F7-E2E-X3 pending sin Playwright WASM"
+    "F7-OFFLINE: escritorio offline pending (sin humo de red/portal)",
+    "F7-REG-F6: P95 F6 pending"
   ]
 }
