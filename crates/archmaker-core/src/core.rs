@@ -199,16 +199,13 @@ fn read_urandom(buffer: &mut [u8]) -> std::io::Result<()> {
     File::open("/dev/urandom")?.read_exact(buffer)
 }
 
-fn fallback_random(buffer: &mut [u8]) {
-    // `SystemTime::now` and `/dev/urandom` are unavailable/panic on wasm32-unknown-unknown.
-    #[cfg(target_family = "wasm")]
-    let nanos = (UUID_COUNTER.load(Ordering::Relaxed) as u128).wrapping_mul(0x9e3779b97f4a7c15);
-    #[cfg(not(target_family = "wasm"))]
-    let nanos = SystemTime::now()
-        .duration_since(UNIX_EPOCH)
-        .map(|duration| duration.as_nanos())
-        .unwrap_or(0);
-    let mut state = nanos
+/// Entropy usable on wasm32-unknown-unknown (no `SystemTime`, no `/dev/urandom`).
+fn counter_entropy_seed() -> u128 {
+    (UUID_COUNTER.load(Ordering::Relaxed) as u128).wrapping_mul(0x9e3779b97f4a7c15)
+}
+
+fn fill_with_counter_entropy(buffer: &mut [u8]) {
+    let mut state = counter_entropy_seed()
         .wrapping_add((UUID_COUNTER.fetch_add(1, Ordering::Relaxed) as u128) << 64)
         | 0x9e3779b97f4a7c15;
     for chunk in buffer.chunks_mut(8) {
@@ -221,18 +218,33 @@ fn fallback_random(buffer: &mut [u8]) {
     }
 }
 
-pub fn new_uuid_v4() -> String {
-    let mut bytes = [0u8; 16];
-    #[cfg(not(target_family = "wasm"))]
-    {
-        if read_urandom(&mut bytes).is_err() {
-            fallback_random(&mut bytes);
-        }
-    }
+fn fallback_random(buffer: &mut [u8]) {
+    // Prefer host clock on native; wasm32 must never call SystemTime (panics).
     #[cfg(target_family = "wasm")]
     {
-        fallback_random(&mut bytes);
+        fill_with_counter_entropy(buffer);
     }
+    #[cfg(not(target_family = "wasm"))]
+    {
+        let nanos = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .map(|duration| duration.as_nanos())
+            .unwrap_or_else(|_| counter_entropy_seed());
+        let mut state = nanos
+            .wrapping_add((UUID_COUNTER.fetch_add(1, Ordering::Relaxed) as u128) << 64)
+            | 0x9e3779b97f4a7c15;
+        for chunk in buffer.chunks_mut(8) {
+            state ^= state >> 12;
+            state = state.wrapping_mul(0x2545f4914f6cdd1d);
+            state ^= state >> 41;
+            let bytes = state.to_le_bytes();
+            let take = chunk.len().min(8);
+            chunk.copy_from_slice(&bytes[..take]);
+        }
+    }
+}
+
+fn uuid_from_bytes(mut bytes: [u8; 16]) -> String {
     bytes[6] = (bytes[6] & 0x0f) | 0x40;
     bytes[8] = (bytes[8] & 0x3f) | 0x80;
     format!(
@@ -256,6 +268,27 @@ pub fn new_uuid_v4() -> String {
     )
 }
 
+pub fn new_uuid_v4() -> String {
+    let mut bytes = [0u8; 16];
+    #[cfg(not(target_family = "wasm"))]
+    {
+        if read_urandom(&mut bytes).is_err() {
+            fallback_random(&mut bytes);
+        }
+    }
+    #[cfg(target_family = "wasm")]
+    {
+        fill_with_counter_entropy(&mut bytes);
+    }
+    uuid_from_bytes(bytes)
+}
+
+/// Same entropy path used on wasm32 (`fill_with_counter_entropy`). Safe on every target.
+pub fn new_uuid_v4_wasm_safe() -> String {
+    let mut bytes = [0u8; 16];
+    fill_with_counter_entropy(&mut bytes);
+    uuid_from_bytes(bytes)
+}
 fn sha256_hex(bytes: &[u8]) -> String {
     use sha2::{Digest, Sha256};
     let mut hasher = Sha256::new();

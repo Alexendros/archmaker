@@ -2,10 +2,11 @@ use std::path::PathBuf;
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use archmaker_core::{
-    catalog_content_digest, is_uuid, render_artifact_bytes, BuildManifestInput, CatalogSource,
-    ChangeSet, ChangeSetOp, ChangeSetOperation, ChangeSetOrigin, CorePort, CreateDraftInput,
-    DestinationHandle, ExportArtifactInput, ImportDraftInput, LoadCatalogInput, OpenDraftInput,
-    RealCore, ResolveDraftInput, SaveDraftInput, ValidateDraftInput,
+    catalog_content_digest, is_uuid, new_uuid_v4_wasm_safe, render_artifact_bytes,
+    BuildManifestInput, CatalogSource, ChangeSet, ChangeSetOp, ChangeSetOperation, ChangeSetOrigin,
+    CorePort, CreateDraftInput, DestinationHandle, ExportArtifactInput, ImportDraftInput,
+    LoadCatalogInput, OpenDraftInput, RealCore, ResolveDraftInput, SaveDraftInput,
+    ValidateDraftInput,
 };
 use archmaker_domain::{
     CatalogRef, ContentDigest, ContentKind, DigestAlgorithm, Draft, Selection, SelectionValue,
@@ -88,6 +89,40 @@ fn core_with_store(name: &str) -> (RealCore, PathBuf) {
         .expect("embedded catalog parses")
         .with_store_dir(dir.clone());
     (core, dir)
+}
+
+#[test]
+fn new_uuid_v4_wasm_safe_is_valid_without_host_entropy() {
+    // Prove-It: same entropy path as wasm32 (counter only; no SystemTime / urandom).
+    let mut seen = std::collections::HashSet::new();
+    for _ in 0..32 {
+        let id = new_uuid_v4_wasm_safe();
+        assert!(is_uuid(&id), "wasm-safe uuid must parse: {id}");
+        assert!(
+            seen.insert(id.clone()),
+            "wasm-safe uuid must advance counter: {id}"
+        );
+    }
+}
+
+#[test]
+fn resolve_draft_rejects_face_intent_option() {
+    // Prove-It: face-only intent options are unknown to the catalog (AM-RES-001).
+    // UI must strip them via draftForCore before resolve (see forge-helpers tests).
+    let core = RealCore::with_embedded().expect("embedded");
+    let mut draft = valid_draft(&core);
+    draft.selections.push(single(
+        "archmaker.face.intent",
+        "archmaker.intent.desarrollo",
+    ));
+    let error = core
+        .resolve_draft(ResolveDraftInput {
+            draft,
+            catalog_ref: catalog_ref(),
+            request_id: None,
+        })
+        .expect_err("face intent must not resolve");
+    assert_eq!(error.code, "AM-RES-001");
 }
 
 #[test]

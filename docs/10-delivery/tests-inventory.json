@@ -1,6 +1,6 @@
 {
-  "generated_at": "1792166266",
-  "git_sha": "efefbdabb58679c3666b55209bf5689ac8d8e5ed",
+  "generated_at": "1792168307",
+  "git_sha": "ef5b705703522e3b35a34cd61bbd5cd8d2b19380",
   "tests": [
     {
       "id": "TST-ARCHMAKER-CANONICALIZATION-VECTORS-GOLDEN_CORPUS_BYTE_IDENTITY_AND_DIGEST",
@@ -314,6 +314,24 @@
         "FR-MANIFEST-001"
       ],
       "description": "capabilities_negative::denied_error_source_identifies_window_and_command"
+    },
+    {
+      "id": "TST-ARCHMAKER-CORE-CORE_CONTRACT-NEW_UUID_V4_WASM_SAFE_IS_VALID_WITHOUT_HOST_ENTROPY",
+      "type": "integration",
+      "location": "crates/archmaker-core/tests/core_contract.rs",
+      "command": "cargo test -p archmaker-core --test core_contract new_uuid_v4_wasm_safe_is_valid_without_host_entropy",
+      "workflow": "ci",
+      "covers": [],
+      "description": "core_contract::new_uuid_v4_wasm_safe_is_valid_without_host_entropy"
+    },
+    {
+      "id": "TST-ARCHMAKER-CORE-CORE_CONTRACT-RESOLVE_DRAFT_REJECTS_FACE_INTENT_OPTION",
+      "type": "integration",
+      "location": "crates/archmaker-core/tests/core_contract.rs",
+      "command": "cargo test -p archmaker-core --test core_contract resolve_draft_rejects_face_intent_option",
+      "workflow": "ci",
+      "covers": ["FR-DRAFT-001", "FR-RESOLVE-001"],
+      "description": "core_contract::resolve_draft_rejects_face_intent_option"
     },
     {
       "id": "TST-ARCHMAKER-CORE-CORE_CONTRACT-CREATE_DRAFT_VALID_DEFAULTS",

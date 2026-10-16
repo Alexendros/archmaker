@@ -8,12 +8,14 @@ import {
 } from "./coreport.js";
 import type { PortKind } from "./create-core-port.js";
 import { CommandPalette } from "./CommandPalette.js";
+import { draftForCore } from "./draft-for-core.js";
 import { loadLastDraftLocal, persistDraftLocal } from "./draft-persistence.js";
 import {
   destinationTokenFor,
   downloadArtifact,
   exportFilename,
 } from "./export-delivery.js";
+import { isPreparedCurrent } from "./export-generation.js";
 import { ForgeAside } from "./ForgeAside.js";
 import { ForgeHeader } from "./ForgeHeader.js";
 import { ForgeRail } from "./ForgeRail.js";
@@ -110,34 +112,6 @@ function withInitialSelections(draft: Draft): Draft {
       },
     ],
   };
-}
-
-/**
- * Face-only selections (intent) and gap packages are kept in the UI draft but
- * must not reach RealCore resolve/validate/manifest (AM-RES-001).
- */
-function draftForCore(draft: Draft): Draft {
-  const selections = draft.selections.flatMap((selection) => {
-    if (selection.stepId === STEP_IDS.intent) return [];
-    const value = selection.value;
-    if (value.kind === "single") {
-      const opt = findOptionById(value.optionId);
-      if (opt && "gap" in opt && opt.gap) return [];
-      return [selection];
-    }
-    if (value.kind === "multiple") {
-      const optionIds = value.optionIds.filter((id) => {
-        const opt = findOptionById(id);
-        return !(opt && "gap" in opt && opt.gap);
-      });
-      if (optionIds.length === 0) return [];
-      return [
-        { ...selection, value: { kind: "multiple" as const, optionIds } },
-      ];
-    }
-    return [selection];
-  });
-  return { ...draft, selections };
 }
 
 export function App({ port, portKind }: Props) {
@@ -441,13 +415,21 @@ export function App({ port, portKind }: Props) {
     setBusy(true);
     try {
       let man = manifest;
-      const preparedGen = preparedGenerationRef.current;
-      if (!man || preparedGen !== generationRef.current) {
+      const gate = {
+        generation: generationRef.current,
+        preparedGeneration: preparedGenerationRef.current,
+      };
+      if (!man || !isPreparedCurrent(gate)) {
         const prepared = await prepareExport();
         if (!prepared.ok) return;
         man = prepared.manifest;
       }
-      if (preparedGenerationRef.current !== generationRef.current) {
+      if (
+        !isPreparedCurrent({
+          generation: generationRef.current,
+          preparedGeneration: preparedGenerationRef.current,
+        })
+      ) {
         announce("alert", "La configuración cambió; vuelve a generar.");
         return;
       }
@@ -461,7 +443,12 @@ export function App({ port, portKind }: Props) {
         fail(res.error, "Exportar");
         return;
       }
-      if (preparedGenerationRef.current !== generationRef.current) {
+      if (
+        !isPreparedCurrent({
+          generation: generationRef.current,
+          preparedGeneration: preparedGenerationRef.current,
+        })
+      ) {
         announce(
           "alert",
           "Resultado de exportación descartado (edición concurrente).",
