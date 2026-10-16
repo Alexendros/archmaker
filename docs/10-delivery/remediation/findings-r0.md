@@ -106,7 +106,7 @@ Impacto: no hay entrega efectiva comprobada
 Prioridad: P0
 ```
 
-### REM-H07 — Catálogo embebido ≠ cara NEUBAT
+### REM-H07 — Catálogo embebido ≠ cara Forge
 
 ```text
 ID: REM-H07

@@ -43,7 +43,7 @@ La semántica de los estados se lee en `docs/00-governance/status-model.md` (DOC
 
 - `G0-C01` · document-approved · complete — Disposición G0 de fuentes aceptada: SRC-001 controlled-incomplete y ausentes declared-only. · 1 evidencia(s)
 - `G0-C02` · metric-verified · complete — Integridad de los once originales v5.1 verificada por SHA-256 (11/11 OK). · 2 evidencia(s)
-- `G0-C03` · metric-verified · complete — Alias NEUBAT byte a byte verificado (cmp idéntico). · 1 evidencia(s)
+- `G0-C03` · metric-verified · complete — Alias histórico byte a byte verificado (cmp idéntico). · 1 evidencia(s)
 - `G0-C04` · metric-verified · complete — Manifiestos de disposición JSON válidos (ALIASES, UNAVAILABLE-SOURCES, PROVENANCE). · 2 evidencia(s)
 - `G0-C05` · document-approved · complete — Baseline de auditoría congelada (tag, rama y hito). · 2 evidencia(s)
 - `G0-C06` · artifact · complete — Evaluación de gates reproducible: manifiestos, tabla derivada y validador de trazabilidad. · 2 evidencia(s)

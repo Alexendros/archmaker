@@ -1,4 +1,4 @@
-import type { FaceOption, FacePackage } from "./neubat-face.js";
+import type { FaceOption, FacePackage } from "./forge-face.js";
 
 type Props = {
   kernel?: FaceOption;

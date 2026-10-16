@@ -1,14 +1,14 @@
 import { test, expect } from "@playwright/test";
 import {
   ESSENTIAL_CONTROLS,
-  NEUBAT_RAIL_STEPS,
+  FORGE_RAIL_STEPS,
   completeExampleSelection,
   generateExportAndAssertFidelity,
 } from "./e2e-fidelity-helpers.js";
 
 const BASE_URL = process.env.BASE_URL || "http://localhost:5173/?mock=1";
 
-test.describe("NEUBAT FORGE face — rutas del plan", () => {
+test.describe("Forge face — rutas del plan", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto(BASE_URL);
     await expect(
@@ -16,14 +16,14 @@ test.describe("NEUBAT FORGE face — rutas del plan", () => {
     ).toBeVisible();
   });
 
-  test("inventario: seis pasos NEUBAT y controles esenciales en DOM", async ({
+  test("inventario: seis pasos Forge y controles esenciales en DOM", async ({
     page,
   }) => {
-    expect(NEUBAT_RAIL_STEPS).toHaveLength(6);
+    expect(FORGE_RAIL_STEPS).toHaveLength(6);
     expect(ESSENTIAL_CONTROLS.length).toBeGreaterThanOrEqual(20);
     const rail = page.getByRole("navigation", { name: /Pasos/i });
     await expect(rail).toBeVisible();
-    for (const title of NEUBAT_RAIL_STEPS) {
+    for (const title of FORGE_RAIL_STEPS) {
       await expect(
         rail.getByRole("button", { name: new RegExp(title, "i") }),
       ).toBeVisible();
@@ -203,8 +203,8 @@ test.describe("NEUBAT FORGE face — rutas del plan", () => {
     await page.getByRole("button", { name: /Continuar → Apps/i }).click();
     await page.getByRole("button", { name: /Continuar → Identidad/i }).click();
 
-    await page.getByPlaceholder("mi-equipo").fill("arch-neubat");
-    await expect(page.getByPlaceholder("mi-equipo")).toHaveValue("arch-neubat");
+    await page.getByPlaceholder("mi-equipo").fill("arch-forge");
+    await expect(page.getByPlaceholder("mi-equipo")).toHaveValue("arch-forge");
     await page.getByRole("checkbox", { name: /Activar cifrado/i }).check();
     await expect(
       page.getByRole("checkbox", { name: /Activar cifrado/i }),

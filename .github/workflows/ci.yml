@@ -65,7 +65,7 @@ jobs:
           # Mismo mount point que apps/web/index.html (id="root") para que
           # frontend_dist_is_real_web_build_not_mock no falle ante el stub de CI.
           mkdir -p apps/web/dist
-          printf '%s\n' '<!DOCTYPE html><html><head><meta charset="utf-8"><title>NEUBAT FORGE — Configurador</title></head><body><div id="root"></div></body></html>' \
+          printf '%s\n' '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Forge — Configurador</title></head><body><div id="root"></div></body></html>' \
             > apps/web/dist/index.html
       - name: cargo fmt --check
         run: cargo fmt --all -- --check
@@ -101,7 +101,7 @@ jobs:
       - name: Stub frontendDist para generate_context
         run: |
           mkdir -p apps/web/dist
-          printf '%s\n' '<!DOCTYPE html><html><head><meta charset="utf-8"><title>NEUBAT FORGE — Configurador</title></head><body><div id="root"></div></body></html>' \
+          printf '%s\n' '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Forge — Configurador</title></head><body><div id="root"></div></body></html>' \
             > apps/web/dist/index.html
       # Nombre de test obligatorio: si falta, cargo test falla (no skip-if-missing).
       - name: Prueba negativa runtime (capability denegada)
@@ -183,6 +183,8 @@ jobs:
           # CON-021/D-09 (I9): espejo Python del test Rust de capabilities
           # negativas; solo stdlib (tomllib), sin dependencias extra.
           python3 tools/check_negative_capabilities.py
+          # P1 product-naming: Forge/ArchMaker + identidad técnica (T-NAME/T-MIG).
+          python3 tools/check_product_naming.py
           # MVP-1: corpus de migración v5.1 → vNext (VAL-MIG / FR-IMPORT-001).
           python3 tools/validate_mig.py
           # G6-C03 / AUD-021: contraste y tokens WCAG 2.2 (1.4.1 = contract + manual).

@@ -2,10 +2,10 @@
   "schema_version": 1,
   "diagram_type": "architecture",
   "meta": {
-    "title": "D05 Despliegue desktop Linux (AppImage Neubat)",
+    "title": "D05 Despliegue desktop Linux (AppImage Forge)",
     "output": "rendered/D05.html",
     "quality_profile": "showcase",
-    "subtitle": "Neubat as-built (MVP); runner/ISO/Enterprise fuera de alcance"
+    "subtitle": "Forge as-built (MVP); runner/ISO/Enterprise fuera de alcance"
   },
   "components": [
     {
@@ -25,7 +25,7 @@
     {
       "id": "appimage",
       "type": "cloud",
-      "label": "Neubat AppImage",
+      "label": "Forge AppImage",
       "sublabel": "bundle",
       "pos": [
         260,

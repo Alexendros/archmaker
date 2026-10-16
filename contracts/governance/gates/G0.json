@@ -36,7 +36,7 @@
     },
     {
       "id": "G0-C03",
-      "description": "Alias NEUBAT byte a byte verificado (cmp idéntico).",
+      "description": "Alias histórico byte a byte verificado (cmp idéntico).",
       "kind": "metric-verified",
       "status": "complete",
       "evidence": [

@@ -100,4 +100,5 @@ enmienda accepted de este.
 
 ## Sustituido por
 
-—
+ADR-0012 sustituye **solo el nombre visible** de lo no publicado (GUI Forge). Este ADR y
+DEC-011 permanecen como historia de `v0.1.0` (Neubat).

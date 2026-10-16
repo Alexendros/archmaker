@@ -34,7 +34,7 @@ dependsOn:
 
 Hacer instalable el configurador en la plataforma autorizada, por el canal que la política
 permite a tarifa de alta cero, sin presentar el producto como Arch Linux oficial. Nombre
-público: **Neubat** (ADR-0010 / DEC-011).
+visible: **Forge** (ADR-0012 / DEC-012; `v0.1.0` publicó Neubat bajo ADR-0010 / DEC-011).
 
 La tienda instala la aplicación. La imagen de instalación de un sistema es otro alcance
 (`docs/10-delivery/iso-scope.md`), sigue sin `accepted`.
@@ -45,7 +45,7 @@ La tienda instala la aplicación. La imagen de instalación de un sistema es otr
 | -------------------- | ---------------------------------------------------------------------- |
 | Plataforma           | **AppImage Linux x86_64**                                              |
 | Canal de publicación | GitHub Release del tag `v*` (workflow `.github/workflows/release.yml`) |
-| Nombre público       | Neubat                                                                 |
+| Nombre visible       | Forge (histórico `v0.1.0`: Neubat)                                    |
 | Arquitectura         | x86_64 (DEC-008)                                                       |
 | Motivo de elección   | Ver «Por qué AppImage» más abajo                                       |
 
@@ -71,7 +71,7 @@ La tienda instala la aplicación. La imagen de instalación de un sistema es otr
 | Archivos oficiales distro    | blocked  | Fuera de alcance                                   |
 | ISO / runner / root / discos | blocked  | Veredicto CONDITIONAL-CLEAR hasta MVP-5            |
 
-## NFR-MARK-001 — Nombre público Neubat
+## NFR-MARK-001 — Nombre visible Forge
 
 - Prioridad: P0
 - Fase: MVP
@@ -81,13 +81,13 @@ La tienda instala la aplicación. La imagen de instalación de un sistema es otr
 ### Enunciado
 
 Ningún artefacto público (AppImage, metainfo, notas de release) usa un signo que empiece por
-ARCH ni el logo de Arch. El nombre visible es **Neubat**. Los ids técnicos `archmaker*` no se
+ARCH ni el logo de Arch. El nombre visible es **Forge**. Los ids técnicos `archmaker*` no se
 renombran en este alcance.
 
 ### Criterios Given/When/Then
 
 - **Positivo:** Given ADR-0010 accepted con opción 3, When se publica el AppImage, Then el
-  nombre visible es Neubat y, si habla de la base OS, dice «derived from Arch Linux».
+  nombre visible es Forge y, si habla de la base OS, dice «derived from Arch Linux».
 - **Negativo:** Given un metainfo con logo o lema oficial de Arch, When se revisa el artefacto,
   Then se rechaza.
 - **Negativo:** Given un anuncio de cinco familias como Done de MVP-6, When se revisa el

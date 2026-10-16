@@ -41,7 +41,7 @@ No confundir cierre OP con aceptación funcional ni con release:
 | --------------------------------------------------------------------- | --------- | --------------------------------------------------------------------- |
 | Baseline de código (`implementation-baseline-mvp5` + F0–F8 en `main`) | passed    | Tag `b13c200…`; cierre en `docs/10-delivery/closure/`                 |
 | Aprobación funcional (matriz F7 / revisor)                            | pending   | `closure/f7-candidate.md` (sin `RC_SHA_FUNCIONAL`)                    |
-| Release binaria (F9)                                                  | published | Neubat AppImage `v0.1.0`; verificación parcial (`closure/f9-release.md`) |
+| Release binaria (F9)                                                  | published | Forge AppImage `v0.1.0`; verificación parcial (`closure/f9-release.md`) |
 
 Gobierno: [`../closure/f8-governance.md`](../closure/f8-governance.md).
 
@@ -65,7 +65,7 @@ cd apps/web && pnpm exec playwright test wasm-flow.playwright.test.ts forge-help
 
 ## Exclusiones (de esta remediación OP)
 
-Sin ISO, runner, root, discos ni `pacstrap` en el cierre OP. El canal AppImage Neubat
+Sin ISO, runner, root, discos ni `pacstrap` en el cierre OP. El canal AppImage Forge
 `v0.1.0` se publica en F9 (capa distinta); no cierra aceptación funcional F7 ni imagen Arch.
 Tag `implementation-baseline-mvp5` (MVP-5-05) emitido en `b13c200a8747290e03383c6b76cbe31752741a31`
 (objeto de tag anotado distinto del commit; el commit apuntado es el citado).

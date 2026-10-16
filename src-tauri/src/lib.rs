@@ -166,7 +166,7 @@ pub fn run() {
             save_export_bytes
         ])
         .run(tauri::generate_context!())
-        .expect("error while running Neubat");
+        .expect("error while running Forge");
 }
 
 #[cfg(test)]
@@ -369,7 +369,7 @@ mod tests {
         );
         let html = std::fs::read_to_string(&dist).expect("read index");
         assert!(
-            html.contains("Neubat") || html.contains("ArchMaker") || html.contains("root"),
+            html.contains("Forge") || html.contains("ArchMaker") || html.contains("root"),
             "dist must be the real web frontend"
         );
     }

@@ -25,15 +25,15 @@ dependsOn:
 - Autoridad de alcance: [`mvp5-scope.md`](mvp5-scope.md) (DOC-DEL-MVP5-001, `accepted`). Este texto no lo sustituye.
 - MVP-5-01 cerrado. El alcance autoriza el slice (catálogo, UI de cinco pasos, paridad) bajo sus exclusiones; este hueco no abre runner, ISO ni cifras no verificadas del HTML.
 - MVP-5-02 cerrado: las 54 opciones de la matriz están en `local-catalog-mvp1.json` (sin `cmd`/versión/tamaño).
-- MVP-5-03 cerrado: cara NEUBAT conectada (gaps deshabilitados; resolve→validate→export). Residual sin control de cara: `zstd`/`xz`, `greetd-tuigreet`, libpacks office/dev/gaming completos.
+- MVP-5-03 cerrado: cara Forge conectada (gaps deshabilitados; resolve→validate→export). Residual sin control de cara: `zstd`/`xz`, `greetd-tuigreet`, libpacks office/dev/gaming completos.
 - MVP-5-04 cerrado: manifiesto del catálogo desktop con bytes canónicos idénticos en nativo y dispatch WASM (`parity_desktop_catalog_manifest_canonical_bytes`).
 - MVP-5-05 cerrado: tag anotado `implementation-baseline-mvp5` (tags previos intactos).
 
 ## Supuestos
 
 1. La autoridad de alcance es DOC-DEL-MVP5-001. Este documento detalla el hueco; no redefine el alcance.
-2. La semántica vive en Rust. Las listas de `apps/web/src/neubat-face.ts` son presentación duplicada, no una segunda fuente.
-3. La cara a conectar es `/home/alexendros/Aplicaciones/Repertorio/archmaker_neubat.html` (16 oct, fuera del repo). `reference/v5.1/` sigue inmutable; el canon de opciones sigue siendo [`docs/12-research/html-catalog-matrix.md`](../12-research/html-catalog-matrix.md), regenerado desde `reference/v5.1/index.html`.
+2. La semántica vive en Rust. Las listas de `apps/web/src/forge-face.ts` son presentación duplicada, no una segunda fuente.
+3. La cara a conectar es `/home/alexendros/Aplicaciones/Repertorio/archmaker_forge.html` (16 oct, fuera del repo). `reference/v5.1/` sigue inmutable; el canon de opciones sigue siendo [`docs/12-research/html-catalog-matrix.md`](../12-research/html-catalog-matrix.md), regenerado desde `reference/v5.1/index.html`.
 4. Versiones y megabytes del HTML siguen «no verificada» (CON-011). Kernel 7.1.2, tamaños y refs pacman literales no entran al catálogo como hechos.
 5. ADR-0011 permanece `proposed`. No se crean esquemas de cláusula nuevos.
 6. MockCorePort del baseline MVP-4 se queda. La paridad posterior es la de las operaciones CorePort que ya existen, en Tauri y WASM.
@@ -74,7 +74,7 @@ Cuando el alcance esté `accepted`, el producto debe poder seleccionar, resolver
 
 ## Cara y pasos
 
-La cara externa y la UI actual (`RAIL_STEPS` en `neubat-face.ts`) muestran seis pasos: Intención, Sistema base, Entorno, Apps, Identidad, Revisión, más Sencillo/Avanzado.
+La cara externa y la UI actual (`RAIL_STEPS` en `forge-face.ts`) muestran seis pasos: Intención, Sistema base, Entorno, Apps, Identidad, Revisión, más Sencillo/Avanzado.
 
 El canon semántico de MVP-5 son cinco pasos de la matriz: base, environment, libpacks, apps, build. Intención, identidad, revisión y el modo Sencillo/Avanzado siguen siendo presentación. `archmaker.face.intent`, `archmaker.face.hostname` y `archmaker.face.encrypt` no se promueven a entidades de catálogo. La pantalla de laboratorio puede quedar como prueba, como ya permite el alcance.
 

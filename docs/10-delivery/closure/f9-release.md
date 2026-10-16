@@ -21,10 +21,10 @@ dependsOn:
   - id: DOC-GOV-DEC-001
 ---
 
-# F9 — Release verificable (AppImage Neubat)
+# F9 — Release verificable (AppImage Forge)
 
 - Documento: DOC-DEL-CLO-F9-001 · Propietario: Release · Fecha: 2026-10-16
-- Canal: AppImage Linux x86_64, nombre público **Neubat** (DEC-011 / F8).
+- Canal: AppImage Linux x86_64, nombre visible **Forge** (DEC-011 / F8).
 - Hosting: GitHub Release del tag `v*`; workflow `.github/workflows/release.yml`.
 - Estado de publicación: **published** — tag
   [`v0.1.0`](https://github.com/Alexendros/archmaker/releases/tag/v0.1.0).

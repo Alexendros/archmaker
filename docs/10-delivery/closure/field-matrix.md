@@ -19,7 +19,7 @@ dependsOn:
 # Matriz de campos F3 — UI → draft → resolución/manifiesto
 
 - Documento: DOC-DEL-CLO-FIELD-001 · Estado: draft · Propietario: Arquitectura
-- Anclas: `apps/web/src/draft-for-core.ts`, `apps/web/src/neubat-face.ts`, `crates/archmaker-core/src/core.rs`
+- Anclas: `apps/web/src/draft-for-core.ts`, `apps/web/src/forge-face.ts`, `crates/archmaker-core/src/core.rs`
 - Paridad web/nativo 20 fixtures/target: **no alcanzada** (pending). Este documento no la declara cumplida.
 
 ## Campos anunciados (`STEP_IDS`)

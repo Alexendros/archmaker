@@ -1,11 +1,11 @@
-# release — Supply chain + SBOM + firmas + AppImage Neubat (F9 / DEC-011).
+# release — Supply chain + SBOM + firmas + AppImage Forge (F9 / DEC-011).
 #
 # Entradas: docs/10-delivery/packaging-release.md,
 #           docs/10-delivery/closure/f9-release.md,
 #           docs/08-security/supply-chain-policy.md, ADR-0008, ADR-0009, ADR-0010,
 #           DEC-006 (Sigstore keyless + verificación offline),
 #           DEC-007 (updater Tauri en MVP, canal firmado),
-#           DEC-011 (AppImage Linux x86_64, nombre público Neubat).
+#           DEC-011 (AppImage Linux x86_64, nombre visible Forge).
 # Pipeline: checkout RC → frontend + AppImage → SBOM → sign (cosign keyless) →
 #           verify offline (trusted_root.json) → provenance SLSA v1 → publish.
 #
@@ -13,7 +13,7 @@
 #   - Solo acciones con SHA ya verificado (checkout, setup-python, setup-node).
 #   - permissions: contents: read por defecto; id-token/contents write solo donde hace falta.
 #   - Promoción sin rebuild: mismos digests entre canales.
-#   - Plataforma autorizada: AppImage Linux x86_64 (Neubat). Sin .deb/.rpm/AUR.
+#   - Plataforma autorizada: AppImage Linux x86_64 (Forge). Sin .deb/.rpm/AUR.
 
 name: release
 
@@ -57,7 +57,7 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Build web frontend (+ WASM)
         run: pnpm --dir apps/web build
-      - name: Build AppImage (Neubat)
+      - name: Build AppImage (Forge)
         run: pnpm tauri build --bundles appimage
       - name: Collect artifacts + SHA256SUMS
         run: |
@@ -73,9 +73,9 @@ jobs:
           # Metainfo pública: sin signo ARCH
           base="$(basename "$APPIMAGE")"
           case "$base" in
-            Neubat_*.AppImage) ;;
+            Forge_*.AppImage) ;;
             *)
-              echo "::error::AppImage must be Neubat_*.AppImage (ADR-0010 / DEC-011); got $base"
+              echo "::error::AppImage must be Forge_*.AppImage (ADR-0012); got $base"
               exit 1
               ;;
           esac
@@ -117,7 +117,7 @@ jobs:
               "metadata": {
                   "component": {
                       "type": "application",
-                      "name": "Neubat",
+                      "name": "Forge",
                       "version": "0.1.0",
                   },
                   "tools": [{"name": "manual-fallback", "version": "cargo-lock-reader"}],
@@ -270,7 +270,7 @@ jobs:
                               "repository": os.environ.get("GITHUB_REPOSITORY", ""),
                           },
                           "platform": "AppImage Linux x86_64",
-                          "public_name": "Neubat",
+                          "public_name": "Forge",
                       },
                       "resolvedDependencies": materials,
                   },
@@ -294,8 +294,8 @@ jobs:
           set -euo pipefail
           TAG="${GITHUB_REF#refs/tags/}"
           gh release create "$TAG" \
-            --title "Neubat $TAG" \
-            --notes "AppImage Linux x86_64 (Neubat). Canal F8/F9 (DEC-011). Verificar SHA256SUMS. Cosign keyless + SLSA provenance adjuntos. Sin .deb/.rpm/AUR." \
+            --title "Forge $TAG" \
+            --notes "AppImage Linux x86_64 (Forge). Canal F8/F9 (DEC-011). Verificar SHA256SUMS. Cosign keyless + SLSA provenance adjuntos. Sin .deb/.rpm/AUR." \
             dist/*.AppImage \
             dist/*.AppImage.sig \
             dist/*.AppImage.pem \

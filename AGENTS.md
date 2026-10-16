@@ -34,8 +34,8 @@
 - Mensajes de commit y PR en español, estilo Conventional Commits.
 - La siguiente fase se especifica desde el último plan implementado, el roadmap de `docs/10-delivery/` y el trabajo pendiente, sin ampliar el veredicto vigente.
 - No incluir en un commit cambios de `.gitignore` ni artefactos de fugas salvo petición explícita.
-- La cara del configurador es el HTML NEUBAT que pasó el usuario: no inventar pantallas; conectar los botones y controles que ya trae.
-- El flujo NEUBAT del configurador es Intención → Sistema base → Entorno → Apps → Identidad → Revisión.
+- La GUI se llama Forge (la interfaz gráfica de ArchMaker); el proyecto y el motor se llaman ArchMaker. Neubat queda fuera de la nomenclatura activa y se conserva solo como historia. No inventar pantallas: conectar los botones y controles que ya trae la cara.
+- El flujo de Forge es Intención → Sistema base → Entorno → Apps → Identidad → Revisión.
 - En la cara UEFI el arranque preseleccionado es systemd-boot; GRUB y Limine siguen seleccionables en modo Avanzado.
 - Modo Sencillo filtra WM avanzados y capas gaming/dev; modo Avanzado muestra el catálogo completo y referencias pacman.
 - Protección de `main` sin checks bloqueantes para el dueño y sí ante colaboradores externos.
@@ -43,10 +43,10 @@
 ## Learned Workspace Facts
 
 - Remoto canónico: `https://github.com/Alexendros/archmaker`. Licencia Apache-2.0.
-- Baseline vigente: `implementation-baseline-mvp5`. En el árbol están el walking skeleton MVP-0 y los slices MVP-1 (dominio, catálogo y migración v5.1), MVP-2 (reglas, resolución y validación), MVP-3 (adapters de exportación), MVP-4 (React + MockCorePort + cara NEUBAT en `apps/web`) y MVP-5 (catálogo de matriz, UI cinco pasos, paridad Tauri/WASM, remediación operativa + Prove-It).
-- Alcance MVP-5 cerrado (`mvp5-scope.md`, MVP-5-01..05). Hueco residual: `docs/10-delivery/mvp5-gap-spec.md` (draft). Remediación operativa: `docs/10-delivery/remediation/`. MVP-6 **accepted** solo AppImage Neubat; release [`v0.1.0`](https://github.com/Alexendros/archmaker/releases/tag/v0.1.0) publicada (verificación parcial: sin cosign local, sin 3× GUI, F7 sin `RC_SHA_FUNCIONAL`). `iso-scope.md` sigue sin `accepted`.
-- `reference/v5.1/` es evidencia inmutable verificada por SHA-256. La UI React vive en `apps/web/` (`neubat-face.ts`); el dominio está en `crates/archmaker-core` y se expone por CorePort.
+- Baseline vigente: `implementation-baseline-mvp5`. En el árbol están el walking skeleton MVP-0 y los slices MVP-1 (dominio, catálogo y migración v5.1), MVP-2 (reglas, resolución y validación), MVP-3 (adapters de exportación), MVP-4 (React + MockCorePort + cara Forge en `apps/web`) y MVP-5 (catálogo de matriz, UI cinco pasos, paridad Tauri/WASM, remediación operativa + Prove-It).
+- Alcance MVP-5 cerrado (`mvp5-scope.md`, MVP-5-01..05). Hueco residual: `docs/10-delivery/mvp5-gap-spec.md` (draft). Remediación operativa: `docs/10-delivery/remediation/`. MVP-6 **accepted** solo AppImage (histórico Neubat `v0.1.0`; nombre visible vigente Forge); release [`v0.1.0`](https://github.com/Alexendros/archmaker/releases/tag/v0.1.0) publicada (verificación parcial: sin cosign local, sin 3× GUI, F7 sin `RC_SHA_FUNCIONAL`). `iso-scope.md` sigue sin `accepted`.
+- `reference/v5.1/` es evidencia inmutable verificada por SHA-256. La UI React vive en `apps/web/` (`forge-face.ts`); el dominio está en `crates/archmaker-core` y se expone por CorePort.
 - Arranque de adaptadores vía `apps/web/src/create-core-port.ts`: Desktop → TauriCorePort (`invoke` de `@tauri-apps/api/core`); navegador → WasmCorePort (`tools/build-wasm.sh`); MockCorePort solo con `?mock=1` u opt-in explícito, nunca por fallo silencioso de Tauri/WASM.
 - ADR-0011 (propuesto, `in-review`): la selección del configurador produce un contrato JSON de aplicación; cada cláusula tiene schema en `contracts/json-schema/`, issue `kind:clause` y tests verificados en Rust. No añade target de imagen.
 - La revisión auditada de arranque (UEFI / systemd-boot) vive en `docs/12-research/bootloader-review.md`.
-- La referencia visual NEUBAT vive fuera del repo, en `/home/alexendros/Aplicaciones/Repertorio/archmaker_neubat.html` (no en Descargas).
+- La referencia visual histórica de la cara vive fuera del repo, en `/home/alexendros/Aplicaciones/Repertorio/archmaker_neubat.html` (no en Descargas); el nombre de ese archivo se conserva.

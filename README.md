@@ -14,21 +14,21 @@ Tres capas distintas (detalle: [`docs/10-delivery/closure/f8-governance.md`](doc
 
 - Código actual de `main` y el AppImage publicado son identidades distintas: el tip de `main`
   puede incluir harness F7, diagramas y docs posteriores a `v0.1.0`; el tag **no se mueve**.
-- Canal publicado: AppImage Linux x86_64, nombre público **Neubat**. `RC_SHA` de la release:
+- Canal publicado: AppImage Linux x86_64 (`v0.1.0` como **Neubat**); nombre visible vigente **Forge**. `RC_SHA` de la release:
   `9297ed7cc47f42a9611aed0093b5ab040daca512`; `ARTIFACT_SHA256`
   `6567464f5e2f21398fd3eef35592f0e9d377fd2cc7887c1e46df092b5a8e6d81`. Changelog: [`CHANGELOG.md`](CHANGELOG.md).
 - Limitaciones honestas de v0.1.0: cosign local y tres instalaciones GUI siguen residuales F9;
   F7 sin `RC_SHA_FUNCIONAL`; sin imagen Arch / runner / `.deb`/`.rpm`. Detalle:
   [`docs/10-delivery/closure/f9-release.md`](docs/10-delivery/closure/f9-release.md).
-- Diagramas Archify (Neubat as-built): [`docs/02-architecture/diagrams/`](docs/02-architecture/diagrams/).
-  Archify es herramienta de diagramación; no confundir con Neubat.
+- Diagramas Archify (Forge as-built): [`docs/02-architecture/diagrams/`](docs/02-architecture/diagrams/).
+  Archify es herramienta de diagramación; no confundir con Forge.
 - Gate global (mecánico): **Clear** — todos los gates G0–G10 están `complete`. Autoridad: [`docs/00-governance/go-no-go.md`](docs/00-governance/go-no-go.md) y [`docs/10-delivery/gates.md`](docs/10-delivery/gates.md).
 - Veredicto de gobierno: **CONDITIONAL-CLEAR** hasta MVP-5 (sin runner). Autoriza el walking skeleton, los slices MVP-1..MVP-5 y el canal AppImage de MVP-6; runner, privilegios, ISO y Enterprise siguen bloqueados.
 - Baseline vigente: `implementation-baseline-mvp5` (commit anotado `b13c200…`; tags previos intactos). Remediación operativa: [`docs/10-delivery/remediation/`](docs/10-delivery/remediation/).
 - Alcance MVP-5 **accepted** y cerrado (MVP-5-01..05): [`docs/10-delivery/mvp5-scope.md`](docs/10-delivery/mvp5-scope.md). Hueco residual: [`mvp5-gap-spec.md`](docs/10-delivery/mvp5-gap-spec.md) (draft). Empaquetado MVP-6 **accepted solo AppImage** ([`mvp6-scope.md`](docs/10-delivery/mvp6-scope.md)); ISO sigue sin `accepted`.
 - Fuentes históricas: `reference/v5.1/`, conservadas por hash; walking skeleton en [`docs/10-delivery/walking-skeleton.md`](docs/10-delivery/walking-skeleton.md).
 - Rust: autoridad de dominio y casos de uso (nativo + WASM).
-- React: cara NEUBAT; escritorio → `TauriCorePort` (`invoke` de `@tauri-apps/api/core`); navegador → `WasmCorePort`. `MockCorePort` solo con `?mock=1` en desarrollo.
+- React: cara Forge; escritorio → `TauriCorePort` (`invoke` de `@tauri-apps/api/core`); navegador → `WasmCorePort`. `MockCorePort` solo con `?mock=1` en desarrollo.
 - Tauri 2: ACL vía `AppManifest::commands` + capabilities mínimas; `check_invoke` como segunda capa; sin `shell:*`.
 - WASM: módulo real (`tools/build-wasm.sh`); sesión `RealCore` con catálogo desktop.
 - Runner privilegiado: diferido (ADR-0004 / DEC-004).

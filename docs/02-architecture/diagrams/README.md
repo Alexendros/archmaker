@@ -13,16 +13,16 @@ reviewers:
   - independent-reviewer
 ---
 
-# Diagramas Archify (Neubat)
+# Diagramas Archify (Forge / ArchMaker)
 
-Índice de especificaciones tipadas para explicar y verificar el producto **Neubat**.
+Índice de especificaciones tipadas para explicar y verificar el producto **Forge**.
 **Archify** es solo el renderer (skill + CLI); no es el configurador.
 
 ## Identidades
 
 | Campo | Uso |
 | --- | --- |
-| `sourceSha` | Commit de Neubat al que se fijan las vistas |
+| `sourceSha` | Commit de ArchMaker al que se fijan las vistas |
 | `rendererSha` | Commit de Archify (`tt-a1i/archify`) usado para validar/entregar |
 | Catálogo | [`catalog.json`](catalog.json) |
 | Índice HTML | [`index.md`](index.md) tras `tools/run_archify_diagrams.py` |

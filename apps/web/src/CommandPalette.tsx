@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { allPackages, type FacePackage } from "./neubat-face.js";
+import { allPackages, type FacePackage } from "./forge-face.js";
 
 type Props = {
   selectedIds: Set<string>;

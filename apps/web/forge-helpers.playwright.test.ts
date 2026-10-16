@@ -20,7 +20,7 @@ import {
   textValue,
   toggleApp,
 } from "./src/forge-helpers.js";
-import { STEP_IDS } from "./src/neubat-face.js";
+import { STEP_IDS } from "./src/forge-face.js";
 
 function emptyDraft(): Draft {
   return {
@@ -58,9 +58,9 @@ test.describe("forge-helpers", () => {
 
   test("setText and setBool round-trip face values", () => {
     let draft = emptyDraft();
-    draft = setText(draft, STEP_IDS.hostname, "arch-neubat");
+    draft = setText(draft, STEP_IDS.hostname, "arch-forge");
     draft = setBool(draft, STEP_IDS.encrypt, true);
-    expect(textValue(draft, STEP_IDS.hostname)).toBe("arch-neubat");
+    expect(textValue(draft, STEP_IDS.hostname)).toBe("arch-forge");
     expect(boolValue(draft, STEP_IDS.encrypt)).toBe(true);
   });
 });
@@ -112,7 +112,7 @@ test.describe("draftForCore Prove-It", () => {
   test("keeps hostname and encrypt; lists face exclusions", () => {
     let draft = emptyDraft();
     draft = chooseSingle(draft, STEP_IDS.intent, "archmaker.intent.desarrollo");
-    draft = setText(draft, STEP_IDS.hostname, "arch-neubat");
+    draft = setText(draft, STEP_IDS.hostname, "arch-forge");
     draft = setBool(draft, STEP_IDS.encrypt, true);
     draft = {
       ...draft,
@@ -133,7 +133,7 @@ test.describe("draftForCore Prove-It", () => {
     expect(exclusions.some((e) => e.reason === "gap-option")).toBe(true);
 
     const forCore = draftForCore(draft);
-    expect(textValue(forCore, STEP_IDS.hostname)).toBe("arch-neubat");
+    expect(textValue(forCore, STEP_IDS.hostname)).toBe("arch-forge");
     expect(boolValue(forCore, STEP_IDS.encrypt)).toBe(true);
     expect(forCore.selections.some((s) => s.stepId === STEP_IDS.intent)).toBe(
       false,

@@ -69,7 +69,7 @@ fn check_json_depth(bytes: &[u8], max_depth: u32) -> Result<()> {
 }
 
 pub const EMBEDDED_CATALOG_JSON: &str = include_str!("../fixtures/embedded-catalog.json");
-/// Product catalog (matrix / NEUBAT ids). Used by Tauri and WASM session cores.
+/// Product catalog (matrix / Forge face ids). Used by Tauri and WASM session cores.
 pub const DESKTOP_CATALOG_JSON: &str = include_str!("../fixtures/local-catalog-mvp1.json");
 
 const DRAFT_DOMAIN: &str = "archmaker:draft:v1";

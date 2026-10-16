@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Valida y entrega las 24 vistas Archify del catálogo Neubat.
+"""Valida y entrega las 24 vistas Archify del catálogo Forge.
 
 Requiere Archify fijado por commit (por defecto ca67c9f…).
 Falla si falta una vista obligatoria, si sourceSha/rendererSha no coinciden
@@ -160,7 +160,7 @@ def main(argv: list[str] | None = None) -> int:
         d.mkdir(parents=True, exist_ok=True)
 
     index_rows: list[str] = [
-        "# Diagramas Archify (Neubat)",
+        "# Diagramas Archify (Forge / ArchMaker)",
         "",
         f"- sourceSha: `{head}`",
         f"- rendererSha: `{args.renderer_sha}`",

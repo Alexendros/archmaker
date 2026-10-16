@@ -16,7 +16,7 @@ reviewers:
 # ArchMaker — Índice documental (planning-v1)
 
 - Estado del plan: in-review · Gate global: **CONDITIONAL-CLEAR** (walking skeleton MVP-0 + slices MVP-1..MVP-5) · Baseline: `implementation-baseline-mvp5` · Corte: 2026-10-16
-- Release de paquete: Neubat AppImage [`v0.1.0`](https://github.com/Alexendros/archmaker/releases/tag/v0.1.0) (F9; verificación parcial). Aprobación funcional F7: pending.
+- Release de paquete: AppImage [`v0.1.0`](https://github.com/Alexendros/archmaker/releases/tag/v0.1.0) (F9; verificación parcial; nombre histórico del artefacto en `closure/f9-release.md`). Nombre visible vigente: **Forge**. Aprobación funcional F7: pending.
 - Estados válidos (`docs/00-governance/document-control.md`): `draft`, `in-review`, `accepted`, `superseded`, `deferred`, `rejected`.
 - Regla de reemplazo: copiar por rutas canónicas; `reference/v5.1/` debe permanecer byte a byte.
 
@@ -55,6 +55,7 @@ reviewers:
 | `adr/ADR-0001..ADR-0009`                      | ADR-0001..0009   | accepted  |
 | `adr/ADR-0010-marca-y-nombre-de-artefacto.md` | ADR-0010         | accepted  |
 | `adr/ADR-0011-contrato-de-aplicacion.md`      | ADR-0011         | in-review |
+| `adr/ADR-0012-nombre-visible-forge.md`        | ADR-0012         | accepted  |
 
 ## 03 — Datos
 

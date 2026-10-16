@@ -24,7 +24,7 @@ reviewers:
 
 ## Dos actos de release
 
-Hay dos actos distintos. Este documento los separa. La release de paquete AppImage Neubat
+Hay dos actos distintos. Este documento los separa. La release de paquete AppImage Forge
 `v0.1.0` ya se publicó bajo MVP-6/`accepted` (solo esa plataforma); ver `closure/f9-release.md`.
 
 ### Release de plan
@@ -52,7 +52,7 @@ DEC-011 / MVP-6 accepted):**
 | Campo            | Valor                                                |
 | ---------------- | ---------------------------------------------------- |
 | Plataforma       | AppImage Linux x86_64                                |
-| Nombre público   | Neubat (ADR-0010 opción 3)                           |
+| Nombre visible   | Forge (ADR-0012; `v0.1.0` histórico Neubat / ADR-0010) |
 | Hosting          | GitHub Release del tag `v*` (`release.yml`)          |
 | Familias no Done | `.deb`, `.rpm`, OBS, AUR, Flatpak → deferred/blocked |
 
@@ -67,7 +67,7 @@ de pacman.
 
 ## MVP Linux
 
-- **AppImage (autorizado):** portátil Linux x86_64; nombre público Neubat; verificar sandbox /
+- **AppImage (autorizado):** portátil Linux x86_64; nombre visible Forge; verificar sandbox /
   desktop integration y update policy en F9.
 - `.deb`: deferred (Debian/Ubuntu; scripts mínimos y uninstall limpio).
 - `.rpm`: deferred (Fedora/openSUSE; spec reproducible).
@@ -83,14 +83,14 @@ Cada release publica, como mínimo:
 
 | Artefacto         | Descripción                                                              | Estado                              |
 | ----------------- | ------------------------------------------------------------------------ | ----------------------------------- |
-| Binarios/paquetes | **AppImage Linux x86_64 (Neubat)**; `.deb`/`.rpm` deferred.              | published (`v0.1.0`)                |
+| Binarios/paquetes | **AppImage Linux x86_64 (Forge)**; `.deb`/`.rpm` deferred.              | published (`v0.1.0`)                |
 | Checksums         | `SHA256SUMS` por release; verificación `sha256sum --check`.              | published (`v0.1.0`)                |
 | Firmas            | Firma de artefactos y de `SHA256SUMS` con Sigstore (+ offline evaluada). | parcial (cosign local deferred)     |
 | SBOM              | CycloneDX y/o SPDX con el inventario de dependencias.                    | published (`sbom.cdx.json`)         |
 | Provenance        | Atestación SLSA v1 / in-toto ligada a commit y workflow.                 | published (`slsa-provenance.json`)  |
 | Source tarball    | Código fuente reproducible del commit taggeado.                          | via GitHub Release source           |
 | Changelog         | Formato Keep a Changelog; cambios por versión.                           | `CHANGELOG.md` (`[0.1.0]`)          |
-| Compatibilidad    | Matriz: Neubat AppImage / Linux x86_64 (DEC-008).                        | published (canal único)             |
+| Compatibilidad    | Matriz: Forge AppImage / Linux x86_64 (DEC-008).                        | published (canal único)             |
 
 - **Checksums**: el digest es la identidad del artefacto y se reutiliza en la promoción (sin rebuild).
 - **Firmas**: la firma se aplica una vez; la verificación es requisito de instalación del updater.

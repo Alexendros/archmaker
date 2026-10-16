@@ -242,7 +242,7 @@ jobs:
         working-directory: reference/v5.1
         run: |
           cmp --silent forge_v4_final.html aliases/neubat_forge_v4_final.html \
-            && echo "Alias NEUBAT byte-identico OK"
+            && echo "Alias historico byte-identico OK"
       - name: Manifiestos de disposicion validos (G0)
         working-directory: reference/v5.1
         run: |

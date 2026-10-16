@@ -1,4 +1,4 @@
-import type { FacePackage } from "./neubat-face.js";
+import type { FacePackage } from "./forge-face.js";
 
 type Props = {
   pkg: FacePackage;

@@ -15,7 +15,7 @@ reviewers:
 
 # Archify (diagramas) — instalación fijada
 
-**Archify** (`tt-a1i/archify`) es el renderer de diagramas. **Neubat** es el configurador.
+**Archify** (`tt-a1i/archify`) es el renderer de diagramas. **Forge** es el configurador.
 No sustituye el análisis del repositorio: el agente escribe las especificaciones; Archify
 valida estructura y presenta HTML.
 

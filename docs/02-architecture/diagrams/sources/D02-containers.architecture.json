@@ -5,7 +5,7 @@
     "title": "D02 Contenedores: web, WASM, Tauri, almacenamiento",
     "output": "rendered/D02.html",
     "quality_profile": "showcase",
-    "subtitle": "Neubat as-built (MVP); runner/ISO/Enterprise fuera de alcance"
+    "subtitle": "Forge as-built (MVP); runner/ISO/Enterprise fuera de alcance"
   },
   "components": [
     {

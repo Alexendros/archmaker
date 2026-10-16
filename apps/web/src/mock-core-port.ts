@@ -32,7 +32,7 @@ import {
   KERNELS,
   LAYERS,
   STEP_IDS,
-} from "./neubat-face.js";
+} from "./forge-face.js";
 
 const FIXED_DRAFT_ID = "0d5e6b1a-1111-4a2b-9c3d-111111111111";
 const FIXED_DIGEST =
@@ -81,7 +81,7 @@ function faceCatalog() {
     version: "1.0.0",
     documentVersion: "vNext",
     schemaVersion: "1",
-    face: "neubat-forge",
+    face: "forge",
     glossary: GLOSSARY,
     steps: [
       {

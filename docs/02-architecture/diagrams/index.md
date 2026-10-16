@@ -16,7 +16,7 @@ dependsOn:
     expectedDocumentStatus: draft
 ---
 
-# Diagramas Archify (Neubat)
+# Diagramas Archify (Forge / ArchMaker)
 
 - sourceSha: `d50d3414857175f1ff4b0b11f146065f8f1377da`
 - rendererSha: `ca67c9f16be0c8cad409cd45190aa052e0649b84`

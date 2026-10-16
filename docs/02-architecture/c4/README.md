@@ -22,7 +22,7 @@ reviewers:
 - Requisitos relacionados: NFR-PORT-001, NFR-DET-001, NFR-SEC-001, NFR-OFF-001
 - Fase: R4 (issues `AUD-007`/`AUD-008`); corrige `AUD-F-08` del `audit-baseline.md`
 - Vistas detalladas: [`component-views.md`](component-views.md), [`deployment-views.md`](deployment-views.md), [`runtime-sequences.md`](runtime-sequences.md)
-- Diagramas Archify verificables (as-built Neubat): [`../diagrams/`](../diagrams/) · índice [`../diagrams/index.md`](../diagrams/index.md)
+- Diagramas Archify verificables (as-built Forge): [`../diagrams/`](../diagrams/) · índice [`../diagrams/index.md`](../diagrams/index.md)
 - Viewpoints y concerns: [`../viewpoints.md`](../viewpoints.md), [`../stakeholders-concerns.md`](../stakeholders-concerns.md)
 
 ## Propósito y corrección R4

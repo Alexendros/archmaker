@@ -8,7 +8,10 @@
       "location": "tools/canonicalize.py",
       "command": "python3 tools/canonicalize.py",
       "workflow": "ci",
-      "covers": ["NFR-DET-001", "FR-MANIFEST-001"],
+      "covers": [
+        "NFR-DET-001",
+        "FR-MANIFEST-001"
+      ],
       "description": "Canonicalizacion y verificacion de digests (NFR-DET-001, FR-MANIFEST-001)",
       "transversal": false
     },
@@ -18,7 +21,11 @@
       "location": "tools/validate_schema_refs.py",
       "command": "python3 tools/validate_schema_refs.py",
       "workflow": "ci",
-      "covers": ["FR-DRAFT-001", "FR-CAT-001", "FR-MANIFEST-001"],
+      "covers": [
+        "FR-DRAFT-001",
+        "FR-CAT-001",
+        "FR-MANIFEST-001"
+      ],
       "description": "Validacion de referencias de schema JSON (FR-DRAFT-001, FR-CAT-001, FR-MANIFEST-001)",
       "transversal": false
     },
@@ -43,7 +50,10 @@
       "location": "tools/validate_mig.py",
       "command": "python3 tools/validate_mig.py",
       "workflow": "ci",
-      "covers": ["FR-IMPORT-001", "NFR-MIG-001"],
+      "covers": [
+        "FR-IMPORT-001",
+        "NFR-MIG-001"
+      ],
       "description": "Corpus de migracion v5.1 a draft vNext (FR-IMPORT-001, NFR-MIG-001)",
       "transversal": false
     },
@@ -94,7 +104,19 @@
       "command": "python3 tools/run_f7_candidate_matrix.py --validate-only && python3 tools/test_run_f7_candidate_matrix.py",
       "workflow": "ci",
       "covers": [],
-      "description": "Matriz F7 atómica: inventario, tests del runner, result=pending, technicalResult separado, sin RC_SHA_FUNCIONAL ni aceptación independiente",
+      "description": "Matriz F7 at\u00f3mica: inventario, tests del runner, result=pending, technicalResult separado, sin RC_SHA_FUNCIONAL ni aceptaci\u00f3n independiente",
+      "transversal": true
+    },
+    {
+      "id": "VAL-PRODUCT-NAMING",
+      "type": "doc",
+      "location": "tools/check_product_naming.py",
+      "command": "python3 tools/check_product_naming.py",
+      "workflow": "ci",
+      "covers": [
+        "NFR-MARK-001"
+      ],
+      "description": "Nomenclatura Forge/ArchMaker (T-NAME) e identidad tecnica intacta (T-MIG)",
       "transversal": true
     }
   ]

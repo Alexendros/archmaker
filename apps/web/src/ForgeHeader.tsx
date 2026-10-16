@@ -21,15 +21,15 @@ export function ForgeHeader({
     <header className="forge-header" role="banner">
       <div className="forge-brand">
         <div className="forge-mark" aria-hidden="true">
-          N
+          F
         </div>
         <div>
           <div className="forge-title">
-            NEUBAT <span className="forge-title-muted">FORGE</span>{" "}
+            Forge{" "}
             <span className="forge-badge">v4.1</span>
           </div>
           <div className="forge-subtitle">
-            Configurador local · sin instalación
+            Interfaz gráfica de ArchMaker · sin instalación
           </div>
         </div>
       </div>

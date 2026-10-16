@@ -39,7 +39,7 @@ reviewers:
   runner/ISO. Capas separadas (DOC-DEL-CLO-F8-001 / DOC-DEL-CLO-F9-001): baseline de
   código **passed**; aprobación funcional **pending** (runner F7 estricto y P95 harness
   en árbol; sin `RC_SHA_FUNCIONAL` ni revisor independiente); release binaria
-  **published** — AppImage Linux x86_64 Neubat tag `v0.1.0` (`RC_SHA` `9297ed7…`),
+  **published** — AppImage Linux x86_64 tag `v0.1.0` (`RC_SHA` `9297ed7…`; artefacto histórico en `f9-release.md`),
   verificación parcial (checksum OK; sin `.sig`/`.pem` públicos; sin 3×
   install GUI). Ver `docs/10-delivery/closure/f8-governance.md` y `f9-release.md`.
 - Alcance autorizado: `docs/10-delivery/walking-skeleton.md` (DOC-DEL-WSK-001),
@@ -119,8 +119,8 @@ Autorizado: el walking skeleton MVP-0 definido en `docs/10-delivery/walking-skel
 los slices **MVP-1** (`mvp1-scope.md`), **MVP-2** (`mvp2-scope.md`), **MVP-3**
 (`mvp3-scope.md`), **MVP-4** (React + MockCorePort, `mvp4-scope.md`), **MVP-5**
 (catálogo de matriz, UI de cinco pasos, paridad Tauri/WASM; `mvp5-scope.md`) y el canal
-**MVP-6 AppImage Linux x86_64** con nombre público **Neubat** (`mvp6-scope.md`, ADR-0010,
-DEC-011). **No** autorizado: runner real, root, discos, shell arbitraria, catálogos remotos,
+**MVP-6 AppImage Linux x86_64** (`mvp6-scope.md`, ADR-0010 / DEC-011 para `v0.1.0`;
+nombre visible vigente **Forge** por ADR-0012 / DEC-012). **No** autorizado: runner real, root, discos, shell arbitraria, catálogos remotos,
 firma criptográfica de catálogo en carga, Enterprise, ISO, ni `.deb`/`.rpm`/OBS/AUR binario
 como Done.
 

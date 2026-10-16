@@ -22,8 +22,9 @@ reviewers:
 - Remediación operativa cerrada (transportes reales, ACL, ciclo de edición, exportación, Prove-It): `docs/10-delivery/remediation/`; notas en `acceptance-notes.md`.
 - Cierre de producto F0–F8: código en `main`. Gobierno de canal F8:
   `docs/10-delivery/closure/f8-governance.md` (**accepted**).
-- Canal de distribución: AppImage Linux x86_64, nombre público **Neubat**, tag
-  [`v0.1.0`](https://github.com/Alexendros/archmaker/releases/tag/v0.1.0)
+- Canal de distribución: AppImage Linux x86_64; tag
+  [`v0.1.0`](https://github.com/Alexendros/archmaker/releases/tag/v0.1.0) publicó
+  nombre histórico del artefacto `v0.1.0` (ADR-0010 / DEC-011; ver `f9-release.md`); nombre visible vigente **Forge** (ADR-0012).
   (`RC_SHA` `9297ed7…`; `docs/10-delivery/closure/f9-release.md`). ISO / runner /
   Enterprise siguen sin `accepted`. Evidencia y `APPROVAL_RECORD` fuera del árbol.
 - Limitaciones v0.1.0: sin cosign local verificado; sin 3× install GUI; F7 sin
@@ -37,7 +38,7 @@ reviewers:
 | -------------------- | --------- | --------------------------------------------------------------------------------------------- |
 | Baseline de código   | passed    | Tag MVP-5 + F0–F8 en `main`                                                                   |
 | Aprobación funcional | pending   | Runner F7 estricto + P95 harness en árbol; sin `RC_SHA_FUNCIONAL` ni revisor independiente    |
-| Release binaria      | published | Neubat AppImage `v0.1.0` (`9297ed7…`); verificación parcial (cosign/GUI); ver `f9-release.md` |
+| Release binaria      | published | AppImage `v0.1.0` (`9297ed7…`); verificación parcial (cosign/GUI); ver `f9-release.md` |
 
 Detalle y residuales: `docs/10-delivery/closure/f8-governance.md`.
 
@@ -60,7 +61,7 @@ del propio alcance). El runner v1 y los privilegios se autorizan únicamente cua
 evidencia específica de esas fases, no existan riesgos P0 sin tratamiento y todos los contratos
 P0 posean fixtures válidos e inválidos.
 
-F9 publicó el AppImage Neubat `v0.1.0` bajo F8 / DEC-011 / MVP-6 accepted (solo AppImage).
+F9 publicó el AppImage `v0.1.0` bajo F8 / DEC-011 / MVP-6 accepted (solo AppImage); el nombre visible vigente es Forge (ADR-0012).
 La verificación de esa release es **parcial** (cosign local y 3× GUI pendientes). La
 aprobación funcional F7 permanece `pending` como capa distinta; no reabre runner/ISO ni
 anuncia `.deb`/`.rpm`/AUR.
