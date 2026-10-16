@@ -1,8 +1,8 @@
 # Diagramas Archify (Neubat)
 
-- sourceSha: `c90919c12416bab53312f4f7f117c99c05f36dba`
+- sourceSha: `d50d3414857175f1ff4b0b11f146065f8f1377da`
 - rendererSha: `ca67c9f16be0c8cad409cd45190aa052e0649b84`
-- generado: `2026-10-16T21:45:32Z`
+- generado: `2026-10-16T22:22:28Z`
 
 | ID | Título | HTML |
 | --- | --- | --- |
