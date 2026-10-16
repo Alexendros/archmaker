@@ -59,8 +59,11 @@ Un subconjunto de comandos **no** cierra el caso: el runner marca `partial` y `-
 
 ## P95
 
-Umbrales (`honest-ux.md`): init ≤ 3.000 ms; prepare ≤ 1.000 ms; n = 30.
-Harness: `python3 tools/run_f7_p95_harness.py`. Las corridas viven fuera del árbol
+Presupuesto de **producto** (`honest-ux.md`): ready ≤ 3.000 ms; prepare ≤ 1.000 ms;
+n ≥ 30; máquina de referencia pendiente de fijar al medir. Estado **pending**.
+
+Harness nativo: `python3 tools/run_f7_p95_harness.py` (microbenchmark; **no certifica**
+producto). Las corridas viven fuera del árbol
 (`~/archmaker-closure/evidence/<source-sha>/…`). No inventar cifras sin informe.
 
 ## Cómo ejecutar

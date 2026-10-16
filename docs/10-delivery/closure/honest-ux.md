@@ -60,14 +60,24 @@ Ampliación de `a11y-playwright.test.ts`: viewports 360 / 768 / 1440 px y zoom 2
 
 ## Presupuesto de rendimiento (P95)
 
-Umbrales:
+### Producto (congelado; pendiente de medición)
 
-- Inicialización ≤ 3.000 ms (P95)
-- Resolver + validar + manifiesto ≤ 1.000 ms (P95) en el fixture embebido, sin entrega de archivo
-- n = 30
+Umbrales de **producto** (web-ready / web-prepare; desktop-ready / desktop-prepare si hay GUI):
 
-Harness: `python3 tools/run_f7_p95_harness.py` (caso `F7-P95`). Las cifras viven en la
-carpeta de evidencia externa (`~/archmaker-closure/evidence/<source-sha>/…/p95-report.json`),
-no en este documento. Sin informe con n=30 no se declara rendimiento `passed` en el cierre
-funcional; un verde local del harness en una máquina concreta no sustituye la aceptación
-independiente F7.
+| Métrica | Umbral P95 | n | Estado |
+| --- | --- | --- | --- |
+| ready (Forge interactiva) | ≤ 3.000 ms | ≥ 30 | **pending** — sin medición de producto |
+| prepare (manifiesto válido) | ≤ 1.000 ms | ≥ 30 | **pending** — sin medición de producto |
+
+Máquina de referencia de producto: **no fijada** (pendiente de registro al medir). Sin
+informe de producto con n≥30 no se declara rendimiento `passed`.
+
+### Harness nativo (no certifica producto)
+
+`python3 tools/run_f7_p95_harness.py` (caso `F7-P95`) es un **microbenchmark nativo**
+(init/prepare del core sobre fixture embebido). Comparte los mismos números de umbral
+como presupuesto de laboratorio, pero **no certifica** el presupuesto de producto
+anterior. Las cifras del harness viven fuera del árbol
+(`~/archmaker-closure/evidence/<source-sha>/…/p95-report.json`). Un verde local del
+harness en una máquina concreta no sustituye la aceptación independiente F7 ni cierra
+web-ready / web-prepare / desktop-*.

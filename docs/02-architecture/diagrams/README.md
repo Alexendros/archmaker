@@ -9,6 +9,8 @@ verificationStatus: not-verified
 releaseStatus: ineligible
 owners:
   - architecture
+reviewers:
+  - independent-reviewer
 ---
 
 # Diagramas Archify (Neubat)
