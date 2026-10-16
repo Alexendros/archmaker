@@ -1,4 +1,10 @@
 import { test, expect } from "@playwright/test";
+import {
+  ESSENTIAL_CONTROLS,
+  NEUBAT_RAIL_STEPS,
+  completeExampleSelection,
+  generateExportAndAssertFidelity,
+} from "./e2e-fidelity-helpers.js";
 
 const BASE_URL = process.env.BASE_URL || "http://localhost:5173/?mock=1";
 
@@ -8,6 +14,41 @@ test.describe("NEUBAT FORGE face — rutas del plan", () => {
     await expect(
       page.getByRole("heading", { name: /Para qué usarás/i }),
     ).toBeVisible();
+  });
+
+  test("inventario: seis pasos NEUBAT y controles esenciales en DOM", async ({
+    page,
+  }) => {
+    expect(NEUBAT_RAIL_STEPS).toHaveLength(6);
+    expect(ESSENTIAL_CONTROLS.length).toBeGreaterThanOrEqual(20);
+    const rail = page.getByRole("navigation", { name: /Pasos/i });
+    await expect(rail).toBeVisible();
+    for (const title of NEUBAT_RAIL_STEPS) {
+      await expect(
+        rail.getByRole("button", { name: new RegExp(title, "i") }),
+      ).toBeVisible();
+    }
+    await expect(page.getByRole("button", { name: "Generar" })).toBeVisible();
+    await expect(
+      page.getByRole("button", { name: "Sencillo", exact: true }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("button", { name: "Avanzado", exact: true }),
+    ).toBeVisible();
+    await expect(page.getByRole("button", { name: "Glosario" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "⌘K" })).toBeVisible();
+    await expect(
+      page.getByRole("button", { name: /Continuar → Sistema base/i }),
+    ).toBeVisible();
+  });
+
+  test("F3 ejercicio: selección → Generar → Exportar → SHA-256 == binaryDigest", async ({
+    page,
+  }) => {
+    test.setTimeout(90_000);
+    await completeExampleSelection(page);
+    const { digest } = await generateExportAndAssertFidelity(page);
+    expect(digest).toHaveLength(64);
   });
 
   test("arranque: Intención visible y desarrollo premarcado", async ({
