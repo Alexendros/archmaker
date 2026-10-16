@@ -121,11 +121,46 @@ export async function prepareDelivery(
   };
 }
 
-/** Deliver renderer bytes to the user as a browser download. */
+export type DeliveryOutcome =
+  | {
+      kind: "download-started";
+      filename: string;
+      digestShort: string;
+    }
+  | {
+      kind: "file-saved";
+      filename: string;
+      digestShort: string;
+    };
+
+/** Toast copy: web cannot verify disk write; desktop only after confirmation. */
+export function exportStatusMessage(outcome: DeliveryOutcome): string {
+  const digest = outcome.digestShort;
+  if (outcome.kind === "file-saved") {
+    return `Archivo guardado (${digest}…): ${outcome.filename}`;
+  }
+  return `Descarga iniciada (${digest}…): ${outcome.filename}`;
+}
+
+/**
+ * Confirmed native save (desktop / F5). Do not call from the browser download path.
+ */
+export function confirmedSaveOutcome(
+  filename: string,
+  digestHex: string,
+): DeliveryOutcome {
+  return {
+    kind: "file-saved",
+    filename,
+    digestShort: digestHex.slice(0, 12),
+  };
+}
+
+/** Deliver renderer bytes via browser download; outcome is never file-saved. */
 export async function downloadArtifact(
   artifact: Artifact,
   filename: string,
-): Promise<void> {
+): Promise<DeliveryOutcome> {
   const prepared = await prepareDelivery(artifact, filename);
   const blob = new Blob([bufferSource(prepared.bytes)], {
     type: prepared.mediaType,
@@ -139,4 +174,9 @@ export async function downloadArtifact(
   a.click();
   a.remove();
   window.setTimeout(() => URL.revokeObjectURL(url), 0);
+  return {
+    kind: "download-started",
+    filename: prepared.filename,
+    digestShort: artifact.binaryDigest.value.slice(0, 12),
+  };
 }

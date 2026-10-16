@@ -184,7 +184,7 @@ test.describe("NEUBAT FORGE face — rutas del plan", () => {
     const download = await downloadPromise;
     expect(download.suggestedFilename()).toMatch(/archmaker-profile-.*\.json/);
     await expect(page.locator("#toast-region")).toContainText(
-      /Archivo entregado/i,
+      /Descarga iniciada/i,
     );
   });
 

@@ -35,6 +35,7 @@ import {
   destinationTokenFor,
   downloadArtifact,
   exportFilename,
+  exportStatusMessage,
 } from "./export-delivery.js";
 import { isPreparedCurrent } from "./export-generation.js";
 import { ForgeAside } from "./ForgeAside.js";
@@ -191,17 +192,14 @@ export function App({ port, portKind }: Props) {
 
   useEffect(() => subscribePersistStatus(setPersistStatus), []);
 
-  const handlePersistResult = useCallback(
-    (result: PersistResult) => {
-      if (result.ok) {
-        setPersistExportable(null);
-        return;
-      }
-      setPersistExportable(result.exportable);
-      announce("alert", result.message);
-    },
-    [],
-  );
+  const handlePersistResult = useCallback((result: PersistResult) => {
+    if (result.ok) {
+      setPersistExportable(null);
+      return;
+    }
+    setPersistExportable(result.exportable);
+    announce("alert", result.message);
+  }, []);
 
   const bootId =
     singleId(draft, STEP_IDS.boot) ?? "archmaker.boot.systemd-boot";
@@ -232,8 +230,9 @@ export function App({ port, portKind }: Props) {
     return pkgs;
   }, [selectedApps]);
 
+  /** Suma solo tamaños de catálogo de apps seleccionadas; sin base inventada. */
   const totalSize = useMemo(
-    () => selectedPackages.reduce((acc, p) => acc + p.size, 650),
+    () => selectedPackages.reduce((acc, p) => acc + p.size, 0),
     [selectedPackages],
   );
 
@@ -243,23 +242,13 @@ export function App({ port, portKind }: Props) {
       description: string;
       kind: "info" | "warn";
     }[] = [];
-    if (
-      envId === "archmaker.compositor.sway" &&
-      kernelId === "archmaker.kernel.linux"
-    ) {
-      list.push({
-        kind: "warn",
-        title: "Sway con este kernel puede parpadear en algunos GPUs",
-        description: "Prueba Hyprland u otro escritorio si ves parpadeo.",
-      });
-    }
     list.push({
       kind: "info",
       title: `Kernel ${kernel?.title ?? "—"}`,
       description: kernel?.description ?? "Sin kernel seleccionado.",
     });
     return list;
-  }, [envId, kernelId, kernel]);
+  }, [kernel]);
 
   const showToast = useCallback((message: string, undo?: () => void) => {
     setToast({ message, undo });
@@ -529,9 +518,10 @@ export function App({ port, portKind }: Props) {
       }
       try {
         const name = exportFilename(token, res.value.targetRef.id);
-        await downloadArtifact(res.value, name);
-        const digestShort = res.value.binaryDigest.value.slice(0, 12);
-        showToast(`Archivo entregado (${digestShort}…): ${name}`);
+        // F2: downloadArtifact inicia la descarga del navegador; no confirma
+        // escritura en disco. «Archivo guardado» solo con confirmedSave (F5).
+        const outcome = await downloadArtifact(res.value, name);
+        showToast(exportStatusMessage(outcome));
       } catch (err) {
         const message =
           err instanceof DeliveryError
@@ -594,7 +584,9 @@ export function App({ port, portKind }: Props) {
     }
   }
 
-  async function onConfirmImport(confirmBlockingLosses: boolean): Promise<void> {
+  async function onConfirmImport(
+    confirmBlockingLosses: boolean,
+  ): Promise<void> {
     if (!importPending) return;
     setImportBusy(true);
     try {
@@ -633,8 +625,7 @@ export function App({ port, portKind }: Props) {
   }
 
   function onDownloadPersistCopy(): void {
-    const text =
-      persistExportable ?? (draft ? exportDraftCopy(draft) : null);
+    const text = persistExportable ?? (draft ? exportDraftCopy(draft) : null);
     if (!text) {
       announce("alert", "No hay copia exportable.");
       return;
@@ -1116,9 +1107,7 @@ export function App({ port, portKind }: Props) {
                     (intención o gap) no entran al perfil sellado.
                   </p>
                 ) : null}
-                {hostname ? (
-                  <p role="status">Hostname: {hostname}</p>
-                ) : null}
+                {hostname ? <p role="status">Hostname: {hostname}</p> : null}
                 {encrypt ? (
                   <p role="status">
                     Cifrado: intención marcada (no aplicada al disco).
