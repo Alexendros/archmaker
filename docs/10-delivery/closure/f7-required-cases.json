@@ -1,0 +1,190 @@
+{
+  "schemaVersion": "1",
+  "phase": "F7",
+  "title": "Matriz obligatoria de candidato funcional",
+  "policy": {
+    "sameRcSha": true,
+    "declareRcShaFuncional": false,
+    "independentAcceptance": false,
+    "resultUntilAcceptance": "pending",
+    "notes": "F7 documenta y ejecuta la matriz sobre un RC_SHA candidato. No declara RC_SHA_FUNCIONAL ni aceptación independiente firmada."
+  },
+  "limitations": [
+    "El dueño del repositorio puede mergear sin checks bloqueantes; un verde de PR no certifica main solo.",
+    "P95 de rendimiento F6 permanece pending (sin 30 muestras en máquina fijada en F0).",
+    "Humo GUI F5 no es E2E de portal/xdg-desktop-portal; picker nativo cubierto por simulación unitaria."
+  ],
+  "cases": [
+    {
+      "id": "F7-MOTOR-REAL",
+      "title": "Motor real web/desktop; fallo sin mock",
+      "hooks": [
+        "apps/web/src/create-core-port.ts",
+        "apps/web/forge-helpers.playwright.test.ts",
+        "apps/web/wasm-flow.playwright.test.ts"
+      ],
+      "commands": [
+        "pnpm --dir apps/web exec playwright test forge-helpers.playwright.test.ts -g \"motor real\"",
+        "pnpm --dir apps/web exec playwright test wasm-flow.playwright.test.ts -g \"E2E-01\""
+      ],
+      "ci": "partial",
+      "e2eWasmRequired": false,
+      "defaultStatus": "executable"
+    },
+    {
+      "id": "F7-GEN-EDIT-EXPORT",
+      "title": "Generar A, editar B, exportar B; invalidar obsoletos",
+      "hooks": [
+        "apps/web/src/export-generation.ts",
+        "apps/web/forge-helpers.playwright.test.ts",
+        "apps/web/wasm-flow.playwright.test.ts"
+      ],
+      "commands": [
+        "pnpm --dir apps/web exec playwright test forge-helpers.playwright.test.ts -g \"generar A\"",
+        "pnpm --dir apps/web exec playwright test wasm-flow.playwright.test.ts -g \"E2E-04\""
+      ],
+      "ci": "partial",
+      "e2eWasmRequired": false,
+      "defaultStatus": "executable"
+    },
+    {
+      "id": "F7-DBLCLICK",
+      "title": "Doble clic / reentrada bloqueada mientras busy",
+      "hooks": ["apps/web/src/export-generation.ts", "apps/web/src/App.tsx"],
+      "commands": [
+        "pnpm --dir apps/web exec playwright test forge-helpers.playwright.test.ts -g \"doble clic\""
+      ],
+      "ci": true,
+      "e2eWasmRequired": false,
+      "defaultStatus": "executable"
+    },
+    {
+      "id": "F7-BLOCKING-VALIDATION",
+      "title": "Validación bloqueante",
+      "hooks": ["crates/archmaker-core/tests/core_contract.rs"],
+      "commands": [
+        "cargo test -p archmaker-core --test core_contract validate_draft_clean_and_blocking --locked"
+      ],
+      "ci": true,
+      "e2eWasmRequired": false,
+      "defaultStatus": "executable"
+    },
+    {
+      "id": "F7-TARGET-INCOMPATIBLE",
+      "title": "Target incompatible en entrega",
+      "hooks": ["apps/web/export-delivery.playwright.test.ts"],
+      "commands": [
+        "pnpm --dir apps/web exec playwright test export-delivery.playwright.test.ts -g \"incompatible target\""
+      ],
+      "ci": true,
+      "e2eWasmRequired": false,
+      "defaultStatus": "executable"
+    },
+    {
+      "id": "F7-REG-F0",
+      "title": "Regresión F0 hallazgos",
+      "hooks": ["crates/archmaker-core/tests/f0_findings.rs"],
+      "commands": ["cargo test -p archmaker-core --test f0_findings --locked"],
+      "ci": true,
+      "e2eWasmRequired": false,
+      "defaultStatus": "executable"
+    },
+    {
+      "id": "F7-REG-F1",
+      "title": "Regresión F1 identidad",
+      "hooks": ["crates/archmaker-core/tests/f1_identity.rs"],
+      "commands": ["cargo test -p archmaker-core --test f1_identity --locked"],
+      "ci": true,
+      "e2eWasmRequired": false,
+      "defaultStatus": "executable"
+    },
+    {
+      "id": "F7-REG-F2",
+      "title": "Regresión F2 bytes / export-delivery",
+      "hooks": [
+        "crates/archmaker-core/tests/f2_bytes.rs",
+        "apps/web/export-delivery.playwright.test.ts"
+      ],
+      "commands": [
+        "cargo test -p archmaker-core --test f2_bytes --locked",
+        "pnpm --dir apps/web exec playwright test export-delivery.playwright.test.ts"
+      ],
+      "ci": true,
+      "e2eWasmRequired": false,
+      "defaultStatus": "executable"
+    },
+    {
+      "id": "F7-REG-F3",
+      "title": "Regresión F3 fidelidad",
+      "hooks": ["crates/archmaker-core/tests/f3_fidelity.rs"],
+      "commands": ["cargo test -p archmaker-core --test f3_fidelity --locked"],
+      "ci": true,
+      "e2eWasmRequired": false,
+      "defaultStatus": "executable"
+    },
+    {
+      "id": "F7-REG-F4",
+      "title": "Regresión F4 importación consentida",
+      "hooks": ["apps/web/consented-import.playwright.test.ts"],
+      "commands": [
+        "pnpm --dir apps/web exec playwright test consented-import.playwright.test.ts"
+      ],
+      "ci": true,
+      "e2eWasmRequired": false,
+      "defaultStatus": "executable"
+    },
+    {
+      "id": "F7-REG-F5",
+      "title": "Regresión F5 negative_capabilities / escritorio",
+      "hooks": [
+        "crates/archmaker-core/tests/negative_capabilities.rs",
+        "tools/check_negative_capabilities.py",
+        "docs/10-delivery/closure/f5-desktop-notes.md"
+      ],
+      "commands": [
+        "cargo test -p archmaker-core --test negative_capabilities --locked",
+        "python3 tools/check_negative_capabilities.py"
+      ],
+      "ci": true,
+      "e2eWasmRequired": false,
+      "defaultStatus": "executable"
+    },
+    {
+      "id": "F7-REG-F6",
+      "title": "Regresión F6 cara honesta (mensajes; P95 pending)",
+      "hooks": [
+        "docs/10-delivery/closure/honest-ux.md",
+        "apps/web/export-delivery.playwright.test.ts"
+      ],
+      "commands": [
+        "pnpm --dir apps/web exec playwright test export-delivery.playwright.test.ts -g \"F6\""
+      ],
+      "ci": true,
+      "e2eWasmRequired": false,
+      "defaultStatus": "executable",
+      "residual": "P95 F6 pending"
+    },
+    {
+      "id": "F7-OFFLINE",
+      "title": "Offline según contrato (web cargada / escritorio sin red)",
+      "hooks": ["docs/10-delivery/closure/f7-candidate.md"],
+      "commands": [],
+      "ci": false,
+      "e2eWasmRequired": true,
+      "defaultStatus": "pending",
+      "residual": "Requiere Playwright WASM + contexto offline; escritorio sin humo de red en CI"
+    },
+    {
+      "id": "F7-E2E-X3",
+      "title": "Tres E2E consecutivos WASM (conservar resultado inicial de cada intento)",
+      "hooks": ["apps/web/wasm-flow.playwright.test.ts"],
+      "commands": [
+        "pnpm --dir apps/web exec playwright test wasm-flow.playwright.test.ts --repeat-each=3"
+      ],
+      "ci": false,
+      "e2eWasmRequired": true,
+      "defaultStatus": "pending",
+      "residual": "Solo si Playwright WASM está disponible en el ejecutor; si no, pending explícito"
+    }
+  ]
+}

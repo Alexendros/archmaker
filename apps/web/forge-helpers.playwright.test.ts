@@ -2,10 +2,13 @@ import { test, expect } from "@playwright/test";
 import type { Draft } from "./src/coreport.js";
 import { DRAFT_TARGET, FIXED_CATALOG_REF } from "./src/coreport.js";
 import { draftForCore, listFaceExclusions } from "./src/draft-for-core.js";
+import { mockAllowed } from "./src/create-core-port.js";
 import {
   bumpGeneration,
   isPreparedCurrent,
+  keepResultForGeneration,
   markPrepared,
+  shouldIgnoreReentrantAction,
 } from "./src/export-generation.js";
 import {
   appIds,
@@ -119,10 +122,7 @@ test.describe("draftForCore Prove-It", () => {
           stepId: STEP_IDS.apps,
           value: {
             kind: "multiple",
-            optionIds: [
-              "archmaker.browser.firefox",
-              "archmaker.app.grokbot",
-            ],
+            optionIds: ["archmaker.browser.firefox", "archmaker.app.grokbot"],
           },
         },
       ],
@@ -151,5 +151,44 @@ test.describe("export-generation Prove-It", () => {
     expect(isPreparedCurrent(gate)).toBe(false);
     expect(gate.preparedGeneration).toBeNull();
     expect(gate.generation).toBe(1);
+  });
+
+  test("F7: generar A, editar B invalida resultado A; exportar usa B", () => {
+    let gate = { generation: 1, preparedGeneration: null as number | null };
+    gate = markPrepared(gate, gate.generation);
+    const generationA = gate.generation;
+    expect(isPreparedCurrent(gate)).toBe(true);
+
+    gate = bumpGeneration(gate); // edición B
+    expect(keepResultForGeneration(generationA, gate.generation)).toBe(false);
+    expect(isPreparedCurrent(gate)).toBe(false);
+
+    gate = markPrepared(gate, gate.generation); // prepare B
+    expect(isPreparedCurrent(gate)).toBe(true);
+    expect(keepResultForGeneration(gate.generation, gate.generation)).toBe(
+      true,
+    );
+  });
+
+  test("F7: doble clic / reentrada se ignora mientras busy", () => {
+    expect(shouldIgnoreReentrantAction(false)).toBe(false);
+    expect(shouldIgnoreReentrantAction(true)).toBe(true);
+  });
+});
+
+test.describe("create-core-port F7 motor real", () => {
+  test("producción nunca admite mock; sin opt-in el mock está cerrado", () => {
+    expect(
+      mockAllowed({ isProd: true, search: "?mock=1", localStorageMock: "1" }),
+    ).toBe(false);
+    expect(
+      mockAllowed({ isProd: false, search: "", localStorageMock: null }),
+    ).toBe(false);
+    expect(
+      mockAllowed({ isProd: false, search: "?mock=1", localStorageMock: null }),
+    ).toBe(true);
+    expect(
+      mockAllowed({ isProd: false, search: "", localStorageMock: "1" }),
+    ).toBe(true);
   });
 });

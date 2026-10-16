@@ -32,3 +32,22 @@ export function isPreparedCurrent(gate: GenerationGate): boolean {
     gate.preparedGeneration === gate.generation
   );
 }
+
+/**
+ * F7: doble clic / reentrada — Generar y Exportar ignoran si ya hay trabajo en curso.
+ * La UI usa `busy`; este helper es la regla comprobable sin DOM.
+ */
+export function shouldIgnoreReentrantAction(busy: boolean): boolean {
+  return busy;
+}
+
+/**
+ * F7: tras editar B, un prepare/export de generación A queda obsoleto.
+ * `kept` es false cuando la generación actual ya no coincide con la capturada.
+ */
+export function keepResultForGeneration(
+  capturedGeneration: number,
+  currentGeneration: number,
+): boolean {
+  return capturedGeneration === currentGeneration;
+}

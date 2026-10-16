@@ -1,3 +1,21 @@
+---
+id: DOC-DEL-CLO-F5-001
+phase: MVP
+priority: P1
+documentStatus: draft
+approvalStatus: pending
+implementationStatus: partial
+verificationStatus: not-verified
+releaseStatus: ineligible
+owners:
+  - architecture
+reviewers:
+  - independent-reviewer
+dependsOn:
+  - id: DOC-DEL-CLO-INV-001
+    expectedDocumentStatus: draft
+---
+
 # F5 — Escritorio (notas de verificación)
 
 ## Alcance entregado
