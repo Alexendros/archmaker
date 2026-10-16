@@ -75,8 +75,8 @@ Verificación registrada en el manifiesto externo:
    SLSA v1 y firmas cosign keyless según `release.yml`.
 5. Publicar en GitHub Release **sin** modificar bytes tras el digest.
 6. Verificar: `sha256sum --check` del AppImage descargado == `ARTIFACT_SHA256`.
-7. Smoke: binario nativo CLI y/o AppImage si hay display/portal; si no, checksums
-   + smoke CLI documentados en la evidencia externa.
+7. Smoke: binario nativo CLI y/o AppImage si hay display/portal; si no, checksums +
+   smoke CLI documentados en la evidencia externa.
 
 ## Residuales abiertos (honestos)
 
