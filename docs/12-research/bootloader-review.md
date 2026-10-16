@@ -165,10 +165,10 @@ se eligen con el mismo botón. No hay caja nueva ni texto de megabytes.
 
 ## Qué queda cerrado con esto
 
-- La ventana web conecta los tres botones de Bootloader del HTML:
-  `systemd-boot` marcado al abrir y al crear el draft, `GRUB` y `Limine`
-  al pulsar. Kernel y GNOME siguen como estaban. El resto de pasos del HTML
-  sigue en MVP-5 (`docs/10-delivery/mvp5-scope.md`), en revisión.
+- La cara NEUBAT en `apps/web` conecta los tres radios de Bootloader:
+  `systemd-boot` marcado al abrir el draft, `GRUB` y `Limine` al pulsarlos
+  en modo Avanzado. El resto de huecos de catálogo sigue fuera del fixture
+  Rust hasta MVP-5 (`docs/10-delivery/mvp5-scope.md`).
 - Alta de Limine, presets y cualquier target de imagen esperan su alcance
   `accepted` y, para la imagen, un veredicto nuevo. ADR-0011 no se amplía aquí.
 - NOLANG y NOIDIOTMATIC no son alcances. No se abre trabajo con esos nombres.

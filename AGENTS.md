@@ -33,6 +33,9 @@
 - Responder y preguntar en español; si hay opciones, explicar beneficios y consecuencias de cada una.
 - La siguiente fase se especifica desde el último plan implementado, el roadmap de `docs/10-delivery/` y el trabajo pendiente, sin ampliar el veredicto vigente.
 - No incluir en un commit cambios de `.gitignore` ni artefactos de fugas salvo petición explícita.
+- La cara del configurador es el HTML NEUBAT que pasó el usuario: no inventar pantallas; conectar los botones y controles que ya trae.
+- En la cara UEFI el arranque preseleccionado es systemd-boot; GRUB y Limine siguen seleccionables.
+- Protección de `main` sin checks bloqueantes para el dueño y sí ante colaboradores externos.
 
 ## Learned Workspace Facts
 
@@ -41,3 +44,4 @@
 - MVP-5, MVP-6 (empaquetado) e `iso-scope.md` son borradores sin alcance `accepted` y no autorizan implementación.
 - `reference/v5.1/` es evidencia inmutable verificada por SHA-256. La UI React vive en `apps/web/`; el dominio está en `crates/archmaker-core` y se expone por CorePort.
 - ADR-0011 (propuesto, `in-review`): la selección del configurador produce un contrato JSON de aplicación; cada cláusula tiene schema en `contracts/json-schema/`, issue `kind:clause` y tests verificados en Rust. No añade target de imagen.
+- La referencia visual NEUBAT vive fuera del repo, en `/home/alexendros/Aplicaciones/Repertorio/archmaker_neubat.html` (no en Descargas).

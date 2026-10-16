@@ -32,9 +32,10 @@ def ratio(a: str, b: str) -> float:
 
 tokens = (ROOT / "packages/tokens/tokens.css").read_text()
 html = (ROOT / "apps/web/index.html").read_text()
-app = (ROOT / "apps/web/src/App.tsx").read_text()
+src = ROOT / "apps/web/src"
+app_sources = "\n".join(p.read_text() for p in sorted(src.glob("*.tsx")))
 styles = (ROOT / "apps/web/src/styles.css").read_text()
-ui = html + "\n" + app
+ui = html + "\n" + app_sources
 
 pairs = [
     ("texto/canvas claro", "#151515", "#ffffff", 4.5),
@@ -56,8 +57,8 @@ check("html lang=es", 'lang="es"' in html)
 check("skip link", "skip-link" in ui and "Saltar al contenido" in ui)
 check("landmarks nav/main/aside", all(t in ui for t in ["nav", "main", "aside"]))
 check("regiones vivas status+alert", 'role="status"' in ui and 'role="alert"' in ui)
-check("dialog con aria-labelledby", 'aria-labelledby="evidence-title"' in ui or "aria-labelledby=\"evidence-title\"" in ui or "aria-labelledby=" in ui and "evidence-title" in ui)
-check("OptionCard role checkbox + aria-checked", 'role="checkbox"' in ui or "role=\"checkbox\"" in ui)
+check("dialog con aria-labelledby", "aria-labelledby=" in ui and ("package-title" in ui or "evidence-title" in ui or "cmd-title" in ui or "glossary-title" in ui))
+check("OptionCard role checkbox + aria-checked", 'role="checkbox"' in ui or "role=\"checkbox\"" in ui or "aria-checked" in ui)
 check("aria-current=step en rail", "aria-current" in ui and "step" in ui)
 check("sin div interactivo sin rol", not re.search(r'<div[^>]*onClick', ui))
 check("objetivos tactiles via min-height", "min-height" in styles or "min-width" in styles)

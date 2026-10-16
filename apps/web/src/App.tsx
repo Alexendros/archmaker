@@ -1,68 +1,41 @@
-import { useCallback, useMemo, useState } from "react";
-import type {
-  CorePort,
-  Diagnostic,
-  Draft,
-  Manifest,
-  Result,
-} from "./coreport.js";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import type { CorePort, Diagnostic, Draft, Manifest } from "./coreport.js";
+import { DRAFT_TARGET, FIXED_CATALOG_REF, exportTarget } from "./coreport.js";
+import { CommandPalette } from "./CommandPalette.js";
+import { ForgeAside } from "./ForgeAside.js";
+import { ForgeHeader } from "./ForgeHeader.js";
+import { ForgeRail } from "./ForgeRail.js";
+import { PackageDialog } from "./PackageDialog.js";
 import {
-  DRAFT_TARGET,
-  FIXED_CATALOG_REF,
-  exportTarget,
-  singleSelection,
-  withSelection,
-} from "./coreport.js";
-
-const STEPS = [
-  "Crear draft",
-  "Seleccionar",
-  "Resolver",
-  "Validar",
-  "Manifest",
-  "Exportar",
-];
-
-const OPTIONS = [
-  {
-    id: "archmaker.kernel.linux",
-    stepId: "archmaker.sys.base",
-    title: "Kernel Linux",
-  },
-  {
-    id: "archmaker.desktop.gnome",
-    stepId: "archmaker.sys.session",
-    title: "Escritorio GNOME",
-  },
-];
-
-const BOOT_BUTTONS = [
-  {
-    id: "archmaker.boot.systemd-boot",
-    stepId: "archmaker.base.boot",
-    title: "systemd-boot",
-  },
-  {
-    id: "archmaker.boot.grub",
-    stepId: "archmaker.base.boot",
-    title: "GRUB",
-  },
-  {
-    id: "archmaker.boot.limine",
-    stepId: "archmaker.base.boot",
-    title: "Limine",
-  },
-];
-
-const INITIAL_BOOT_ID = BOOT_BUTTONS[0].id;
-
-const EXPORT_TARGETS = [
-  "archmaker-profile",
-  "archinstall-profile",
-  "report",
-] as const;
+  appIds,
+  boolValue,
+  chooseSingle,
+  setBool,
+  setText,
+  singleId,
+  textValue,
+  toggleApp,
+} from "./forge-helpers.js";
+import {
+  BOOTLOADERS,
+  ENVIRONMENTS,
+  FILESYSTEMS,
+  GLOSSARY,
+  INTENTS,
+  KERNELS,
+  STEP_IDS,
+  filteredEnvironments,
+  filteredLayers,
+  findOptionById,
+  type FacePackage,
+} from "./neubat-face.js";
 
 type Props = { port: CorePort };
+
+type ToastState = {
+  message: string;
+  undo?: () => void;
+} | null;
 
 function announce(kind: "status" | "alert", message: string): void {
   const region = document.getElementById(
@@ -83,188 +56,215 @@ function fail(err: { code: string; messageKey: string }, where: string): void {
 export function App({ port }: Props) {
   const [draft, setDraft] = useState<Draft | null>(null);
   const [manifest, setManifest] = useState<Manifest | null>(null);
-  const [exportTargetId, setExportTargetId] =
-    useState<(typeof EXPORT_TARGETS)[number]>("archmaker-profile");
-  const [currentStep, setCurrentStep] = useState(0);
-  const [railStatus, setRailStatus] = useState<string[]>([
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-  ]);
-  const [dark, setDark] = useState(false);
-  const [resolveOut, setResolveOut] = useState("");
   const [diagnostics, setDiagnostics] = useState<Diagnostic[]>([]);
-  const [manifestOut, setManifestOut] = useState("");
-  const [exportOut, setExportOut] = useState("");
-  const [inspector, setInspector] = useState("Sin selección.");
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [step, setStep] = useState(0);
+  const [simpleMode, setSimpleMode] = useState(true);
+  const [dark, setDark] = useState(false);
+  const [toast, setToast] = useState<ToastState>(null);
+  const [pkgModal, setPkgModal] = useState<FacePackage | null>(null);
+  const [cmdOpen, setCmdOpen] = useState(false);
+  const [glossaryOpen, setGlossaryOpen] = useState(false);
+  const [ready, setReady] = useState(false);
 
-  const markStep = useCallback((n: number, mark: string) => {
-    setCurrentStep(n);
-    setRailStatus((prev) => {
-      const next = [...prev];
-      next[n] = mark;
-      return next;
+  const bootId =
+    singleId(draft, STEP_IDS.boot) ?? "archmaker.boot.systemd-boot";
+  const kernelId = singleId(draft, STEP_IDS.kernel) ?? "archmaker.kernel.linux";
+  const fsId =
+    singleId(draft, STEP_IDS.filesystem) ?? "archmaker.filesystem.btrfs";
+  const envId =
+    singleId(draft, STEP_IDS.compositor) ?? "archmaker.compositor.gnome";
+  const intentId =
+    singleId(draft, STEP_IDS.intent) ?? "archmaker.intent.desarrollo";
+  const selectedApps = useMemo(() => new Set(appIds(draft)), [draft]);
+  const hostname = textValue(draft, STEP_IDS.hostname);
+  const encrypt = boolValue(draft, STEP_IDS.encrypt);
+
+  const kernel = KERNELS.find((k) => k.optionId === kernelId);
+  const boot = BOOTLOADERS.find((b) => b.optionId === bootId);
+  const filesystem = FILESYSTEMS.find((f) => f.optionId === fsId);
+  const env = ENVIRONMENTS.find((e) => e.optionId === envId);
+  const envs = filteredEnvironments(simpleMode);
+  const layers = filteredLayers(simpleMode);
+
+  const selectedPackages = useMemo(() => {
+    const pkgs: FacePackage[] = [];
+    for (const id of selectedApps) {
+      const hit = findOptionById(id);
+      if (hit && "size" in hit) pkgs.push(hit);
+    }
+    return pkgs;
+  }, [selectedApps]);
+
+  const totalSize = useMemo(
+    () => selectedPackages.reduce((acc, p) => acc + p.size, 650),
+    [selectedPackages],
+  );
+
+  const sideDiagnostics = useMemo(() => {
+    const list: {
+      title: string;
+      description: string;
+      kind: "info" | "warn";
+    }[] = [];
+    if (
+      envId === "archmaker.compositor.sway" &&
+      kernelId === "archmaker.kernel.linux"
+    ) {
+      list.push({
+        kind: "warn",
+        title: "Sway con este kernel puede parpadear en algunos GPUs",
+        description: "Prueba Hyprland u otro escritorio si ves parpadeo.",
+      });
+    }
+    list.push({
+      kind: "info",
+      title: `Kernel ${kernel?.title ?? "—"}`,
+      description: kernel?.description ?? "Sin kernel seleccionado.",
     });
+    return list;
+  }, [envId, kernelId, kernel]);
+
+  const showToast = useCallback((message: string, undo?: () => void) => {
+    setToast({ message, undo });
+    announce("status", message);
+    window.setTimeout(() => setToast(null), 2800);
   }, []);
 
-  const selectedIds = useMemo(() => {
-    const set = new Set<string>();
-    for (const s of draft?.selections ?? []) {
-      if (s.value.kind === "single") set.add(s.value.optionId);
-    }
-    return set;
-  }, [draft]);
-
-  async function onCreate(): Promise<void> {
-    const res = await port.createDraft({
-      catalogRef: FIXED_CATALOG_REF,
-      targetRef: DRAFT_TARGET,
-    });
-    if (!res.ok) {
-      fail(res.error, "Crear draft");
-      return;
-    }
-    setDraft(res.value);
-    setManifest(null);
-    markStep(0, "✓");
-    announce("status", "Draft creado.");
-  }
-
-  function onToggleOption(opt: (typeof OPTIONS)[number]): void {
-    if (!draft) {
-      announce("alert", "Crea primero el draft (paso 1).");
-      return;
-    }
-    const already = selectedIds.has(opt.id);
-    let next: Draft;
-    if (already) {
-      next = {
-        ...draft,
-        selections: draft.selections.filter((s) => s.stepId !== opt.stepId),
-      };
-    } else {
-      next = withSelection(draft, singleSelection(opt.stepId, opt.id));
-    }
-    setDraft(next);
-    setInspector(`${opt.title}: ${opt.id} en ${opt.stepId}.`);
-    markStep(1, "✓");
-    announce("status", `${opt.title} ${already ? "quitada" : "seleccionada"}.`);
-  }
-
-  function onBootButton(opt: (typeof BOOT_BUTTONS)[number]): void {
-    if (!draft) {
-      announce("alert", "Crea primero el draft (paso 1).");
-      return;
-    }
-    const next = withSelection(draft, singleSelection(opt.stepId, opt.id));
-    setDraft(next);
-    setInspector(`${opt.title}: ${opt.id} en ${opt.stepId}.`);
-    markStep(1, "✓");
-    announce("status", `${opt.title} seleccionada.`);
-  }
-
-  async function onResolve(): Promise<void> {
-    if (!draft) {
-      announce("alert", "Crea primero el draft (paso 1).");
-      return;
-    }
-    const res = await port.resolveDraft({
-      draft,
-      catalogRef: FIXED_CATALOG_REF,
-    });
-    if (!res.ok) {
-      setResolveOut(`${res.error.code} ${res.error.messageKey}`);
-      fail(res.error, "Resolver");
-      return;
-    }
-    setResolveOut(
-      `Resuelto: ${res.value.effectiveSelections.length} selecciones efectivas.`,
-    );
-    markStep(2, "✓");
-    announce("status", "Draft resuelto.");
-  }
-
-  async function onValidate(): Promise<void> {
-    if (!draft) {
-      announce("alert", "Crea primero el draft (paso 1).");
-      return;
-    }
-    const res = await port.validateDraft({
-      draft,
-      catalogRef: FIXED_CATALOG_REF,
-    });
-    if (!res.ok) {
-      fail(res.error, "Validar");
-      return;
-    }
-    setDiagnostics(res.value.diagnostics);
-    markStep(3, res.value.blocking ? "⚠" : "✓");
-    announce(
-      "status",
-      res.value.blocking
-        ? "Validación con bloqueos."
-        : "Validación sin bloqueos.",
-    );
-  }
-
-  async function onManifest(): Promise<void> {
-    if (!draft) {
-      announce("alert", "Crea primero el draft (paso 1).");
-      return;
-    }
-    const res = await port.buildManifest({
-      draft,
-      catalogRef: FIXED_CATALOG_REF,
-      targetRef: exportTarget(exportTargetId),
-    });
-    if (!res.ok) {
-      setManifestOut(`${res.error.code} ${res.error.messageKey}`);
-      fail(res.error, "Manifest");
-      return;
-    }
-    setManifest(res.value);
-    setManifestOut(JSON.stringify(res.value, null, 2));
-    markStep(4, "✓");
-    announce("status", "Manifest construido.");
-  }
-
-  async function onExport(): Promise<void> {
-    if (!draft) {
-      announce("alert", "Crea primero el draft (paso 1).");
-      return;
-    }
-    let man = manifest;
-    if (!man || man.targetRef.id !== exportTargetId) {
-      const built = await port.buildManifest({
-        draft,
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      const res = await port.createDraft({
         catalogRef: FIXED_CATALOG_REF,
-        targetRef: exportTarget(exportTargetId),
+        targetRef: DRAFT_TARGET,
+      });
+      if (cancelled) return;
+      if (!res.ok) {
+        fail(res.error, "Crear draft");
+        return;
+      }
+      setDraft(res.value);
+      setReady(true);
+      announce("status", "Draft listo. Arranque: systemd-boot.");
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [port]);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", dark);
+  }, [dark]);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setCmdOpen(true);
+      }
+      if (e.key === "Escape") {
+        setCmdOpen(false);
+        setPkgModal(null);
+        setGlossaryOpen(false);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  function requireDraft(): Draft | null {
+    if (!draft) {
+      announce("alert", "El draft aún no está listo.");
+      return null;
+    }
+    return draft;
+  }
+
+  function pickSingle(stepId: string, optionId: string): void {
+    const d = requireDraft();
+    if (!d) return;
+    setDraft(chooseSingle(d, stepId, optionId));
+    const opt = findOptionById(optionId);
+    showToast(`${opt && "title" in opt ? opt.title : optionId} seleccionada.`);
+  }
+
+  function onTogglePackage(pkg: FacePackage): void {
+    const d = requireDraft();
+    if (!d) return;
+    const { draft: next, added } = toggleApp(d, pkg.optionId);
+    setDraft(next);
+    showToast(added ? `Añadido ${pkg.title}` : `Quitado ${pkg.title}`, () => {
+      setDraft((prev) => {
+        if (!prev) return prev;
+        return toggleApp(prev, pkg.optionId).draft;
+      });
+    });
+  }
+
+  async function onGenerate(): Promise<void> {
+    const d = requireDraft();
+    if (!d) return;
+    setStep(5);
+    const validated = await port.validateDraft({
+      draft: d,
+      catalogRef: FIXED_CATALOG_REF,
+    });
+    if (!validated.ok) {
+      fail(validated.error, "Validar");
+      return;
+    }
+    setDiagnostics(validated.value.diagnostics);
+    if (validated.value.blocking) {
+      announce("alert", "Validación con bloqueos.");
+      return;
+    }
+    const built = await port.buildManifest({
+      draft: d,
+      catalogRef: FIXED_CATALOG_REF,
+      targetRef: exportTarget("archmaker-profile"),
+    });
+    if (!built.ok) {
+      fail(built.error, "Manifest");
+      return;
+    }
+    setManifest(built.value);
+    showToast("Validación sin bloqueos. Manifest listo.");
+  }
+
+  async function onForge(): Promise<void> {
+    const d = requireDraft();
+    if (!d) return;
+    let man = manifest;
+    if (!man) {
+      await onGenerate();
+      man = null;
+      const built = await port.buildManifest({
+        draft: d,
+        catalogRef: FIXED_CATALOG_REF,
+        targetRef: exportTarget("archmaker-profile"),
       });
       if (!built.ok) {
-        setExportOut(`${built.error.code} ${built.error.messageKey}`);
-        fail(built.error, "Exportar");
+        fail(built.error, "Forjar");
         return;
       }
       man = built.value;
       setManifest(man);
     }
-    const res: Result<unknown> = await port.exportArtifact({
+    const res = await port.exportArtifact({
       manifest: man,
-      targetRef: exportTarget(exportTargetId),
+      targetRef: exportTarget("archmaker-profile"),
       destination: { token: "opaque-handle.json" },
     });
     if (!res.ok) {
-      setExportOut(`${res.error.code} ${res.error.messageKey}`);
-      fail(res.error, "Exportar");
+      fail(res.error, "Forjar");
       return;
     }
-    setExportOut("Artefacto exportado.");
-    markStep(5, "✓");
-    announce("status", "Artefacto exportado.");
+    showToast(
+      `Artefacto exportado: ${kernel?.title ?? "—"} + ${boot?.title ?? "—"} + ${filesystem?.title ?? "—"} + ${env?.title ?? "—"}`,
+    );
+  }
+
+  function nav(delta: number): void {
+    setStep((s) => Math.min(5, Math.max(0, s + delta)));
   }
 
   return (
@@ -272,234 +272,535 @@ export function App({ port }: Props) {
       <a className="skip-link" href="#main">
         Saltar al contenido
       </a>
-      <header className="app-header">
-        <h1>ArchMaker MVP-0</h1>
-        <p className="app-sub">
-          Walking skeleton: crear draft → seleccionar → resolver → validar →
-          manifest → exportar
-        </p>
-        <div className="header-actions">
-          <button
-            id="theme-toggle"
-            type="button"
-            aria-pressed={dark}
-            onClick={() => {
-              const next = !dark;
-              setDark(next);
-              document.documentElement.classList.toggle("dark", next);
-            }}
-          >
-            {dark ? "Tema claro" : "Tema oscuro"}
-          </button>
-        </div>
-      </header>
-      <div className="app-shell">
-        <nav
-          className="rail"
-          aria-label="Pasos del configurador"
-          id="step-rail"
-        >
-          <ol>
-            {STEPS.map((label, i) => (
-              <li key={label}>
-                <a
-                  href={`#step-${["create", "select", "resolve", "validate", "manifest", "export"][i]}`}
-                  aria-current={i === currentStep ? "step" : undefined}
-                >
-                  {i + 1}. {label}
-                </a>
-                <span className="rail-badge">{railStatus[i] ?? ""}</span>
-              </li>
-            ))}
-          </ol>
-        </nav>
-        <main id="main" className="workspace" tabIndex={-1}>
-          <section aria-labelledby="s1-h" id="step-create">
-            <h2 id="s1-h">1. Crear draft</h2>
-            <div className="field-row">
-              <label htmlFor="target-select">Target de exportación</label>
-              <select
-                id="target-select"
-                value={exportTargetId}
-                onChange={(e) =>
-                  setExportTargetId(
-                    e.target.value as (typeof EXPORT_TARGETS)[number],
-                  )
-                }
-              >
-                {EXPORT_TARGETS.map((t) => (
-                  <option key={t} value={t}>
-                    {t}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <button
-              id="btn-create"
-              type="button"
-              onClick={() => void onCreate()}
-            >
-              Crear draft
-            </button>
-          </section>
-          <section aria-labelledby="s2-h" id="step-select">
-            <h2 id="s2-h">2. Seleccionar</h2>
-            <div
-              id="options"
-              role="group"
-              aria-label="Opciones del catálogo embebido"
-            >
-              {OPTIONS.map((o) => {
-                const selected = selectedIds.has(o.id);
-                return (
-                  <button
-                    key={o.id}
-                    type="button"
-                    className="option-card"
-                    role="checkbox"
-                    aria-checked={selected}
-                    data-option-id={o.id}
-                    onClick={() => onToggleOption(o)}
-                  >
-                    <span className="option-title">{o.title}</span>
-                    <span className="option-state">
-                      {selected ? "● Seleccionada" : "○ Sin seleccionar"}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-            <div role="radiogroup" aria-label="Bootloader">
-              {BOOT_BUTTONS.map((option) => {
-                const selected = draft
-                  ? selectedIds.has(option.id)
-                  : option.id === INITIAL_BOOT_ID;
-                return (
-                  <button
-                    key={option.id}
-                    type="button"
-                    className="option-card"
-                    role="radio"
-                    aria-checked={selected}
-                    data-option-id={option.id}
-                    onClick={() => onBootButton(option)}
-                  >
-                    <span className="option-title">{option.title}</span>
-                    <span className="option-state">
-                      {selected ? "● Seleccionada" : "○ Sin seleccionar"}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-          </section>
-          <section aria-labelledby="s3-h" id="step-resolve">
-            <h2 id="s3-h">3. Resolver</h2>
-            <button
-              id="btn-resolve"
-              type="button"
-              onClick={() => void onResolve()}
-            >
-              Resolver draft
-            </button>
-            <output id="resolve-out" aria-live="off">
-              {resolveOut}
-            </output>
-          </section>
-          <section aria-labelledby="s4-h" id="step-validate">
-            <h2 id="s4-h">4. Validar</h2>
-            <button
-              id="btn-validate"
-              type="button"
-              onClick={() => void onValidate()}
-            >
-              Validar draft
-            </button>
-            <div id="validation-panel">
-              <p role="status">
-                {diagnostics.length === 0
-                  ? "Sin incidencias."
-                  : `${diagnostics.length} diagnósticos.`}
+      <ForgeHeader
+        dark={dark}
+        simpleMode={simpleMode}
+        onToggleDark={() => setDark((v) => !v)}
+        onSimpleMode={setSimpleMode}
+        onGlossary={() => setGlossaryOpen(true)}
+        onCommand={() => setCmdOpen(true)}
+        onGenerate={() => void onGenerate()}
+      />
+      <div className="forge-shell">
+        <ForgeRail step={step} simpleMode={simpleMode} onSelect={setStep} />
+        <main id="main" className="forge-main" tabIndex={-1}>
+          {!ready ? <p role="status">Preparando draft…</p> : null}
+
+          {step === 0 ? (
+            <section aria-labelledby="intent-h">
+              <h1 id="intent-h">¿Para qué usarás tu Arch?</h1>
+              <p className="forge-lead">
+                Modo {simpleMode ? "Sencillo" : "Avanzado"}. La intención no
+                cambia el catálogo en esta entrega.
               </p>
-              <ul>
-                {diagnostics.map((d) => (
-                  <li key={`${d.code}-${d.path}`}>
-                    <a
-                      href="#"
-                      aria-describedby={d.messageKey}
-                      onClick={(ev) => {
-                        ev.preventDefault();
-                        const target = document.querySelector(
-                          `[data-option-id="${d.path}"]`,
-                        ) as HTMLElement | null;
-                        target?.focus();
-                      }}
-                    >
-                      {d.code} · {d.path}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </section>
-          <section aria-labelledby="s5-h" id="step-manifest">
-            <h2 id="s5-h">5. Manifest</h2>
-            <button
-              id="btn-manifest"
-              type="button"
-              onClick={() => void onManifest()}
-            >
-              Construir manifest
-            </button>
-            <pre
-              id="manifest-out"
-              tabIndex={0}
-              aria-label="Resumen del manifest"
-            >
-              {manifestOut}
-            </pre>
-          </section>
-          <section aria-labelledby="s6-h" id="step-export">
-            <h2 id="s6-h">6. Exportar</h2>
-            <button
-              id="btn-export"
-              type="button"
-              onClick={() => void onExport()}
-            >
-              Exportar artefacto
-            </button>
-            <output id="export-out" aria-live="off">
-              {exportOut}
-            </output>
-          </section>
-        </main>
-        <aside className="inspector" aria-label="Inspector" id="inspector">
-          <h2>Inspector</h2>
-          <p id="inspector-body">{inspector}</p>
-          <button
-            id="inspector-evidence"
-            type="button"
-            onClick={() => setDialogOpen(true)}
-          >
-            Ver evidencia
-          </button>
-          {dialogOpen ? (
-            <dialog id="evidence-dialog" aria-labelledby="evidence-title" open>
-              <h2 id="evidence-title">Evidencia</h2>
-              <p id="evidence-body">{inspector}</p>
-              <form
-                method="dialog"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  setDialogOpen(false);
-                }}
+              <div
+                className="forge-grid-2"
+                role="radiogroup"
+                aria-label="Intención"
               >
-                <button type="submit">Cerrar</button>
-              </form>
-            </dialog>
+                {INTENTS.map((it) => {
+                  const selected = intentId === it.optionId;
+                  return (
+                    <button
+                      key={it.optionId}
+                      type="button"
+                      className={`forge-card${selected ? " is-selected" : ""}`}
+                      role="radio"
+                      aria-checked={selected}
+                      data-option-id={it.optionId}
+                      onClick={() => pickSingle(STEP_IDS.intent, it.optionId)}
+                    >
+                      <span className="forge-card-title">{it.title}</span>
+                      <span className="forge-card-desc">{it.description}</span>
+                    </button>
+                  );
+                })}
+              </div>
+              <div className="forge-nav-row forge-nav-end">
+                <button
+                  type="button"
+                  className="forge-btn-primary"
+                  onClick={() => nav(1)}
+                >
+                  Continuar → Sistema base
+                </button>
+              </div>
+            </section>
           ) : null}
-        </aside>
+
+          {step === 1 ? (
+            <section aria-labelledby="base-h">
+              <h2 id="base-h">Sistema base</h2>
+              <p className="forge-lead">
+                {simpleMode
+                  ? "Resumen. Pasa a Avanzado para elegir kernel, arranque y sistema de archivos."
+                  : "Elige kernel, arranque y sistema de archivos."}
+              </p>
+              {simpleMode ? (
+                <div className="forge-stack">
+                  <div className="forge-info-card is-accent">
+                    <strong>Kernel {kernel?.title}</strong>
+                    <p>{kernel?.description}</p>
+                  </div>
+                  <div className="forge-info-card">
+                    <strong>
+                      Arranque rápido ({boot?.title ?? "systemd-boot"})
+                    </strong>
+                    <p>
+                      Entradas clave-valor en UEFI. En Avanzado puedes elegir
+                      GRUB o Limine.
+                    </p>
+                  </div>
+                  <div className="forge-info-card">
+                    <strong>Protección ({filesystem?.title ?? "Btrfs"})</strong>
+                    <p>
+                      Snapshots y recuperación ante actualizaciones fallidas.
+                    </p>
+                  </div>
+                  <div className="forge-callout forge-callout-info">
+                    Modo Sencillo activo: kernel estable, systemd-boot y Btrfs.
+                  </div>
+                </div>
+              ) : (
+                <div className="forge-stack">
+                  <h3 className="forge-section-label">Kernel</h3>
+                  <div
+                    role="radiogroup"
+                    aria-label="Kernel"
+                    className="forge-stack"
+                  >
+                    {KERNELS.map((k) => {
+                      const selected = kernelId === k.optionId;
+                      return (
+                        <button
+                          key={k.optionId}
+                          type="button"
+                          className={`forge-card${selected ? " is-selected" : ""}`}
+                          role="radio"
+                          aria-checked={selected}
+                          data-option-id={k.optionId}
+                          onClick={() =>
+                            pickSingle(STEP_IDS.kernel, k.optionId)
+                          }
+                        >
+                          <span className="forge-card-row">
+                            <span className="forge-card-title">
+                              {k.title}{" "}
+                              <span className="forge-chip">{k.version}</span>
+                            </span>
+                            {k.tag ? (
+                              <span className="forge-tag">{k.tag}</span>
+                            ) : null}
+                          </span>
+                          <span className="forge-card-desc">
+                            {k.description}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                  <fieldset className="forge-fieldset">
+                    <legend>Bootloader</legend>
+                    <div
+                      role="radiogroup"
+                      aria-label="Bootloader"
+                      className="forge-radio-row"
+                    >
+                      {BOOTLOADERS.map((b) => {
+                        const selected = bootId === b.optionId;
+                        return (
+                          <label key={b.optionId} className="forge-radio-label">
+                            <input
+                              type="radio"
+                              name="boot"
+                              checked={selected}
+                              onChange={() =>
+                                pickSingle(STEP_IDS.boot, b.optionId)
+                              }
+                              data-option-id={b.optionId}
+                            />
+                            {b.title}
+                          </label>
+                        );
+                      })}
+                    </div>
+                  </fieldset>
+                  <fieldset className="forge-fieldset">
+                    <legend>Filesystem</legend>
+                    <div
+                      role="radiogroup"
+                      aria-label="Filesystem"
+                      className="forge-radio-row"
+                    >
+                      {FILESYSTEMS.map((f) => {
+                        const selected = fsId === f.optionId;
+                        return (
+                          <label key={f.optionId} className="forge-radio-label">
+                            <input
+                              type="radio"
+                              name="fs"
+                              checked={selected}
+                              onChange={() =>
+                                pickSingle(STEP_IDS.filesystem, f.optionId)
+                              }
+                              data-option-id={f.optionId}
+                            />
+                            {f.title}
+                          </label>
+                        );
+                      })}
+                    </div>
+                  </fieldset>
+                </div>
+              )}
+              <div className="forge-nav-row">
+                <button
+                  type="button"
+                  className="forge-btn-ghost"
+                  onClick={() => nav(-1)}
+                >
+                  ← Atrás
+                </button>
+                <button
+                  type="button"
+                  className="forge-btn-primary"
+                  onClick={() => nav(1)}
+                >
+                  Continuar → Entorno
+                </button>
+              </div>
+            </section>
+          ) : null}
+
+          {step === 2 ? (
+            <section aria-labelledby="env-h">
+              <div className="forge-heading-row">
+                <h2 id="env-h">
+                  Entorno gráfico {simpleMode ? "(solo escritorios)" : ""}
+                </h2>
+                <span className="forge-chip">{envs.length} opciones</span>
+              </div>
+              <p className="forge-lead">
+                {simpleMode
+                  ? "Sencillo oculta gestores de ventanas técnicos."
+                  : "Avanzado muestra escritorios y gestores."}
+              </p>
+              <div
+                className="forge-grid-2"
+                role="radiogroup"
+                aria-label="Entorno gráfico"
+              >
+                {envs.map((e) => {
+                  const selected = envId === e.optionId;
+                  return (
+                    <button
+                      key={e.optionId}
+                      type="button"
+                      className={`forge-card${selected ? " is-selected" : ""}`}
+                      role="radio"
+                      aria-checked={selected}
+                      data-option-id={e.optionId}
+                      onClick={() =>
+                        pickSingle(STEP_IDS.compositor, e.optionId)
+                      }
+                    >
+                      <span className="forge-card-row">
+                        <span className="forge-card-title">
+                          {e.title}{" "}
+                          <span className="forge-chip">{e.version}</span>
+                        </span>
+                        <span className="forge-chip">{e.protocol}</span>
+                      </span>
+                      <span
+                        className="forge-preview-mini"
+                        data-env={e.htmlId}
+                      />
+                      <span className="forge-card-desc">
+                        <strong>Ideal:</strong> {e.ideal}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+              <div className="forge-nav-row">
+                <button
+                  type="button"
+                  className="forge-btn-ghost"
+                  onClick={() => nav(-1)}
+                >
+                  ← Atrás
+                </button>
+                <button
+                  type="button"
+                  className="forge-btn-primary"
+                  onClick={() => nav(1)}
+                >
+                  Continuar → Apps
+                </button>
+              </div>
+            </section>
+          ) : null}
+
+          {step === 3 ? (
+            <section aria-labelledby="apps-h">
+              <h2 id="apps-h">Apps y paquetes</h2>
+              <p className="forge-lead">
+                Modo {simpleMode ? "Sencillo" : "Avanzado"} ·{" "}
+                {selectedApps.size} seleccionadas · {totalSize} MB
+              </p>
+              <div className="forge-stack" id="options">
+                {layers.map((layer) => {
+                  const count = layer.packages.filter((p) =>
+                    selectedApps.has(p.optionId),
+                  ).length;
+                  return (
+                    <div key={layer.id} className="forge-layer">
+                      <div className="forge-layer-head">
+                        <div>
+                          <span aria-hidden="true">{layer.icon} </span>
+                          <strong>{layer.title}</strong>
+                          <p className="forge-muted">{layer.description}</p>
+                        </div>
+                        <span className="forge-chip">
+                          {count}/{layer.packages.length}
+                        </span>
+                      </div>
+                      <div
+                        className="forge-stack"
+                        role="group"
+                        aria-label={layer.title}
+                      >
+                        {layer.packages.map((pkg) => {
+                          const selected = selectedApps.has(pkg.optionId);
+                          return (
+                            <div
+                              key={pkg.optionId}
+                              className={`forge-pkg-row${selected ? " is-selected" : ""}`}
+                            >
+                              <input
+                                type="checkbox"
+                                role="checkbox"
+                                checked={selected}
+                                aria-checked={selected}
+                                aria-label={pkg.title}
+                                data-option-id={pkg.optionId}
+                                onChange={() => onTogglePackage(pkg)}
+                              />
+                              <button
+                                type="button"
+                                className="forge-pkg-open"
+                                onClick={() => setPkgModal(pkg)}
+                              >
+                                <span className="forge-card-row">
+                                  <span className="forge-card-title">
+                                    {pkg.title}{" "}
+                                    <span className="forge-muted">
+                                      {pkg.size} MB
+                                    </span>
+                                  </span>
+                                  <span className="forge-tag">{pkg.tag}</span>
+                                </span>
+                                <span className="forge-card-desc">
+                                  {pkg.description}
+                                </span>
+                              </button>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+              <div className="forge-nav-row">
+                <button
+                  type="button"
+                  className="forge-btn-ghost"
+                  onClick={() => nav(-1)}
+                >
+                  ← Atrás
+                </button>
+                <button
+                  type="button"
+                  className="forge-btn-primary"
+                  onClick={() => nav(1)}
+                >
+                  Continuar → Identidad
+                </button>
+              </div>
+            </section>
+          ) : null}
+
+          {step === 4 ? (
+            <section aria-labelledby="id-h">
+              <h2 id="id-h">Identidad y seguridad</h2>
+              <div className="forge-stack forge-narrow">
+                <label className="forge-field">
+                  <span>Hostname</span>
+                  <input
+                    value={hostname}
+                    placeholder="mi-equipo"
+                    onChange={(e) => {
+                      const d = requireDraft();
+                      if (!d) return;
+                      setDraft(setText(d, STEP_IDS.hostname, e.target.value));
+                    }}
+                  />
+                </label>
+                <div className="forge-info-card">
+                  <strong>Protege el disco (cifrado)</strong>
+                  <p className="forge-muted">
+                    Marca la intención. Esta cara no cifra nada.
+                  </p>
+                  <label className="forge-check">
+                    <input
+                      type="checkbox"
+                      role="checkbox"
+                      checked={encrypt}
+                      aria-checked={encrypt}
+                      onChange={(e) => {
+                        const d = requireDraft();
+                        if (!d) return;
+                        setDraft(
+                          setBool(d, STEP_IDS.encrypt, e.target.checked),
+                        );
+                      }}
+                    />
+                    Activar cifrado
+                  </label>
+                </div>
+              </div>
+              <div className="forge-nav-row">
+                <button
+                  type="button"
+                  className="forge-btn-ghost"
+                  onClick={() => nav(-1)}
+                >
+                  ← Atrás
+                </button>
+                <button
+                  type="button"
+                  className="forge-btn-primary"
+                  onClick={() => nav(1)}
+                >
+                  Continuar → Revisión
+                </button>
+              </div>
+            </section>
+          ) : null}
+
+          {step === 5 ? (
+            <section aria-labelledby="review-h">
+              <h2 id="review-h">Revisión</h2>
+              <div className="forge-callout forge-callout-info">
+                <strong>Listo para forjar</strong>
+                <p>
+                  Kernel {kernel?.title ?? "—"} · Arranque {boot?.title ?? "—"}{" "}
+                  · {filesystem?.title ?? "—"} · {selectedApps.size} apps ·{" "}
+                  {env?.title ?? "—"} {env?.version ?? ""}
+                </p>
+                {diagnostics.length > 0 ? (
+                  <p role="status">{diagnostics.length} diagnósticos.</p>
+                ) : (
+                  <p role="status">Sin incidencias.</p>
+                )}
+              </div>
+              <div className="forge-nav-row">
+                <button
+                  type="button"
+                  className="forge-btn-ghost"
+                  onClick={() => nav(-1)}
+                >
+                  ← Atrás
+                </button>
+                <button
+                  type="button"
+                  className="forge-btn-primary"
+                  id="btn-export"
+                  onClick={() => void onForge()}
+                >
+                  Forjar
+                </button>
+              </div>
+            </section>
+          ) : null}
+        </main>
+        <ForgeAside
+          kernel={kernel}
+          bootTitle={boot?.title ?? "systemd-boot"}
+          filesystemTitle={filesystem?.title ?? "Btrfs"}
+          env={env}
+          simpleMode={simpleMode}
+          apps={selectedPackages}
+          appCount={selectedApps.size}
+          totalSize={totalSize}
+          diagnostics={sideDiagnostics}
+          onPickEnv={(optionId) => pickSingle(STEP_IDS.compositor, optionId)}
+        />
       </div>
+
+      {toast ? (
+        <div className="forge-toast" role="status">
+          <span>{toast.message}</span>
+          {toast.undo ? (
+            <button type="button" onClick={() => toast.undo?.()}>
+              Deshacer
+            </button>
+          ) : null}
+        </div>
+      ) : null}
+
+      {pkgModal ? (
+        <PackageDialog
+          pkg={pkgModal}
+          selected={selectedApps.has(pkgModal.optionId)}
+          onToggle={() => {
+            onTogglePackage(pkgModal);
+            setPkgModal(null);
+          }}
+          onClose={() => setPkgModal(null)}
+        />
+      ) : null}
+
+      {cmdOpen ? (
+        <CommandPalette
+          selectedIds={selectedApps}
+          onToggle={onTogglePackage}
+          onClose={() => setCmdOpen(false)}
+        />
+      ) : null}
+
+      {glossaryOpen ? (
+        <div className="forge-drawer-backdrop">
+          <button
+            type="button"
+            className="forge-modal-scrim"
+            aria-label="Cerrar glosario"
+            onClick={() => setGlossaryOpen(false)}
+          />
+          <aside className="forge-drawer" aria-labelledby="glossary-title">
+            <div className="forge-modal-head">
+              <h2 id="glossary-title">Glosario</h2>
+              <button
+                type="button"
+                className="forge-btn-icon"
+                onClick={() => setGlossaryOpen(false)}
+              >
+                Cerrar
+              </button>
+            </div>
+            <div className="forge-stack">
+              {GLOSSARY.map((g) => (
+                <div key={g.title} className="forge-info-card">
+                  <strong>{g.title}</strong>
+                  <p>{g.body}</p>
+                </div>
+              ))}
+            </div>
+          </aside>
+        </div>
+      ) : null}
+
       <div id="toast-region" aria-live="polite" role="status" />
       <div id="alert-region" aria-live="assertive" role="alert" />
     </>
