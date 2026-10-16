@@ -101,7 +101,7 @@ Residuales de ejecución (agente / `--with-e2e`):
 | Id         | executed/passed                                      | Sigue pending                                      |
 | ---------- | ---------------------------------------------------- | -------------------------------------------------- |
 | F7-E2E-X3  | executable (3 invocaciones separadas workers=1 retries=0; no repeat-each) | re-verificar con `--with-e2e`                  |
-| F7-OFFLINE | web passed (`wasm-offline`)                          | escritorio sin humo de red/portal                  |
+| F7-OFFLINE | web passed (`wasm-offline`)                          | escritorio **blocked** (P6; sin binario prod tip)  |
 | F7-REG-F6  | mensajes F6 executable                               | —                                                  |
 | F7-P95     | web-ready P95 123 ms; web-prepare P95 58 ms (n=30)   | desktop blocked; aceptación global no cerrada      |
 

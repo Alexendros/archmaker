@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "1",
+  "caseId": "F7-OFFLINE-DESKTOP",
+  "sourceSha": "535393dbcb997f46a47ae252d73f3e86ff5a4c06",
+  "status": "blocked",
+  "capturedAt": "2026-10-16T23:38:51Z",
+  "artifact": {
+    "name": "desktop-offline-p6-probe.json",
+    "sizeBytes": 747,
+    "sha256": "9511339593f72c326522d9539bdcf8e0820593f1c9a3b6fc8a88f8474170a229",
+    "mediaType": "application/json"
+  },
+  "identity": {
+    "host": "alexendros-aerox16",
+    "operator": "archmaker-cierre-agent"
+  },
+  "notes": [
+    "DISPLAY=:0 — sesión gráfica detectada=sí",
+    "xdg-desktop-portal en ejecución=no",
+    "AppImage histórico v0.1.0 presente=True (SHA distinto; nombre Neubat; NO cierra P6 del tip)",
+    "MockCorePort no se usa como cierre",
+    "Estado=blocked: evidencia ausente nombrada abajo; no pending ambiguo",
+    "AUSENTE: AppImage o binario de producción del SOURCE_SHA 535393dbcb997f46a47ae252d73f3e86ff5a4c06 (no existe en ~/archmaker-closure ni target/release bundle del tip)",
+    "AUSENTE: E2E portal rfd: cancelar / guardar / sobrescribir / destino sin permisos sobre ese binario",
+    "AUSENTE: Arranque offline de escritorio (F7-OFFLINE-DESKTOP) con red deshabilitada sobre ese binario",
+    "AUSENTE: Tres instalaciones limpias independientes del candidato (no reuso de v0.1.0 histórico)"
+  ]
+}
