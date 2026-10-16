@@ -1,0 +1,20 @@
+{
+  "algorithm": "sha256",
+  "files": {
+    "positive-profile.json": {
+      "sha256": "ca2310939773c5e8d53eccea5ab417df768536d985f11b721f7a77e46fb10d50",
+      "sizeBytes": 78,
+      "class": "positive"
+    },
+    "negative-incomplete.json": {
+      "sha256": "713ec53cd8c9f2c5dee5066b373d7c71f4c4225c3d52310b43ca0ee7ea801222",
+      "sizeBytes": 40,
+      "class": "negative"
+    },
+    "binary-payload.bin": {
+      "sha256": "4de4fcdc66889d5729e46072af02e14db6134f0aa16fdfb2829d4dca480cdfc9",
+      "sizeBytes": 9,
+      "class": "binary"
+    }
+  }
+}

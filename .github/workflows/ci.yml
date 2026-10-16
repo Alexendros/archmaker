@@ -185,6 +185,7 @@ jobs:
           python3 tools/validate_mig.py
           # G6-C03 / AUD-021: contraste y tokens WCAG 2.2 (1.4.1 = contract + manual).
           python3 tools/wcag_validate.py
+          python3 tools/validate_closure_evidence.py
 
   traceability:
     name: Matriz de trazabilidad FR/NFR -> TST/VAL (G2/G9)

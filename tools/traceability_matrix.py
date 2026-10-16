@@ -325,6 +325,7 @@ def generate_markdown(matrix: Dict[str, Any]) -> str:
     lines.append("- VAL-FRONT-MATTER: validacion front matter documentos")
     lines.append("- VAL-GATES: validacion estado gates")
     lines.append("- VAL-TRACEABILITY: validacion integridad matriz trazabilidad")
+    lines.append("- VAL-CLOSURE-EVIDENCE: manifiesto de evidencia de cierre; un ejemplo no es evidencia")
     lines.append("")
 
     return "\n".join(lines)

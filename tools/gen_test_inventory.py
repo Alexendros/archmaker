@@ -47,6 +47,12 @@ PYTHON_VALIDATORS = {
         'type': 'schema',
         'transversal': False,
     },
+    'validate_closure_evidence.py': {
+        'id': 'VAL-CLOSURE-EVIDENCE',
+        'covers': [],
+        'type': 'doc',
+        'transversal': True,
+    },
 }
 
 WEB_TEST_TYPES = {
