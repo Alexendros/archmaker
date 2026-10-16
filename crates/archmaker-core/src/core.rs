@@ -1271,6 +1271,7 @@ impl CorePort for RealCore {
             },
             experimental,
             content: Some(rendered.content),
+            bytes: Some(rendered.bytes),
         })
     }
 

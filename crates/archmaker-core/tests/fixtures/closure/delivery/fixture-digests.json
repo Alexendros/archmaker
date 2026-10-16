@@ -1,0 +1,26 @@
+{
+  "algorithm": "sha256",
+  "files": {
+    "report-sample.md": {
+      "sha256": "31c78d99ecb381840aec04811d812d74eff3104be72067074bd444f61201256e",
+      "sizeBytes": 71,
+      "class": "delivery"
+    },
+    "profile-sample.json": {
+      "sha256": "49dc601567bd8c52d00cc774f383857048ba9ccfc681352e3b3d05ee1b4ce25a",
+      "sizeBytes": 57,
+      "class": "delivery"
+    },
+    "archinstall-sample.json": {
+      "sha256": "2319cd5c2ed9a5478d10fcc60da2f048121caa47eddecdf3328ef18edc7acca0",
+      "sizeBytes": 52,
+      "class": "delivery"
+    },
+    "reject-empty.meta.json": {
+      "sha256": "6b5d53182a7f11aac3e26a57e5d53430b22f631e9f68e5734eddeb9486f7aa14",
+      "sizeBytes": 146,
+      "class": "negative-bytes"
+    }
+  },
+  "note": "F2 delivery corpus; not 20/target"
+}

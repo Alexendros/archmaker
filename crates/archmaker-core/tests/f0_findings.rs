@@ -185,7 +185,13 @@ fn c02_export_binary_digest_matches_renderer_bytes() {
     assert_eq!(artifact.binary_digest.value, sha256_hex(&rendered.bytes));
     assert_eq!(rendered.media_type, "text/markdown");
     let dto = serde_json::to_value(&artifact).expect("dto");
-    assert!(dto.get("bytes").is_none(), "el DTO Artifact no lleva bytes");
+    let dto_bytes = dto
+        .get("bytes")
+        .and_then(|v| v.as_array())
+        .expect("el DTO Artifact lleva bytes");
+    assert_eq!(dto_bytes.len(), rendered.bytes.len());
+    let transported = artifact.bytes.as_ref().expect("bytes en Artifact");
+    assert_eq!(transported.as_slice(), rendered.bytes.as_slice());
     let content = artifact.content.expect("content");
     assert!(content.is_string(), "report viaja como cadena JSON");
     let quoted = serde_json::to_string_pretty(&content).expect("stringify");
@@ -195,8 +201,9 @@ fn c02_export_binary_digest_matches_renderer_bytes() {
         "JSON.stringify de la cadena no es el texto del informe"
     );
     let delivery = read_repo("apps/web/src/export-delivery.ts");
-    assert!(delivery.contains("JSON.stringify(payload, null, 2)"));
-    assert!(delivery.contains("artifact.content ??"));
+    assert!(delivery.contains("prepareDelivery"));
+    assert!(delivery.contains("bytes-missing"));
+    assert!(!delivery.contains("artifact.content ??"));
 }
 
 #[test]

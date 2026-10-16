@@ -911,6 +911,8 @@ fn export_artifact_without_store_dir_returns_content() {
         })
         .expect("export without store_dir");
     assert!(artifact.content.is_some());
+    let bytes = artifact.bytes.as_ref().expect("bytes transported");
+    assert!(!bytes.is_empty());
     assert_eq!(artifact.binary_digest.value.len(), 64);
 }
 

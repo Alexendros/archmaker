@@ -490,6 +490,9 @@ pub struct Artifact {
     pub experimental: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none", default)]
     pub content: Option<serde_json::Value>,
+    /// Exact renderer bytes. SHA-256 of these equals `binary_digest`.
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    pub bytes: Option<Vec<u8>>,
 }
 
 #[cfg(test)]

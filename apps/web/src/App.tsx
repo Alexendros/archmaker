@@ -11,6 +11,7 @@ import { CommandPalette } from "./CommandPalette.js";
 import { draftForCore, listFaceExclusions } from "./draft-for-core.js";
 import { loadLastDraftLocal, persistDraftLocal } from "./draft-persistence.js";
 import {
+  DeliveryError,
   destinationTokenFor,
   downloadArtifact,
   exportFilename,
@@ -455,11 +456,18 @@ export function App({ port, portKind }: Props) {
         );
         return;
       }
-      downloadArtifact(res.value, exportFilename(token));
-      const digestShort = res.value.binaryDigest.value.slice(0, 12);
-      showToast(
-        `Archivo entregado (${digestShort}…): ${exportFilename(token)}`,
-      );
+      try {
+        const name = exportFilename(token, res.value.targetRef.id);
+        await downloadArtifact(res.value, name);
+        const digestShort = res.value.binaryDigest.value.slice(0, 12);
+        showToast(`Archivo entregado (${digestShort}…): ${name}`);
+      } catch (err) {
+        const message =
+          err instanceof DeliveryError
+            ? err.message
+            : "No se pudo entregar el archivo.";
+        announce("alert", message);
+      }
     } finally {
       setBusy(false);
     }
