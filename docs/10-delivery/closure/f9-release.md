@@ -27,8 +27,9 @@ dependsOn:
 - Canal: AppImage Linux x86_64, nombre público **Neubat** (DEC-011 / F8).
 - Hosting: GitHub Release del tag `v*`; workflow `.github/workflows/release.yml`.
 - Evidencia de digests y `APPROVAL_RECORD` viven **fuera del árbol** de código
-  (`closure-evidence/<rc-sha>/<run-id>/`). Este documento no embebe digests de
-  artefactos (evitar desincronización); apunta al manifiesto externo.
+  (p. ej. `archmaker-closure-evidence/<rc-sha>/<run-id>/` hermano del repo). Este
+  documento no embebe digests como única verdad; la identidad es el
+  `ARTIFACT_SHA256` del AppImage publicado y el `manifest.json.sha256` externo.
 
 ## Identidades
 
