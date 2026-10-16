@@ -39,7 +39,7 @@ assets de la release histórica.
 | Fuente (candidato) | `6440b03acf27140c410b77d3f81f43c3d9b21898` | `origin/main` post-P7 (merge PR #136); tip al fijar este documento |
 | Harness | `6440b03acf27140c410b77d3f81f43c3d9b21898` | Coincide con fuente (herramientas en el mismo tip) |
 | Renderer Archify | `ca67c9f16be0c8cad409cd45190aa052e0649b84` | Pin; no actualizar sin revalidar |
-| Artefacto publicado | `9297ed7cc47f42a9611aed0093b5ab040daca512` | Histórico `v0.1.0` Neubat; **no** es este candidato |
+| Artefacto publicado | `9297ed7cc47f42a9611aed0093b5ab040daca512` | Histórico `v0.1.0` (nombre público retirado); **no** es este candidato |
 
 Digest AppImage histórico: ver [`f9-release.md`](f9-release.md). Este documento **no**
 reclama digest, SBOM ni firma del tip candidato: no se produjeron bytes de canal nuevo.

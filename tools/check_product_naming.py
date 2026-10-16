@@ -49,7 +49,7 @@ ALLOWLIST: list[AllowEntry] = [
     AllowEntry(
         "AGENTS.md",
         "regla de historia + ruta externa archmaker_neubat.html",
-        3,
+        4,
     ),
     AllowEntry(
         "README.md",
@@ -69,6 +69,16 @@ ALLOWLIST: list[AllowEntry] = [
     AllowEntry(
         "docs/10-delivery/closure/evidence-runs.md",
         "identidad artefacto Neubat_0.1.0_amd64.AppImage",
+        1,
+    ),
+    AllowEntry(
+        "docs/11-operations/manual/Instalacion-Forge.md",
+        "manual cita nombre de archivo del AppImage histórico v0.1.0",
+        2,
+    ),
+    AllowEntry(
+        "docs/10-delivery/closure/p6-desktop-offline.md",
+        "exclusión explícita del artefacto histórico v0.1.0",
         1,
     ),
     AllowEntry(
