@@ -49,6 +49,7 @@ consumidores referencian los identificadores `DEC-*` y **no** reafirman su estad
 | DEC-008 | **Solo Arch x86_64**                                                       | 2026-10-05 | product      | P0        | accepted | sí         |
 | DEC-009 | Sin CDN en runtime; recursos empaquetados o del sistema                    | 2026-10-06 | ux           | P1        | accepted | no         |
 | DEC-010 | Sin telemetría en MVP                                                      | 2026-10-06 | product      | P1        | accepted | no         |
+| DEC-011 | Nombre público Neubat + canal inicial AppImage Linux x86_64                | 2026-10-16 | product      | P0        | accepted | no         |
 
 ## Registro estructurado
 
@@ -175,28 +176,43 @@ consumidores referencian los identificadores `DEC-*` y **no** reafirman su estad
 - Consecuencia: el MVP no envía telemetría; solo errores y eventos locales redactados.
 - Issue de seguimiento: — (diferido a ADR futuro).
 
+### DEC-011 — Nombre público y canal inicial de distribución
+
+- Pregunta: ¿qué nombre público y qué plataforma única abren la primera release verificable
+  sin permiso escrito de Arch Linux?
+- Decisión: nombre público **Neubat** (ADR-0010 opción 3; ids técnicos `archmaker*` intactos);
+  plataforma inicial **AppImage Linux x86_64** publicada en GitHub Release (`release.yml`);
+  MVP-6 `accepted` solo para esa plataforma; `.deb`/`.rpm`/OBS/AUR/Flatpak deferred o blocked;
+  AUR nunca como repo binario en este acto.
+- Fecha y autoridad: 2026-10-16 · `product` · `accepted`.
+- ADR: ADR-0010. Requisitos: NFR-MARK-001, NFR-COST-001, FR-EXPORT-001. Riesgos: —. Gates: G2, G8, G10.
+- Consecuencia: F8 passed / F9 authorized; metainfo público sin signo ARCH; F9 construye desde
+  `RC_SHA` de `main` sin alterar bytes tras el digest.
+- Issue de seguimiento: MVP-6-02, MVP-6-03 (F9).
+
 ## Desviaciones respecto a la recomendación
 
 Las únicas desviaciones aceptadas son `DEC-007` y `DEC-008`; ambas se detallan en su registro. El
 resto de decisiones coinciden con la recomendación o la precisan (DEC-005, DEC-006, DEC-009,
-DEC-010).
+DEC-010, DEC-011).
 
 ## Consecuencias aplicadas y no aplicadas
 
-| ID      | Consecuencia                                                         | Estado             | Issue            |
-| ------- | -------------------------------------------------------------------- | ------------------ | ---------------- |
-| DEC-001 | Conjunto de `ExportTarget` fijado en contratos y DTO.                | aplicada           | AUD-016          |
-| DEC-002 | Namespace global `vendor.kind.id`; habilita detección de duplicados. | aplicada           | AUD-011          |
-| DEC-003 | Dominio agnóstico del target; sin `pacstrap`/shell en runtime.       | aplicada           | AUD-016          |
-| DEC-004 | Transporte y elevación fijados; runner v1 diferido a su gate.        | aplicada (diseño)  | AUD-018          |
-| DEC-005 | Licencia Apache-2.0 única en `LICENSE`.                              | aplicada           | AUD-022          |
-| DEC-006 | Firma keyless y verificación offline definidas.                      | parcial (política) | AUD-019, AUD-022 |
-| DEC-006 | Pipeline real de build/attest/SBOM y firmas.                         | no aplicada        | AUD-022          |
-| DEC-007 | `THR-UPD-001` cerrado antes de MVP-0.                                | no aplicada        | AUD-019          |
-| DEC-007 | Updater deshabilitado por defecto en builds de desarrollo.           | aplicada           | AUD-019          |
-| DEC-008 | Matriz de soporte y pruebas reducida a x86_64.                       | aplicada           | AUD-020          |
-| DEC-009 | Sin CDN en runtime; CSP `self` y recursos empaquetados.              | aplicada           | AUD-020          |
-| DEC-010 | MVP sin telemetría; solo eventos locales redactados.                 | aplicada           | —                |
+| ID      | Consecuencia                                                         | Estado              | Issue            |
+| ------- | -------------------------------------------------------------------- | ------------------- | ---------------- |
+| DEC-001 | Conjunto de `ExportTarget` fijado en contratos y DTO.                | aplicada            | AUD-016          |
+| DEC-002 | Namespace global `vendor.kind.id`; habilita detección de duplicados. | aplicada            | AUD-011          |
+| DEC-003 | Dominio agnóstico del target; sin `pacstrap`/shell en runtime.       | aplicada            | AUD-016          |
+| DEC-004 | Transporte y elevación fijados; runner v1 diferido a su gate.        | aplicada (diseño)   | AUD-018          |
+| DEC-005 | Licencia Apache-2.0 única en `LICENSE`.                              | aplicada            | AUD-022          |
+| DEC-006 | Firma keyless y verificación offline definidas.                      | parcial (política)  | AUD-019, AUD-022 |
+| DEC-006 | Pipeline real de build/attest/SBOM y firmas.                         | no aplicada         | AUD-022          |
+| DEC-007 | `THR-UPD-001` cerrado antes de MVP-0.                                | no aplicada         | AUD-019          |
+| DEC-007 | Updater deshabilitado por defecto en builds de desarrollo.           | aplicada            | AUD-019          |
+| DEC-008 | Matriz de soporte y pruebas reducida a x86_64.                       | aplicada            | AUD-020          |
+| DEC-009 | Sin CDN en runtime; CSP `self` y recursos empaquetados.              | aplicada            | AUD-020          |
+| DEC-010 | MVP sin telemetría; solo eventos locales redactados.                 | aplicada            | —                |
+| DEC-011 | Nombre público Neubat; AppImage x86_64 como único canal inicial.     | aplicada (gobierno) | MVP-6-02/03 (F9) |
 
 ## Reglas de validación (R2)
 
@@ -220,7 +236,8 @@ Equivalencias aplicadas:
 
 ## Historia
 
-Se conservan `DEC-001`..`DEC-010` sin eliminar ninguna. Todas están en estado `accepted`; ninguna
+Se conservan `DEC-001`..`DEC-011` sin eliminar ninguna. Todas están en estado `accepted`; ninguna
 está `superseded`, `rejected` ni `proposed`, por lo que no se declara sucesora. `DEC-005` y
 `DEC-006` fueron aceptadas el 2026-10-05 y **clarificadas** el 2026-10-06. `DEC-009` y `DEC-010`
-pasan de `proposed` a `accepted` el 2026-10-06.
+pasan de `proposed` a `accepted` el 2026-10-06. `DEC-011` se acepta el 2026-10-16 con ADR-0010
+opción 3 y MVP-6 AppImage.

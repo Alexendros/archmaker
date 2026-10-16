@@ -2,11 +2,11 @@
 id: DOC-DEL-PKG-001
 phase: MVP
 priority: P1
-documentStatus: draft
-approvalStatus: pending
+documentStatus: in-review
+approvalStatus: approved
 implementationStatus: partial
 verificationStatus: not-verified
-releaseStatus: ineligible
+releaseStatus: eligible
 owners:
   - release
 reviewers:
@@ -15,12 +15,12 @@ reviewers:
 
 # Packaging y release
 
-- Estado: draft
+- Estado: in-review (canal F8 authorized; pipeline F9)
 - Propietario: Release
-- Última revisión: 2026-10-14
+- Última revisión: 2026-10-16
 - Requisitos relacionados: FR-EXPORT-001, NFR-OBS-001, NFR-SEC-001, NFR-PORT-001, NFR-MARK-001, NFR-COST-001
 - Sustituye / sustituido por: —
-- Decisiones aplicables: DEC-001, DEC-005, DEC-006, DEC-007 (aceptadas 2026-10-05); DEC-009 (propuesta); ADR-0010 (proposed)
+- Decisiones aplicables: DEC-001, DEC-005, DEC-006, DEC-007, DEC-009, DEC-011; ADR-0010 (accepted, opción 3)
 
 ## Dos actos de release
 
@@ -45,23 +45,33 @@ Artefactos: el código del tag que GitHub adjunta y las notas. Sin binarios, sin
 
 ### Release de paquete
 
-Sigue la política de artefactos, canales y firma de este documento. Queda bloqueada por:
+Sigue la política de artefactos, canales y firma de este documento. **Canal autorizado (F8 /
+DEC-011 / MVP-6 accepted):**
 
-- alcance MVP-6 (`docs/10-delivery/mvp6-scope.md`) sin estado `accepted`
-- NFR-MARK-001 / ADR-0010 (nombre público no cerrado)
-- residual DEC-006 (pipeline real de SBOM/firmas pendiente de Etapa C)
-- F9 **blocked** mientras F7 no tenga aceptación funcional y F8 no autorice un canal
-  (`docs/10-delivery/closure/f8-governance.md`). Este documento no anuncia plataforma ni abre F9.
+| Campo            | Valor                                                |
+| ---------------- | ---------------------------------------------------- |
+| Plataforma       | AppImage Linux x86_64                                |
+| Nombre público   | Neubat (ADR-0010 opción 3)                           |
+| Hosting          | GitHub Release del tag `v*` (`release.yml`)          |
+| Familias no Done | `.deb`, `.rpm`, OBS, AUR, Flatpak → deferred/blocked |
 
-Canales `nightly` / `beta` / `stable` son política de promoción del paquete futuro. No son tags que `plan-release.yml` dispare. El AUR (si alguna vez se autoriza) es PKGBUILD fuente, no repositorio binario de pacman.
+F9 ejecuta el build desde el `RC_SHA` de `main`, produce el AppImage (más SBOM, checksums,
+firma/atestación según este documento y `release.yml`) y publica sin alterar bytes tras el
+digest. Residual DEC-006 (Etapa C) se cierra en esa corrida.
+
+Canales `nightly` / `beta` / `stable` son política de promoción del paquete. No son tags que
+`plan-release.yml` dispare. El AUR, si se reabre, es PKGBUILD fuente, no repositorio binario
+de pacman.
 
 ## MVP Linux
 
-- AppImage: portátil; verificar sandbox/desktop integration y update policy.
-- `.deb`: Debian/Ubuntu; scripts mínimos y uninstall limpio.
-- `.rpm`: Fedora/openSUSE; spec reproducible.
-- Web: assets estáticos versionados, CSP y Subresource-free bundle.
-- Futuro: Flatpak tras evaluar portals/capabilities; AUR mediante PKGBUILD mantenido aparte.
+- **AppImage (autorizado):** portátil Linux x86_64; nombre público Neubat; verificar sandbox /
+  desktop integration y update policy en F9.
+- `.deb`: deferred (Debian/Ubuntu; scripts mínimos y uninstall limpio).
+- `.rpm`: deferred (Fedora/openSUSE; spec reproducible).
+- Web: assets estáticos versionados, CSP y Subresource-free bundle (no es el canal F9).
+- Futuro: Flatpak tras evaluar portals/capabilities; AUR mediante PKGBUILD mantenido aparte
+  (nunca como repo binario en este alcance).
 
 ## Release artifacts
 
@@ -69,16 +79,16 @@ Binarios/paquetes, checksums, firmas, SBOM CycloneDX/SPDX, provenance, source ta
 
 Cada release publica, como mínimo:
 
-| Artefacto         | Descripción                                                              | Estado               |
-| ----------------- | ------------------------------------------------------------------------ | -------------------- |
-| Binarios/paquetes | AppImage, `.deb`, `.rpm` y bundle web (ver MVP Linux).                   | draft                |
-| Checksums         | `SHA256SUMS` por release; verificación `sha256sum --check`.              | draft                |
-| Firmas            | Firma de artefactos y de `SHA256SUMS` con Sigstore (+ offline evaluada). | Resuelto por DEC-006 |
-| SBOM              | CycloneDX y/o SPDX con el inventario de dependencias.                    | draft                |
-| Provenance        | Atestación SLSA v1.2/in-toto ligada a commit y workflow.                 | draft                |
-| Source tarball    | Código fuente reproducible del commit taggeado.                          | draft                |
-| Changelog         | Formato Keep a Changelog; cambios por versión.                           | draft                |
-| Compatibilidad    | Matriz target/arquitectura/dependencias por release.                     | draft                |
+| Artefacto         | Descripción                                                              | Estado                              |
+| ----------------- | ------------------------------------------------------------------------ | ----------------------------------- |
+| Binarios/paquetes | **AppImage Linux x86_64 (Neubat)**; `.deb`/`.rpm` deferred.              | authorized (F9)                     |
+| Checksums         | `SHA256SUMS` por release; verificación `sha256sum --check`.              | authorized (F9)                     |
+| Firmas            | Firma de artefactos y de `SHA256SUMS` con Sigstore (+ offline evaluada). | Resuelto por DEC-006; Etapa C en F9 |
+| SBOM              | CycloneDX y/o SPDX con el inventario de dependencias.                    | authorized (F9 / `release.yml`)     |
+| Provenance        | Atestación SLSA v1 / in-toto ligada a commit y workflow.                 | authorized (F9 / `release.yml`)     |
+| Source tarball    | Código fuente reproducible del commit taggeado.                          | authorized (F9)                     |
+| Changelog         | Formato Keep a Changelog; cambios por versión.                           | authorized (F9)                     |
+| Compatibilidad    | Matriz: Neubat AppImage / Linux x86_64 (DEC-008).                        | authorized (F9)                     |
 
 - **Checksums**: el digest es la identidad del artefacto y se reutiliza en la promoción (sin rebuild).
 - **Firmas**: la firma se aplica una vez; la verificación es requisito de instalación del updater.

@@ -20,17 +20,20 @@ reviewers:
 - Baseline vigente: `implementation-baseline-mvp5` (predecesores mvp0.1..mvp4 intactos)
 - Alcance MVP-5 `accepted` y cerrado (MVP-5-01..05): `docs/10-delivery/mvp5-scope.md`. Hueco residual: `docs/10-delivery/mvp5-gap-spec.md` (draft).
 - Remediación operativa cerrada (transportes reales, ACL, ciclo de edición, exportación, Prove-It): `docs/10-delivery/remediation/`; notas en `acceptance-notes.md`.
-- Cierre de producto F0–F7: código en `main` (PRs de cierre + CI #112). Gobierno documental: `docs/10-delivery/closure/f8-governance.md`.
-- Borradores posteriores, sin ampliar el veredicto al runner/ISO: `docs/10-delivery/mvp6-scope.md` (`in-review`), `docs/10-delivery/iso-scope.md`; ADR-0010 `proposed`. F9 **blocked**.
+- Cierre de producto F0–F7: código en `main` (PRs de cierre + CI #112). Gobierno de canal F8:
+  `docs/10-delivery/closure/f8-governance.md` (**accepted**).
+- Canal de distribución autorizado: AppImage Linux x86_64, nombre público **Neubat**
+  (`mvp6-scope.md` accepted solo para esa plataforma; ADR-0010 accepted opción 3; DEC-011).
+  ISO / runner / Enterprise siguen sin `accepted`. F9 **authorized**.
 - Fecha de corte: 2026-10-16
 
 ## Tres capas (no equiparar)
 
-| Capa                 | Estado  | Nota                                                        |
-| -------------------- | ------- | ----------------------------------------------------------- |
-| Baseline de código   | passed  | Tag MVP-5 + F0–F7 en `main`                                 |
-| Aprobación funcional | pending | Limitaciones F7 (`f7-candidate.md`); sin `RC_SHA_FUNCIONAL` |
-| Release binaria      | blocked | Sin MVP-6/`accepted`, sin ADR-0010/`accepted`, sin F9       |
+| Capa                 | Estado     | Nota                                                               |
+| -------------------- | ---------- | ------------------------------------------------------------------ |
+| Baseline de código   | passed     | Tag MVP-5 + F0–F7 en `main`                                        |
+| Aprobación funcional | pending    | Limitaciones F7 (`f7-candidate.md`); sin `RC_SHA_FUNCIONAL`        |
+| Release binaria      | authorized | AppImage x86_64 / Neubat; F9 abierto (`f8-governance.md`, DEC-011) |
 
 Detalle y residuales: `docs/10-delivery/closure/f8-governance.md`.
 
@@ -38,7 +41,7 @@ Detalle y residuales: `docs/10-delivery/closure/f8-governance.md`.
 
 Los hallazgos P0 de integración (mock silencioso, ACL ambigua, WASM sin sesión, manifiesto
 obsoleto, token de export fijo) están clasificados en `docs/10-delivery/remediation/findings-r0.md`
-y se cierran con la remediación; no reabren runner/ISO. El estado de `DEC-001..DEC-010` se lee en
+y se cierran con la remediación; no reabren runner/ISO. El estado de `DEC-001..DEC-011` se lee en
 `docs/00-governance/decision-register.md`.
 
 La aprobación funcional del cierre y la release binaria **no** son bloqueos P0 del slice MVP-5;
@@ -53,9 +56,9 @@ del propio alcance). El runner v1 y los privilegios se autorizan únicamente cua
 evidencia específica de esas fases, no existan riesgos P0 sin tratamiento y todos los contratos
 P0 posean fixtures válidos e inválidos.
 
-F9 (empaquetado/firma/publicación) no arranca hasta aceptación funcional formal y autorización
-explícita de gobierno de canal (ADR-0010 + MVP-6 `accepted` + plataforma única). Ese paso **no**
-está concedido en F8.
+F9 (empaquetado/firma/publicación del AppImage Neubat) está **autorizado** por F8 / DEC-011 /
+MVP-6 accepted (solo AppImage). La aprobación funcional F7 permanece `pending` como capa
+distinta; no reabre runner/ISO ni anuncia `.deb`/`.rpm`/AUR.
 
 ## Referencias
 
