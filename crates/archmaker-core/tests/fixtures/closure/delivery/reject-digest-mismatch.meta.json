@@ -1,0 +1,9 @@
+{
+  "binaryDigest": {
+    "algorithm": "sha256",
+    "value": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+  },
+  "mediaType": "application/json",
+  "reason": "digest-mismatch",
+  "claimedBytes": "not-matching"
+}

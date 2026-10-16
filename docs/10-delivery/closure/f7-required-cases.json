@@ -74,7 +74,10 @@
     {
       "id": "F7-DBLCLICK",
       "title": "Doble clic / reentrada bloqueada mientras busy",
-      "hooks": ["apps/web/src/export-generation.ts", "apps/web/src/App.tsx"],
+      "hooks": [
+        "apps/web/src/export-generation.ts",
+        "apps/web/src/App.tsx"
+      ],
       "commands": [
         "pnpm --dir apps/web exec playwright test forge-helpers.playwright.test.ts -g \"doble clic\""
       ],
@@ -85,7 +88,9 @@
     {
       "id": "F7-BLOCKING-VALIDATION",
       "title": "Validación bloqueante",
-      "hooks": ["crates/archmaker-core/tests/core_contract.rs"],
+      "hooks": [
+        "crates/archmaker-core/tests/core_contract.rs"
+      ],
       "commands": [
         "cargo test -p archmaker-core --test core_contract validate_draft_clean_and_blocking --locked"
       ],
@@ -96,7 +101,9 @@
     {
       "id": "F7-TARGET-INCOMPATIBLE",
       "title": "Target incompatible en entrega",
-      "hooks": ["apps/web/export-delivery.playwright.test.ts"],
+      "hooks": [
+        "apps/web/export-delivery.playwright.test.ts"
+      ],
       "commands": [
         "pnpm --dir apps/web exec playwright test export-delivery.playwright.test.ts -g \"incompatible target\""
       ],
@@ -107,8 +114,12 @@
     {
       "id": "F7-REG-F0",
       "title": "Regresión F0 hallazgos",
-      "hooks": ["crates/archmaker-core/tests/f0_findings.rs"],
-      "commands": ["cargo test -p archmaker-core --test f0_findings --locked"],
+      "hooks": [
+        "crates/archmaker-core/tests/f0_findings.rs"
+      ],
+      "commands": [
+        "cargo test -p archmaker-core --test f0_findings --locked"
+      ],
       "ci": true,
       "e2eWasmRequired": false,
       "defaultStatus": "executable"
@@ -116,8 +127,12 @@
     {
       "id": "F7-REG-F1",
       "title": "Regresión F1 identidad",
-      "hooks": ["crates/archmaker-core/tests/f1_identity.rs"],
-      "commands": ["cargo test -p archmaker-core --test f1_identity --locked"],
+      "hooks": [
+        "crates/archmaker-core/tests/f1_identity.rs"
+      ],
+      "commands": [
+        "cargo test -p archmaker-core --test f1_identity --locked"
+      ],
       "ci": true,
       "e2eWasmRequired": false,
       "defaultStatus": "executable"
@@ -140,8 +155,12 @@
     {
       "id": "F7-REG-F3",
       "title": "Regresión F3 fidelidad",
-      "hooks": ["crates/archmaker-core/tests/f3_fidelity.rs"],
-      "commands": ["cargo test -p archmaker-core --test f3_fidelity --locked"],
+      "hooks": [
+        "crates/archmaker-core/tests/f3_fidelity.rs"
+      ],
+      "commands": [
+        "cargo test -p archmaker-core --test f3_fidelity --locked"
+      ],
       "ci": true,
       "e2eWasmRequired": false,
       "defaultStatus": "executable"
@@ -149,7 +168,9 @@
     {
       "id": "F7-REG-F4",
       "title": "Regresión F4 importación consentida",
-      "hooks": ["apps/web/consented-import.playwright.test.ts"],
+      "hooks": [
+        "apps/web/consented-import.playwright.test.ts"
+      ],
       "commands": [
         "pnpm --dir apps/web exec playwright test consented-import.playwright.test.ts"
       ],
@@ -198,7 +219,9 @@
         "tools/run_f7_p95_harness.py",
         "crates/archmaker-core/tests/f7_p95_sample.rs"
       ],
-      "commands": ["python3 tools/run_product_p95_harness.py --skip-build"],
+      "commands": [
+        "python3 tools/run_product_p95_harness.py --skip-build"
+      ],
       "ci": false,
       "e2eWasmRequired": true,
       "defaultStatus": "executable",
@@ -234,15 +257,20 @@
     },
     {
       "id": "F7-E2E-X3",
-      "title": "Tres E2E consecutivos WASM (conservar resultado inicial de cada intento)",
-      "hooks": ["apps/web/wasm-flow.playwright.test.ts"],
+      "title": "Tres E2E consecutivos WASM (tres invocaciones separadas; no --repeat-each)",
+      "hooks": [
+        "apps/web/wasm-flow.playwright.test.ts",
+        "apps/web/scripts/run-e2e-x3.sh"
+      ],
       "commands": [
-        "pnpm --dir apps/web exec playwright test wasm-flow.playwright.test.ts --repeat-each=3 --retries=0"
+        "pnpm --dir apps/web exec playwright test wasm-flow.playwright.test.ts --workers=1 --retries=0",
+        "pnpm --dir apps/web exec playwright test wasm-flow.playwright.test.ts --workers=1 --retries=0",
+        "pnpm --dir apps/web exec playwright test wasm-flow.playwright.test.ts --workers=1 --retries=0"
       ],
       "ci": false,
       "e2eWasmRequired": true,
       "defaultStatus": "executable",
-      "residual": "Sin --with-e2e / pkg WASM completo el runner deja el caso pending/partial; P95 no forma parte de este id"
+      "residual": "Sin --with-e2e / pkg WASM completo el runner deja el caso pending/partial; tres invocaciones con --workers=1 --retries=0 (no --repeat-each=3)"
     }
   ]
 }

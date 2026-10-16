@@ -174,6 +174,16 @@ test.describe("export-generation Prove-It", () => {
     expect(shouldIgnoreReentrantAction(false)).toBe(false);
     expect(shouldIgnoreReentrantAction(true)).toBe(true);
   });
+
+  test("P5: respuesta async antigua no aplica si la generación avanzó", () => {
+    // Simula prepare A en vuelo; el usuario edita → generación 2; llega A.
+    let currentGeneration = 1;
+    const capturedA = currentGeneration;
+    currentGeneration = 2; // edición B
+    expect(keepResultForGeneration(capturedA, currentGeneration)).toBe(false);
+    const capturedB = currentGeneration;
+    expect(keepResultForGeneration(capturedB, currentGeneration)).toBe(true);
+  });
 });
 
 test.describe("create-core-port F7 motor real", () => {

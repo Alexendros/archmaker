@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Aceptación de producto P5: corpus de entrega ≥20 fixtures/target + 4 rechazos,
+  tres invocaciones Playwright separadas (`--workers=1 --retries=0`, no `--repeat-each`),
+  T-MIG 20 ciclos / cuota / sesión previa `archmaker-profiles`, teclado en recorrido esencial,
+  instancias de perfil sin colisión cruzada y guardas de generación stale/reentrada.
 - Harness P95 de producto (`tools/run_product_p95_harness.py`): web-ready / web-prepare
   con WASM real (n≥30), informe `docs/10-delivery/closure/product-p95-report.json`;
   desktop blocked con evidencia ausente nombrada; `--allow-pending` no cierra aceptación.

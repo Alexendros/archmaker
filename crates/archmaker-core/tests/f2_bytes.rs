@@ -1,5 +1,5 @@
 //! F2: entrega de bytes del renderizador en el DTO Artifact.
-//! Corpus ampliado de forma razonable; no afirma el umbral 20/target.
+//! Corpus P5: ≥20 fixtures por target soportado + 4 rechazos.
 
 use std::path::PathBuf;
 
@@ -161,10 +161,11 @@ fn f2_delivery_corpus_digests() {
     )
     .expect("json");
     assert!(index.get("sha256").is_none());
+    let min_per = index["minFixturesPerTarget"].as_u64().unwrap_or(20) as usize;
     let files = index["files"].as_object().expect("files");
-    // Ampliación razonable sobre F0; no afirma 20/target.
-    assert!(files.len() >= 3);
-    assert!(files.len() < 20);
+    let mut per_target: std::collections::BTreeMap<String, usize> =
+        std::collections::BTreeMap::new();
+    let mut rejects = 0usize;
     for (name, meta) in files {
         let bytes = std::fs::read(dir.join(name)).unwrap_or_else(|_| panic!("falta {name}"));
         assert_eq!(
@@ -172,5 +173,21 @@ fn f2_delivery_corpus_digests() {
             meta["sizeBytes"].as_u64().expect("size")
         );
         assert_eq!(sha256_hex(&bytes), meta["sha256"].as_str().expect("sha"));
+        let class = meta["class"].as_str().unwrap_or("");
+        if class == "negative-bytes" {
+            rejects += 1;
+            continue;
+        }
+        if let Some(target) = meta["target"].as_str() {
+            *per_target.entry(target.to_string()).or_default() += 1;
+        }
     }
+    for target in ["archmaker-profile", "archinstall-profile", "report"] {
+        let n = per_target.get(target).copied().unwrap_or(0);
+        assert!(
+            n >= min_per,
+            "corpus {target}: {n} < suelo {min_per}"
+        );
+    }
+    assert!(rejects >= 4, "corpus rejects: {rejects} < 4");
 }

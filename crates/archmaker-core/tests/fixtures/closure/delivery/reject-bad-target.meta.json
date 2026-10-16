@@ -1,0 +1,8 @@
+{
+  "targetRef": {
+    "id": "iso",
+    "version": "0.1.0"
+  },
+  "mediaType": "application/octet-stream",
+  "reason": "unsupported-target"
+}
