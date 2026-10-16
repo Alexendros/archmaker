@@ -1,9 +1,12 @@
 use std::cell::RefCell;
 use std::collections::{BTreeSet, HashMap};
+#[cfg(not(target_family = "wasm"))]
 use std::fs::File;
+#[cfg(not(target_family = "wasm"))]
 use std::io::Read;
 use std::path::PathBuf;
 use std::sync::atomic::{AtomicU64, Ordering};
+#[cfg(not(target_family = "wasm"))]
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use archmaker_domain::{
@@ -191,18 +194,22 @@ pub fn is_uuid(value: &str) -> bool {
     true
 }
 
+#[cfg(not(target_family = "wasm"))]
 fn read_urandom(buffer: &mut [u8]) -> std::io::Result<()> {
     File::open("/dev/urandom")?.read_exact(buffer)
 }
 
 fn fallback_random(buffer: &mut [u8]) {
+    // `SystemTime::now` and `/dev/urandom` are unavailable/panic on wasm32-unknown-unknown.
+    #[cfg(target_family = "wasm")]
+    let nanos = (UUID_COUNTER.load(Ordering::Relaxed) as u128).wrapping_mul(0x9e3779b97f4a7c15);
+    #[cfg(not(target_family = "wasm"))]
     let nanos = SystemTime::now()
         .duration_since(UNIX_EPOCH)
         .map(|duration| duration.as_nanos())
         .unwrap_or(0);
     let mut state = nanos
-        .wrapping_add((std::process::id() as u128) << 64)
-        .wrapping_add((UUID_COUNTER.fetch_add(1, Ordering::Relaxed) as u128) << 96)
+        .wrapping_add((UUID_COUNTER.fetch_add(1, Ordering::Relaxed) as u128) << 64)
         | 0x9e3779b97f4a7c15;
     for chunk in buffer.chunks_mut(8) {
         state ^= state >> 12;
@@ -216,7 +223,14 @@ fn fallback_random(buffer: &mut [u8]) {
 
 pub fn new_uuid_v4() -> String {
     let mut bytes = [0u8; 16];
-    if read_urandom(&mut bytes).is_err() {
+    #[cfg(not(target_family = "wasm"))]
+    {
+        if read_urandom(&mut bytes).is_err() {
+            fallback_random(&mut bytes);
+        }
+    }
+    #[cfg(target_family = "wasm")]
+    {
         fallback_random(&mut bytes);
     }
     bytes[6] = (bytes[6] & 0x0f) | 0x40;
