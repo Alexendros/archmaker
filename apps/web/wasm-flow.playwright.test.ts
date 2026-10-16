@@ -1,4 +1,9 @@
 import { test, expect } from "@playwright/test";
+import {
+  completeExampleSelection,
+  generateExportAndAssertFidelity,
+  sha256FileHex,
+} from "./e2e-fidelity-helpers.js";
 
 /**
  * Product path: no ?mock=1. Requires wasm-pack output under crates/archmaker-wasm/pkg
@@ -58,5 +63,26 @@ test.describe("WASM CorePort — recorrido real", () => {
     expect(download.suggestedFilename()).toMatch(/\.json$/);
     const path = await download.path();
     expect(path).toBeTruthy();
+    const digest = sha256FileHex(path!);
+    expect(digest).toMatch(/^[0-9a-f]{64}$/);
+    await expect(page.locator("#toast-region")).toContainText(
+      new RegExp(`Descarga iniciada \\(${digest.slice(0, 12)}`),
+      { timeout: 15_000 },
+    );
+  });
+
+  test("F3 ejercicio WASM: selección → export → SHA-256 == binaryDigest", async ({
+    page,
+  }) => {
+    test.setTimeout(180_000);
+    await expect(
+      page.getByRole("heading", { name: /Para qué usarás/i }),
+    ).toBeVisible({ timeout: 60_000 });
+    await expect(page.locator("#toast-region")).toContainText(/Draft listo/i, {
+      timeout: 60_000,
+    });
+    await completeExampleSelection(page);
+    const { digest } = await generateExportAndAssertFidelity(page);
+    expect(digest).toHaveLength(64);
   });
 });
