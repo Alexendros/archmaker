@@ -18,7 +18,7 @@ reviewers:
 - Estado: in-review
 - Gate global: CONDITIONAL-CLEAR — walking skeleton MVP-0 + slices MVP-1..MVP-4 (sin runner)
 - Baseline vigente: `implementation-baseline-mvp4` (predecesores mvp0.1..mvp3 intactos)
-- Borradores posteriores, sin ampliar el veredicto: `docs/10-delivery/mvp5-scope.md`, `docs/10-delivery/mvp6-scope.md`, `docs/10-delivery/iso-scope.md`
+- Borradores posteriores, sin ampliar el veredicto: `docs/10-delivery/mvp5-scope.md`, `docs/10-delivery/mvp5-gap-spec.md` (hueco MVP-5, draft), `docs/10-delivery/mvp6-scope.md`, `docs/10-delivery/iso-scope.md`
 - Fecha de corte: 2026-10-14
 
 ## Bloqueos P0

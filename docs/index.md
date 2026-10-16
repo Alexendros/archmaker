@@ -112,17 +112,18 @@ reviewers:
 
 ## 10 — Delivery
 
-| Documento                           | ID               | Estado    |
-| ----------------------------------- | ---------------- | --------- |
-| `roadmap.md` (PD/MVP/v1/ENT)        | DOC-DEL-ROAD-001 | draft     |
-| `backlog.md`                        | DOC-DEL-BACK-001 | draft     |
-| `next-issues.md` (10 issues)        | DOC-DEL-ISS-001  | draft     |
-| `gates.md` (G0–G10)                 | DOC-DEL-GATE-001 | in-review |
-| `walking-skeleton.md` (slice MVP-0) | DOC-DEL-WSK-001  | in-review |
-| `packaging-release.md`              | DOC-DEL-PKG-001  | draft     |
-| `mvp5-scope.md`                     | DOC-DEL-MVP5-001 | in-review |
-| `mvp6-scope.md`                     | DOC-DEL-MVP6-001 | in-review |
-| `iso-scope.md`                      | DOC-DEL-ISO-001  | in-review |
+| Documento                           | ID                   | Estado    |
+| ----------------------------------- | -------------------- | --------- |
+| `roadmap.md` (PD/MVP/v1/ENT)        | DOC-DEL-ROAD-001     | draft     |
+| `backlog.md`                        | DOC-DEL-BACK-001     | draft     |
+| `next-issues.md` (10 issues)        | DOC-DEL-ISS-001      | draft     |
+| `gates.md` (G0–G10)                 | DOC-DEL-GATE-001     | in-review |
+| `walking-skeleton.md` (slice MVP-0) | DOC-DEL-WSK-001      | in-review |
+| `packaging-release.md`              | DOC-DEL-PKG-001      | draft     |
+| `mvp5-scope.md`                     | DOC-DEL-MVP5-001     | in-review |
+| `mvp5-gap-spec.md`                  | DOC-DEL-MVP5-GAP-001 | draft     |
+| `mvp6-scope.md`                     | DOC-DEL-MVP6-001     | in-review |
+| `iso-scope.md`                      | DOC-DEL-ISO-001      | in-review |
 
 ## 11–12 — Operaciones e investigación
 
