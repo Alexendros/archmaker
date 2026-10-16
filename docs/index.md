@@ -120,7 +120,7 @@ reviewers:
 | `gates.md` (G0–G10)                 | DOC-DEL-GATE-001     | in-review |
 | `walking-skeleton.md` (slice MVP-0) | DOC-DEL-WSK-001      | in-review |
 | `packaging-release.md`              | DOC-DEL-PKG-001      | draft     |
-| `mvp5-scope.md`                     | DOC-DEL-MVP5-001     | in-review |
+| `mvp5-scope.md`                     | DOC-DEL-MVP5-001     | accepted  |
 | `mvp5-gap-spec.md`                  | DOC-DEL-MVP5-GAP-001 | draft     |
 | `mvp6-scope.md`                     | DOC-DEL-MVP6-001     | in-review |
 | `iso-scope.md`                      | DOC-DEL-ISO-001      | in-review |

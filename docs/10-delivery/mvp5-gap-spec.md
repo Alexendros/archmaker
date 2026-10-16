@@ -14,7 +14,7 @@ reviewers:
   - independent-reviewer
 dependsOn:
   - id: DOC-DEL-MVP5-001
-    expectedDocumentStatus: in-review
+    expectedDocumentStatus: accepted
   - id: DOC-RES-HTML-001
   - id: DOC-GOV-GNG-001
 ---
@@ -22,9 +22,9 @@ dependsOn:
 # Spec: hueco MVP-5 (sin implementación)
 
 - Documento: DOC-DEL-MVP5-GAP-001 · Estado: draft · Propietario: Arquitectura/Release · Fecha: 2026-10-16
-- Autoridad de alcance: [`mvp5-scope.md`](mvp5-scope.md) (DOC-DEL-MVP5-001, `in-review`). Este texto no lo sustituye.
-- Congelar esta especificación no cambia el veredicto CONDITIONAL-CLEAR, no pasa DOC-DEL-MVP5-001 a `accepted` y no abre diff de producto.
-- MVP-5-01 sigue abierto. Nadie implementa el slice hasta que el alcance esté `accepted`.
+- Autoridad de alcance: [`mvp5-scope.md`](mvp5-scope.md) (DOC-DEL-MVP5-001, `accepted`). Este texto no lo sustituye.
+- MVP-5-01 cerrado. El alcance autoriza el slice (catálogo, UI de cinco pasos, paridad) bajo sus exclusiones; este hueco no abre runner, ISO ni cifras no verificadas del HTML.
+- La implementación de producto (MVP-5-02+) sigue fuera de este documento; se especifica e implementa en ciclos posteriores.
 
 ## Supuestos
 

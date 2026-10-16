@@ -16,10 +16,11 @@ reviewers:
 # Estado de planificación
 
 - Estado: in-review
-- Gate global: CONDITIONAL-CLEAR — walking skeleton MVP-0 + slices MVP-1..MVP-4 (sin runner)
-- Baseline vigente: `implementation-baseline-mvp4` (predecesores mvp0.1..mvp3 intactos)
-- Borradores posteriores, sin ampliar el veredicto: `docs/10-delivery/mvp5-scope.md`, `docs/10-delivery/mvp5-gap-spec.md` (hueco MVP-5, draft), `docs/10-delivery/mvp6-scope.md`, `docs/10-delivery/iso-scope.md`
-- Fecha de corte: 2026-10-14
+- Gate global: CONDITIONAL-CLEAR — walking skeleton MVP-0 + slices MVP-1..MVP-5 (sin runner)
+- Baseline vigente: `implementation-baseline-mvp4` (predecesores mvp0.1..mvp3 intactos; tag MVP-5 pendiente de MVP-5-05)
+- Alcance MVP-5 `accepted` (MVP-5-01): `docs/10-delivery/mvp5-scope.md`. Hueco: `docs/10-delivery/mvp5-gap-spec.md` (draft).
+- Borradores posteriores, sin ampliar el veredicto al runner/ISO: `docs/10-delivery/mvp6-scope.md`, `docs/10-delivery/iso-scope.md`
+- Fecha de corte: 2026-10-16
 
 ## Bloqueos P0
 
@@ -30,10 +31,11 @@ documento no los repite.
 ## Regla de avance
 
 Se autorizan el walking skeleton MVP-0 y los slices MVP-1 (`mvp1-scope.md`), MVP-2
-(`mvp2-scope.md`), MVP-3 (`mvp3-scope.md`) y MVP-4 (`mvp4-scope.md`, React + MockCorePort).
-El runner v1 y los privilegios se autorizan únicamente cuando G0–G10 tengan evidencia
-específica de esas fases, no existan riesgos P0 sin tratamiento y todos los contratos P0
-posean fixtures válidos e inválidos.
+(`mvp2-scope.md`), MVP-3 (`mvp3-scope.md`), MVP-4 (`mvp4-scope.md`, React + MockCorePort) y
+MVP-5 (`mvp5-scope.md`: catálogo de matriz, UI de cinco pasos, paridad Tauri/WASM; exclusiones
+del propio alcance). El runner v1 y los privilegios se autorizan únicamente cuando G0–G10 tengan
+evidencia específica de esas fases, no existan riesgos P0 sin tratamiento y todos los contratos
+P0 posean fixtures válidos e inválidos.
 
 ## Referencias
 

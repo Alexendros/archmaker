@@ -17,7 +17,7 @@
 
 ## Restricciones
 
-- Funcionalidad nueva solo dentro del veredicto vigente (CONDITIONAL-CLEAR hasta MVP-4). Runner, imagen real, root, discos y shell siguen cerrados hasta un alcance `accepted` y una reevaluación del veredicto.
+- Funcionalidad nueva solo dentro del veredicto vigente (CONDITIONAL-CLEAR hasta MVP-5: catálogo de matriz, UI de cinco pasos, paridad Tauri/WASM). Runner, imagen real, root, discos y shell siguen cerrados hasta un alcance `accepted` adicional y una reevaluación del veredicto.
 - No ejecutar strings heredados `cmd`, hooks, `pacstrap` ni shell.
 - Rust es la única autoridad semántica; TypeScript no duplica reglas.
 - MVP no usa root, discos, shell, sidecars ni instalación real.
@@ -34,14 +34,17 @@
 - La siguiente fase se especifica desde el último plan implementado, el roadmap de `docs/10-delivery/` y el trabajo pendiente, sin ampliar el veredicto vigente.
 - No incluir en un commit cambios de `.gitignore` ni artefactos de fugas salvo petición explícita.
 - La cara del configurador es el HTML NEUBAT que pasó el usuario: no inventar pantallas; conectar los botones y controles que ya trae.
-- En la cara UEFI el arranque preseleccionado es systemd-boot; GRUB y Limine siguen seleccionables.
+- El flujo NEUBAT del configurador es Intención → Sistema base → Entorno → Apps → Identidad → Revisión.
+- En la cara UEFI el arranque preseleccionado es systemd-boot; GRUB y Limine siguen seleccionables en modo Avanzado.
+- Modo Sencillo filtra WM avanzados y capas gaming/dev; modo Avanzado muestra el catálogo completo y referencias pacman.
 - Protección de `main` sin checks bloqueantes para el dueño y sí ante colaboradores externos.
 
 ## Learned Workspace Facts
 
 - Remoto canónico: `https://github.com/Alexendros/archmaker`. Licencia Apache-2.0.
-- Baseline vigente: `implementation-baseline-mvp4`. En el árbol están el walking skeleton MVP-0 y los slices MVP-1 (dominio, catálogo y migración v5.1), MVP-2 (reglas, resolución y validación), MVP-3 (adapters de exportación) y MVP-4 (React + MockCorePort).
-- MVP-5, MVP-6 (empaquetado) e `iso-scope.md` son borradores sin alcance `accepted` y no autorizan implementación. El hueco documentado está en `docs/10-delivery/mvp5-gap-spec.md` (draft); no sustituye `mvp5-scope.md` ni abre código.
-- `reference/v5.1/` es evidencia inmutable verificada por SHA-256. La UI React vive en `apps/web/`; el dominio está en `crates/archmaker-core` y se expone por CorePort.
+- Baseline vigente: `implementation-baseline-mvp4`. En el árbol están el walking skeleton MVP-0 y los slices MVP-1 (dominio, catálogo y migración v5.1), MVP-2 (reglas, resolución y validación), MVP-3 (adapters de exportación) y MVP-4 (React + MockCorePort + cara NEUBAT en `apps/web`).
+- Alcance MVP-5 `accepted` (`mvp5-scope.md`, MVP-5-01): autoriza catálogo de matriz, UI de cinco pasos y paridad Tauri/WASM bajo exclusiones (sin versiones/MB del HTML, sin rediseño, sin runner). Hueco: `docs/10-delivery/mvp5-gap-spec.md` (draft). MVP-6 e `iso-scope.md` siguen sin `accepted`.
+- `reference/v5.1/` es evidencia inmutable verificada por SHA-256. La UI React vive en `apps/web/` (`neubat-face.ts`); el dominio está en `crates/archmaker-core` y se expone por CorePort.
 - ADR-0011 (propuesto, `in-review`): la selección del configurador produce un contrato JSON de aplicación; cada cláusula tiene schema en `contracts/json-schema/`, issue `kind:clause` y tests verificados en Rust. No añade target de imagen.
+- La revisión auditada de arranque (UEFI / systemd-boot) vive en `docs/12-research/bootloader-review.md`.
 - La referencia visual NEUBAT vive fuera del repo, en `/home/alexendros/Aplicaciones/Repertorio/archmaker_neubat.html` (no en Descargas).

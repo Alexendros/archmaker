@@ -30,11 +30,15 @@ reviewers:
 - Reevaluación slice MVP-4 (MVP-4-06): **CONDITIONAL-CLEAR — walking skeleton MVP-0 + slices MVP-1..MVP-4**
   (React + MockCorePort; design system sin rediseño). Baseline emitida:
   `implementation-baseline-mvp4` (tags previos intactos).
+- Reevaluación alcance MVP-5 (MVP-5-01): **CONDITIONAL-CLEAR — walking skeleton MVP-0 + slices MVP-1..MVP-5**
+  (alcance `mvp5-scope.md` accepted: catálogo de matriz, UI de cinco pasos, paridad Tauri/WASM).
+  Sin tag de baseline MVP-5 hasta MVP-5-05; exclusiones del alcance vigentes.
 - Alcance autorizado: `docs/10-delivery/walking-skeleton.md` (DOC-DEL-WSK-001),
   `docs/10-delivery/mvp1-scope.md` (DOC-DEL-MVP1-001), `docs/10-delivery/mvp2-scope.md`
-  (DOC-DEL-MVP2-001), `docs/10-delivery/mvp3-scope.md` (DOC-DEL-MVP3-001) y
-  `docs/10-delivery/mvp4-scope.md` (DOC-DEL-MVP4-001). Bloqueados: runner real, root, discos,
-  shell arbitraria, catálogos remotos, firma criptográfica de catálogo en carga, Enterprise.
+  (DOC-DEL-MVP2-001), `docs/10-delivery/mvp3-scope.md` (DOC-DEL-MVP3-001),
+  `docs/10-delivery/mvp4-scope.md` (DOC-DEL-MVP4-001) y `docs/10-delivery/mvp5-scope.md`
+  (DOC-DEL-MVP5-001). Bloqueados: runner real, root, discos, shell arbitraria, catálogos remotos,
+  firma criptográfica de catálogo en carga, Enterprise.
 
 ## Motivo del resultado mecánico
 
@@ -102,7 +106,8 @@ Resultado derivado: **Clear** — todos los gates G0–G10 están `complete`.
 
 Autorizado: el walking skeleton MVP-0 definido en `docs/10-delivery/walking-skeleton.md`,
 los slices **MVP-1** (`mvp1-scope.md`), **MVP-2** (`mvp2-scope.md`), **MVP-3**
-(`mvp3-scope.md`) y **MVP-4** (React + MockCorePort, `mvp4-scope.md`). **No** autorizado:
+(`mvp3-scope.md`), **MVP-4** (React + MockCorePort, `mvp4-scope.md`) y **MVP-5**
+(catálogo de matriz, UI de cinco pasos, paridad Tauri/WASM; `mvp5-scope.md`). **No** autorizado:
 runner real, root, discos, shell arbitraria, catálogos remotos, firma criptográfica de
 catálogo en carga, ni Enterprise.
 
