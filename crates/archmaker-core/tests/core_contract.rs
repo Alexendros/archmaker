@@ -91,7 +91,7 @@ fn core_with_store(name: &str) -> (RealCore, PathBuf) {
 
 #[test]
 fn new_uuid_v4_wasm_safe_is_valid_without_host_entropy() {
-    // Prove-It: same entropy path as wasm32 (counter only; no SystemTime / urandom).
+    // Prove-It: contador solo para tests; producción WASM usa getrandom/plataforma.
     let mut seen = std::collections::HashSet::new();
     for _ in 0..32 {
         let id = new_uuid_v4_wasm_safe();
@@ -154,7 +154,8 @@ fn create_draft_honors_given_id() {
             request_id: None,
         })
         .expect("valid create");
-    let second = core
+    assert_eq!(first.id, id);
+    let conflict = core
         .create_draft(CreateDraftInput {
             draft_id: Some(id.clone()),
             catalog_ref: catalog_ref(),
@@ -162,9 +163,9 @@ fn create_draft_honors_given_id() {
             preset_ref: None,
             request_id: None,
         })
-        .expect("valid create");
-    assert_eq!(first.id, id);
-    assert_eq!(second.id, id);
+        .expect_err("create no sobrescribe");
+    assert_eq!(conflict.code, "AM-DOC-002");
+    assert_eq!(core.stored_draft(&id).expect("kept").id, id);
 }
 
 #[test]
