@@ -6,7 +6,7 @@ documentStatus: in-review
 approvalStatus: pending
 implementationStatus: partial
 verificationStatus: not-verified
-releaseStatus: eligible
+releaseStatus: ineligible
 owners:
   - release
 reviewers:
@@ -18,7 +18,7 @@ dependsOn:
     expectedDocumentStatus: accepted
   - id: ADR-0010
     expectedDocumentStatus: accepted
-  - id: DEC-011
+  - id: DOC-GOV-DEC-001
 ---
 
 # F9 — Release verificable (AppImage Neubat)
