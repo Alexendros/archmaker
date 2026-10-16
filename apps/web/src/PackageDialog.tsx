@@ -3,11 +3,18 @@ import type { FacePackage } from "./neubat-face.js";
 type Props = {
   pkg: FacePackage;
   selected: boolean;
+  unavailable?: boolean;
   onToggle: () => void;
   onClose: () => void;
 };
 
-export function PackageDialog({ pkg, selected, onToggle, onClose }: Props) {
+export function PackageDialog({
+  pkg,
+  selected,
+  unavailable = false,
+  onToggle,
+  onClose,
+}: Props) {
   return (
     <div className="forge-modal-backdrop">
       <button
@@ -41,9 +48,10 @@ export function PackageDialog({ pkg, selected, onToggle, onClose }: Props) {
           <button
             type="button"
             className="forge-btn-primary"
+            disabled={unavailable}
             onClick={onToggle}
           >
-            {selected ? "Quitar" : "Añadir"}
+            {unavailable ? "No disponible" : selected ? "Quitar" : "Añadir"}
           </button>
           <button type="button" className="forge-btn-ghost" onClick={onClose}>
             Cerrar

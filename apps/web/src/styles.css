@@ -342,6 +342,15 @@
     border-color: var(--color-action);
     background: var(--option-card-selected-bg);
   }
+  .forge-card.is-gap,
+  .forge-pkg-row.is-gap,
+  .forge-radio-label.is-gap {
+    opacity: 0.55;
+  }
+  .forge-card.is-gap:disabled,
+  .forge-pkg-row.is-gap input:disabled {
+    cursor: not-allowed;
+  }
   .forge-card-title,
   .option-title {
     font-size: 0.875rem;

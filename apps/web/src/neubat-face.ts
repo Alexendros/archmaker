@@ -157,7 +157,6 @@ export const KERNELS: FaceOption[] = [
     version: "seguridad",
     description: "Protecciones extra para entornos sensibles.",
     tag: "Seguridad",
-    gap: true,
   },
 ];
 
@@ -185,7 +184,6 @@ export const BOOTLOADERS: FaceOption[] = [
     title: "Limine",
     description: "BIOS y UEFI, configuración propia.",
     tag: "Moderno",
-    gap: true,
   },
 ];
 
@@ -288,7 +286,6 @@ export const ENVIRONMENTS: FaceOption[] = [
     protocol: "Wayland",
     ideal: "Fans de System76 y Rust",
     description: "Escritorio nuevo en Rust",
-    gap: true,
   },
   {
     htmlId: "budgie",
@@ -326,23 +323,21 @@ export const LAYERS: FaceLayer[] = [
     packages: [
       {
         htmlId: "micro",
-        optionId: "archmaker.pkg.micro",
+        optionId: "archmaker.app.micro",
         title: "Micro",
         description: "Editor fácil en terminal.",
         size: 18,
         tag: "Recomendado",
         why: "Editar sin aprender Vim",
-        gap: true,
       },
       {
         htmlId: "btop",
-        optionId: "archmaker.pkg.btop",
+        optionId: "archmaker.app.btop",
         title: "btop",
         description: "Ver CPU y RAM con claridad.",
         size: 2,
         tag: "Ligero",
         why: "Saber si el equipo va lento",
-        gap: true,
       },
       {
         htmlId: "flameshot",
@@ -389,7 +384,6 @@ export const LAYERS: FaceLayer[] = [
         size: 320,
         tag: "Privacidad",
         why: "Menos anuncios en vídeo",
-        gap: true,
       },
       {
         htmlId: "zen",
@@ -418,7 +412,6 @@ export const LAYERS: FaceLayer[] = [
         size: 180,
         tag: "Popular",
         why: "Donde está la gente",
-        gap: true,
       },
       {
         htmlId: "telegram",
@@ -428,7 +421,6 @@ export const LAYERS: FaceLayer[] = [
         size: 85,
         tag: "Popular",
         why: "Archivos grandes",
-        gap: true,
       },
     ],
   },
@@ -447,7 +439,6 @@ export const LAYERS: FaceLayer[] = [
         size: 650,
         tag: "Recomendado",
         why: "Abre documentos sin licencia",
-        gap: true,
       },
     ],
   },
@@ -466,7 +457,6 @@ export const LAYERS: FaceLayer[] = [
         size: 380,
         tag: "Recomendado",
         why: "Asistencia al escribir código",
-        gap: true,
       },
       {
         htmlId: "grokbot",
@@ -563,13 +553,11 @@ export const GLOSSARY = [
 
 /** Initial package option ids present when the face opens (canonical where mapped). */
 export const INITIAL_APP_OPTION_IDS = [
-  "archmaker.pkg.micro",
+  "archmaker.app.micro",
   "archmaker.browser.firefox",
   "archmaker.browser.vivaldi",
   "archmaker.pkg.libreoffice-fresh",
   "archmaker.app.cursor",
-  "archmaker.app.grokbot",
-  "archmaker.app.grokbuild",
 ] as const;
 
 export const INITIAL_SINGLE = {
