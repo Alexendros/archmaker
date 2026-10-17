@@ -278,7 +278,11 @@ pub struct ResolvedSelection {
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 pub struct LegacyMetadata {
     /// Intención de cara preservada aunque el paso UI desaparezca (`archmaker.face.intent`).
-    #[serde(skip_serializing_if = "Option::is_none", default, rename = "faceIntent")]
+    #[serde(
+        skip_serializing_if = "Option::is_none",
+        default,
+        rename = "faceIntent"
+    )]
     pub face_intent: Option<String>,
 }
 
@@ -901,7 +905,10 @@ mod tests {
                 .and_then(|m| m.face_intent.as_deref()),
             Some("archmaker.intent.desarrollo")
         );
-        assert!(report.entries.iter().any(|e| e.path == "/legacyMetadata/faceIntent"));
+        assert!(report
+            .entries
+            .iter()
+            .any(|e| e.path == "/legacyMetadata/faceIntent"));
         let (again, report2) = migrate_draft_v1_to_v2(v2.clone()).expect("idempotent");
         assert!(report2.idempotent_noop);
         assert_eq!(again.legacy_metadata, v2.legacy_metadata);

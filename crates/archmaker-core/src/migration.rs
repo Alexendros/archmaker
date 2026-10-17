@@ -422,6 +422,7 @@ pub fn migrate_v51_to_draft(
         browser_policy: None,
         verification: None,
         inherited_encrypt_intent: None,
+        legacy_metadata: None,
     };
 
     let operations: Vec<ChangeSetOperation> = selections

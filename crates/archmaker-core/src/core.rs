@@ -1058,6 +1058,7 @@ impl CorePort for RealCore {
             browser_policy: None,
             verification: None,
             inherited_encrypt_intent: None,
+            legacy_metadata: None,
         };
         match self.drafts.borrow_mut().entry(id) {
             std::collections::hash_map::Entry::Vacant(slot) => {
