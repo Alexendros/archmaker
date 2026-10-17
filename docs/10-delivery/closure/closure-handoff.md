@@ -48,7 +48,7 @@ Mandato de cierre ArchMaker/Forge. Casillas solo con evidencia. **No publicado.*
 | Perf producto web (P3) | passed (web, PR #131); desktop blocked |
 | Archify trace (P4) | passed (PR #133) |
 | Aceptación web (P5) | passed (PR #132; gates PR #134) |
-| Desktop/offline (P6) | blocked (PR #135 + humo #141) |
+| Desktop/offline (P6) | blocked (PR #135 + humo #141); tip Forge: `forge-desktop-closure.md` |
 | Docs gobernanza (P7) | passed (PR #136) |
 | Candidato/handoff (P8–P9) | candidato identificado; **sin** tag ni publicación |
 | Forge declarativo + sonda | partial (contratos/UI/hardware/migración/T·HA; tip post-#158) |
