@@ -84,6 +84,19 @@
     "inheritedEncryptIntent": {
       "description": "Historical v1 boolean encrypt intent preserved by migration; not LUKS2 policy.",
       "type": "boolean"
+    },
+    "legacyMetadata": {
+      "description": "Face residuals preserved outside catalog entities (e.g. face.intent when the UI step is gone).",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "faceIntent": {
+          "description": "Option id from archmaker.face.intent, preserved by migration.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        }
+      }
     }
   },
   "allOf": [
@@ -99,7 +112,8 @@
             { "required": ["encryptionPolicy"] },
             { "required": ["browserPolicy"] },
             { "required": ["verification"] },
-            { "required": ["inheritedEncryptIntent"] }
+            { "required": ["inheritedEncryptIntent"] },
+            { "required": ["legacyMetadata"] }
           ]
         }
       }

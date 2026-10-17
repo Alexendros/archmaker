@@ -273,6 +273,15 @@ pub struct ResolvedSelection {
     pub locked: bool,
 }
 
+/// Metadatos legados de cara (no son selecciones de catálogo ni hechos de hardware).
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Default)]
+#[serde(deny_unknown_fields, rename_all = "camelCase")]
+pub struct LegacyMetadata {
+    /// Intención de cara preservada aunque el paso UI desaparezca (`archmaker.face.intent`).
+    #[serde(skip_serializing_if = "Option::is_none", default, rename = "faceIntent")]
+    pub face_intent: Option<String>,
+}
+
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 pub struct Draft {
@@ -331,6 +340,13 @@ pub struct Draft {
         rename = "inheritedEncryptIntent"
     )]
     pub inherited_encrypt_intent: Option<bool>,
+    /// Residuos de cara (p. ej. face.intent) preservados fuera del catálogo.
+    #[serde(
+        skip_serializing_if = "Option::is_none",
+        default,
+        rename = "legacyMetadata"
+    )]
+    pub legacy_metadata: Option<LegacyMetadata>,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -560,10 +576,52 @@ pub struct Manifest {
     pub verification: Option<VerificationStatuses>,
 }
 
+/// Constante de paso de cara (no es entidad de catálogo).
+pub const FACE_INTENT_STEP_ID: &str = "archmaker.face.intent";
+
+/// Vista pública de export: plan + verificación + metadatos legados.
+///
+/// No incluye snapshot de hardware ni identidades privadas (serial/WWN/path).
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields, rename_all = "camelCase")]
+pub struct PublicExportBundle {
+    pub schema_version: String,
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    pub storage_plan: Option<StoragePlan>,
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    pub encryption_policy: Option<EncryptionPolicy>,
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    pub browser_policy: Option<BrowserPolicy>,
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    pub verification: Option<VerificationStatuses>,
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    pub legacy_metadata: Option<LegacyMetadata>,
+    #[serde(
+        skip_serializing_if = "Option::is_none",
+        default,
+        rename = "inheritedEncryptIntent"
+    )]
+    pub inherited_encrypt_intent: Option<bool>,
+}
+
+/// Proyecta el draft a un paquete exportable sin snapshot privado.
+pub fn public_export_bundle(draft: &Draft) -> PublicExportBundle {
+    PublicExportBundle {
+        schema_version: draft.schema_version.clone(),
+        storage_plan: draft.storage_plan.clone(),
+        encryption_policy: draft.encryption_policy.clone(),
+        browser_policy: draft.browser_policy.clone(),
+        verification: draft.verification.clone(),
+        legacy_metadata: draft.legacy_metadata.clone(),
+        inherited_encrypt_intent: draft.inherited_encrypt_intent,
+    }
+}
+
 /// Migración idempotente draft `schemaVersion` `"1"` → `"2"`.
 ///
 /// No inventa hardware, no sustituye apps (Firefox/LibreOffice/Flameshot) ni convierte
 /// `encrypt: true` en política LUKS2: esa intención queda en `inheritedEncryptIntent`.
+/// `archmaker.face.intent` se copia a `legacyMetadata.faceIntent` (el paso UI puede desaparecer).
 pub fn migrate_draft_v1_to_v2(
     draft: Draft,
 ) -> Result<(Draft, DraftSchemaMigrationReport), SchemaVersionError> {
@@ -631,6 +689,29 @@ pub fn migrate_draft_v1_to_v2(
             migrated.browser_policy = None;
             migrated.verification = Some(VerificationStatuses::foundational_defaults());
             migrated.inherited_encrypt_intent = inherited_encrypt;
+
+            let face_intent = migrated.selections.iter().find_map(|selection| {
+                if selection.step_id == FACE_INTENT_STEP_ID {
+                    match &selection.value {
+                        SelectionValue::Single { option_id } => Some(option_id.clone()),
+                        _ => None,
+                    }
+                } else {
+                    None
+                }
+            });
+            if let Some(intent_id) = face_intent {
+                entries.push(DraftSchemaMigrationEntry {
+                    path: "/legacyMetadata/faceIntent".to_string(),
+                    message_key: "migration.draftSchema.faceIntentPreserved".to_string(),
+                    detail: Some(format!(
+                        "archmaker.face.intent={intent_id}; se conserva en legacyMetadata aunque el paso UI desaparezca"
+                    )),
+                });
+                migrated.legacy_metadata = Some(LegacyMetadata {
+                    face_intent: Some(intent_id),
+                });
+            }
 
             let report = DraftSchemaMigrationReport {
                 from_schema_version: DRAFT_SCHEMA_V1.to_string(),
@@ -792,6 +873,58 @@ mod tests {
         assert!(report2.idempotent_noop);
         assert_eq!(again.schema_version, DRAFT_SCHEMA_V2);
         assert_eq!(again.selections, v2.selections);
+        assert_eq!(again.legacy_metadata, v2.legacy_metadata);
+    }
+
+    #[test]
+    fn migrate_preserves_face_intent_in_legacy_metadata() {
+        let mut draft: Draft =
+            serde_json::from_str(draft_fixture()).expect("draft fixture deserializes");
+        draft.selections.push(Selection {
+            step_id: FACE_INTENT_STEP_ID.into(),
+            value: SelectionValue::Single {
+                option_id: "archmaker.intent.desarrollo".into(),
+            },
+        });
+        let (v2, report) = migrate_draft_v1_to_v2(draft).expect("migrate");
+        assert_eq!(
+            v2.legacy_metadata
+                .as_ref()
+                .and_then(|m| m.face_intent.as_deref()),
+            Some("archmaker.intent.desarrollo")
+        );
+        assert!(report.entries.iter().any(|e| e.path == "/legacyMetadata/faceIntent"));
+        let (again, report2) = migrate_draft_v1_to_v2(v2.clone()).expect("idempotent");
+        assert!(report2.idempotent_noop);
+        assert_eq!(again.legacy_metadata, v2.legacy_metadata);
+    }
+
+    #[test]
+    fn public_export_includes_plan_and_verification_not_private_snapshot() {
+        let draft: Draft =
+            serde_json::from_str(draft_fixture()).expect("draft fixture deserializes");
+        let (mut v2, _) = migrate_draft_v1_to_v2(draft).expect("migrate");
+        v2.storage_plan = Some(manual_reference_storage_plan());
+        v2.legacy_metadata = Some(LegacyMetadata {
+            face_intent: Some("archmaker.intent.desarrollo".into()),
+        });
+        let bundle = public_export_bundle(&v2);
+        let json = serde_json::to_string(&bundle).expect("json");
+        assert!(json.contains("storagePlan"));
+        assert!(json.contains("verification"));
+        assert!(json.contains("legacyMetadata"));
+        assert!(json.contains("faceIntent"));
+        // Privacidad: el export público de perfil no arrastra snapshot ni identidad de disco.
+        assert!(!json.contains("snapshotId"));
+        assert!(!json.contains("\"serial\""));
+        assert!(!json.contains("\"wwn\""));
+        assert!(!json.to_lowercase().contains("password"));
+        let again = public_export_bundle(&v2);
+        assert_eq!(
+            serde_json::to_string(&bundle).unwrap(),
+            serde_json::to_string(&again).unwrap(),
+            "export público idempotente"
+        );
     }
 
     #[test]

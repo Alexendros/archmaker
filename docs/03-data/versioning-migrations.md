@@ -47,5 +47,7 @@ reviewers:
 3. Conservar selecciones e IDs de apps; no sustituir Firefox/LibreOffice/Flameshot.
 4. No inventar firmware, disco ni capacidad.
 5. Preservar booleano histórico de cifrado como `inheritedEncryptIntent` (no como LUKS2).
-6. Añadir `verification` con `executionStatus: not-executed` (A6 fuera).
-7. Invalidar `contentDigest` para recomputar con dominio `archmaker:draft:v2`.
+6. Copiar `archmaker.face.intent` a `legacyMetadata.faceIntent` (el paso UI puede desaparecer).
+7. Añadir `verification` con `executionStatus: not-executed` (A6 fuera).
+8. Invalidar `contentDigest` para recomputar con dominio `archmaker:draft:v2`.
+9. Export público (`public_export_bundle`): plan + verificación + legacyMetadata; sin snapshot privado ni serial/WWN.
