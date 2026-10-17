@@ -1,0 +1,51 @@
+{
+  "id": "0d5e6b1a-2222-4a2b-9c3d-222222222222",
+  "documentVersion": "vNext",
+  "schemaVersion": "2",
+  "revision": 1,
+  "catalogRef": {
+    "namespace": "archmaker.core",
+    "id": "desktop",
+    "version": "1.0.0",
+    "digest": {
+      "algorithm": "sha256",
+      "value": "1111111111111111111111111111111111111111111111111111111111111111"
+    }
+  },
+  "targetRef": {
+    "id": "arch-x86_64",
+    "version": "2026.10.0"
+  },
+  "selections": [],
+  "storagePlan": {
+    "mode": "new-disk",
+    "firmware": {
+      "kind": "uefi",
+      "provenance": "declared"
+    },
+    "partitionTable": "gpt",
+    "partitions": [
+      {
+        "role": "esp",
+        "sizeBytes": 2147483648,
+        "layers": [
+          {
+            "kind": "fat32",
+            "mountPoint": "/efi"
+          }
+        ],
+        "plannedAction": "create"
+      }
+    ],
+    "bootArtifactStrategy": "xbootldr",
+    "intentAcknowledged": true,
+    "planStatus": "verification-pending"
+  },
+  "verification": {
+    "planValidationStatus": "not-validated",
+    "hardwareVerificationStatus": "not-verified",
+    "bootCompatibilityStatus": "unknown",
+    "capacityVerificationStatus": "unverified",
+    "executionStatus": "executed"
+  }
+}

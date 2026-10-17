@@ -15,13 +15,23 @@ pub use capability::{
 pub use contract::{verify_application_contract, verify_clause, ClauseVerdict, ContractVerdict};
 
 pub use archmaker_domain::{
-    is_document_version, is_integer_version, is_semver, Artifact, ArtifactRef, BinaryDigest,
-    BinaryKind, Capability, CapabilityRef, Catalog, CatalogOption, CatalogProvenance, CatalogRef,
-    Conflict, ContentDigest, ContentKind, DigestAlgorithm, Draft, Libpack, Manifest,
-    ManifestDomainLabel, ManifestRef, PresetRef, Producer, ResolvedSelection, Section, Selection,
-    SelectionOrigin, SelectionValue, Severity as DomainSeverity, Step, TargetRef,
-    MANIFEST_DOMAIN_LABEL,
+    decode_draft_schema_version, is_document_version, is_integer_version, is_semver,
+    migrate_draft_v1_to_v2, Artifact, ArtifactRef, BinaryDigest, BinaryKind, BrowserPolicy,
+    Capability, CapabilityRef, Catalog, CatalogOption, CatalogProvenance, CatalogRef, Conflict,
+    ContentDigest, ContentKind, DigestAlgorithm, Draft, DraftSchemaMigrationReport,
+    DraftSchemaVersion, EncryptionPolicy, Libpack, Manifest, ManifestDomainLabel, ManifestRef,
+    PresetRef, Producer, ResolvedSelection, Section, Selection, SelectionOrigin, SelectionValue,
+    Severity as DomainSeverity, Step, StoragePlan, TargetRef, VerificationStatuses,
+    MANIFEST_DOMAIN_LABEL, MANIFEST_DOMAIN_LABEL_V2, DRAFT_SCHEMA_V2,
 };
+
+/// Envoltorio tipado para el walking skeleton / CorePort consumers.
+pub fn migrate_draft_v1_to_v2_report(
+    draft: Draft,
+) -> std::result::Result<(Draft, DraftSchemaMigrationReport), archmaker_domain::SchemaVersionError>
+{
+    migrate_draft_v1_to_v2(draft)
+}
 pub use archmaker_rules::Diagnostic as RuleDiagnostic;
 pub use core::{
     catalog_content_digest, draft_content_digest, is_uuid, manifest_content_digest, new_uuid_v4,

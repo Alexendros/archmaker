@@ -24,7 +24,9 @@
       "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/documentVersion"
     },
     "schemaVersion": {
-      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/schemaVersion"
+      "description": "Draft contract axis. Only \"1\" and \"2\" are accepted; future values are rejected by Rust (ADR-0016).",
+      "type": "string",
+      "enum": ["1", "2"]
     },
     "revision": {
       "description": "Monotonic revision. Starts at 0 and increments on each successful saveDraft; used as the optimistic-concurrency token.",
@@ -66,8 +68,43 @@
     "updatedAt": {
       "description": "Ephemeral last-update timestamp; excluded from the canonical hash payload.",
       "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/utcTimestamp"
+    },
+    "storagePlan": {
+      "$ref": "https://archmaker.dev/schemas/draft-v2-defs.schema.json#/$defs/storagePlan"
+    },
+    "encryptionPolicy": {
+      "$ref": "https://archmaker.dev/schemas/draft-v2-defs.schema.json#/$defs/encryptionPolicy"
+    },
+    "browserPolicy": {
+      "$ref": "https://archmaker.dev/schemas/draft-v2-defs.schema.json#/$defs/browserPolicy"
+    },
+    "verification": {
+      "$ref": "https://archmaker.dev/schemas/draft-v2-defs.schema.json#/$defs/verificationStatuses"
+    },
+    "inheritedEncryptIntent": {
+      "description": "Historical v1 boolean encrypt intent preserved by migration; not LUKS2 policy.",
+      "type": "boolean"
     }
   },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "schemaVersion": { "const": "1" } },
+        "required": ["schemaVersion"]
+      },
+      "then": {
+        "not": {
+          "anyOf": [
+            { "required": ["storagePlan"] },
+            { "required": ["encryptionPolicy"] },
+            { "required": ["browserPolicy"] },
+            { "required": ["verification"] },
+            { "required": ["inheritedEncryptIntent"] }
+          ]
+        }
+      }
+    }
+  ],
   "$defs": {
     "saveDraftRequest": {
       "description": "saveDraft request contract: persists a draft only if the stored revision matches expectedRevision (optimistic concurrency). A mismatch is a conflict error, not a silent overwrite.",

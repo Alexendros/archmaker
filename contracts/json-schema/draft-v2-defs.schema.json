@@ -1,0 +1,217 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://archmaker.dev/schemas/draft-v2-defs.schema.json",
+  "title": "ArchMaker Draft/Manifest v2 shared $defs",
+  "description": "Shared definitions for schemaVersion 2 storage, encryption, browser and verification contracts. Not a document root.",
+  "$defs": {
+    "safeByteCount": {
+      "description": "Non-negative integer within JavaScript Number.MAX_SAFE_INTEGER (2^53-1).",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    },
+    "bootArtifactStrategy": {
+      "description": "UKI on ESP; XBOOTLDR out of scope (ADR-0013).",
+      "type": "string",
+      "const": "uki-on-esp"
+    },
+    "logicalTargetRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        }
+      }
+    },
+    "firmwareDeclaration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "provenance"],
+      "properties": {
+        "kind": { "type": "string", "enum": ["uefi", "bios", "unspecified"] },
+        "provenance": {
+          "type": "string",
+          "enum": ["observed", "declared", "unknown", "unavailable"]
+        }
+      }
+    },
+    "partitionTableKind": {
+      "type": "string",
+      "enum": ["gpt", "mbr"]
+    },
+    "partitionTableObservation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["observed", "declared", "unknown", "unavailable"]
+        },
+        "kind": { "$ref": "#/$defs/partitionTableKind" }
+      }
+    },
+    "storageLayer": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "mountPoint"],
+          "properties": {
+            "kind": { "const": "fat32" },
+            "mountPoint": { "type": "string", "minLength": 1, "maxLength": 256 }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "unlock"],
+          "properties": {
+            "kind": { "const": "luks2" },
+            "unlock": { "const": "passphrase-requested-at-install" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "fs", "mountPoint"],
+          "properties": {
+            "kind": { "const": "filesystem" },
+            "fs": { "type": "string", "enum": ["fat32", "ext4", "btrfs"] },
+            "mountPoint": { "type": "string", "minLength": 1, "maxLength": 256 }
+          }
+        }
+      ]
+    },
+    "plannedPartition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role", "sizeBytes", "layers", "plannedAction"],
+      "properties": {
+        "role": { "type": "string", "enum": ["esp", "system"] },
+        "sizeBytes": { "$ref": "#/$defs/safeByteCount" },
+        "layers": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 8,
+          "items": { "$ref": "#/$defs/storageLayer" }
+        },
+        "plannedAction": {
+          "type": "string",
+          "enum": ["create", "replace", "keep-declared"]
+        }
+      }
+    },
+    "storagePlan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "firmware",
+        "partitionTable",
+        "partitions",
+        "bootArtifactStrategy",
+        "intentAcknowledged",
+        "planStatus"
+      ],
+      "properties": {
+        "mode": { "type": "string", "enum": ["new-disk", "replace-disk"] },
+        "firmware": { "$ref": "#/$defs/firmwareDeclaration" },
+        "partitionTable": { "$ref": "#/$defs/partitionTableKind" },
+        "observedPartitionTable": { "$ref": "#/$defs/partitionTableObservation" },
+        "logicalTargetRef": { "$ref": "#/$defs/logicalTargetRef" },
+        "declaredCapacityBytes": { "$ref": "#/$defs/safeByteCount" },
+        "partitions": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 64,
+          "items": { "$ref": "#/$defs/plannedPartition" }
+        },
+        "bootArtifactStrategy": { "$ref": "#/$defs/bootArtifactStrategy" },
+        "intentAcknowledged": { "type": "boolean" },
+        "lossRiskAcknowledged": { "type": "boolean" },
+        "planStatus": {
+          "type": "string",
+          "enum": [
+            "certifiable",
+            "not-certifiable",
+            "capacity-unverified",
+            "verification-pending"
+          ]
+        }
+      }
+    },
+    "encryptionPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind"],
+      "properties": {
+        "kind": { "type": "string", "enum": ["none", "luks2"] },
+        "unlock": { "const": "passphrase-requested-at-install" },
+        "coversMountPoint": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "initramfsNote": { "type": "string", "maxLength": 1024 }
+      }
+    },
+    "browserPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["selectedBrowserIds", "defaultBrowserId"],
+      "properties": {
+        "selectedBrowserIds": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 64,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          }
+        },
+        "defaultBrowserId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        }
+      }
+    },
+    "verificationStatuses": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "planValidationStatus",
+        "hardwareVerificationStatus",
+        "bootCompatibilityStatus",
+        "capacityVerificationStatus",
+        "executionStatus"
+      ],
+      "properties": {
+        "planValidationStatus": {
+          "type": "string",
+          "enum": ["not-validated", "valid", "invalid", "pending"]
+        },
+        "hardwareVerificationStatus": {
+          "type": "string",
+          "enum": ["not-verified", "verified", "pending", "unavailable"]
+        },
+        "bootCompatibilityStatus": {
+          "type": "string",
+          "enum": ["unknown", "compatible", "conditional", "incompatible"]
+        },
+        "capacityVerificationStatus": {
+          "type": "string",
+          "enum": ["unverified", "sufficient", "insufficient", "unknown"]
+        },
+        "executionStatus": {
+          "description": "A6 out of scope: always not-executed (ADR-0018).",
+          "type": "string",
+          "const": "not-executed"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "id": "0d5e6b1a-2222-4a2b-9c3d-222222222222",
+  "documentVersion": "vNext",
+  "schemaVersion": "2",
+  "revision": 1,
+  "catalogRef": {
+    "namespace": "archmaker.core",
+    "id": "desktop",
+    "version": "1.0.0",
+    "digest": {
+      "algorithm": "sha256",
+      "value": "1111111111111111111111111111111111111111111111111111111111111111"
+    }
+  },
+  "targetRef": {
+    "id": "arch-x86_64",
+    "version": "2026.10.0"
+  },
+  "selections": [
+    {
+      "stepId": "archmaker.sys.kernel",
+      "value": {
+        "kind": "single",
+        "optionId": "archmaker.kernel.linux"
+      }
+    }
+  ],
+  "storagePlan": {
+    "mode": "new-disk",
+    "firmware": {
+      "kind": "uefi",
+      "provenance": "declared"
+    },
+    "partitionTable": "gpt",
+    "observedPartitionTable": {
+      "status": "unknown"
+    },
+    "partitions": [
+      {
+        "role": "esp",
+        "sizeBytes": 2147483648,
+        "layers": [
+          {
+            "kind": "fat32",
+            "mountPoint": "/efi"
+          }
+        ],
+        "plannedAction": "create"
+      },
+      {
+        "role": "system",
+        "sizeBytes": 0,
+        "layers": [
+          {
+            "kind": "filesystem",
+            "fs": "ext4",
+            "mountPoint": "/"
+          }
+        ],
+        "plannedAction": "create"
+      }
+    ],
+    "bootArtifactStrategy": "uki-on-esp",
+    "intentAcknowledged": true,
+    "planStatus": "verification-pending"
+  },
+  "encryptionPolicy": {
+    "kind": "none"
+  },
+  "browserPolicy": {
+    "selectedBrowserIds": [
+      "archmaker.app.firefox",
+      "archmaker.app.zen"
+    ],
+    "defaultBrowserId": "archmaker.app.zen"
+  },
+  "verification": {
+    "planValidationStatus": "not-validated",
+    "hardwareVerificationStatus": "not-verified",
+    "bootCompatibilityStatus": "unknown",
+    "capacityVerificationStatus": "unverified",
+    "executionStatus": "not-executed"
+  }
+}

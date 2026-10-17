@@ -21,6 +21,22 @@ declaran `schemaVersion: "1"`; la etiqueta `v0` es la revisión del contrato, no
 `schemaVersion`). Cambiar la forma de un contrato exige incrementar `schemaVersion` y una
 _migration note_ (`docs/03-data/versioning-migrations.md`).
 
+## v0.3 — Draft/manifiesto schemaVersion 2 (ADR-0016)
+
+### Añadidos
+
+- `draft-v2-defs.schema.json`: `storagePlan`, capas ESP/sistema, `encryptionPolicy`,
+  `browserPolicy`, `verificationStatuses`, `safeByteCount`, `uki-on-esp`.
+- Campos opcionales v2 en `draft.schema.json` / `manifest.schema.json`.
+- `domainLabel` admite `archmaker:manifest:v2`.
+- Corpus `32-draft-v2.*`, `33-manifest-v2.*`, `34-draft-future.invalid.json`.
+
+### Notas
+
+- `schemaVersion` de draft/manifiesto restringido a `"1"` | `"2"` (rechazo de futuras).
+- Migración v1→v2 en Rust: idempotente, sin inventar hardware ni sustituir apps (ADR-0016).
+- A6 / escritura en discos fuera de alcance (ADR-0018).
+
 ## v0.2 — Contrato de aplicación (ADR-0011)
 
 ### Añadidos

@@ -40,6 +40,12 @@ Propietario, Requisitos) y las secciones de `templates/adr.md`. Estados posibles
 | [ADR-0010](ADR-0010-marca-y-nombre-de-artefacto.md)                    | Marca y nombre de artefacto público                  | accepted | 2026-10-14 |
 | [ADR-0011](ADR-0011-contrato-de-aplicacion.md)                         | Contrato de aplicación desde el configurador         | proposed | 2026-10-14 |
 | [ADR-0012](ADR-0012-nombre-visible-forge.md)                           | Nombre visible Forge (GUI de ArchMaker)              | accepted | 2026-10-17 |
+| [ADR-0013](ADR-0013-uki-on-esp.md)                                     | UKI en ESP (`uki-on-esp`)                            | proposed | 2026-10-17 |
+| [ADR-0014](ADR-0014-estados-ortogonales-verificacion.md)               | Estados ortogonales de verificación y ejecución      | proposed | 2026-10-17 |
+| [ADR-0015](ADR-0015-handles-dispositivo-y-destino.md)                  | Handles de sesión vs destino portable                | proposed | 2026-10-17 |
+| [ADR-0016](ADR-0016-contratos-digest-v2.md)                            | Contratos y digests schemaVersion 2                  | proposed | 2026-10-17 |
+| [ADR-0017](ADR-0017-navegadores-y-onlyoffice.md)                       | ONLYOFFICE canónico y cardinalidad de navegadores    | proposed | 2026-10-17 |
+| [ADR-0018](ADR-0018-alcance-declarativo-a6-excluida.md)                | Alcance declarativo; A6 excluida                     | proposed | 2026-10-17 |
 
 ## Crear un ADR
 

@@ -10,10 +10,11 @@ use std::sync::atomic::{AtomicU64, Ordering};
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use archmaker_domain::{
-    is_document_version, is_integer_version, is_semver, Artifact, ArtifactRef, BinaryDigest,
-    BinaryKind, CapabilityRef, Catalog, CatalogRef, ContentDigest, ContentKind, DigestAlgorithm,
-    Draft, Manifest, ManifestDomainLabel, ManifestRef, PresetRef, Producer, ResolvedSelection,
-    Selection, SelectionOrigin, SelectionValue, TargetRef, MANIFEST_DOMAIN_LABEL,
+    decode_draft_schema_version, is_document_version, is_integer_version, is_semver, Artifact,
+    ArtifactRef, BinaryDigest, BinaryKind, CapabilityRef, Catalog, CatalogRef, ContentDigest,
+    ContentKind, DigestAlgorithm, Draft, DraftSchemaVersion, Manifest, ManifestDomainLabel,
+    ManifestRef, PresetRef, Producer, ResolvedSelection, Selection, SelectionOrigin,
+    SelectionValue, TargetRef, DRAFT_DOMAIN_V1, DRAFT_DOMAIN_V2,
 };
 use archmaker_resolution::{Catalog as ResolutionCatalog, CatalogOption};
 use archmaker_rules::{
@@ -72,9 +73,17 @@ pub const EMBEDDED_CATALOG_JSON: &str = include_str!("../fixtures/embedded-catal
 /// Product catalog (matrix / Forge face ids). Used by Tauri and WASM session cores.
 pub const DESKTOP_CATALOG_JSON: &str = include_str!("../fixtures/local-catalog-mvp1.json");
 
-const DRAFT_DOMAIN: &str = "archmaker:draft:v1";
 const CATALOG_DOMAIN: &str = "archmaker:catalog:v1";
 const RESOLUTION_DOMAIN: &str = "archmaker:resolution:v1";
+
+fn draft_domain_for(schema_version: &str) -> Result<&'static str> {
+    match decode_draft_schema_version(schema_version)
+        .map_err(|_| CoreError::schema_invalid(CoreOp::SaveDraft.source()))?
+    {
+        DraftSchemaVersion::V1 => Ok(DRAFT_DOMAIN_V1),
+        DraftSchemaVersion::V2 => Ok(DRAFT_DOMAIN_V2),
+    }
+}
 
 const DRAFT_TARGETS: [&str; 1] = ["arch-x86_64"];
 const EXPORT_TARGETS: [&str; 3] = ["archmaker-profile", "archinstall-profile", "report"];
@@ -352,10 +361,11 @@ fn without_keys(value: &serde_json::Value, excluded: &[&str]) -> serde_json::Val
 
 pub fn draft_content_digest(draft: &Draft) -> Result<ContentDigest> {
     let source = CoreOp::SaveDraft.source();
+    let domain = draft_domain_for(&draft.schema_version)?;
     let value = serde_json::to_value(draft).map_err(|_| CoreError::doc_canonical(source))?;
     Ok(content_digest(
         &without_keys(&value, &["contentDigest"]),
-        DRAFT_DOMAIN,
+        domain,
     ))
 }
 
@@ -373,7 +383,7 @@ pub fn manifest_content_digest(manifest: &Manifest) -> Result<ContentDigest> {
     let value = serde_json::to_value(manifest).map_err(|_| CoreError::doc_canonical(source))?;
     Ok(content_digest(
         &without_keys(&value, &["contentDigest"]),
-        MANIFEST_DOMAIN_LABEL,
+        manifest.domain_label.as_str(),
     ))
 }
 
@@ -653,9 +663,11 @@ fn ensure_draft_shape(draft: &Draft, source: &str) -> Result<()> {
     if !is_uuid(&draft.id) {
         return Err(CoreError::schema_invalid(source));
     }
-    if !is_document_version(&draft.document_version) || !is_integer_version(&draft.schema_version) {
+    if !is_document_version(&draft.document_version) {
         return Err(CoreError::schema_invalid(source));
     }
+    let schema = decode_draft_schema_version(&draft.schema_version)
+        .map_err(|_| CoreError::schema_invalid(source))?;
     if !is_semver(&draft.catalog_ref.version)
         || !is_semver(&draft.target_ref.version)
         || draft
@@ -712,6 +724,40 @@ fn ensure_draft_shape(draft: &Draft, source: &str) -> Result<()> {
             }
             SelectionValue::SecretRef { reference } => {
                 if reference.is_empty() {
+                    return Err(CoreError::schema_invalid(source));
+                }
+            }
+        }
+    }
+    match schema {
+        DraftSchemaVersion::V1 => {
+            if draft.storage_plan.is_some()
+                || draft.encryption_policy.is_some()
+                || draft.browser_policy.is_some()
+                || draft.verification.is_some()
+                || draft.inherited_encrypt_intent.is_some()
+            {
+                return Err(CoreError::schema_invalid(source));
+            }
+        }
+        DraftSchemaVersion::V2 => {
+            if let Some(policy) = &draft.browser_policy {
+                policy
+                    .validate()
+                    .map_err(|_| CoreError::schema_invalid(source))?;
+            }
+            if let Some(verification) = &draft.verification {
+                if verification.execution_status != archmaker_domain::ExecutionStatus::NotExecuted {
+                    return Err(CoreError::schema_invalid(source));
+                }
+            }
+            if let Some(plan) = &draft.storage_plan {
+                if plan.boot_artifact_strategy != archmaker_domain::BootArtifactStrategy::UkiOnEsp {
+                    return Err(CoreError::schema_invalid(source));
+                }
+                if plan.mode == archmaker_domain::StorageMode::ReplaceDisk
+                    && plan.loss_risk_acknowledged != Some(true)
+                {
                     return Err(CoreError::schema_invalid(source));
                 }
             }
@@ -936,7 +982,7 @@ fn render_archinstall_profile(manifest: &Manifest, target: &TargetRef) -> Result
 
 fn render_report(manifest: &Manifest, target: &TargetRef) -> Result<RenderedArtifact> {
     let mut text = String::from("# ArchMaker report\n\n");
-    text.push_str(&format!("domain: {MANIFEST_DOMAIN_LABEL}\n"));
+    text.push_str(&format!("domain: {}\n", manifest.domain_label.as_str()));
     text.push_str(&format!("target: {} {}\n", target.id, target.version));
     text.push_str(&format!(
         "contentDigest: sha256:{}\n\n",
@@ -1007,6 +1053,11 @@ impl CorePort for RealCore {
             preset_refs: input.preset_ref.map(|preset: PresetRef| vec![preset]),
             created_at: None,
             updated_at: None,
+            storage_plan: None,
+            encryption_policy: None,
+            browser_policy: None,
+            verification: None,
+            inherited_encrypt_intent: None,
         };
         match self.drafts.borrow_mut().entry(id) {
             std::collections::hash_map::Entry::Vacant(slot) => {
@@ -1220,10 +1271,12 @@ impl CorePort for RealCore {
                 return Err(CoreError::res_blocked(source));
             }
         }
+        let domain_label = ManifestDomainLabel::for_schema_version(&input.draft.schema_version)
+            .map_err(|_| CoreError::schema_invalid(source))?;
         let mut manifest = Manifest {
             document_version: input.draft.document_version.clone(),
             schema_version: input.draft.schema_version.clone(),
-            domain_label: ManifestDomainLabel,
+            domain_label,
             catalog_ref: input.draft.catalog_ref.clone(),
             target_ref: input.target_ref,
             producer: Producer {
@@ -1240,6 +1293,10 @@ impl CorePort for RealCore {
                 value: String::new(),
                 kind: Some(ContentKind::Content),
             },
+            storage_plan: input.draft.storage_plan.clone(),
+            encryption_policy: input.draft.encryption_policy.clone(),
+            browser_policy: input.draft.browser_policy.clone(),
+            verification: input.draft.verification.clone(),
         };
         let digest = manifest_content_digest(&manifest)?;
         manifest.content_digest = digest;

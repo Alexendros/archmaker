@@ -477,7 +477,10 @@ fn build_manifest_sealed_and_blocked() {
             request_id: None,
         })
         .expect("builds");
-    assert_eq!(manifest.domain_label, archmaker_domain::ManifestDomainLabel);
+    assert_eq!(
+        manifest.domain_label,
+        archmaker_domain::ManifestDomainLabel::V1
+    );
     assert!(manifest.conflicts.is_empty());
     let recomputed = archmaker_core::manifest_content_digest(&manifest).expect("recomputes digest");
     assert_eq!(recomputed, manifest.content_digest);
