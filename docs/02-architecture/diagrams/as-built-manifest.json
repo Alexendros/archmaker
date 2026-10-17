@@ -24,7 +24,7 @@
     "docs/00-governance/go-no-go.md": "23f6431d51c16d336d2b3fe7bfd0ca5c191c535874dede09264d000aec75a0ea",
     "docs/02-architecture/diagrams/README.md": "000f4e1844562b62e968dc9853f672f579b7aa2b86849733149d36af3634807c",
     "docs/02-architecture/diagrams/catalog.json": "3f28347b82e0ee53d0df91f3ac4d87023d96c67f35ed2f90cc0d2a76b45c1ef8",
-    "docs/02-architecture/diagrams/sources/D01-context.architecture.json": "229e0c9ae4cceb6fcce85872c43458ab7aa9ba3533d5917b9b8fe8de5428b39a",
+    "docs/02-architecture/diagrams/sources/D01-context.architecture.json": "587e657841bc11dabf2d25d3c66780e946edc8de8b66fdbb3333e7d4876a46a3",
     "docs/02-architecture/diagrams/sources/D02-containers.architecture.json": "4c13f2d7f431622f31907562206693cea5be6464ca9141288bdea8c1100d5225",
     "docs/02-architecture/diagrams/sources/D03-core-components.architecture.json": "e275387c1d4adf136754691b53589ae5b9fa3d681846692d432c0b084aab2d82",
     "docs/02-architecture/diagrams/sources/D04-frontend-coreport.architecture.json": "d28ade597c61d9370190abb686e84ac902d6da19c873be6e5e55aca684947ace",
