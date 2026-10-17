@@ -7,10 +7,8 @@ use archmaker_domain::{
 };
 
 fn desktop_catalog() -> Catalog {
-    serde_json::from_str(include_str!(
-        "../fixtures/local-catalog-mvp1.json"
-    ))
-    .expect("local-catalog-mvp1.json parses")
+    serde_json::from_str(include_str!("../fixtures/local-catalog-mvp1.json"))
+        .expect("local-catalog-mvp1.json parses")
 }
 
 fn option<'a>(catalog: &'a Catalog, id: &str) -> &'a archmaker_domain::CatalogOption {
@@ -52,10 +50,7 @@ fn onlyoffice_canonical_alias_not_duplicate_install() {
     let aliases = canonical.aliases.as_ref().expect("canonical aliases");
     assert_eq!(aliases.as_slice(), [ONLYOFFICE_HISTORICAL_ALIAS_ID]);
     let alias = option(&catalog, ONLYOFFICE_HISTORICAL_ALIAS_ID);
-    assert_eq!(
-        alias.canonical_id.as_deref(),
-        Some(ONLYOFFICE_CANONICAL_ID)
-    );
+    assert_eq!(alias.canonical_id.as_deref(), Some(ONLYOFFICE_CANONICAL_ID));
     assert!(onlyoffice_ids_equivalent(
         ONLYOFFICE_CANONICAL_ID,
         ONLYOFFICE_HISTORICAL_ALIAS_ID
