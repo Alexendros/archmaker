@@ -25,11 +25,14 @@
       "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/documentVersion"
     },
     "schemaVersion": {
-      "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/schemaVersion"
+      "description": "Manifest contract axis. Only \"1\" and \"2\" are accepted (ADR-0016).",
+      "type": "string",
+      "enum": ["1", "2"]
     },
     "domainLabel": {
-      "description": "Domain separation label used for the canonical hash (ADR-0007).",
-      "const": "archmaker:manifest:v1"
+      "description": "Domain separation label used for the canonical hash (ADR-0007 / ADR-0016).",
+      "type": "string",
+      "enum": ["archmaker:manifest:v1", "archmaker:manifest:v2"]
     },
     "catalogRef": {
       "description": "Exact catalog version consumed.",
@@ -81,8 +84,48 @@
       }
     },
     "contentDigest": {
-      "description": "Canonical semantic digest of this manifest payload (ADR-0007, domain tag archmaker:manifest:v1). Distinct from any binary/artifact digest.",
+      "description": "Canonical semantic digest of this manifest payload (ADR-0007). Domain tag follows domainLabel (v1 or v2).",
       "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/contentDigest"
+    },
+    "storagePlan": {
+      "$ref": "https://archmaker.dev/schemas/draft-v2-defs.schema.json#/$defs/storagePlan"
+    },
+    "encryptionPolicy": {
+      "$ref": "https://archmaker.dev/schemas/draft-v2-defs.schema.json#/$defs/encryptionPolicy"
+    },
+    "browserPolicy": {
+      "$ref": "https://archmaker.dev/schemas/draft-v2-defs.schema.json#/$defs/browserPolicy"
+    },
+    "verification": {
+      "$ref": "https://archmaker.dev/schemas/draft-v2-defs.schema.json#/$defs/verificationStatuses"
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "schemaVersion": { "const": "1" } },
+        "required": ["schemaVersion"]
+      },
+      "then": {
+        "properties": { "domainLabel": { "const": "archmaker:manifest:v1" } },
+        "not": {
+          "anyOf": [
+            { "required": ["storagePlan"] },
+            { "required": ["encryptionPolicy"] },
+            { "required": ["browserPolicy"] },
+            { "required": ["verification"] }
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "schemaVersion": { "const": "2" } },
+        "required": ["schemaVersion"]
+      },
+      "then": {
+        "properties": { "domainLabel": { "const": "archmaker:manifest:v2" } }
+      }
+    }
+  ]
 }

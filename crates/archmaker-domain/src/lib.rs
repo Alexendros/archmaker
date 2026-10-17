@@ -9,7 +9,22 @@ use std::collections::HashMap;
 
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
-pub const MANIFEST_DOMAIN_LABEL: &str = "archmaker:manifest:v1";
+pub mod schema_v2;
+
+pub use schema_v2::{
+    decode_draft_schema_version, manual_reference_storage_plan, BootArtifactStrategy, BootCompatibilityStatus,
+    BrowserPolicy, BrowserPolicyError, CapacityVerificationStatus, DeviceHandle, DraftSchemaMigrationEntry,
+    DraftSchemaMigrationReport, DraftSchemaVersion, EncryptionKind, EncryptionPolicy, ExecutionStatus,
+    FilesystemKind, FirmwareDeclaration, FirmwareKind, FirmwareProvenance, HardwareVerificationStatus,
+    LogicalTargetRef, LuksUnlockMethod, PartitionRole, PartitionTableKind, PartitionTableObservation,
+    PartitionTableObservationStatus, PlanCertifiabilityStatus, PlanValidationStatus, PlannedAction,
+    PlannedPartition, SafeByteCount, SafeIntegerError, SchemaVersionError, StorageLayer, StorageMode,
+    StoragePlan, VerificationStatuses, DRAFT_DOMAIN_V1, DRAFT_DOMAIN_V2, DRAFT_SCHEMA_V1, DRAFT_SCHEMA_V2,
+    JS_MAX_SAFE_INTEGER, MANIFEST_DOMAIN_LABEL_V1, MANIFEST_DOMAIN_LABEL_V2, ONLYOFFICE_CANONICAL_ID,
+};
+
+/// Etiqueta histórica v1 (ADR-0007). Preferir [`MANIFEST_DOMAIN_LABEL_V1`].
+pub const MANIFEST_DOMAIN_LABEL: &str = MANIFEST_DOMAIN_LABEL_V1;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub enum DigestAlgorithm {
@@ -281,6 +296,26 @@ pub struct Draft {
     pub created_at: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none", default, rename = "updatedAt")]
     pub updated_at: Option<String>,
+    /// Plan de disco declarativo (`schemaVersion` `"2"`). Ausente en v1.
+    #[serde(skip_serializing_if = "Option::is_none", default, rename = "storagePlan")]
+    pub storage_plan: Option<StoragePlan>,
+    #[serde(
+        skip_serializing_if = "Option::is_none",
+        default,
+        rename = "encryptionPolicy"
+    )]
+    pub encryption_policy: Option<EncryptionPolicy>,
+    #[serde(skip_serializing_if = "Option::is_none", default, rename = "browserPolicy")]
+    pub browser_policy: Option<BrowserPolicy>,
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    pub verification: Option<VerificationStatuses>,
+    /// Intención histórica de cifrado booleano v1; pendiente de confirmar como LUKS2.
+    #[serde(
+        skip_serializing_if = "Option::is_none",
+        default,
+        rename = "inheritedEncryptIntent"
+    )]
+    pub inherited_encrypt_intent: Option<bool>,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -404,23 +439,43 @@ pub struct Catalog {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
-pub struct ManifestDomainLabel;
+pub enum ManifestDomainLabel {
+    #[default]
+    V1,
+    V2,
+}
+
+impl ManifestDomainLabel {
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::V1 => MANIFEST_DOMAIN_LABEL_V1,
+            Self::V2 => MANIFEST_DOMAIN_LABEL_V2,
+        }
+    }
+
+    pub fn for_schema_version(schema_version: &str) -> Result<Self, SchemaVersionError> {
+        match decode_draft_schema_version(schema_version)? {
+            DraftSchemaVersion::V1 => Ok(Self::V1),
+            DraftSchemaVersion::V2 => Ok(Self::V2),
+        }
+    }
+}
 
 impl Serialize for ManifestDomainLabel {
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
-        serializer.serialize_str(MANIFEST_DOMAIN_LABEL)
+        serializer.serialize_str(self.as_str())
     }
 }
 
 impl<'de> Deserialize<'de> for ManifestDomainLabel {
     fn deserialize<D: Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
         let value = String::deserialize(deserializer)?;
-        if value == MANIFEST_DOMAIN_LABEL {
-            Ok(ManifestDomainLabel)
-        } else {
-            Err(serde::de::Error::custom(format!(
-                "invalid domainLabel: expected {MANIFEST_DOMAIN_LABEL}"
-            )))
+        match value.as_str() {
+            MANIFEST_DOMAIN_LABEL_V1 => Ok(Self::V1),
+            MANIFEST_DOMAIN_LABEL_V2 => Ok(Self::V2),
+            other => Err(serde::de::Error::custom(format!(
+                "invalid domainLabel: {other}"
+            ))),
         }
     }
 }
@@ -450,6 +505,102 @@ pub struct Manifest {
     pub conflicts: Vec<Conflict>,
     #[serde(rename = "contentDigest")]
     pub content_digest: ContentDigest,
+    #[serde(skip_serializing_if = "Option::is_none", default, rename = "storagePlan")]
+    pub storage_plan: Option<StoragePlan>,
+    #[serde(
+        skip_serializing_if = "Option::is_none",
+        default,
+        rename = "encryptionPolicy"
+    )]
+    pub encryption_policy: Option<EncryptionPolicy>,
+    #[serde(skip_serializing_if = "Option::is_none", default, rename = "browserPolicy")]
+    pub browser_policy: Option<BrowserPolicy>,
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    pub verification: Option<VerificationStatuses>,
+}
+
+/// Migración idempotente draft `schemaVersion` `"1"` → `"2"`.
+///
+/// No inventa hardware, no sustituye apps (Firefox/LibreOffice/Flameshot) ni convierte
+/// `encrypt: true` en política LUKS2: esa intención queda en `inheritedEncryptIntent`.
+pub fn migrate_draft_v1_to_v2(draft: Draft) -> Result<(Draft, DraftSchemaMigrationReport), SchemaVersionError> {
+    let version = decode_draft_schema_version(&draft.schema_version)?;
+    match version {
+        DraftSchemaVersion::V2 => {
+            let report = DraftSchemaMigrationReport {
+                from_schema_version: DRAFT_SCHEMA_V2.to_string(),
+                to_schema_version: DRAFT_SCHEMA_V2.to_string(),
+                entries: vec![DraftSchemaMigrationEntry {
+                    path: "/schemaVersion".to_string(),
+                    message_key: "migration.draftSchema.alreadyV2".to_string(),
+                    detail: None,
+                }],
+                idempotent_noop: true,
+            };
+            Ok((draft, report))
+        }
+        DraftSchemaVersion::V1 => {
+            let mut entries = vec![DraftSchemaMigrationEntry {
+                path: "/schemaVersion".to_string(),
+                message_key: "migration.draftSchema.upgradedToV2".to_string(),
+                detail: Some("schemaVersion 1 → 2".to_string()),
+            }];
+
+            let inherited_encrypt = draft.selections.iter().find_map(|selection| {
+                if selection.step_id.contains("encrypt") || selection.step_id.contains("cipher")
+                {
+                    match &selection.value {
+                        SelectionValue::Boolean { value } => Some(*value),
+                        _ => None,
+                    }
+                } else {
+                    None
+                }
+            });
+            if let Some(flag) = inherited_encrypt {
+                entries.push(DraftSchemaMigrationEntry {
+                    path: "/inheritedEncryptIntent".to_string(),
+                    message_key: "migration.draftSchema.encryptIntentPreserved".to_string(),
+                    detail: Some(format!(
+                        "booleano histórico {flag}; no se materializa como encryptionPolicy LUKS2"
+                    )),
+                });
+            }
+
+            entries.push(DraftSchemaMigrationEntry {
+                path: "/storagePlan".to_string(),
+                message_key: "migration.draftSchema.storageAbsent".to_string(),
+                detail: Some(
+                    "sin firmware/disco/capacidad inventados; storagePlan queda ausente hasta declaración manual"
+                        .to_string(),
+                ),
+            });
+            entries.push(DraftSchemaMigrationEntry {
+                path: "/browserPolicy".to_string(),
+                message_key: "migration.draftSchema.appsPreserved".to_string(),
+                detail: Some(
+                    "no se reescribe Firefox→Zen ni LibreOffice→ONLYOFFICE".to_string(),
+                ),
+            });
+
+            let mut migrated = draft;
+            migrated.schema_version = DRAFT_SCHEMA_V2.to_string();
+            migrated.content_digest = None;
+            migrated.storage_plan = None;
+            migrated.encryption_policy = Some(EncryptionPolicy::none());
+            migrated.browser_policy = None;
+            migrated.verification = Some(VerificationStatuses::foundational_defaults());
+            migrated.inherited_encrypt_intent = inherited_encrypt;
+
+            let report = DraftSchemaMigrationReport {
+                from_schema_version: DRAFT_SCHEMA_V1.to_string(),
+                to_schema_version: DRAFT_SCHEMA_V2.to_string(),
+                entries,
+                idempotent_noop: false,
+            };
+            Ok((migrated, report))
+        }
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -571,10 +722,34 @@ mod tests {
     }
 
     #[test]
-    fn manifest_domain_label_is_const() {
+    fn manifest_domain_label_accepts_v1_and_v2() {
         let mut value: serde_json::Value = serde_json::from_str(manifest_fixture()).unwrap();
         value["domainLabel"] = serde_json::json!("archmaker:other:v9");
-        assert!(serde_json::from_value::<Manifest>(value).is_err());
+        assert!(serde_json::from_value::<Manifest>(value.clone()).is_err());
+        value["domainLabel"] = serde_json::json!(MANIFEST_DOMAIN_LABEL_V2);
+        // Fixture still has schemaVersion "1"; deserialization of label alone is allowed.
+        assert!(serde_json::from_value::<ManifestDomainLabel>(
+            serde_json::json!(MANIFEST_DOMAIN_LABEL_V2)
+        )
+        .is_ok());
+    }
+
+    #[test]
+    fn migrate_v1_to_v2_is_idempotent() {
+        let draft: Draft =
+            serde_json::from_str(draft_fixture()).expect("draft fixture deserializes");
+        let (v2, report) = migrate_draft_v1_to_v2(draft).expect("migrate");
+        assert_eq!(v2.schema_version, DRAFT_SCHEMA_V2);
+        assert!(!report.idempotent_noop);
+        assert!(v2.storage_plan.is_none());
+        assert_eq!(
+            v2.verification.as_ref().map(|v| v.execution_status),
+            Some(ExecutionStatus::NotExecuted)
+        );
+        let (again, report2) = migrate_draft_v1_to_v2(v2.clone()).expect("idempotent");
+        assert!(report2.idempotent_noop);
+        assert_eq!(again.schema_version, DRAFT_SCHEMA_V2);
+        assert_eq!(again.selections, v2.selections);
     }
 
     #[test]

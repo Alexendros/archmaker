@@ -39,3 +39,13 @@ reviewers:
 - Arrays en presets.
 - ID `base-devel` duplicado.
 - `cmd` y hooks rechazados como ejecución.
+
+## Draft schemaVersion 1 → 2 (ADR-0016)
+
+1. Decodificar `schemaVersion`; rechazar futuras (`"3"`+).
+2. Si ya es `"2"`, informe idempotente (`idempotent_noop`).
+3. Conservar selecciones e IDs de apps; no sustituir Firefox/LibreOffice/Flameshot.
+4. No inventar firmware, disco ni capacidad.
+5. Preservar booleano histórico de cifrado como `inheritedEncryptIntent` (no como LUKS2).
+6. Añadir `verification` con `executionStatus: not-executed` (A6 fuera).
+7. Invalidar `contentDigest` para recomputar con dominio `archmaker:draft:v2`.

@@ -42,6 +42,11 @@ fn make_test_draft() -> Draft {
         preset_refs: None,
         created_at: None,
         updated_at: None,
+        storage_plan: None,
+        encryption_policy: None,
+        browser_policy: None,
+        verification: None,
+        inherited_encrypt_intent: None,
     }
 }
 
