@@ -9,8 +9,13 @@ use std::collections::HashMap;
 
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
+pub mod catalog_providers;
 pub mod schema_v2;
 
+pub use catalog_providers::{
+    onlyoffice_ids_equivalent, resolve_onlyoffice_canonical, CatalogProvider, ProviderChannel,
+    ProviderStatus, ONLYOFFICE_HISTORICAL_ALIAS_ID,
+};
 pub use schema_v2::{
     decode_draft_schema_version, manual_reference_storage_plan, BootArtifactStrategy,
     BootCompatibilityStatus, BrowserPolicy, BrowserPolicyError, CapacityVerificationStatus,
@@ -20,9 +25,9 @@ pub use schema_v2::{
     LuksUnlockMethod, PartitionRole, PartitionTableKind, PartitionTableObservation,
     PartitionTableObservationStatus, PlanCertifiabilityStatus, PlanValidationStatus, PlannedAction,
     PlannedPartition, SafeByteCount, SafeIntegerError, SchemaVersionError, StorageLayer,
-    StorageMode, StoragePlan, VerificationStatuses, DRAFT_DOMAIN_V1, DRAFT_DOMAIN_V2,
-    DRAFT_SCHEMA_V1, DRAFT_SCHEMA_V2, JS_MAX_SAFE_INTEGER, MANIFEST_DOMAIN_LABEL_V1,
-    MANIFEST_DOMAIN_LABEL_V2, ONLYOFFICE_CANONICAL_ID,
+    StorageMode, StoragePlan, VerificationStatuses, DEFAULT_BROWSER_ID_NEW_PROFILE, DRAFT_DOMAIN_V1,
+    DRAFT_DOMAIN_V2, DRAFT_SCHEMA_V1, DRAFT_SCHEMA_V2, JS_MAX_SAFE_INTEGER,
+    MANIFEST_DOMAIN_LABEL_V1, MANIFEST_DOMAIN_LABEL_V2, ONLYOFFICE_CANONICAL_ID,
 };
 
 /// Etiqueta histórica v1 (ADR-0007). Preferir [`MANIFEST_DOMAIN_LABEL_V1`].
@@ -364,6 +369,24 @@ pub struct CatalogOption {
     pub provides: Option<Vec<String>>,
     #[serde(skip_serializing_if = "Option::is_none", default)]
     pub requires: Option<Vec<String>>,
+    /// Proveedor Arch/AUR verificado o solicitud no verificada (fuente + revisión + fecha).
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    pub provider: Option<CatalogProvider>,
+    /// Familia de navegador (p. ej. Firefox/Mozilla, Chromium). No confundir con linux-zen.
+    #[serde(skip_serializing_if = "Option::is_none", default, rename = "browserBase")]
+    pub browser_base: Option<String>,
+    #[serde(
+        skip_serializing_if = "Option::is_none",
+        default,
+        rename = "renderingEngine"
+    )]
+    pub rendering_engine: Option<String>,
+    /// Si esta opción es un alias histórico, apunta al id canónico.
+    #[serde(skip_serializing_if = "Option::is_none", default, rename = "canonicalId")]
+    pub canonical_id: Option<String>,
+    /// Aliases históricos explícitos del id canónico.
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    pub aliases: Option<Vec<String>>,
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]

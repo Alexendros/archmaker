@@ -84,7 +84,7 @@ test.describe("draftForCore Prove-It", () => {
     );
   });
 
-  test("strips gap packages from multiple selections", () => {
+  test("strips unverified packages from multiple selections", () => {
     let draft = emptyDraft();
     draft = {
       ...draft,
@@ -95,7 +95,7 @@ test.describe("draftForCore Prove-It", () => {
             kind: "multiple",
             optionIds: [
               "archmaker.browser.firefox",
-              "archmaker.app.grokbot", // gap in face catalog
+              "archmaker.app.grokbot", // unverified in face catalog
             ],
           },
         },
@@ -130,7 +130,7 @@ test.describe("draftForCore Prove-It", () => {
 
     const exclusions = listFaceExclusions(draft);
     expect(exclusions.some((e) => e.reason === "face-only-intent")).toBe(true);
-    expect(exclusions.some((e) => e.reason === "gap-option")).toBe(true);
+    expect(exclusions.some((e) => e.reason === "unverified-option")).toBe(true);
 
     const forCore = draftForCore(draft);
     expect(textValue(forCore, STEP_IDS.hostname)).toBe("arch-forge");

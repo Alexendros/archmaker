@@ -55,8 +55,8 @@ fn manual_v2_draft(core: &RealCore) -> Draft {
     draft.storage_plan = Some(manual_reference_storage_plan());
     draft.encryption_policy = Some(EncryptionPolicy::none());
     draft.browser_policy = Some(BrowserPolicy {
-        selected_browser_ids: vec!["archmaker.app.firefox".into()],
-        default_browser_id: "archmaker.app.firefox".into(),
+        selected_browser_ids: vec!["archmaker.browser.firefox".into()],
+        default_browser_id: Some("archmaker.browser.firefox".into()),
     });
     draft.verification = Some(VerificationStatuses::foundational_defaults());
     draft.inherited_encrypt_intent = None;

@@ -144,20 +144,20 @@ test.describe("Forge face — rutas del plan", () => {
     await expect(page.getByRole("group", { name: "Desarrollo" })).toBeVisible();
     await expect(page.getByRole("group", { name: "Gaming" })).toBeVisible();
 
-    const firefox = page.getByRole("checkbox", { name: /^Firefox$/i });
-    await expect(firefox).toBeChecked();
+    const zen = page.getByRole("checkbox", { name: /^Zen Browser$/i });
+    await expect(zen).toBeChecked();
 
-    await firefox.uncheck();
-    await expect(firefox).not.toBeChecked();
+    await zen.uncheck();
+    await expect(zen).not.toBeChecked();
     await expect(page.locator("#toast-region")).toContainText(
-      /Quitado Firefox/i,
+      /Quitado Zen Browser/i,
     );
 
-    await page.getByRole("button", { name: /Firefox/i }).click();
+    await page.getByRole("button", { name: /Zen Browser/i }).click();
     await expect(page.getByRole("dialog")).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Firefox" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Zen Browser" })).toBeVisible();
     await page.getByRole("button", { name: "Añadir" }).click();
-    await expect(firefox).toBeChecked();
+    await expect(zen).toBeChecked();
   });
 
   test("identidad: hostname y cifrado se guardan en la cara", async ({
@@ -238,12 +238,12 @@ test.describe("Forge face — rutas del plan", () => {
     await page.getByRole("button", { name: /Continuar → Entorno/i }).click();
     await page.getByRole("button", { name: /Continuar → Apps/i }).click();
 
-    const firefox = page.getByRole("checkbox", { name: /^Firefox$/i });
-    await expect(firefox).toBeChecked();
-    await firefox.uncheck();
-    await expect(firefox).not.toBeChecked();
+    const zen = page.getByRole("checkbox", { name: /^Zen Browser$/i });
+    await expect(zen).toBeChecked();
+    await zen.uncheck();
+    await expect(zen).not.toBeChecked();
     await page.getByRole("button", { name: "Deshacer" }).click();
-    await expect(firefox).toBeChecked();
+    await expect(zen).toBeChecked();
   });
 
   test("entorno: DEs y WMs visibles", async ({ page }) => {

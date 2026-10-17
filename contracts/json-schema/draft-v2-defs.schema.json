@@ -159,11 +159,11 @@
     "browserPolicy": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["selectedBrowserIds", "defaultBrowserId"],
+      "required": ["selectedBrowserIds"],
       "properties": {
         "selectedBrowserIds": {
           "type": "array",
-          "minItems": 1,
+          "minItems": 0,
           "maxItems": 64,
           "uniqueItems": true,
           "items": {
@@ -173,7 +173,8 @@
           }
         },
         "defaultBrowserId": {
-          "type": "string",
+          "description": "At most one default; must belong to selectedBrowserIds when set. Null/omitted = no default.",
+          "type": ["string", "null"],
           "minLength": 1,
           "maxLength": 256
         }

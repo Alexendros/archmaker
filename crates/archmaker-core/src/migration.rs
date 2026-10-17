@@ -118,9 +118,20 @@ fn map_option_id(section: &str, option: &str) -> String {
         ("dm", "sddm") => "archmaker.dm.sddm".into(),
         ("browser", "firefox") => "archmaker.browser.firefox".into(),
         ("browser", "vivaldi") => "archmaker.browser.vivaldi".into(),
+        ("browser", "brave") => "archmaker.browser.brave".into(),
+        // Zen/ONLYOFFICE/ApexShot no se inventan en migración histórica.
+        ("browser", "zen") => "archmaker.browser.zen".into(),
         ("apps-core", "steam") | ("apps", "steam") => "archmaker.app.steam".into(),
         ("apps-core", "vlc") | ("apps", "vlc") => "archmaker.app.vlc".into(),
         ("apps-core", "gimp") | ("apps", "gimp") => "archmaker.app.gimp".into(),
+        ("apps-core", "onlyoffice-standalone") | ("apps", "onlyoffice-standalone") => {
+            // Alias histórico explícito; no sustituye LibreOffice.
+            "archmaker.app.onlyoffice-standalone".into()
+        }
+        ("office-pack", "onlyoffice-bin") | ("libpacks", "onlyoffice-bin") => {
+            "archmaker.pkg.onlyoffice-bin".into()
+        }
+        ("office-pack", "libreoffice-fresh") => "archmaker.pkg.libreoffice-fresh".into(),
         _ => format!("archmaker.legacy.{section}.{option}"),
     }
 }
