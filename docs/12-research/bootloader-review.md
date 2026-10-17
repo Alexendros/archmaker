@@ -166,9 +166,9 @@ se eligen con el mismo botón. No hay caja nueva ni texto de megabytes.
 ## Qué queda cerrado con esto
 
 - La cara Forge en `apps/web` conecta los tres radios de Bootloader:
-  `systemd-boot` marcado al abrir el draft, `GRUB` y `Limine` al pulsarlos
-  en modo Avanzado. El resto de huecos de catálogo sigue fuera del fixture
-  Rust hasta MVP-5 (`docs/10-delivery/mvp5-scope.md`).
+  `systemd-boot` marcado al abrir el draft; `GRUB` y `Limine` seleccionables
+  en la experiencia única (con ayuda visible). El catálogo MVP-5 y el
+  incremento declarativo posteriores cubren el fixture Rust vigente.
 - Alta de Limine, presets y cualquier target de imagen esperan su alcance
   `accepted` y, para la imagen, un veredicto nuevo. ADR-0011 no se amplía aquí.
 - NOLANG y NOIDIOTMATIC no son alcances. No se abre trabajo con esos nombres.

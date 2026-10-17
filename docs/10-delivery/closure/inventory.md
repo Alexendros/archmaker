@@ -39,20 +39,19 @@ La UI exporta 1/3. Los dos call sites de `exportTarget` en `apps/web/src/App.tsx
 
 ## Campos de cara
 
-Denominador de pasos visibles: 6/6 en `RAIL_STEPS` (`Intención`, `Sistema base`, `Entorno`, `Apps`, `Identidad`, `Revisión`).
+Denominador de pasos visibles: 6/6 en `RAIL_STEPS` (`Disco y particiones`, `Sistema base`, `Entorno`, `Apps`, `Identidad y seguridad`, `Revisión`). Experiencia única: sin Sencillo/Avanzado.
 
-Denominador de `STEP_IDS`: 8. De ellos, `draftForCore` quita solo `archmaker.face.intent` (y opciones gap). Hostname (`archmaker.face.hostname`, texto) y cifrado (`archmaker.face.encrypt`, boolean) siguen en el draft y F3 los preserva en el manifiesto como intención. Matriz: `field-matrix.md`. La cara no afirma cifrado aplicado al disco.
+Denominador de `STEP_IDS` de presentación: incluye storage/kernel/boot/filesystem/compositor/apps/hostname/encrypt; el draft v2 añade `storagePlan`, `encryptionPolicy` y `defaultBrowserId` en dominio. `archmaker.face.intent` histórico migra a `legacyMetadata` (no es paso activo). `draftForCore` excluye intención face-only y opciones `unverified` (antes `gap`). Hostname y cifrado booleano heredado siguen como intención hasta confirmar LUKS2. Matriz: `field-matrix.md`. La cara no afirma cifrado ni particionado aplicados al disco.
 
-Denominador de `optionId`: 38 campos. 12 llevan `gap: true`. 26 no.
+Denominador de opciones de cara: catálogo completo en experiencia única. Solicitudes `unverified` (p. ej. ApexShot, Grok*): seleccionables, no sellan perfil soportado. No se usa `gap: true` para deshabilitar.
 
-| Grupo      | Opciones | Con gap | Notas                                        |
-| ---------- | -------- | ------- | -------------------------------------------- |
-| Intención  | 4        | 0       | face-only; no entra a resolve                |
-| Kernel     | 4        | 1       |                                              |
-| Arranque   | 3        | 0       | preselección UI: systemd-boot                |
-| Filesystem | 2        | 0       |                                              |
-| Entorno    | 9        | 5       | 6 DE y 3 WM; Sencillo muestra 6/9 (solo DE)  |
-| Paquetes   | 16       | 6       | 6 capas: 4 `simple: true`, 2 `simple: false` |
+| Grupo                  | Notas                                                                 |
+| ---------------------- | --------------------------------------------------------------------- |
+| Disco y particiones    | Plan declarativo; detección Linux solo en Tauri; sin IO destructivo   |
+| Kernel / Arranque / FS | Preselección UEFI: systemd-boot; ayuda visible; UKI en ESP (política) |
+| Entorno                | Catálogo completo (DE + WM); sin filtro por modo                      |
+| Apps / navegadores     | Defaults nuevos: Zen + ONLYOFFICE; Kitty/Ghostty opcionales           |
+| Identidad y seguridad  | Hostname + política LUKS2 tipada (sin secretos)                       |
 
 ## CI
 
@@ -98,12 +97,12 @@ Tras F1–F6 en `main`, la reejecución obligatoria vive en `f7-candidate.md` + 
 
 Residuales de ejecución (agente / `--with-e2e`):
 
-| Id         | executed/passed                                      | Sigue pending                                      |
-| ---------- | ---------------------------------------------------- | -------------------------------------------------- |
-| F7-E2E-X3  | executable (3 invocaciones separadas workers=1 retries=0; no repeat-each) | re-verificar con `--with-e2e`                  |
-| F7-OFFLINE | web passed (`wasm-offline`); offline+3× probe passed | escritorio **blocked** (P6; portal E2E rfd) |
-| F7-REG-F6  | mensajes F6 executable                               | —                                                  |
-| F7-P95     | web-ready P95 123 ms; web-prepare P95 58 ms (n=30)   | desktop blocked; aceptación global no cerrada      |
+| Id         | executed/passed                                                           | Sigue pending                                 |
+| ---------- | ------------------------------------------------------------------------- | --------------------------------------------- |
+| F7-E2E-X3  | executable (3 invocaciones separadas workers=1 retries=0; no repeat-each) | re-verificar con `--with-e2e`                 |
+| F7-OFFLINE | web passed (`wasm-offline`); offline+3× probe passed                      | escritorio **blocked** (P6; portal E2E rfd)   |
+| F7-REG-F6  | mensajes F6 executable                                                    | —                                             |
+| F7-P95     | web-ready P95 123 ms; web-prepare P95 58 ms (n=30)                        | desktop blocked; aceptación global no cerrada |
 
 ## F8 — gobierno / F9 — publicación
 

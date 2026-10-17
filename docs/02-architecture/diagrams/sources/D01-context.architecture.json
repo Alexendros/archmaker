@@ -12,29 +12,17 @@
       "id": "user",
       "type": "external",
       "label": "Usuario",
-      "sublabel": "Sencillo / Avanzado",
-      "pos": [
-        40,
-        280
-      ],
-      "size": [
-        130,
-        64
-      ]
+      "sublabel": "experiencia única",
+      "pos": [40, 280],
+      "size": [130, 64]
     },
     {
       "id": "forge",
       "type": "frontend",
       "label": "Forge",
       "sublabel": "configurador",
-      "pos": [
-        280,
-        280
-      ],
-      "size": [
-        150,
-        64
-      ],
+      "pos": [280, 280],
+      "size": [150, 64],
       "tag": "público"
     },
     {
@@ -42,42 +30,24 @@
       "type": "external",
       "label": "Docs Arch",
       "sublabel": "referencia",
-      "pos": [
-        520,
-        140
-      ],
-      "size": [
-        140,
-        60
-      ]
+      "pos": [520, 140],
+      "size": [140, 60]
     },
     {
       "id": "gh_release",
       "type": "cloud",
       "label": "GitHub Release",
       "sublabel": "AppImage v0.1.0",
-      "pos": [
-        520,
-        280
-      ],
-      "size": [
-        160,
-        64
-      ]
+      "pos": [520, 280],
+      "size": [160, 64]
     },
     {
       "id": "future",
       "type": "external",
       "label": "Futuro",
       "sublabel": "Runner / ISO",
-      "pos": [
-        520,
-        420
-      ],
-      "size": [
-        160,
-        64
-      ],
+      "pos": [520, 420],
+      "size": [160, 64],
       "tag": "no shipped"
     }
   ],
