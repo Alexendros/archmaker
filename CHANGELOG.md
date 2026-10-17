@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Probe P6 residuales automatizables (`tools/run_p6_residual_probe.py`): 3× install limpia
+  (FUSE) y offline (`bwrap --unshare-net` sobre AppRun extraído; evita `/tmp` noexec).
+  Portal E2E rfd sigue blocked; gate P6 global blocked.
+- Prove-It jsonschema: `validate_closure_evidence` avisa si la versión ≠ 4.23.0 y exige
+  concordancia Draft202012 (`tools/test_validate_closure_jsonschema_pin.py`).
+
 - Candidato y handoff P8–P9: `docs/10-delivery/closure/release-candidate.md` y
   `closure-handoff.md` identifican el tip post-P0–P7 sin publicar, firmar ni mover
   `v0.1.0`; firma/SBOM/revisión independiente y distribución quedan pending.

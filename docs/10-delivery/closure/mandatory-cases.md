@@ -75,7 +75,7 @@ Denominador: `len(cases)` en `f7-required-cases.json`. Estados según inventario
 | F7-REG-F6 | architecture | executable (CI) |
 | F7-P95 | architecture | executable (`run_product_p95_harness`); desktop blocked; microbenchmark no certifica |
 | F7-OFFLINE-WEB | architecture | executable (`--with-e2e`); no implica escritorio |
-| F7-OFFLINE-DESKTOP | architecture | blocked (P6: portal E2E / offline / 3× install; ver p6-desktop-offline.md) |
+| F7-OFFLINE-DESKTOP | architecture | blocked (P6: portal E2E rfd; offline+3× passed en probe; ver p6-desktop-offline.md) |
 | F7-E2E-X3 | architecture | executable (`--with-e2e`) |
 
 Residuales ya observados en inventario (no cierran aceptación):

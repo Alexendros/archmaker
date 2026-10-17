@@ -46,7 +46,7 @@ tag `v0.1.0` **no** demuestra el código de `9297ed7…`; registrar por separado
 | F7-REG-F6 | Mensajes F6 | executable |
 | F7-P95 | P95 producto web-ready/web-prepare n=30 | `tools/run_product_p95_harness.py` |
 | F7-OFFLINE-WEB | Offline web | requiere `--with-e2e` |
-| F7-OFFLINE-DESKTOP | Offline escritorio | **blocked** (P6: portal E2E / offline / 3× install) |
+| F7-OFFLINE-DESKTOP | Offline escritorio | **blocked** (P6: portal E2E rfd; offline+3× install passed en probe) |
 | F7-E2E-X3 | Tres E2E WASM (invocaciones separadas `--workers=1 --retries=0`) | requiere `--with-e2e` |
 
 Un subconjunto de comandos **no** cierra el caso: el runner marca `partial` y `--strict` falla.
@@ -54,8 +54,8 @@ Un subconjunto de comandos **no** cierra el caso: el runner marca `partial` y `-
 ## Limitaciones registradas
 
 1. El dueño puede mergear sin checks bloqueantes.
-2. Offline **escritorio** y diálogo nativo F5 reales siguen **blocked** (P6: portal E2E /
-   offline / 3× install; AppImage local + IPC no bastan).
+2. Diálogo nativo portal (rfd) sigue **blocked**. Offline escritorio y 3× install limpias
+   están **passed** vía `run_p6_residual_probe.py`; el gate P6 global sigue blocked.
 3. `--strict` es cierre técnico; la aceptación independiente sigue siendo gobierno.
 
 ## P95

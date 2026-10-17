@@ -1,37 +1,72 @@
 {
-  "sourceSha": "af31f8b2b48d35af9770de64413d42db83d6528b",
-  "display": ":0",
-  "waylandDisplay": "wayland-0",
-  "portal": true,
-  "portalFileChooserVersion": 4,
-  "forgeAppImageLocal": {
-    "name": "Forge_0.1.0_amd64.AppImage",
+  "schemaVersion": "1",
+  "sourceSha": "ccab5229334bdc1343f1b5c67819916ce45a212c",
+  "capturedAt": "2026-10-17T00:35:17Z",
+  "appimage": {
+    "path": "/home/alexendros/Aplicaciones/Repertorio/archmaker/target/release/bundle/appimage/Forge_0.1.0_amd64.AppImage",
     "sha256": "a064aee282eaef72f0e5185dc282f537cda9a38cd7eaa1d2ef09da0c363e8fbd",
     "sizeBytes": 91142648,
-    "note": "Humo local bajo CARGO_TARGET_DIR; no publicado; no sustituye el AppImage histórico v0.1.0"
+    "published": false
   },
   "cases": {
-    "env-display": "passed",
-    "env-portal": "passed",
-    "appimage-build": "passed",
-    "appimage-launch": "passed",
-    "ipc-allowed": "passed",
-    "ipc-denied": "passed",
-    "gui-dialog-real": "blocked",
-    "gui-cancel": "blocked",
-    "gui-overwrite": "blocked",
-    "gui-destination-noperms": "blocked",
-    "boot-offline": "blocked",
-    "clean-install-x3": "blocked"
+    "clean-install-x3": {
+      "status": "passed",
+      "results": [
+        {
+          "ok": true,
+          "returncode": 124,
+          "stderr_tail": "",
+          "offline": false,
+          "home": "/home/alexendros/.cache/archmaker-p6-probe/forge-p6-i0-q0w49djc/home"
+        },
+        {
+          "ok": true,
+          "returncode": 124,
+          "stderr_tail": "",
+          "offline": false,
+          "home": "/home/alexendros/.cache/archmaker-p6-probe/forge-p6-i1-l7o_6xvo/home"
+        },
+        {
+          "ok": true,
+          "returncode": 124,
+          "stderr_tail": "",
+          "offline": false,
+          "home": "/home/alexendros/.cache/archmaker-p6-probe/forge-p6-i2-xj2zwe3c/home"
+        }
+      ]
+    },
+    "boot-offline": {
+      "status": "passed",
+      "result": {
+        "ok": true,
+        "returncode": 124,
+        "stderr_tail": "WARNING: Glycin running without sandbox.\nlibEGL warning: failed to get driver name for fd -1\n\nlibEGL warning: MESA-LOADER: failed to retrieve device information\n\nlibEGL warning: failed to get driver name for fd -1\n\nMESA: error: ZINK: failed to choose pdev\nlibEGL warning: egl: failed to create dri2 screen\n",
+        "offline": true,
+        "home": "/home/alexendros/.cache/archmaker-p6-probe/forge-p6-off-hoaz3uri/home"
+      }
+    },
+    "gui-dialog-real": {
+      "status": "blocked",
+      "reason": "E2E rfd/portal nativo requiere operador; no se sustituye por picker simulado"
+    },
+    "gui-cancel": {
+      "status": "blocked",
+      "reason": "depende de gui-dialog-real"
+    },
+    "gui-overwrite": {
+      "status": "blocked",
+      "reason": "depende de gui-dialog-real"
+    },
+    "gui-destination-noperms": {
+      "status": "blocked",
+      "reason": "depende de gui-dialog-real"
+    }
   },
-  "historicalAppImage": "v0.1.0 AppImage histórico (NO cierra P6 del tip)",
-  "mockCorePortClosesGate": false,
-  "webAcceptanceImpliesDesktop": false,
-  "missingEvidence": [
-    "E2E portal rfd: diálogo nativo cancelar / guardar / sobrescribir / destino sin permisos sobre Forge AppImage del SOURCE_SHA",
-    "Arranque offline de escritorio (F7-OFFLINE-DESKTOP) con red deshabilitada / netns sobre ese binario",
-    "Tres instalaciones limpias independientes del candidato (no tres aperturas de la misma sesión; no reuso de v0.1.0 histórico)"
-  ],
   "gateStatus": "blocked",
-  "capturedAt": "2026-10-16T23:48:00Z"
+  "notes": [
+    "3× install y offline (bwrap) automatizados sobre AppImage Forge local",
+    "Portal E2E rfd permanece blocked (sin sustitución por Mock/picker)",
+    "No se publica ni se mueve tags",
+    "Residuales automatizables passed; gate P6 sigue blocked por portal E2E"
+  ]
 }
