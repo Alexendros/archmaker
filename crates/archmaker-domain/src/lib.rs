@@ -25,8 +25,8 @@ pub use schema_v2::{
     LuksUnlockMethod, PartitionRole, PartitionTableKind, PartitionTableObservation,
     PartitionTableObservationStatus, PlanCertifiabilityStatus, PlanValidationStatus, PlannedAction,
     PlannedPartition, SafeByteCount, SafeIntegerError, SchemaVersionError, StorageLayer,
-    StorageMode, StoragePlan, VerificationStatuses, DEFAULT_BROWSER_ID_NEW_PROFILE, DRAFT_DOMAIN_V1,
-    DRAFT_DOMAIN_V2, DRAFT_SCHEMA_V1, DRAFT_SCHEMA_V2, JS_MAX_SAFE_INTEGER,
+    StorageMode, StoragePlan, VerificationStatuses, DEFAULT_BROWSER_ID_NEW_PROFILE,
+    DRAFT_DOMAIN_V1, DRAFT_DOMAIN_V2, DRAFT_SCHEMA_V1, DRAFT_SCHEMA_V2, JS_MAX_SAFE_INTEGER,
     MANIFEST_DOMAIN_LABEL_V1, MANIFEST_DOMAIN_LABEL_V2, ONLYOFFICE_CANONICAL_ID,
 };
 
@@ -373,7 +373,11 @@ pub struct CatalogOption {
     #[serde(skip_serializing_if = "Option::is_none", default)]
     pub provider: Option<CatalogProvider>,
     /// Familia de navegador (p. ej. Firefox/Mozilla, Chromium). No confundir con linux-zen.
-    #[serde(skip_serializing_if = "Option::is_none", default, rename = "browserBase")]
+    #[serde(
+        skip_serializing_if = "Option::is_none",
+        default,
+        rename = "browserBase"
+    )]
     pub browser_base: Option<String>,
     #[serde(
         skip_serializing_if = "Option::is_none",
@@ -382,7 +386,11 @@ pub struct CatalogOption {
     )]
     pub rendering_engine: Option<String>,
     /// Si esta opción es un alias histórico, apunta al id canónico.
-    #[serde(skip_serializing_if = "Option::is_none", default, rename = "canonicalId")]
+    #[serde(
+        skip_serializing_if = "Option::is_none",
+        default,
+        rename = "canonicalId"
+    )]
     pub canonical_id: Option<String>,
     /// Aliases históricos explícitos del id canónico.
     #[serde(skip_serializing_if = "Option::is_none", default)]

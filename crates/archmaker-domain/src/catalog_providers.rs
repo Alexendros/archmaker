@@ -55,7 +55,10 @@ pub fn resolve_onlyoffice_canonical(option_id: &str) -> Option<&'static str> {
 
 /// True si ambos IDs denotan la misma instalación ONLYOFFICE.
 pub fn onlyoffice_ids_equivalent(a: &str, b: &str) -> bool {
-    match (resolve_onlyoffice_canonical(a), resolve_onlyoffice_canonical(b)) {
+    match (
+        resolve_onlyoffice_canonical(a),
+        resolve_onlyoffice_canonical(b),
+    ) {
         (Some(x), Some(y)) => x == y,
         _ => false,
     }
