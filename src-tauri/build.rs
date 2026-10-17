@@ -11,6 +11,12 @@ fn main() {
             "export_artifact",
             "import_draft",
             "save_export_bytes",
+            "inspect_host_hardware",
+            "inspect_storage_devices",
+            "refresh_storage_snapshot",
+            "propose_storage_plan",
+            "validate_storage_plan",
+            "import_storage_snapshot",
         ]),
     ))
     .expect("tauri_build with AppManifest::commands");

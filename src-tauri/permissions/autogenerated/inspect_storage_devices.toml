@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-inspect-storage-devices"
+description = "Enables the inspect_storage_devices command without any pre-configured scope."
+commands.allow = ["inspect_storage_devices"]
+
+[[permission]]
+identifier = "deny-inspect-storage-devices"
+description = "Denies the inspect_storage_devices command without any pre-configured scope."
+commands.deny = ["inspect_storage_devices"]

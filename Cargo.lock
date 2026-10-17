@@ -52,6 +52,8 @@ name = "archmaker"
 version = "0.1.0"
 dependencies = [
  "archmaker-core",
+ "archmaker-domain",
+ "archmaker-hardware",
  "rfd",
  "serde",
  "serde_json",
@@ -90,6 +92,16 @@ version = "0.1.0"
 dependencies = [
  "serde",
  "serde_json",
+]
+
+[[package]]
+name = "archmaker-hardware"
+version = "0.1.0"
+dependencies = [
+ "archmaker-domain",
+ "serde",
+ "serde_json",
+ "sha2",
 ]
 
 [[package]]

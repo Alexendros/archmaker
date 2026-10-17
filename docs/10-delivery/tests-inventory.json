@@ -1,6 +1,6 @@
 {
-  "generated_at": "1792193807",
-  "git_sha": "535393dbcb997f46a47ae252d73f3e86ff5a4c06",
+  "generated_at": "1792250201",
+  "git_sha": "9a39b5eb9b78f75d7320df05066f5cd3562435a9",
   "tests": [
     {
       "id": "TST-ARCHMAKER-CANONICALIZATION-VECTORS-GOLDEN_CORPUS_BYTE_IDENTITY_AND_DIGEST",
@@ -801,6 +801,55 @@
       "description": "core_contract::save_draft_applies_changeset_replace"
     },
     {
+      "id": "TST-ARCHMAKER-CORE-FORGE_V2_WALKING_SKELETON-ONLYOFFICE_CANONICAL_ID_IS_CATALOG_KNOWN",
+      "type": "unit",
+      "location": "crates/archmaker-core/tests/forge_v2_walking_skeleton.rs",
+      "command": "cargo test -p archmaker-core --test forge_v2_walking_skeleton onlyoffice_canonical_id_is_catalog_known",
+      "workflow": "ci",
+      "covers": [
+        "FR-CAT-001",
+        "NFR-DET-001",
+        "FR-DRAFT-001",
+        "FR-VALIDATE-001",
+        "FR-MANIFEST-001",
+        "FR-EXPORT-001",
+        "NFR-MIG-001"
+      ],
+      "description": "forge_v2_walking_skeleton::onlyoffice_canonical_id_is_catalog_known"
+    },
+    {
+      "id": "TST-ARCHMAKER-CORE-FORGE_V2_WALKING_SKELETON-WALKING_SKELETON_V2_SAVE_BUILD_EXPORT_AND_MIGRATE",
+      "type": "unit",
+      "location": "crates/archmaker-core/tests/forge_v2_walking_skeleton.rs",
+      "command": "cargo test -p archmaker-core --test forge_v2_walking_skeleton walking_skeleton_v2_save_build_export_and_migrate",
+      "workflow": "ci",
+      "covers": [
+        "FR-EXPORT-001",
+        "NFR-MIG-001",
+        "FR-DRAFT-001",
+        "FR-VALIDATE-001",
+        "FR-MANIFEST-001",
+        "NFR-DET-001"
+      ],
+      "description": "forge_v2_walking_skeleton::walking_skeleton_v2_save_build_export_and_migrate"
+    },
+    {
+      "id": "TST-ARCHMAKER-CORE-FORGE_V2_WALKING_SKELETON-REJECTS_FUTURE_SCHEMA_VERSION_ON_SAVE",
+      "type": "unit",
+      "location": "crates/archmaker-core/tests/forge_v2_walking_skeleton.rs",
+      "command": "cargo test -p archmaker-core --test forge_v2_walking_skeleton rejects_future_schema_version_on_save",
+      "workflow": "ci",
+      "covers": [
+        "FR-DRAFT-001",
+        "FR-VALIDATE-001",
+        "FR-MANIFEST-001",
+        "FR-EXPORT-001",
+        "NFR-MIG-001",
+        "NFR-DET-001"
+      ],
+      "description": "forge_v2_walking_skeleton::rejects_future_schema_version_on_save"
+    },
+    {
       "id": "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-APPLICATION_CONTRACT_ACCEPTS_VALID_AND_REJECTS_INVALID",
       "type": "contract",
       "location": "crates/archmaker-core/tests/application_contract.rs",
@@ -1198,6 +1247,344 @@
       "description": "negative_capabilities::neg_allowlist_covers_coreport_plus_scoped_save"
     },
     {
+      "id": "TST-ARCHMAKER-HARDWARE-HA_MATRIX-HA01_UEFI64_MODE_AND_BITNESS",
+      "type": "unit",
+      "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
+      "command": "cargo test -p archmaker-hardware --test ha_matrix ha01_uefi64_mode_and_bitness",
+      "workflow": "ci",
+      "covers": [
+        "NFR-SEC-001",
+        "FR-VALIDATE-001",
+        "NFR-DET-001"
+      ],
+      "description": "ha_matrix::ha01_uefi64_mode_and_bitness"
+    },
+    {
+      "id": "TST-ARCHMAKER-HARDWARE-HA_MATRIX-HA02_UEFI32_NOT_CONFUSED_WITH_UEFI64",
+      "type": "unit",
+      "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
+      "command": "cargo test -p archmaker-hardware --test ha_matrix ha02_uefi32_not_confused_with_uefi64",
+      "workflow": "ci",
+      "covers": [
+        "NFR-SEC-001",
+        "FR-VALIDATE-001",
+        "NFR-DET-001"
+      ],
+      "description": "ha_matrix::ha02_uefi32_not_confused_with_uefi64"
+    },
+    {
+      "id": "TST-ARCHMAKER-HARDWARE-HA_MATRIX-HA03_BIOS_CSM_DOES_NOT_CONCLUDE_NO_UEFI",
+      "type": "unit",
+      "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
+      "command": "cargo test -p archmaker-hardware --test ha_matrix ha03_bios_csm_does_not_conclude_no_uefi",
+      "workflow": "ci",
+      "covers": [
+        "NFR-SEC-001",
+        "FR-VALIDATE-001",
+        "NFR-DET-001"
+      ],
+      "description": "ha_matrix::ha03_bios_csm_does_not_conclude_no_uefi"
+    },
+    {
+      "id": "TST-ARCHMAKER-HARDWARE-HA_MATRIX-HA04_CONTAINER_HIDDEN_EFI_UNKNOWN",
+      "type": "unit",
+      "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
+      "command": "cargo test -p archmaker-hardware --test ha_matrix ha04_container_hidden_efi_unknown",
+      "workflow": "ci",
+      "covers": [
+        "NFR-SEC-001",
+        "FR-VALIDATE-001",
+        "NFR-DET-001"
+      ],
+      "description": "ha_matrix::ha04_container_hidden_efi_unknown"
+    },
+    {
+      "id": "TST-ARCHMAKER-HARDWARE-HA_MATRIX-HA05_SECURE_BOOT_STATES_DO_NOT_BLOCK_ALONE",
+      "type": "unit",
+      "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
+      "command": "cargo test -p archmaker-hardware --test ha_matrix ha05_secure_boot_states_do_not_block_alone",
+      "workflow": "ci",
+      "covers": [
+        "NFR-SEC-001",
+        "FR-VALIDATE-001",
+        "NFR-DET-001"
+      ],
+      "description": "ha_matrix::ha05_secure_boot_states_do_not_block_alone"
+    },
+    {
+      "id": "TST-ARCHMAKER-HARDWARE-HA_MATRIX-HA06_EFIVARFS_DENIED_IS_UNKNOWN_NOT_INCOMPATIBLE",
+      "type": "unit",
+      "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
+      "command": "cargo test -p archmaker-hardware --test ha_matrix ha06_efivarfs_denied_is_unknown_not_incompatible",
+      "workflow": "ci",
+      "covers": [
+        "NFR-SEC-001",
+        "FR-VALIDATE-001",
+        "NFR-DET-001"
+      ],
+      "description": "ha_matrix::ha06_efivarfs_denied_is_unknown_not_incompatible"
+    },
+    {
+      "id": "TST-ARCHMAKER-HARDWARE-HA_MATRIX-HA07_HOST_NOT_DESTINATION",
+      "type": "unit",
+      "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
+      "command": "cargo test -p archmaker-hardware --test ha_matrix ha07_host_not_destination",
+      "workflow": "ci",
+      "covers": [
+        "NFR-SEC-001",
+        "FR-VALIDATE-001",
+        "NFR-DET-001"
+      ],
+      "description": "ha_matrix::ha07_host_not_destination"
+    },
+    {
+      "id": "TST-ARCHMAKER-HARDWARE-HA_MATRIX-HA08_LOGICAL_SECTOR_512_AND_4K",
+      "type": "unit",
+      "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
+      "command": "cargo test -p archmaker-hardware --test ha_matrix ha08_logical_sector_512_and_4k",
+      "workflow": "ci",
+      "covers": [
+        "NFR-SEC-001",
+        "FR-VALIDATE-001",
+        "NFR-DET-001"
+      ],
+      "description": "ha_matrix::ha08_logical_sector_512_and_4k"
+    },
+    {
+      "id": "TST-ARCHMAKER-HARDWARE-HA_MATRIX-HA09_MISSING_TABLE_DOES_NOT_MEAN_EMPTY",
+      "type": "unit",
+      "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
+      "command": "cargo test -p archmaker-hardware --test ha_matrix ha09_missing_table_does_not_mean_empty",
+      "workflow": "ci",
+      "covers": [
+        "NFR-SEC-001",
+        "FR-VALIDATE-001",
+        "NFR-DET-001"
+      ],
+      "description": "ha_matrix::ha09_missing_table_does_not_mean_empty"
+    },
+    {
+      "id": "TST-ARCHMAKER-HARDWARE-HA_MATRIX-HA10_PARTIAL_TABLE_NOT_HARDWARE_VERIFIED",
+      "type": "unit",
+      "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
+      "command": "cargo test -p archmaker-hardware --test ha_matrix ha10_partial_table_not_hardware_verified",
+      "workflow": "ci",
+      "covers": [
+        "NFR-SEC-001",
+        "FR-VALIDATE-001",
+        "NFR-DET-001"
+      ],
+      "description": "ha_matrix::ha10_partial_table_not_hardware_verified"
+    },
+    {
+      "id": "TST-ARCHMAKER-HARDWARE-HA_MATRIX-HA11_ESP_POLICY_WITHOUT_FORMAT",
+      "type": "unit",
+      "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
+      "command": "cargo test -p archmaker-hardware --test ha_matrix ha11_esp_policy_without_format",
+      "workflow": "ci",
+      "covers": [
+        "NFR-SEC-001",
+        "FR-VALIDATE-001",
+        "NFR-DET-001"
+      ],
+      "description": "ha_matrix::ha11_esp_policy_without_format"
+    },
+    {
+      "id": "TST-ARCHMAKER-HARDWARE-HA_MATRIX-HA12_LUKS_LVM_PARENTS_PROTECTED",
+      "type": "unit",
+      "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
+      "command": "cargo test -p archmaker-hardware --test ha_matrix ha12_luks_lvm_parents_protected",
+      "workflow": "ci",
+      "covers": [
+        "NFR-SEC-001",
+        "FR-VALIDATE-001",
+        "NFR-DET-001"
+      ],
+      "description": "ha_matrix::ha12_luks_lvm_parents_protected"
+    },
+    {
+      "id": "TST-ARCHMAKER-HARDWARE-HA_MATRIX-HA13_LIVE_LOOP_PROTECTED",
+      "type": "unit",
+      "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
+      "command": "cargo test -p archmaker-hardware --test ha_matrix ha13_live_loop_protected",
+      "workflow": "ci",
+      "covers": [
+        "NFR-SEC-001",
+        "FR-VALIDATE-001",
+        "NFR-DET-001"
+      ],
+      "description": "ha_matrix::ha13_live_loop_protected"
+    },
+    {
+      "id": "TST-ARCHMAKER-HARDWARE-HA_MATRIX-HA14_MOUNTED_SWAP_RAID_NOT_IGNORED",
+      "type": "unit",
+      "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
+      "command": "cargo test -p archmaker-hardware --test ha_matrix ha14_mounted_swap_raid_not_ignored",
+      "workflow": "ci",
+      "covers": [
+        "NFR-SEC-001",
+        "FR-VALIDATE-001",
+        "NFR-DET-001"
+      ],
+      "description": "ha_matrix::ha14_mounted_swap_raid_not_ignored"
+    },
+    {
+      "id": "TST-ARCHMAKER-HARDWARE-HA_MATRIX-HA15_DUPLICATE_IDENTITY_BLOCKS",
+      "type": "unit",
+      "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
+      "command": "cargo test -p archmaker-hardware --test ha_matrix ha15_duplicate_identity_blocks",
+      "workflow": "ci",
+      "covers": [
+        "NFR-SEC-001",
+        "FR-VALIDATE-001",
+        "NFR-DET-001"
+      ],
+      "description": "ha_matrix::ha15_duplicate_identity_blocks"
+    },
+    {
+      "id": "TST-ARCHMAKER-HARDWARE-HA_MATRIX-HA16_REFRESH_MARKS_STALE_ON_CHANGE",
+      "type": "unit",
+      "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
+      "command": "cargo test -p archmaker-hardware --test ha_matrix ha16_refresh_marks_stale_on_change",
+      "workflow": "ci",
+      "covers": [
+        "NFR-SEC-001",
+        "FR-VALIDATE-001",
+        "NFR-DET-001"
+      ],
+      "description": "ha_matrix::ha16_refresh_marks_stale_on_change"
+    },
+    {
+      "id": "TST-ARCHMAKER-HARDWARE-HA_MATRIX-HA17_OVERLAP_OR_INSUFFICIENT_CAPACITY_REJECTED",
+      "type": "unit",
+      "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
+      "command": "cargo test -p archmaker-hardware --test ha_matrix ha17_overlap_or_insufficient_capacity_rejected",
+      "workflow": "ci",
+      "covers": [
+        "NFR-SEC-001",
+        "FR-VALIDATE-001",
+        "NFR-DET-001"
+      ],
+      "description": "ha_matrix::ha17_overlap_or_insufficient_capacity_rejected"
+    },
+    {
+      "id": "TST-ARCHMAKER-HARDWARE-HA_MATRIX-HA18_BOOTLOADER_INCOMPATIBLE_WITH_BIOS",
+      "type": "unit",
+      "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
+      "command": "cargo test -p archmaker-hardware --test ha_matrix ha18_bootloader_incompatible_with_bios",
+      "workflow": "ci",
+      "covers": [
+        "NFR-SEC-001",
+        "FR-VALIDATE-001",
+        "NFR-DET-001"
+      ],
+      "description": "ha_matrix::ha18_bootloader_incompatible_with_bios"
+    },
+    {
+      "id": "TST-ARCHMAKER-HARDWARE-HA_MATRIX-HA19_INVALID_LSBLK_JSON_DOES_NOT_YIELD_FAKE_SNAPSHOT",
+      "type": "unit",
+      "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
+      "command": "cargo test -p archmaker-hardware --test ha_matrix ha19_invalid_lsblk_json_does_not_yield_fake_snapshot",
+      "workflow": "ci",
+      "covers": [
+        "NFR-DET-001",
+        "NFR-SEC-001",
+        "FR-VALIDATE-001"
+      ],
+      "description": "ha_matrix::ha19_invalid_lsblk_json_does_not_yield_fake_snapshot"
+    },
+    {
+      "id": "TST-ARCHMAKER-HARDWARE-HA_MATRIX-HA20_OPAQUE_HANDLES_NO_DEV_PATHS",
+      "type": "unit",
+      "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
+      "command": "cargo test -p archmaker-hardware --test ha_matrix ha20_opaque_handles_no_dev_paths",
+      "workflow": "ci",
+      "covers": [
+        "NFR-SEC-001",
+        "FR-VALIDATE-001",
+        "NFR-DET-001"
+      ],
+      "description": "ha_matrix::ha20_opaque_handles_no_dev_paths"
+    },
+    {
+      "id": "TST-ARCHMAKER-HARDWARE-HA_MATRIX-HA21_PLAN_HAS_NO_SECRETS",
+      "type": "unit",
+      "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
+      "command": "cargo test -p archmaker-hardware --test ha_matrix ha21_plan_has_no_secrets",
+      "workflow": "ci",
+      "covers": [
+        "NFR-SEC-001",
+        "FR-VALIDATE-001",
+        "NFR-DET-001"
+      ],
+      "description": "ha_matrix::ha21_plan_has_no_secrets"
+    },
+    {
+      "id": "TST-ARCHMAKER-HARDWARE-HA_MATRIX-HA22_MANUAL_PROFILE_WITHOUT_HARDWARE_KEEPS_GAPS",
+      "type": "unit",
+      "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
+      "command": "cargo test -p archmaker-hardware --test ha_matrix ha22_manual_profile_without_hardware_keeps_gaps",
+      "workflow": "ci",
+      "covers": [
+        "NFR-SEC-001",
+        "FR-VALIDATE-001",
+        "NFR-DET-001"
+      ],
+      "description": "ha_matrix::ha22_manual_profile_without_hardware_keeps_gaps"
+    },
+    {
+      "id": "TST-ARCHMAKER-HARDWARE-HA_MATRIX-HA23_POLICY_CHANGE_CHANGES_DIGEST",
+      "type": "unit",
+      "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
+      "command": "cargo test -p archmaker-hardware --test ha_matrix ha23_policy_change_changes_digest",
+      "workflow": "ci",
+      "covers": [
+        "NFR-SEC-001",
+        "FR-VALIDATE-001",
+        "NFR-DET-001"
+      ],
+      "description": "ha_matrix::ha23_policy_change_changes_digest"
+    },
+    {
+      "id": "TST-ARCHMAKER-HARDWARE-HA_MATRIX-HA24_ZERO_WRITES_EXECUTION_NOT_EXECUTED_OBSERVED_NE_PLANNED",
+      "type": "unit",
+      "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
+      "command": "cargo test -p archmaker-hardware --test ha_matrix ha24_zero_writes_execution_not_executed_observed_ne_planned",
+      "workflow": "ci",
+      "covers": [
+        "NFR-SEC-001",
+        "FR-VALIDATE-001",
+        "NFR-DET-001"
+      ],
+      "description": "ha_matrix::ha24_zero_writes_execution_not_executed_observed_ne_planned"
+    },
+    {
+      "id": "TST-ARCHMAKER-HARDWARE-HA_MATRIX-HA25_BROWSER_PATH_IS_MANUAL_ORIGIN",
+      "type": "unit",
+      "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
+      "command": "cargo test -p archmaker-hardware --test ha_matrix ha25_browser_path_is_manual_origin",
+      "workflow": "ci",
+      "covers": [
+        "NFR-SEC-001",
+        "FR-VALIDATE-001",
+        "NFR-DET-001"
+      ],
+      "description": "ha_matrix::ha25_browser_path_is_manual_origin"
+    },
+    {
+      "id": "TST-ARCHMAKER-HARDWARE-HA_MATRIX-HA15B_INSUFFICIENT_IDENTITY_AMBIGUOUS",
+      "type": "unit",
+      "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
+      "command": "cargo test -p archmaker-hardware --test ha_matrix ha15b_insufficient_identity_ambiguous",
+      "workflow": "ci",
+      "covers": [
+        "NFR-SEC-001",
+        "FR-VALIDATE-001",
+        "NFR-DET-001"
+      ],
+      "description": "ha_matrix::ha15b_insufficient_identity_ambiguous"
+    },
+    {
       "id": "TST-WEB-FORGE-HELPERS.PLAYWRIGHT",
       "type": "unit",
       "location": "apps/web/forge-helpers.playwright.test.ts",
@@ -1208,6 +1595,18 @@
         "NFR-DET-001"
       ],
       "description": "Web test forge-helpers.playwright"
+    },
+    {
+      "id": "TST-WEB-RESPONSIVE-LAYOUT.PLAYWRIGHT",
+      "type": "unit",
+      "location": "apps/web/responsive-layout.playwright.test.ts",
+      "command": "cd apps/web && pnpm test responsive-layout.playwright",
+      "workflow": "ci",
+      "covers": [
+        "NFR-ACC-001",
+        "NFR-OFF-001"
+      ],
+      "description": "Web test responsive-layout.playwright"
     },
     {
       "id": "TST-WEB-WASM-FLOW.PLAYWRIGHT",
@@ -1358,6 +1757,16 @@
       "workflow": "ci",
       "covers": [],
       "description": "Validador run_f7_p95_harness",
+      "transversal": false
+    },
+    {
+      "id": "VAL-TEST_CHECK_DESKTOP_OFFLINE_GATE",
+      "type": "doc",
+      "location": "tools/test_check_desktop_offline_gate.py",
+      "command": "python3 tools/test_check_desktop_offline_gate.py",
+      "workflow": "ci",
+      "covers": [],
+      "description": "Validador test_check_desktop_offline_gate",
       "transversal": false
     },
     {
@@ -1513,6 +1922,16 @@
       "transversal": false
     },
     {
+      "id": "VAL-RUN_P6_RESIDUAL_PROBE",
+      "type": "doc",
+      "location": "tools/run_p6_residual_probe.py",
+      "command": "python3 tools/run_p6_residual_probe.py",
+      "workflow": "ci",
+      "covers": [],
+      "description": "Validador run_p6_residual_probe",
+      "transversal": false
+    },
+    {
       "id": "VAL-SCHEMA-REFS",
       "type": "schema",
       "location": "tools/validate_schema_refs.py",
@@ -1547,6 +1966,20 @@
       "transversal": false
     },
     {
+      "id": "VAL-TEST_VALIDATE_CLOSURE_JSONSCHEMA_PIN",
+      "type": "doc",
+      "location": "tools/test_validate_closure_jsonschema_pin.py",
+      "command": "python3 tools/test_validate_closure_jsonschema_pin.py",
+      "workflow": "ci",
+      "covers": [
+        "FR-DRAFT-001",
+        "FR-CAT-001",
+        "FR-MANIFEST-001"
+      ],
+      "description": "Validador test_validate_closure_jsonschema_pin",
+      "transversal": false
+    },
+    {
       "id": "VAL-GATES",
       "type": "gate",
       "location": "tools/gates.py",
@@ -1555,6 +1988,16 @@
       "covers": [],
       "description": "Validador gates",
       "transversal": true
+    },
+    {
+      "id": "VAL-CHECK_DESKTOP_OFFLINE_GATE",
+      "type": "doc",
+      "location": "tools/check_desktop_offline_gate.py",
+      "command": "python3 tools/check_desktop_offline_gate.py",
+      "workflow": "ci",
+      "covers": [],
+      "description": "Validador check_desktop_offline_gate",
+      "transversal": false
     },
     {
       "id": "VAL-HTML_CATALOG_MATRIX",

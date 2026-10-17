@@ -1,0 +1,52 @@
+{
+  "blockdevices": [
+    {
+      "name": "nvme0n1",
+      "path": "/dev/nvme0n1",
+      "type": "disk",
+      "size": 512110190592,
+      "model": "FIXTURE-LUKS",
+      "serial": "SN-LUKS-001",
+      "wwn": "eui.luks001",
+      "log-sec": 4096,
+      "phy-sec": 4096,
+      "pttype": "gpt",
+      "mountpoints": [],
+      "children": [
+        {
+          "name": "nvme0n1p1",
+          "path": "/dev/nvme0n1p1",
+          "type": "part",
+          "fstype": "vfat",
+          "mountpoints": ["/efi"],
+          "children": []
+        },
+        {
+          "name": "nvme0n1p2",
+          "path": "/dev/nvme0n1p2",
+          "type": "part",
+          "fstype": "crypto_LUKS",
+          "mountpoints": [],
+          "children": [
+            {
+              "name": "cryptroot",
+              "path": "/dev/mapper/cryptroot",
+              "type": "crypt",
+              "mountpoints": [],
+              "children": [
+                {
+                  "name": "vg-root",
+                  "path": "/dev/mapper/vg-root",
+                  "type": "lvm",
+                  "fstype": "ext4",
+                  "mountpoints": ["/"],
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
