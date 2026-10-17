@@ -95,16 +95,27 @@ fn ha04_container_hidden_efi_unknown() {
 
 #[test]
 fn ha05_secure_boot_states_do_not_block_alone() {
-    for state in [
-        SecureBootState::Enabled,
-        SecureBootState::Disabled,
-        SecureBootState::Unknown,
-    ] {
-        let mut input = base_compat();
-        input.secure_boot = state;
-        let r = evaluate_firmware_compat(&input);
-        assert_eq!(r.verdict, CompatVerdict::Compatible, "{state:?}");
-    }
+    // Enabled → Conditional (sin estrategia de firma; T36); nunca Incompatible solo por SB.
+    let mut enabled = base_compat();
+    enabled.secure_boot = SecureBootState::Enabled;
+    let r = evaluate_firmware_compat(&enabled);
+    assert_eq!(r.verdict, CompatVerdict::Conditional);
+    assert_ne!(r.verdict, CompatVerdict::Incompatible);
+    assert!(!r.may_certify_uefi_profile);
+
+    let mut disabled = base_compat();
+    disabled.secure_boot = SecureBootState::Disabled;
+    assert_eq!(
+        evaluate_firmware_compat(&disabled).verdict,
+        CompatVerdict::Compatible
+    );
+
+    let mut unknown = base_compat();
+    unknown.secure_boot = SecureBootState::Unknown;
+    assert_ne!(
+        evaluate_firmware_compat(&unknown).verdict,
+        CompatVerdict::Incompatible
+    );
 }
 
 #[test]

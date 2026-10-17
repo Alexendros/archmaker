@@ -1,6 +1,6 @@
 {
-  "generated_at": "1792250201",
-  "git_sha": "9a39b5eb9b78f75d7320df05066f5cd3562435a9",
+  "generated_at": "1792251969",
+  "git_sha": "8d82fe6e74733fdb2481236f0e6e5657a736ffa8",
   "tests": [
     {
       "id": "TST-ARCHMAKER-CANONICALIZATION-VECTORS-GOLDEN_CORPUS_BYTE_IDENTITY_AND_DIGEST",
@@ -970,6 +970,84 @@
       "description": "application_contract::clause_boot_001_rejects_satisfied_until_image_admitted"
     },
     {
+      "id": "TST-ARCHMAKER-CORE-CATALOG_PROVIDERS-CATALOG_LOADS_WITH_ZEN_AND_BROWSER_MANY",
+      "type": "unit",
+      "location": "crates/archmaker-core/tests/catalog_providers.rs",
+      "command": "cargo test -p archmaker-core --test catalog_providers catalog_loads_with_zen_and_browser_many",
+      "workflow": "ci",
+      "covers": [
+        "FR-CAT-001"
+      ],
+      "description": "catalog_providers::catalog_loads_with_zen_and_browser_many"
+    },
+    {
+      "id": "TST-ARCHMAKER-CORE-CATALOG_PROVIDERS-ONLYOFFICE_CANONICAL_ALIAS_NOT_DUPLICATE_INSTALL",
+      "type": "unit",
+      "location": "crates/archmaker-core/tests/catalog_providers.rs",
+      "command": "cargo test -p archmaker-core --test catalog_providers onlyoffice_canonical_alias_not_duplicate_install",
+      "workflow": "ci",
+      "covers": [
+        "FR-CAT-001",
+        "NFR-DET-001"
+      ],
+      "description": "catalog_providers::onlyoffice_canonical_alias_not_duplicate_install"
+    },
+    {
+      "id": "TST-ARCHMAKER-CORE-CATALOG_PROVIDERS-LIBREOFFICE_NOT_FIXED_FOR_NEW_ONLYOFFICE_PROFILES",
+      "type": "unit",
+      "location": "crates/archmaker-core/tests/catalog_providers.rs",
+      "command": "cargo test -p archmaker-core --test catalog_providers libreoffice_not_fixed_for_new_onlyoffice_profiles",
+      "workflow": "ci",
+      "covers": [
+        "FR-CAT-001"
+      ],
+      "description": "catalog_providers::libreoffice_not_fixed_for_new_onlyoffice_profiles"
+    },
+    {
+      "id": "TST-ARCHMAKER-CORE-CATALOG_PROVIDERS-APEXSHOT_UNVERIFIED_CAT01_OPEN",
+      "type": "unit",
+      "location": "crates/archmaker-core/tests/catalog_providers.rs",
+      "command": "cargo test -p archmaker-core --test catalog_providers apexshot_unverified_cat01_open",
+      "workflow": "ci",
+      "covers": [
+        "FR-CAT-001"
+      ],
+      "description": "catalog_providers::apexshot_unverified_cat01_open"
+    },
+    {
+      "id": "TST-ARCHMAKER-CORE-CATALOG_PROVIDERS-NEW_PROFILE_BROWSER_POLICY_ZEN_DEFAULT",
+      "type": "unit",
+      "location": "crates/archmaker-core/tests/catalog_providers.rs",
+      "command": "cargo test -p archmaker-core --test catalog_providers new_profile_browser_policy_zen_default",
+      "workflow": "ci",
+      "covers": [
+        "FR-CAT-001"
+      ],
+      "description": "catalog_providers::new_profile_browser_policy_zen_default"
+    },
+    {
+      "id": "TST-ARCHMAKER-CORE-CATALOG_PROVIDERS-VERIFIED_GAPS_CLOSED_FOR_LTS_DES_EDITORS",
+      "type": "unit",
+      "location": "crates/archmaker-core/tests/catalog_providers.rs",
+      "command": "cargo test -p archmaker-core --test catalog_providers verified_gaps_closed_for_lts_des_editors",
+      "workflow": "ci",
+      "covers": [
+        "FR-CAT-001"
+      ],
+      "description": "catalog_providers::verified_gaps_closed_for_lts_des_editors"
+    },
+    {
+      "id": "TST-ARCHMAKER-CORE-CATALOG_PROVIDERS-GROK_REQUESTS_REMAIN_UNVERIFIED",
+      "type": "unit",
+      "location": "crates/archmaker-core/tests/catalog_providers.rs",
+      "command": "cargo test -p archmaker-core --test catalog_providers grok_requests_remain_unverified",
+      "workflow": "ci",
+      "covers": [
+        "FR-CAT-001"
+      ],
+      "description": "catalog_providers::grok_requests_remain_unverified"
+    },
+    {
       "id": "TST-ARCHMAKER-CORE-F1_IDENTITY-CREATE_DRAFT_REJECTS_EXISTING_ID_WITHOUT_OVERWRITE",
       "type": "unit",
       "location": "crates/archmaker-core/tests/f1_identity.rs",
@@ -1075,6 +1153,66 @@
         "NFR-DET-001"
       ],
       "description": "f2_bytes::f2_delivery_corpus_digests"
+    },
+    {
+      "id": "TST-ARCHMAKER-CORE-T_MATRIX-T37_LUKS_OR_DEFAULT_BROWSER_CHANGES_DIGEST",
+      "type": "unit",
+      "location": "crates/archmaker-core/tests/t_matrix.rs",
+      "command": "cargo test -p archmaker-core --test t_matrix t37_luks_or_default_browser_changes_digest",
+      "workflow": "ci",
+      "covers": [],
+      "description": "t_matrix::t37_luks_or_default_browser_changes_digest"
+    },
+    {
+      "id": "TST-ARCHMAKER-CORE-T_MATRIX-T38_V2_DOCUMENT_NOT_LABELED_AS_V1_DOMAIN",
+      "type": "unit",
+      "location": "crates/archmaker-core/tests/t_matrix.rs",
+      "command": "cargo test -p archmaker-core --test t_matrix t38_v2_document_not_labeled_as_v1_domain",
+      "workflow": "ci",
+      "covers": [],
+      "description": "t_matrix::t38_v2_document_not_labeled_as_v1_domain"
+    },
+    {
+      "id": "TST-ARCHMAKER-CORE-T_MATRIX-T39_FUTURE_SCHEMA_VERSION_REJECTED",
+      "type": "unit",
+      "location": "crates/archmaker-core/tests/t_matrix.rs",
+      "command": "cargo test -p archmaker-core --test t_matrix t39_future_schema_version_rejected",
+      "workflow": "ci",
+      "covers": [
+        "FR-DRAFT-001",
+        "FR-VALIDATE-001",
+        "NFR-MIG-001"
+      ],
+      "description": "t_matrix::t39_future_schema_version_rejected"
+    },
+    {
+      "id": "TST-ARCHMAKER-CORE-T_MATRIX-T40_ONLYOFFICE_ALIAS_NO_DUPLICATE_CANONICAL",
+      "type": "unit",
+      "location": "crates/archmaker-core/tests/t_matrix.rs",
+      "command": "cargo test -p archmaker-core --test t_matrix t40_onlyoffice_alias_no_duplicate_canonical",
+      "workflow": "ci",
+      "covers": [
+        "NFR-DET-001"
+      ],
+      "description": "t_matrix::t40_onlyoffice_alias_no_duplicate_canonical"
+    },
+    {
+      "id": "TST-ARCHMAKER-CORE-T_MATRIX-T41_NO_BROWSER_POLICY_DEFINED_NO_ORPHAN_DEFAULT",
+      "type": "unit",
+      "location": "crates/archmaker-core/tests/t_matrix.rs",
+      "command": "cargo test -p archmaker-core --test t_matrix t41_no_browser_policy_defined_no_orphan_default",
+      "workflow": "ci",
+      "covers": [],
+      "description": "t_matrix::t41_no_browser_policy_defined_no_orphan_default"
+    },
+    {
+      "id": "TST-ARCHMAKER-CORE-T_MATRIX-T42_UNVERIFIED_REQUEST_KEPT_NOT_CERTIFIED_SUPPORT",
+      "type": "unit",
+      "location": "crates/archmaker-core/tests/t_matrix.rs",
+      "command": "cargo test -p archmaker-core --test t_matrix t42_unverified_request_kept_not_certified_support",
+      "workflow": "ci",
+      "covers": [],
+      "description": "t_matrix::t42_unverified_request_kept_not_certified_support"
     },
     {
       "id": "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_FS_OUTSIDE_SCOPE_NEVER_WRITTEN",
@@ -1520,6 +1658,19 @@
       "description": "ha_matrix::ha21_plan_has_no_secrets"
     },
     {
+      "id": "TST-ARCHMAKER-HARDWARE-HA_MATRIX-HA21B_PUBLIC_SNAPSHOT_OMITS_SERIAL_WWN",
+      "type": "unit",
+      "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
+      "command": "cargo test -p archmaker-hardware --test ha_matrix ha21b_public_snapshot_omits_serial_wwn",
+      "workflow": "ci",
+      "covers": [
+        "NFR-SEC-001",
+        "FR-VALIDATE-001",
+        "NFR-DET-001"
+      ],
+      "description": "ha_matrix::ha21b_public_snapshot_omits_serial_wwn"
+    },
+    {
       "id": "TST-ARCHMAKER-HARDWARE-HA_MATRIX-HA22_MANUAL_PROFILE_WITHOUT_HARDWARE_KEEPS_GAPS",
       "type": "unit",
       "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
@@ -1583,6 +1734,111 @@
         "NFR-DET-001"
       ],
       "description": "ha_matrix::ha15b_insufficient_identity_ambiguous"
+    },
+    {
+      "id": "TST-ARCHMAKER-HARDWARE-T_MATRIX-T31_IMPORTED_REPORT_NOT_OBSERVED_BOUND",
+      "type": "unit",
+      "location": "crates/archmaker-hardware/tests/t_matrix.rs",
+      "command": "cargo test -p archmaker-hardware --test t_matrix t31_imported_report_not_observed_bound",
+      "workflow": "ci",
+      "covers": [
+        "FR-IMPORT-001",
+        "NFR-SEC-001",
+        "FR-VALIDATE-001",
+        "NFR-DET-001"
+      ],
+      "description": "t_matrix::t31_imported_report_not_observed_bound"
+    },
+    {
+      "id": "TST-ARCHMAKER-HARDWARE-T_MATRIX-T32_SESSION_HANDLE_NOT_PORTABLE_LOGICAL_REF",
+      "type": "unit",
+      "location": "crates/archmaker-hardware/tests/t_matrix.rs",
+      "command": "cargo test -p archmaker-hardware --test t_matrix t32_session_handle_not_portable_logical_ref",
+      "workflow": "ci",
+      "covers": [
+        "NFR-SEC-001",
+        "FR-VALIDATE-001",
+        "NFR-DET-001"
+      ],
+      "description": "t_matrix::t32_session_handle_not_portable_logical_ref"
+    },
+    {
+      "id": "TST-ARCHMAKER-HARDWARE-T_MATRIX-T33_MBR_OBSERVED_GPT_PROPOSAL_WITHOUT_WRITE",
+      "type": "unit",
+      "location": "crates/archmaker-hardware/tests/t_matrix.rs",
+      "command": "cargo test -p archmaker-hardware --test t_matrix t33_mbr_observed_gpt_proposal_without_write",
+      "workflow": "ci",
+      "covers": [
+        "NFR-SEC-001",
+        "FR-VALIDATE-001",
+        "NFR-DET-001"
+      ],
+      "description": "t_matrix::t33_mbr_observed_gpt_proposal_without_write"
+    },
+    {
+      "id": "TST-ARCHMAKER-HARDWARE-T_MATRIX-T34_MISSING_TABLE_DOES_NOT_INFER_EMPTY_OR_SAFE",
+      "type": "unit",
+      "location": "crates/archmaker-hardware/tests/t_matrix.rs",
+      "command": "cargo test -p archmaker-hardware --test t_matrix t34_missing_table_does_not_infer_empty_or_safe",
+      "workflow": "ci",
+      "covers": [
+        "NFR-SEC-001",
+        "FR-VALIDATE-001",
+        "NFR-DET-001"
+      ],
+      "description": "t_matrix::t34_missing_table_does_not_infer_empty_or_safe"
+    },
+    {
+      "id": "TST-ARCHMAKER-HARDWARE-T_MATRIX-T35_ESP_WITHOUT_UKI_PATH_INCOMPLETE",
+      "type": "unit",
+      "location": "crates/archmaker-hardware/tests/t_matrix.rs",
+      "command": "cargo test -p archmaker-hardware --test t_matrix t35_esp_without_uki_path_incomplete",
+      "workflow": "ci",
+      "covers": [
+        "NFR-SEC-001",
+        "FR-VALIDATE-001",
+        "NFR-DET-001"
+      ],
+      "description": "t_matrix::t35_esp_without_uki_path_incomplete"
+    },
+    {
+      "id": "TST-ARCHMAKER-HARDWARE-T_MATRIX-T36_SECURE_BOOT_ENABLED_WITHOUT_SIGNING_IS_CONDITIONAL",
+      "type": "unit",
+      "location": "crates/archmaker-hardware/tests/t_matrix.rs",
+      "command": "cargo test -p archmaker-hardware --test t_matrix t36_secure_boot_enabled_without_signing_is_conditional",
+      "workflow": "ci",
+      "covers": [
+        "NFR-SEC-001",
+        "FR-VALIDATE-001",
+        "NFR-DET-001"
+      ],
+      "description": "t_matrix::t36_secure_boot_enabled_without_signing_is_conditional"
+    },
+    {
+      "id": "TST-ARCHMAKER-HARDWARE-T_MATRIX-T43_REDACTED_PUBLIC_SNAPSHOT_HASH_DIFFERS_FROM_PRIVATE",
+      "type": "unit",
+      "location": "crates/archmaker-hardware/tests/t_matrix.rs",
+      "command": "cargo test -p archmaker-hardware --test t_matrix t43_redacted_public_snapshot_hash_differs_from_private",
+      "workflow": "ci",
+      "covers": [
+        "NFR-SEC-001",
+        "FR-VALIDATE-001",
+        "NFR-DET-001"
+      ],
+      "description": "t_matrix::t43_redacted_public_snapshot_hash_differs_from_private"
+    },
+    {
+      "id": "TST-ARCHMAKER-HARDWARE-T_MATRIX-T44_RESTRICTED_NAMESPACE_PARTIAL_NOT_FULL_HOST_CERT",
+      "type": "unit",
+      "location": "crates/archmaker-hardware/tests/t_matrix.rs",
+      "command": "cargo test -p archmaker-hardware --test t_matrix t44_restricted_namespace_partial_not_full_host_cert",
+      "workflow": "ci",
+      "covers": [
+        "NFR-SEC-001",
+        "FR-VALIDATE-001",
+        "NFR-DET-001"
+      ],
+      "description": "t_matrix::t44_restricted_namespace_partial_not_full_host_cert"
     },
     {
       "id": "TST-WEB-FORGE-HELPERS.PLAYWRIGHT",

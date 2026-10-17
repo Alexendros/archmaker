@@ -262,12 +262,29 @@ pub fn evaluate_firmware_compat(input: &FirmwareCompatInput) -> FirmwareCompatRe
         CompatVerdict::Unknown => BootCompatibilityStatus::Unknown,
     };
 
-    // Secure Boot code refinement when that's the primary signal.
-    if matches!(input.secure_boot, SecureBootState::Enabled)
-        && matches!(code, CompatCode::Uefi64Ok | CompatCode::GptOk)
-    {
-        let _ = CompatCode::SecureBootEnabled;
-    }
+    // Secure Boot enabled sin estrategia de firma/confianza en este incremento:
+    // no Incompatible por sí solo, pero sí Conditional / no certifica (T36).
+    let (verdict, code, may_certify, boot_compatibility_status) =
+        if matches!(input.secure_boot, SecureBootState::Enabled) {
+            let verdict = match verdict {
+                CompatVerdict::Compatible => CompatVerdict::Conditional,
+                other => other,
+            };
+            let boot_compatibility_status = match verdict {
+                CompatVerdict::Compatible => BootCompatibilityStatus::Compatible,
+                CompatVerdict::Conditional => BootCompatibilityStatus::Conditional,
+                CompatVerdict::Incompatible => BootCompatibilityStatus::Incompatible,
+                CompatVerdict::Unknown => BootCompatibilityStatus::Unknown,
+            };
+            (
+                verdict,
+                CompatCode::SecureBootEnabled,
+                false,
+                boot_compatibility_status,
+            )
+        } else {
+            (verdict, code, may_certify, boot_compatibility_status)
+        };
 
     FirmwareCompatReport {
         verdict,
