@@ -176,7 +176,7 @@ pub fn refresh_storage_snapshot(
             snapshot: snap,
             handle_count,
         };
-        return serde_json::to_value(out).map_err(|e| core_err(&e.to_string()));
+        serde_json::to_value(out).map_err(|e| core_err(&e.to_string()))
     }
     #[cfg(not(all(feature = "hardware-probe", target_os = "linux")))]
     {

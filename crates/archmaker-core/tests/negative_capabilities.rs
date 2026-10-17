@@ -129,6 +129,12 @@ fn neg_capability_deny_by_default() {
         "export_artifact",
         "import_draft",
         "save_export_bytes",
+        "inspect_host_hardware",
+        "inspect_storage_devices",
+        "refresh_storage_snapshot",
+        "propose_storage_plan",
+        "validate_storage_plan",
+        "import_storage_snapshot",
     ] {
         assert!(
             build_rs.contains(&format!("\"{cmd}\"")),
@@ -146,8 +152,8 @@ fn neg_capability_deny_by_default() {
         .expect("permissions debe ser lista");
     assert_eq!(
         perms.len(),
-        10,
-        "main: 9 CorePort + allow-save-export-bytes (guardado acotado F5)"
+        16,
+        "main: 9 CorePort + allow-save-export-bytes + 6 hardware-inspect (sin shell/FS)"
     );
     let mut has_scoped_save = false;
     for p in perms {
@@ -499,6 +505,12 @@ fn neg_allowlist_covers_coreport_plus_scoped_save() {
         "export_artifact",
         "import_draft",
         "save_export_bytes",
+        "inspect_host_hardware",
+        "inspect_storage_devices",
+        "refresh_storage_snapshot",
+        "propose_storage_plan",
+        "validate_storage_plan",
+        "import_storage_snapshot",
     ] {
         assert!(
             build_rs.contains(&format!("\"{cmd}\"")),
@@ -507,7 +519,7 @@ fn neg_allowlist_covers_coreport_plus_scoped_save() {
         count += 1;
     }
     assert_eq!(
-        count, 10,
-        "9 CorePort + save_export_bytes (guardado acotado)"
+        count, 16,
+        "9 CorePort + save_export_bytes + 6 hardware-inspect"
     );
 }
