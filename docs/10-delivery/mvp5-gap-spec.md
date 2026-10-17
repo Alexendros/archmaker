@@ -21,6 +21,8 @@ dependsOn:
 
 # Spec: hueco MVP-5 (sin implementación)
 
+> **Superseded en cara (2026-10-17).** La UI vigente ya no usa Intención ni Sencillo/Avanzado: el recorrido es Disco y particiones → Sistema base → Entorno → Apps → Identidad y seguridad → Revisión (experiencia única). Las secciones «Cara y pasos» y la pregunta abierta sobre modos describen el estado _previo_ al incremento Forge; no son as-built. El alcance MVP-5 (`mvp5-scope.md`) y este hueco histórico se conservan; el estado vivo de cierre está en `docs/10-delivery/closure/` y ADRs 0013–0018.
+
 - Documento: DOC-DEL-MVP5-GAP-001 · Estado: draft · Propietario: Arquitectura/Release · Fecha: 2026-10-16
 - Autoridad de alcance: [`mvp5-scope.md`](mvp5-scope.md) (DOC-DEL-MVP5-001, `accepted`). Este texto no lo sustituye.
 - MVP-5-01 cerrado. El alcance autoriza el slice (catálogo, UI de cinco pasos, paridad) bajo sus exclusiones; este hueco no abre runner, ISO ni cifras no verificadas del HTML.

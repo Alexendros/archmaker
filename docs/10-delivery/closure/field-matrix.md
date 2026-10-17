@@ -24,41 +24,43 @@ dependsOn:
 
 ## Campos anunciados (`STEP_IDS`)
 
-| Nombre | stepId | Tipo UI | Soporte producto | Representación exportada | Validación |
-| --- | --- | --- | --- | --- | --- |
-| Intención | `archmaker.face.intent` | single | excluido face-only | no entra a resolve | `draftForCore` + exclusión visible (`face-only-intent`) |
-| Kernel | `archmaker.base.kernel` | single | soportado (catálogo) | `effectiveSelections` optionId | option en catálogo; gap bloqueado en UI |
-| Arranque | `archmaker.base.boot` | single | soportado | idem | idem |
-| Filesystem | `archmaker.base.filesystem` | single | soportado | idem | idem |
-| Entorno | `archmaker.environment.compositor` | single | soportado / gap UI | optionId o exclusión gap | gap: no al core; diagnóstico de cara |
-| Apps | `archmaker.face.apps` | multiple | soportado / gap filtrado | optionIds sin gap | `draftForCore` quita gap |
-| Hostname | `archmaker.face.hostname` | text | soportado (intención) | `effectiveSelections` value.text | no vacío; no entidad de catálogo |
-| Cifrado | `archmaker.face.encrypt` | boolean | soportado como **intención** | `effectiveSelections` value.boolean | no implica disco cifrado |
+| Nombre              | stepId / campo                      | Tipo UI                       | Soporte producto                               | Representación exportada         | Validación                                |
+| ------------------- | ----------------------------------- | ----------------------------- | ---------------------------------------------- | -------------------------------- | ----------------------------------------- |
+| Disco y particiones | `storagePlan` (draft v2)            | plan declarativo              | soportado (sin IO)                             | plan + estados ortogonales       | motor Rust; UEFI64+GPT certifica política |
+| Intención (legado)  | `archmaker.face.intent`             | —                             | no es paso activo                              | `legacyMetadata` tras migración  | no entra a resolve                        |
+| Kernel              | `archmaker.base.kernel`             | single                        | soportado (catálogo)                           | `effectiveSelections` optionId   | option en catálogo                        |
+| Arranque            | `archmaker.base.boot`               | single                        | soportado                                      | idem                             | idem; systemd-boot no válido en BIOS      |
+| Filesystem          | `archmaker.base.filesystem`         | single                        | soportado                                      | idem                             | idem                                      |
+| Entorno             | `archmaker.environment.compositor`  | single                        | soportado                                      | optionId                         | catálogo                                  |
+| Apps                | `archmaker.face.apps`               | multiple                      | soportado / unverified                         | optionIds sin unverified         | `draftForCore` quita unverified           |
+| Navegador default   | `defaultBrowserId`                  | derivado                      | soportado                                      | campo draft v2                   | debe estar entre seleccionados o null     |
+| Hostname            | `archmaker.face.hostname`           | text                          | soportado (intención)                          | `effectiveSelections` value.text | no vacío                                  |
+| Cifrado             | `encryptionPolicy` / encrypt legado | LUKS2 o none / boolean legado | política tipada; booleano = intención heredada | policy o boolean                 | sin secretos; no implica disco cifrado    |
 
 ## Tipos de `SelectionValue`
 
-| Tipo | Anunciado en cara | Comportamiento |
-| --- | --- | --- |
-| single | sí | resuelto vía catálogo |
-| multiple | sí (apps) | resuelto; gap filtrado en TS |
-| boolean | sí (encrypt) | preservado como intención en manifiesto |
-| text | sí (hostname) | preservado en manifiesto |
-| number | no anunciado | excluido con diagnóstico `AM-FACE-001` (no bloqueante) |
-| secretRef | no anunciado | excluido con diagnóstico `AM-FACE-001` (no bloqueante) |
+| Tipo      | Anunciado en cara | Comportamiento                                         |
+| --------- | ----------------- | ------------------------------------------------------ |
+| single    | sí                | resuelto vía catálogo                                  |
+| multiple  | sí (apps)         | resuelto; unverified filtrado en TS                    |
+| boolean   | sí (encrypt)      | preservado como intención en manifiesto                |
+| text      | sí (hostname)     | preservado en manifiesto                               |
+| number    | no anunciado      | excluido con diagnóstico `AM-FACE-001` (no bloqueante) |
+| secretRef | no anunciado      | excluido con diagnóstico `AM-FACE-001` (no bloqueante) |
 
 ## Exclusiones visibles
 
-1. **Intención face-only** y **paquetes gap**: `listFaceExclusions` / `draftForCore` en TypeScript; la revisión muestra el recuento.
+1. **Intención face-only** y **solicitudes unverified**: `listFaceExclusions` / `draftForCore` en TypeScript; la revisión muestra el recuento.
 2. **number / secretRef** si llegan al draft: diagnóstico Rust `AM-FACE-001` en validate/resolve.
 
 ## Referencias de catálogo (resolve)
 
-| Caso | Resultado |
-| --- | --- |
-| ref correcta (namespace/id/version/digest) | ok |
-| digest alterado | `AM-CAT-002` |
-| versión incompatible | `AM-CAT-001` |
-| id inexistente | `AM-CAT-001` |
+| Caso                                       | Resultado    |
+| ------------------------------------------ | ------------ |
+| ref correcta (namespace/id/version/digest) | ok           |
+| digest alterado                            | `AM-CAT-002` |
+| versión incompatible                       | `AM-CAT-001` |
+| id inexistente                             | `AM-CAT-001` |
 
 ## Cifrado: honestidad
 

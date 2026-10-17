@@ -23,18 +23,18 @@ dependsOn:
 
 ## Seis pasos visibles (`RAIL_STEPS`)
 
-El flujo del configurador ya tiene seis pasos en `apps/web/src/forge-face.ts` → `RAIL_STEPS`, renderizados por `ForgeRail` sin cambio de diseño:
+Flujo vigente en `apps/web/src/forge-face.ts` → `RAIL_STEPS` (experiencia única; sin Sencillo/Avanzado):
 
-| #   | id            | Título       |
-| --- | ------------- | ------------ |
-| 1   | `intent`      | Intención    |
-| 2   | `base`        | Sistema base |
-| 3   | `environment` | Entorno      |
-| 4   | `apps`        | Apps         |
-| 5   | `identity`    | Identidad    |
-| 6   | `review`      | Revisión     |
+| #   | id                  | Título                |
+| --- | ------------------- | --------------------- |
+| 1   | `storage`           | Disco y particiones   |
+| 2   | `base`              | Sistema base          |
+| 3   | `environment`       | Entorno               |
+| 4   | `apps`              | Apps                  |
+| 5   | `identity-security` | Identidad y seguridad |
+| 6   | `review`            | Revisión              |
 
-Denominador: 6/6. F6 solo documenta este hecho.
+Denominador: 6/6. Progreso semántico (`visited` / `complete` / `invalid` / `pending` / `current`); visitar no valida.
 
 ## C-07 — tamaño y avisos
 
@@ -64,10 +64,10 @@ Ampliación de `a11y-playwright.test.ts`: viewports 360 / 768 / 1440 px y zoom 2
 
 Umbrales de **producto** (web-ready / web-prepare; desktop-ready / desktop-prepare si hay GUI):
 
-| Métrica | Umbral P95 | n | Estado |
-| --- | --- | --- | --- |
-| ready (Forge interactiva) | ≤ 3.000 ms | ≥ 30 | **web passed** — P95 123 ms (`product-p95-report.json`) |
-| prepare (manifiesto válido) | ≤ 1.000 ms | ≥ 30 | **web passed** — P95 58 ms (mismo informe) |
+| Métrica                         | Umbral P95      | n    | Estado                                                                                                  |
+| ------------------------------- | --------------- | ---- | ------------------------------------------------------------------------------------------------------- |
+| ready (Forge interactiva)       | ≤ 3.000 ms      | ≥ 30 | **web passed** — P95 123 ms (`product-p95-report.json`)                                                 |
+| prepare (manifiesto válido)     | ≤ 1.000 ms      | ≥ 30 | **web passed** — P95 58 ms (mismo informe)                                                              |
 | desktop-ready / desktop-prepare | mismos umbrales | ≥ 30 | **blocked** — faltan `desktop-ready-p95-samples`, `desktop-prepare-p95-samples`, AppImage Forge del SHA |
 
 Máquina de la medición web: Ubuntu 26.04.1 LTS, Linux 7.0.0-38-generic x86_64,
