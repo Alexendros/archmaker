@@ -19,7 +19,7 @@ test.describe("WASM CorePort — offline tras carga", () => {
       page.getByRole("heading", { name: /Motor no disponible/i }),
     ).toHaveCount(0);
     await expect(
-      page.getByRole("heading", { name: /Para qué usarás/i }),
+      page.getByRole("heading", { name: /Disco y particiones/i }),
     ).toBeVisible({ timeout: 60_000 });
     await expect(page.locator("#toast-region")).toContainText(/Draft listo/i, {
       timeout: 60_000,
@@ -28,16 +28,20 @@ test.describe("WASM CorePort — offline tras carga", () => {
 
     await context.setOffline(true);
 
-    await page.getByRole("radio", { name: /Uso diario/i }).click();
+    await page
+      .getByRole("radio", { name: /Disco nuevo o sin datos a conservar/i })
+      .click();
     await page
       .getByRole("button", { name: /Continuar → Sistema base/i })
       .click();
-    await expect(page.getByText(/Modo Sencillo activo/i)).toBeVisible({
+    await expect(
+      page.getByRole("heading", { name: "Sistema base" }),
+    ).toBeVisible({
       timeout: 30_000,
     });
     await expect(
-      page.getByText(/Arranque rápido \(systemd-boot\)/i),
-    ).toBeVisible();
+      page.getByRole("radio", { name: /systemd-boot/i }),
+    ).toBeChecked();
     await expect(
       page.getByRole("heading", { name: /Motor no disponible/i }),
     ).toHaveCount(0);

@@ -32,7 +32,7 @@ async function measureOne() {
     const readyStart = Date.now();
     await page.goto(BASE_URL, { waitUntil: "commit", timeout: TIMEOUT_MS });
     await page
-      .getByRole("heading", { name: /Para qué usarás/i })
+      .getByRole("heading", { name: /Disco y particiones/i })
       .waitFor({ state: "visible", timeout: TIMEOUT_MS });
     await page.locator("#toast-region").getByText(/Draft listo/i).waitFor({
       state: "visible",

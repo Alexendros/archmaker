@@ -12,11 +12,11 @@ export const E2E_HOSTNAME = "arch-e2e-audit";
 
 /** Seis pasos del rail Forge (RAIL_STEPS). */
 export const FORGE_RAIL_STEPS = [
-  "Intención",
+  "Disco y particiones",
   "Sistema base",
   "Entorno",
   "Apps",
-  "Identidad",
+  "Identidad y seguridad",
   "Revisión",
 ] as const;
 
@@ -25,29 +25,27 @@ export const FORGE_RAIL_STEPS = [
  * Cada fila debe poder ejercitarse o quedar cubierta por un test dedicado.
  */
 export const ESSENTIAL_CONTROLS = [
-  { id: "rail-intent", route: "rail", step: "Intención", control: "button" },
+  {
+    id: "rail-storage",
+    route: "rail",
+    step: "Disco y particiones",
+    control: "button",
+  },
   { id: "rail-base", route: "rail", step: "Sistema base", control: "button" },
   { id: "rail-env", route: "rail", step: "Entorno", control: "button" },
   { id: "rail-apps", route: "rail", step: "Apps", control: "button" },
-  { id: "rail-identity", route: "rail", step: "Identidad", control: "button" },
+  {
+    id: "rail-identity",
+    route: "rail",
+    step: "Identidad y seguridad",
+    control: "button",
+  },
   { id: "rail-review", route: "rail", step: "Revisión", control: "button" },
   {
     id: "header-generate",
     route: "header",
     step: "*",
     control: "Generar",
-  },
-  {
-    id: "header-simple",
-    route: "header",
-    step: "*",
-    control: "Sencillo",
-  },
-  {
-    id: "header-advanced",
-    route: "header",
-    step: "*",
-    control: "Avanzado",
   },
   {
     id: "header-glossary",
@@ -61,11 +59,11 @@ export const ESSENTIAL_CONTROLS = [
     step: "*",
     control: "Oscuro|Claro",
   },
-  { id: "header-cmdk", route: "header", step: "*", control: "⌘K" },
+  { id: "header-cmdk", route: "header", step: "*", control: "Ctrl+K" },
   {
     id: "nav-to-base",
-    route: "intent",
-    step: "Intención",
+    route: "storage",
+    step: "Disco y particiones",
     control: "Continuar → Sistema base",
   },
   {
@@ -89,19 +87,19 @@ export const ESSENTIAL_CONTROLS = [
   {
     id: "nav-to-review",
     route: "identity",
-    step: "Identidad",
+    step: "Identidad y seguridad",
     control: "Continuar → Revisión",
   },
   {
     id: "identity-hostname",
     route: "identity",
-    step: "Identidad",
+    step: "Identidad y seguridad",
     control: "hostname text",
   },
   {
     id: "identity-encrypt",
     route: "identity",
-    step: "Identidad",
+    step: "Identidad y seguridad",
     control: "Activar cifrado",
   },
   {
@@ -122,14 +120,23 @@ export function sha256FileHex(path: string): string {
   return createHash("sha256").update(readFileSync(path)).digest("hex");
 }
 
-/** Recorrido razonable: intención diaria → base avanzada Ext4 → GNOME → identidad. */
+/** Declara storage mínimo (modo + acks) sin fingir detección. */
+export async function completeStorageDeclaration(page: Page): Promise<void> {
+  await page
+    .getByRole("radio", { name: /Disco nuevo o sin datos a conservar/i })
+    .click();
+  await page
+    .getByRole("checkbox", { name: /declaración de intención/i })
+    .check();
+}
+
+/** Recorrido razonable: storage → base Ext4 → GNOME → identidad. */
 export async function completeExampleSelection(page: Page): Promise<void> {
-  await page.getByRole("radio", { name: /Uso diario/i }).click();
+  await completeStorageDeclaration(page);
   await page
     .getByRole("button", { name: /Continuar → Sistema base/i })
     .click();
 
-  await page.getByRole("button", { name: "Avanzado", exact: true }).click();
   await page.getByRole("radio", { name: /Linux Zen/i }).click();
   await expect(page.getByRole("radio", { name: /systemd-boot/i })).toBeChecked();
   await page.getByRole("radio", { name: /^Ext4$/i }).click();

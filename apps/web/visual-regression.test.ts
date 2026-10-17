@@ -81,7 +81,7 @@ test.describe("Visual regression", () => {
     await page.waitForLoadState("networkidle");
     // Wait for async CorePort boot + draft (not the empty/loading shell).
     await expect(
-      page.getByRole("heading", { name: /Para qué usarás/i }),
+      page.getByRole("heading", { name: /Disco y particiones/i }),
     ).toBeVisible({ timeout: 60_000 });
     // CSS externo (CSP style-src 'self'); fija Liberation Sans en tests.
     // Resolve against origin — BASE_URL includes ?mock=1.

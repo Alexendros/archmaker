@@ -1,40 +1,61 @@
 import { RAIL_STEPS } from "./forge-face.js";
+import type { StepProgress } from "./step-progress.js";
 
 type Props = {
   step: number;
-  simpleMode: boolean;
+  progress: StepProgress[];
   onSelect: (index: number) => void;
 };
 
-export function ForgeRail({ step, simpleMode, onSelect }: Props) {
+function progressLabel(p: StepProgress): string {
+  switch (p) {
+    case "current":
+      return "actual";
+    case "complete":
+      return "completo";
+    case "invalid":
+      return "inválido";
+    case "visited":
+      return "visitado";
+    default:
+      return "pendiente";
+  }
+}
+
+function progressMark(p: StepProgress, index: number): string {
+  if (p === "complete") return "✓";
+  if (p === "invalid") return "!";
+  return String(index + 1);
+}
+
+export function ForgeRail({ step, progress, onSelect }: Props) {
   return (
     <nav
       className="forge-rail"
       aria-label="Pasos del configurador"
       id="step-rail"
     >
-      <p className="forge-rail-meta">
-        Modo: {simpleMode ? "Sencillo" : "Avanzado"}
-      </p>
       <ol>
         {RAIL_STEPS.map((s, i) => {
+          const status = progress[i] ?? "pending";
           const active = step === i;
-          const done = step > i;
-          const hint = simpleMode ? s.hintSimple : s.hintAdvanced;
           return (
             <li key={s.id}>
               <button
                 type="button"
-                className={`forge-rail-item${active ? " is-current" : ""}${done ? " is-done" : ""}`}
+                className={`forge-rail-item is-${status}${active ? " is-current" : ""}`}
                 aria-current={active ? "step" : undefined}
+                data-step-progress={status}
                 onClick={() => onSelect(i)}
               >
                 <span className="forge-rail-num" aria-hidden="true">
-                  {done ? "✓" : i + 1}
+                  {progressMark(status, i)}
                 </span>
                 <span>
                   <span className="forge-rail-title">{s.title}</span>
-                  <span className="forge-rail-hint">{hint}</span>
+                  <span className="forge-rail-hint">
+                    {s.hint} · {progressLabel(status)}
+                  </span>
                 </span>
               </button>
             </li>

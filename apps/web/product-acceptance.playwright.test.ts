@@ -144,13 +144,13 @@ test.describe("P5 product-acceptance — integridad y recorrido", () => {
     expect(outcome.status).toBe("error");
   });
 
-  test("teclado: recorrido esencial Intención → Continuar → Generar", async ({
+  test("teclado: recorrido esencial Disco → Continuar → Generar", async ({
     page,
   }) => {
     test.setTimeout(90_000);
     await page.goto(MOCK_URL);
     await expect(
-      page.getByRole("heading", { name: /Para qué usarás/i }),
+      page.getByRole("heading", { name: /Disco y particiones/i }),
     ).toBeVisible({ timeout: 30_000 });
 
     // Skip link / foco inicial
@@ -167,7 +167,9 @@ test.describe("P5 product-acceptance — integridad y recorrido", () => {
     await expect(
       page.getByRole("heading", { name: "Sistema base" }),
     ).toBeVisible({ timeout: 15_000 });
-    await expect(page.getByText(/Modo Sencillo activo/i)).toBeVisible();
+    await expect(
+      page.getByRole("radio", { name: /systemd-boot/i }),
+    ).toBeChecked();
 
     // Generar (cabecera) con teclado
     const generate = page.getByRole("button", { name: "Generar" });
@@ -180,7 +182,8 @@ test.describe("P5 product-acceptance — integridad y recorrido", () => {
       /Manifest listo|Validación|Draft/i,
       { timeout: 60_000 },
     );
-    // Nombre visible de producto: Forge
-    await expect(page.locator("body")).toContainText(/Forge/i);
+    // Nombre visible: ArchMaker Forge
+    await expect(page.locator("body")).toContainText(/ArchMaker Forge/i);
   });
 });
+

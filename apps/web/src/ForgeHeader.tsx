@@ -1,8 +1,8 @@
+import { APP_VERSION, PRODUCT_WINDOW_TITLE } from "./build-meta.js";
+
 type Props = {
   dark: boolean;
-  simpleMode: boolean;
   onToggleDark: () => void;
-  onSimpleMode: (simple: boolean) => void;
   onGlossary: () => void;
   onCommand: () => void;
   onGenerate: () => void;
@@ -10,9 +10,7 @@ type Props = {
 
 export function ForgeHeader({
   dark,
-  simpleMode,
   onToggleDark,
-  onSimpleMode,
   onGlossary,
   onCommand,
   onGenerate,
@@ -25,11 +23,13 @@ export function ForgeHeader({
         </div>
         <div>
           <div className="forge-title">
-            Forge{" "}
-            <span className="forge-badge">v4.1</span>
+            {PRODUCT_WINDOW_TITLE}{" "}
+            <span className="forge-badge" data-app-version={APP_VERSION}>
+              {APP_VERSION}
+            </span>
           </div>
           <div className="forge-subtitle">
-            Interfaz gráfica de ArchMaker · sin instalación
+            Configura tu sistema y exporta un perfil. No modifica discos
           </div>
         </div>
       </div>
@@ -37,28 +37,6 @@ export function ForgeHeader({
         <button type="button" className="forge-btn-ghost" onClick={onGlossary}>
           Glosario
         </button>
-        <div
-          className="forge-mode-toggle"
-          role="group"
-          aria-label="Modo de la cara"
-        >
-          <button
-            type="button"
-            className={simpleMode ? "forge-mode-active" : undefined}
-            aria-pressed={simpleMode}
-            onClick={() => onSimpleMode(true)}
-          >
-            Sencillo
-          </button>
-          <button
-            type="button"
-            className={!simpleMode ? "forge-mode-active" : undefined}
-            aria-pressed={!simpleMode}
-            onClick={() => onSimpleMode(false)}
-          >
-            Avanzado
-          </button>
-        </div>
         <button
           type="button"
           className="forge-btn-icon"
@@ -71,8 +49,10 @@ export function ForgeHeader({
           type="button"
           className="forge-btn-ghost forge-cmd-btn"
           onClick={onCommand}
+          aria-keyshortcuts="Control+K"
+          title="Abrir paleta de comandos (Ctrl+K)"
         >
-          ⌘K
+          Ctrl+K
         </button>
         <button
           type="button"

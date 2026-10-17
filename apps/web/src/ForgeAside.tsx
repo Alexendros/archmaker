@@ -1,11 +1,17 @@
 import type { FaceOption, FacePackage } from "./forge-face.js";
+import {
+  labelStorageMode,
+  labelStorageUiState,
+  type StorageIntent,
+} from "./storage-intent.js";
 
 type Props = {
   kernel?: FaceOption;
   bootTitle: string;
   filesystemTitle: string;
   env?: FaceOption;
-  simpleMode: boolean;
+  storage: StorageIntent;
+  hasManifest: boolean;
   apps: FacePackage[];
   appCount: number;
   totalSize: number;
@@ -18,13 +24,15 @@ export function ForgeAside({
   bootTitle,
   filesystemTitle,
   env,
-  simpleMode,
+  storage,
+  hasManifest,
   apps,
   appCount,
   totalSize,
   diagnostics,
   onPickEnv,
 }: Props) {
+  const previewLabel = env?.title ?? "Sin entorno";
   return (
     <aside className="forge-aside" aria-label="Inspector" id="inspector">
       <div className="forge-panel">
@@ -34,10 +42,19 @@ export function ForgeAside({
             {kernel?.title ?? "—"} · {env?.protocol ?? "—"}
           </span>
         </div>
-        <div className="forge-preview-screen" data-env={env?.htmlId ?? "none"}>
+        <div
+          className="forge-preview-screen"
+          data-env={env?.htmlId ?? "none"}
+          role="img"
+          aria-label={`Esquema del entorno ${previewLabel}`}
+        >
           <div className="forge-preview-bar">
-            <span>Actividades</span>
-            <span>{kernel?.title ?? "—"}</span>
+            <span>{previewLabel}</span>
+            <span>{env?.protocol ?? "—"}</span>
+          </div>
+          <div className="forge-preview-schematic" aria-hidden="true">
+            <span className="forge-preview-dock" />
+            <span className="forge-preview-pane" />
           </div>
         </div>
         <dl className="forge-summary">
@@ -55,20 +72,26 @@ export function ForgeAside({
           </div>
           <div>
             <dt>Entorno</dt>
-            <dd>
-              {env?.title ?? "—"} {env?.version ?? ""}
-            </dd>
+            <dd>{env?.title ?? "—"}</dd>
           </div>
           <div>
-            <dt>Modo</dt>
-            <dd>{simpleMode ? "Sencillo" : "Avanzado"}</dd>
+            <dt>Disco</dt>
+            <dd>{labelStorageMode(storage.mode)}</dd>
+          </div>
+          <div>
+            <dt>Estado del plan</dt>
+            <dd data-storage-ui-state={storage.uiState}>
+              {labelStorageUiState(storage.uiState)}
+            </dd>
           </div>
         </dl>
       </div>
 
       <div className="forge-panel">
         <div className="forge-panel-head">
-          <span>Manifiesto</span>
+          <span>
+            {hasManifest ? "Manifiesto" : "Resumen de configuración"}
+          </span>
           <span className="forge-chip">
             {appCount} apps · {totalSize} MB
           </span>

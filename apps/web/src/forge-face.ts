@@ -52,40 +52,34 @@ export const STEP_IDS = {
 
 export const RAIL_STEPS = [
   {
-    id: "intent",
-    title: "Intención",
-    hintSimple: "¿Para qué usarás el PC?",
-    hintAdvanced: "¿Para qué usarás el PC?",
+    id: "storage",
+    title: "Disco y particiones",
+    hint: "Modo e intención (sin escritura)",
   },
   {
     id: "base",
     title: "Sistema base",
-    hintSimple: "Kernel · Resumen",
-    hintAdvanced: "Kernel · Detallado",
+    hint: "Kernel · Arranque · Filesystem",
   },
   {
     id: "environment",
     title: "Entorno",
-    hintSimple: "Solo escritorios",
-    hintAdvanced: "Escritorios y gestores",
+    hint: "Escritorios y gestores",
   },
   {
     id: "apps",
     title: "Apps",
-    hintSimple: "4 capas esenciales",
-    hintAdvanced: "Todas las capas",
+    hint: "Capas y paquetes",
   },
   {
-    id: "identity",
-    title: "Identidad",
-    hintSimple: "Usuario y cifrado",
-    hintAdvanced: "Usuario y cifrado",
+    id: "identity-security",
+    title: "Identidad y seguridad",
+    hint: "Hostname y cifrado",
   },
   {
     id: "review",
     title: "Revisión",
-    hintSimple: "Resumen y forja",
-    hintAdvanced: "Resumen y forja",
+    hint: "Resumen y exportación",
   },
 ] as const;
 
@@ -546,8 +540,8 @@ export const GLOSSARY = [
     body: "Editor con asistencia para escribir código.",
   },
   {
-    title: "Modo Sencillo / Avanzado",
-    body: "Sencillo oculta kernels detallados, gestores técnicos y capas de desarrollo o gaming. Avanzado muestra todas las opciones. Lo ya elegido no se borra al cambiar de modo.",
+    title: "Disco y particiones",
+    body: "Declara el modo de instalación (disco nuevo o reemplazo). Esta fase prepara un perfil y no modifica discos.",
   },
 ] as const;
 
@@ -591,10 +585,11 @@ export function allPackages(): FacePackage[] {
   return LAYERS.flatMap((l) => l.packages);
 }
 
-export function filteredEnvironments(simple: boolean): FaceOption[] {
-  return simple ? ENVIRONMENTS.filter((e) => e.kind === "DE") : ENVIRONMENTS;
+/** Experiencia única: catálogo completo (sin filtro Sencillo/Avanzado). */
+export function allEnvironments(): FaceOption[] {
+  return ENVIRONMENTS;
 }
 
-export function filteredLayers(simple: boolean): FaceLayer[] {
-  return simple ? LAYERS.filter((l) => l.simple) : LAYERS;
+export function allLayers(): FaceLayer[] {
+  return LAYERS;
 }
