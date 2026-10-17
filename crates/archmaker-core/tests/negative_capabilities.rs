@@ -47,6 +47,7 @@ fn make_test_draft() -> Draft {
         browser_policy: None,
         verification: None,
         inherited_encrypt_intent: None,
+        legacy_metadata: None,
     }
 }
 

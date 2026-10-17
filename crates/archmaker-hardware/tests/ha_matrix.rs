@@ -442,20 +442,31 @@ fn ha21_plan_has_no_secrets() {
 #[test]
 fn ha21b_public_snapshot_omits_serial_wwn() {
     let fixture = include_str!("fixtures/lsblk-clean-gpt.json");
-    let (snap, registry) =
-        snapshot_from_lsblk_json(
-            fixture,
-            "snap-privacy",
-            "2026-10-17T00:00:00Z",
-            ObservationOrigin::ImportedReport,
-            TargetBinding::Unbound,
-        )
-        .expect("lsblk fixture");
-    assert!(!registry.by_token.is_empty(), "registry private exists in-session");
+    let (snap, registry) = snapshot_from_lsblk_json(
+        fixture,
+        "snap-privacy",
+        "2026-10-17T00:00:00Z",
+        ObservationOrigin::ImportedReport,
+        TargetBinding::Unbound,
+    )
+    .expect("lsblk fixture");
+    assert!(
+        !registry.by_token.is_empty(),
+        "registry private exists in-session"
+    );
     let json = serde_json::to_string(&snap).expect("snapshot json");
-    assert!(!json.contains("\"serial\""), "public snapshot must not embed serial");
-    assert!(!json.contains("\"wwn\""), "public snapshot must not embed wwn");
-    assert!(!json.contains("/dev/"), "public snapshot must not embed /dev paths");
+    assert!(
+        !json.contains("\"serial\""),
+        "public snapshot must not embed serial"
+    );
+    assert!(
+        !json.contains("\"wwn\""),
+        "public snapshot must not embed wwn"
+    );
+    assert!(
+        !json.contains("/dev/"),
+        "public snapshot must not embed /dev paths"
+    );
     // Registry is not Serialize — private identities stay out of default export.
     let _ = registry;
 }
