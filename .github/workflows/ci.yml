@@ -190,6 +190,8 @@ jobs:
           # G6-C03 / AUD-021: contraste y tokens WCAG 2.2 (1.4.1 = contract + manual).
           python3 tools/wcag_validate.py
           python3 tools/validate_closure_evidence.py
+          # Prove-It: pin jsonschema CI vs comportamiento Draft202012 local.
+          python3 tools/test_validate_closure_jsonschema_pin.py
           # F7: inventario de matriz candidata; result=pending (sin aceptación firmada).
           python3 tools/run_f7_candidate_matrix.py --validate-only
           # F7: tests simulados del runner (strict/partial/cero tests/WASM incompleto).

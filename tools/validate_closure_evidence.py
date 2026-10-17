@@ -171,21 +171,32 @@ def sha256_hex(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
-def compare_with_jsonschema(schema: dict, instances: list[tuple[str, object, bool]]) -> list[str]:
-    """Compara validador propio con jsonschema==4.23.0. Devuelve errores de discordancia."""
+def compare_with_jsonschema(
+    schema: dict, instances: list[tuple[str, object, bool]]
+) -> tuple[list[str], list[str]]:
+    """Compara validador propio con Draft202012 de jsonschema.
+
+    CI fija jsonschema==4.23.0. Fuera de CI, una versión distinta solo produce
+    advertencia si el comportamiento sobre el corpus coincide; la discordancia
+    semántica sigue siendo error. Falta de jsonschema es error.
+    """
+    warnings: list[str] = []
     try:
         from importlib.metadata import version as pkg_version
 
         from jsonschema import Draft202012Validator
     except ImportError:
-        return ["falta jsonschema (pip install jsonschema==4.23.0)"]
+        return ["falta jsonschema (pip install jsonschema==4.23.0)"], warnings
 
     try:
         js_version = pkg_version("jsonschema")
     except Exception:  # noqa: BLE001
         js_version = "?"
     if js_version != "4.23.0":
-        return [f"jsonschema versión {js_version!r}; se exige 4.23.0"]
+        warnings.append(
+            f"jsonschema versión {js_version!r} (CI fija 4.23.0); "
+            "se compara comportamiento Draft202012"
+        )
 
     mismatches: list[str] = []
     validator = Draft202012Validator(schema)
@@ -210,7 +221,7 @@ def compare_with_jsonschema(schema: dict, instances: list[tuple[str, object, boo
                 f"{label}: jsonschema={'ok' if std_ok else 'fail'} "
                 f"esperado={'ok' if expect_valid else 'fail'}"
             )
-    return mismatches
+    return mismatches, warnings
 
 
 def check_corpus() -> int:
@@ -381,7 +392,9 @@ def main() -> int:
     ]
     if f7_pending_path.is_file():
         compare_instances.append(("f7-pending-null", f7_pending, True))
-    mismatches = compare_with_jsonschema(schema, compare_instances)
+    mismatches, js_warnings = compare_with_jsonschema(schema, compare_instances)
+    for msg in js_warnings:
+        print(f"WARN {msg}")
     for msg in mismatches:
         fail(msg)
         errors += 1
@@ -391,7 +404,7 @@ def main() -> int:
         print(f"{errors} fallos en la evidencia de cierre")
         return 1
     print(
-        "OK evidencia de cierre: esquema, null en enum, jsonschema 4.23.0, "
+        "OK evidencia de cierre: esquema, null en enum, concordancia Draft202012, "
         "ejemplos rechazados, legacy legible no aprobable, corpus con digest"
     )
     return 0
