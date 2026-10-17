@@ -2,7 +2,7 @@
 id: ADR-0013
 phase: planning
 priority: P0
-documentStatus: proposed
+documentStatus: in-review
 approvalStatus: pending
 implementationStatus: partial
 verificationStatus: not-verified
