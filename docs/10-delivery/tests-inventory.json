@@ -1,6 +1,6 @@
 {
-  "generated_at": "1792251969",
-  "git_sha": "8d82fe6e74733fdb2481236f0e6e5657a736ffa8",
+  "generated_at": "1792252810",
+  "git_sha": "d02487e6e3971bc0d7f57b87326b0e7eae3e7e16",
   "tests": [
     {
       "id": "TST-ARCHMAKER-CANONICALIZATION-VECTORS-GOLDEN_CORPUS_BYTE_IDENTITY_AND_DIGEST",
@@ -1160,7 +1160,14 @@
       "location": "crates/archmaker-core/tests/t_matrix.rs",
       "command": "cargo test -p archmaker-core --test t_matrix t37_luks_or_default_browser_changes_digest",
       "workflow": "ci",
-      "covers": [],
+      "covers": [
+        "FR-DRAFT-001",
+        "FR-VALIDATE-001",
+        "FR-MANIFEST-001",
+        "NFR-DET-001",
+        "NFR-SEC-001",
+        "NFR-MIG-001"
+      ],
       "description": "t_matrix::t37_luks_or_default_browser_changes_digest"
     },
     {
@@ -1169,7 +1176,14 @@
       "location": "crates/archmaker-core/tests/t_matrix.rs",
       "command": "cargo test -p archmaker-core --test t_matrix t38_v2_document_not_labeled_as_v1_domain",
       "workflow": "ci",
-      "covers": [],
+      "covers": [
+        "FR-DRAFT-001",
+        "FR-VALIDATE-001",
+        "FR-MANIFEST-001",
+        "NFR-DET-001",
+        "NFR-SEC-001",
+        "NFR-MIG-001"
+      ],
       "description": "t_matrix::t38_v2_document_not_labeled_as_v1_domain"
     },
     {
@@ -1181,6 +1195,9 @@
       "covers": [
         "FR-DRAFT-001",
         "FR-VALIDATE-001",
+        "FR-MANIFEST-001",
+        "NFR-DET-001",
+        "NFR-SEC-001",
         "NFR-MIG-001"
       ],
       "description": "t_matrix::t39_future_schema_version_rejected"
@@ -1192,7 +1209,12 @@
       "command": "cargo test -p archmaker-core --test t_matrix t40_onlyoffice_alias_no_duplicate_canonical",
       "workflow": "ci",
       "covers": [
-        "NFR-DET-001"
+        "FR-DRAFT-001",
+        "FR-VALIDATE-001",
+        "FR-MANIFEST-001",
+        "NFR-DET-001",
+        "NFR-SEC-001",
+        "NFR-MIG-001"
       ],
       "description": "t_matrix::t40_onlyoffice_alias_no_duplicate_canonical"
     },
@@ -1202,7 +1224,14 @@
       "location": "crates/archmaker-core/tests/t_matrix.rs",
       "command": "cargo test -p archmaker-core --test t_matrix t41_no_browser_policy_defined_no_orphan_default",
       "workflow": "ci",
-      "covers": [],
+      "covers": [
+        "FR-DRAFT-001",
+        "FR-VALIDATE-001",
+        "FR-MANIFEST-001",
+        "NFR-DET-001",
+        "NFR-SEC-001",
+        "NFR-MIG-001"
+      ],
       "description": "t_matrix::t41_no_browser_policy_defined_no_orphan_default"
     },
     {
@@ -1211,7 +1240,14 @@
       "location": "crates/archmaker-core/tests/t_matrix.rs",
       "command": "cargo test -p archmaker-core --test t_matrix t42_unverified_request_kept_not_certified_support",
       "workflow": "ci",
-      "covers": [],
+      "covers": [
+        "FR-DRAFT-001",
+        "FR-VALIDATE-001",
+        "FR-MANIFEST-001",
+        "NFR-DET-001",
+        "NFR-SEC-001",
+        "NFR-MIG-001"
+      ],
       "description": "t_matrix::t42_unverified_request_kept_not_certified_support"
     },
     {
@@ -1742,10 +1778,12 @@
       "command": "cargo test -p archmaker-hardware --test t_matrix t31_imported_report_not_observed_bound",
       "workflow": "ci",
       "covers": [
-        "FR-IMPORT-001",
-        "NFR-SEC-001",
+        "FR-DRAFT-001",
         "FR-VALIDATE-001",
-        "NFR-DET-001"
+        "FR-MANIFEST-001",
+        "NFR-DET-001",
+        "NFR-SEC-001",
+        "NFR-MIG-001"
       ],
       "description": "t_matrix::t31_imported_report_not_observed_bound"
     },
@@ -1756,9 +1794,12 @@
       "command": "cargo test -p archmaker-hardware --test t_matrix t32_session_handle_not_portable_logical_ref",
       "workflow": "ci",
       "covers": [
-        "NFR-SEC-001",
+        "FR-DRAFT-001",
         "FR-VALIDATE-001",
-        "NFR-DET-001"
+        "FR-MANIFEST-001",
+        "NFR-DET-001",
+        "NFR-SEC-001",
+        "NFR-MIG-001"
       ],
       "description": "t_matrix::t32_session_handle_not_portable_logical_ref"
     },
@@ -1769,9 +1810,12 @@
       "command": "cargo test -p archmaker-hardware --test t_matrix t33_mbr_observed_gpt_proposal_without_write",
       "workflow": "ci",
       "covers": [
-        "NFR-SEC-001",
+        "FR-DRAFT-001",
         "FR-VALIDATE-001",
-        "NFR-DET-001"
+        "FR-MANIFEST-001",
+        "NFR-DET-001",
+        "NFR-SEC-001",
+        "NFR-MIG-001"
       ],
       "description": "t_matrix::t33_mbr_observed_gpt_proposal_without_write"
     },
@@ -1782,9 +1826,12 @@
       "command": "cargo test -p archmaker-hardware --test t_matrix t34_missing_table_does_not_infer_empty_or_safe",
       "workflow": "ci",
       "covers": [
-        "NFR-SEC-001",
+        "FR-DRAFT-001",
         "FR-VALIDATE-001",
-        "NFR-DET-001"
+        "FR-MANIFEST-001",
+        "NFR-DET-001",
+        "NFR-SEC-001",
+        "NFR-MIG-001"
       ],
       "description": "t_matrix::t34_missing_table_does_not_infer_empty_or_safe"
     },
@@ -1795,9 +1842,12 @@
       "command": "cargo test -p archmaker-hardware --test t_matrix t35_esp_without_uki_path_incomplete",
       "workflow": "ci",
       "covers": [
-        "NFR-SEC-001",
+        "FR-DRAFT-001",
         "FR-VALIDATE-001",
-        "NFR-DET-001"
+        "FR-MANIFEST-001",
+        "NFR-DET-001",
+        "NFR-SEC-001",
+        "NFR-MIG-001"
       ],
       "description": "t_matrix::t35_esp_without_uki_path_incomplete"
     },
@@ -1808,9 +1858,12 @@
       "command": "cargo test -p archmaker-hardware --test t_matrix t36_secure_boot_enabled_without_signing_is_conditional",
       "workflow": "ci",
       "covers": [
-        "NFR-SEC-001",
+        "FR-DRAFT-001",
         "FR-VALIDATE-001",
-        "NFR-DET-001"
+        "FR-MANIFEST-001",
+        "NFR-DET-001",
+        "NFR-SEC-001",
+        "NFR-MIG-001"
       ],
       "description": "t_matrix::t36_secure_boot_enabled_without_signing_is_conditional"
     },
@@ -1821,9 +1874,12 @@
       "command": "cargo test -p archmaker-hardware --test t_matrix t43_redacted_public_snapshot_hash_differs_from_private",
       "workflow": "ci",
       "covers": [
-        "NFR-SEC-001",
+        "FR-DRAFT-001",
         "FR-VALIDATE-001",
-        "NFR-DET-001"
+        "FR-MANIFEST-001",
+        "NFR-DET-001",
+        "NFR-SEC-001",
+        "NFR-MIG-001"
       ],
       "description": "t_matrix::t43_redacted_public_snapshot_hash_differs_from_private"
     },
@@ -1834,9 +1890,12 @@
       "command": "cargo test -p archmaker-hardware --test t_matrix t44_restricted_namespace_partial_not_full_host_cert",
       "workflow": "ci",
       "covers": [
-        "NFR-SEC-001",
+        "FR-DRAFT-001",
         "FR-VALIDATE-001",
-        "NFR-DET-001"
+        "FR-MANIFEST-001",
+        "NFR-DET-001",
+        "NFR-SEC-001",
+        "NFR-MIG-001"
       ],
       "description": "t_matrix::t44_restricted_namespace_partial_not_full_host_cert"
     },

@@ -19,6 +19,16 @@ Texto canónico: [`docs/11-operations/manual/Manual-de-uso.md`](https://github.c
 
 Flujos cubiertos: JNY-001 (crear → exportar) y JNY-002 (importar). Rutas según `docs/05-ux/interaction-matrix.md`.
 
+## 0. Tres capas (no confundir)
+
+| Capa | Qué hace Forge | Qué no hace |
+| ---- | -------------- | ----------- |
+| Instalar la GUI | Abrir AppImage/Tauri o web; configurar perfil | Instalar Arch en un disco |
+| Detectar este equipo | En desktop Linux, sondeo **solo lectura** (firmware/discos) | Formatear, cifrar, montar ni elevar privilegios |
+| Exportar un perfil | Manifest/artefacto con plan declarativo | Ejecutar el plan (A6 fuera de alcance) |
+
+En web no hay inspección local fingida: formulario manual o importación de informe.
+
 ## 1. Inicio (`/`)
 
 Abre la aplicación (escritorio Tauri o adaptador web). En inicio puedes:

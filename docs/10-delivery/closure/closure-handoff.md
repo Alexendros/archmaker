@@ -51,6 +51,8 @@ Mandato de cierre ArchMaker/Forge. Casillas solo con evidencia. **No publicado.*
 | Desktop/offline (P6) | blocked (PR #135 + humo #141) |
 | Docs gobernanza (P7) | passed (PR #136) |
 | Candidato/handoff (P8–P9) | candidato identificado; **sin** tag ni publicación |
+| Forge declarativo + sonda | partial (contratos/UI/hardware/migración/T·HA; tip post-#158) |
+| A6 escritura discos | **fuera** (N/A HA26–28) |
 | Aprobación funcional F7 | pending (`RC_SHA_FUNCIONAL`) |
 | Distribución nueva | pending |
 
@@ -100,6 +102,9 @@ Mandato de cierre ArchMaker/Forge. Casillas solo con evidencia. **No publicado.*
 | `RC_SHA_FUNCIONAL` | architecture | Aprobación funcional | Revisor independiente |
 | Firma candidato nuevo | release | Distribución | Sí explícito + bytes |
 | Runner/ISO | architecture | Fuera de veredicto | Alcance accepted |
+| CAT01 ApexShot | producto | Oferta no verificada | Proveedor Arch/AUR con fecha |
+| A6 / HA26–28 | architecture | Ejecución en discos | Alcance accepted + helper |
+| Matriz T/HA | architecture | Ver `forge-acceptance-matrix.md` | Aprobación independiente |
 
 ## 12. Decisión
 

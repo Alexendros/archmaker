@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Evolución Forge verificable (plan consolidado): contratos draft/manifiesto v2,
+  experiencia única (sin Sencillo/Avanzado), catálogo Zen/ONLYOFFICE/Kitty/Ghostty,
+  sonda Linux de solo lectura + plan UEFI/GPT/UKI, migración `legacyMetadata`,
+  matriz T01–T44 / HA01–HA25 (`docs/10-delivery/closure/forge-acceptance-matrix.md`).
+  **A6 (escritura en discos) fuera de alcance**; ApexShot CAT01 abierto; sin publicación.
+- ADR-0013…0018 (UKI en ESP, estados ortogonales, handles, digests v2, navegadores/
+  ONLYOFFICE, alcance declarativo con A6 excluida).
+
 - Probe P6 residuales automatizables (`tools/run_p6_residual_probe.py`): 3× install limpia
   (FUSE) y offline (`bwrap --unshare-net` sobre AppRun extraído; evita `/tmp` noexec).
   Portal E2E rfd sigue blocked; gate P6 global blocked.

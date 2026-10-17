@@ -135,6 +135,17 @@ def infer_covers(crate: str, test_file: str, test_fn: str) -> List[str]:
             'NFR-OFF-001',
         ]
 
+    # Matriz T31–T44 (aceptación Forge): contratos, digests, política y sonda.
+    if test_file == 't_matrix':
+        return [
+            'FR-DRAFT-001',
+            'FR-VALIDATE-001',
+            'FR-MANIFEST-001',
+            'NFR-DET-001',
+            'NFR-SEC-001',
+            'NFR-MIG-001',
+        ]
+
     keyword_map = {
         'draft': ['FR-DRAFT-001'],
         'catalog': ['FR-CAT-001'],

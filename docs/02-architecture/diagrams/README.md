@@ -41,6 +41,17 @@ python3 tools/run_archify_diagrams.py         # validate + deliver 24/24
 python3 tools/run_archify_diagrams.py --check # solo lectura (salida en /tmp)
 ```
 
+## Alcance as-built frente a futuro
+
+- D01–D24 describen el **as-built** de Forge/ArchMaker (configurar → exportar; sin
+  escritura en discos).
+- Sonda Linux de solo lectura, grafo de uso y plan UEFI/GPT alimentan el mismo
+  `storagePlan` declarativo; se documentan en ADR-0013…0018 y en el código
+  `archmaker-hardware`, no como un D25 de ejecutor.
+- El **helper A6** (polkit / formateo / LUKS real) se dibuja solo como **futuro**
+  separado: no figura como implementado en estas vistas. HA26–HA28 = N/A hasta un
+  alcance `accepted` adicional.
+
 ## Reglas
 
 - 24 vistas obligatorias D01–D24; D25 (waterfall) y D26 (ERD) condicionadas.

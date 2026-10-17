@@ -123,9 +123,12 @@ los slices **MVP-1** (`mvp1-scope.md`), **MVP-2** (`mvp2-scope.md`), **MVP-3**
 (`mvp3-scope.md`), **MVP-4** (React + MockCorePort, `mvp4-scope.md`), **MVP-5**
 (catálogo de matriz, UI de cinco pasos, paridad Tauri/WASM; `mvp5-scope.md`) y el canal
 **MVP-6 AppImage Linux x86_64** (`mvp6-scope.md`, ADR-0010 / DEC-011 para `v0.1.0`;
-nombre visible vigente **Forge** por ADR-0012 / DEC-012). **No** autorizado: runner real, root, discos, shell arbitraria, catálogos remotos,
-firma criptográfica de catálogo en carga, Enterprise, ISO, ni `.deb`/`.rpm`/OBS/AUR binario
-como Done.
+nombre visible vigente **Forge** por ADR-0012 / DEC-012). Alcance **adicional**
+declarativo/sonda (ADR-0013…0018, `forge-declarative-scope.md`): planificación y
+observación de solo lectura; **no** reescribe MVP-5 como permiso de ejecución.
+**No** autorizado: runner real, root, escritura en discos (A6), shell arbitraria,
+catálogos remotos, firma criptográfica de catálogo en carga, Enterprise, ISO, ni
+`.deb`/`.rpm`/OBS/AUR binario como Done.
 
 La presencia de F0–F8 en `main` y la publicación F9 (`v0.1.0`) **no** equivalen a
 aprobación funcional firmada ni a `RC_SHA_FUNCIONAL`. El acto de gobierno F8/DEC-011
