@@ -1,9 +1,11 @@
 /**
  * Presentation data for the Forge face (ArchMaker GUI).
- * Canonical ids map to local-catalog-mvp1 where they exist; others are face gaps.
+ * Canonical ids map to local-catalog-mvp1; unverified requests stay selectable and never seal as fully supported.
  */
 
 export type EnvKind = "DE" | "WM";
+
+export type VerificationStatus = "verified" | "unverified";
 
 export type FaceOption = {
   htmlId: string;
@@ -16,7 +18,11 @@ export type FaceOption = {
   kind?: EnvKind;
   protocol?: string;
   ideal?: string;
+  /** @deprecated Use verificationStatus === "unverified". Never disables selection. */
   gap?: boolean;
+  verificationStatus?: VerificationStatus;
+  browserBase?: string;
+  renderingEngine?: string;
 };
 
 export type FacePackage = {
@@ -27,7 +33,11 @@ export type FacePackage = {
   size: number;
   tag: string;
   why: string;
+  /** @deprecated Use verificationStatus === "unverified". Never disables selection. */
   gap?: boolean;
+  verificationStatus?: VerificationStatus;
+  browserBase?: string;
+  renderingEngine?: string;
 };
 
 export type FaceLayer = {
@@ -132,7 +142,6 @@ export const KERNELS: FaceOption[] = [
     version: "largo soporte",
     description: "Soporte largo. Menos cambios de kernel.",
     tag: "Estable",
-    gap: true,
   },
   {
     htmlId: "linux-zen",
@@ -233,7 +242,6 @@ export const ENVIRONMENTS: FaceOption[] = [
     protocol: "Wayland",
     ideal: "Quienes quieren personalizarlo todo",
     description: "Potente, personalizable, overview mejorada",
-    gap: true,
   },
   {
     htmlId: "sway",
@@ -256,7 +264,6 @@ export const ENVIRONMENTS: FaceOption[] = [
     protocol: "X11/Wayland",
     ideal: "Usuarios de Windows familiar",
     description: "Clásico y estable",
-    gap: true,
   },
   {
     htmlId: "xfce",
@@ -268,7 +275,6 @@ export const ENVIRONMENTS: FaceOption[] = [
     protocol: "X11/Wayland",
     ideal: "PCs antiguos",
     description: "Ligero y rápido",
-    gap: true,
   },
   {
     htmlId: "cosmic",
@@ -291,7 +297,6 @@ export const ENVIRONMENTS: FaceOption[] = [
     protocol: "Wayland",
     ideal: "Elegante y simple",
     description: "Escritorio elegante y simple",
-    gap: true,
   },
   {
     htmlId: "i3",
@@ -303,7 +308,6 @@ export const ENVIRONMENTS: FaceOption[] = [
     protocol: "X11",
     ideal: "Programadores de teclado",
     description: "Tiling clásico",
-    gap: true,
   },
 ];
 
@@ -339,9 +343,39 @@ export const LAYERS: FaceLayer[] = [
         title: "Flameshot",
         description: "Capturas con anotaciones.",
         size: 25,
-        tag: "Popular",
+        tag: "Histórico",
         why: "Captura y flechas",
-        gap: true,
+        verificationStatus: "verified",
+      },
+      {
+        htmlId: "apexshot",
+        optionId: "archmaker.app.apexshot",
+        title: "ApexShot",
+        description: "Capturas modernas (solicitud; proveedor Arch/AUR no verificado).",
+        size: 30,
+        tag: "No verificada",
+        why: "Alternativa a Flameshot",
+        verificationStatus: "unverified",
+      },
+      {
+        htmlId: "kitty",
+        optionId: "archmaker.app.kitty",
+        title: "Kitty",
+        description: "Terminal GPU acelerada.",
+        size: 15,
+        tag: "Terminal",
+        why: "Rápida y configurable",
+        verificationStatus: "verified",
+      },
+      {
+        htmlId: "ghostty",
+        optionId: "archmaker.app.ghostty",
+        title: "Ghostty",
+        description: "Terminal nativa moderna.",
+        size: 20,
+        tag: "Terminal",
+        why: "Rendimiento y tipografía",
+        verificationStatus: "verified",
       },
     ],
   },
@@ -358,8 +392,11 @@ export const LAYERS: FaceLayer[] = [
         title: "Firefox",
         description: "Privado y rápido.",
         size: 250,
-        tag: "Recomendado",
+        tag: "Histórico",
         why: "Bloquea rastreadores",
+        browserBase: "Firefox/Mozilla",
+        renderingEngine: "Gecko",
+        verificationStatus: "verified",
       },
       {
         htmlId: "vivaldi",
@@ -369,6 +406,9 @@ export const LAYERS: FaceLayer[] = [
         size: 380,
         tag: "Personalizable",
         why: "Control total",
+        browserBase: "Chromium",
+        renderingEngine: "Blink",
+        verificationStatus: "verified",
       },
       {
         htmlId: "brave",
@@ -378,6 +418,9 @@ export const LAYERS: FaceLayer[] = [
         size: 320,
         tag: "Privacidad",
         why: "Menos anuncios en vídeo",
+        browserBase: "Chromium",
+        renderingEngine: "Blink",
+        verificationStatus: "verified",
       },
       {
         htmlId: "zen",
@@ -385,9 +428,11 @@ export const LAYERS: FaceLayer[] = [
         title: "Zen Browser",
         description: "Pestañas verticales modernas.",
         size: 270,
-        tag: "Moderno",
+        tag: "Predeterminado",
         why: "Interfaz más limpia",
-        gap: true,
+        browserBase: "Firefox",
+        renderingEngine: "Gecko",
+        verificationStatus: "verified",
       },
     ],
   },
@@ -426,13 +471,24 @@ export const LAYERS: FaceLayer[] = [
     simple: true,
     packages: [
       {
+        htmlId: "onlyoffice",
+        optionId: "archmaker.pkg.onlyoffice-bin",
+        title: "ONLYOFFICE",
+        description: "Compatibilidad MS Office (AUR onlyoffice-bin).",
+        size: 420,
+        tag: "Predeterminado",
+        why: "Documentos .docx complejos",
+        verificationStatus: "verified",
+      },
+      {
         htmlId: "libreoffice",
         optionId: "archmaker.pkg.libreoffice-fresh",
         title: "LibreOffice",
-        description: "Suite ofimática libre.",
+        description: "Suite ofimática libre (histórica).",
         size: 650,
-        tag: "Recomendado",
+        tag: "Histórico",
         why: "Abre documentos sin licencia",
+        verificationStatus: "verified",
       },
     ],
   },
@@ -456,21 +512,21 @@ export const LAYERS: FaceLayer[] = [
         htmlId: "grokbot",
         optionId: "archmaker.app.grokbot",
         title: "Grokbot",
-        description: "Asistente en escritorio.",
+        description: "Asistente en escritorio (solicitud no verificada).",
         size: 180,
-        tag: "IA",
+        tag: "No verificada",
         why: "Ayuda con el contexto del PC",
-        gap: true,
+        verificationStatus: "unverified",
       },
       {
         htmlId: "grokbuild",
         optionId: "archmaker.app.grokbuild",
         title: "Grok Build",
-        description: "De idea a aplicación.",
+        description: "De idea a aplicación (solicitud no verificada).",
         size: 220,
-        tag: "IA",
+        tag: "No verificada",
         why: "Prototipar con prompts",
-        gap: true,
+        verificationStatus: "unverified",
       },
       {
         htmlId: "zed",
@@ -480,17 +536,17 @@ export const LAYERS: FaceLayer[] = [
         size: 150,
         tag: "Rápido",
         why: "Proyectos grandes",
-        gap: true,
+        verificationStatus: "verified",
       },
       {
         htmlId: "vscode",
         optionId: "archmaker.app.vscode",
         title: "VS Code",
-        description: "Editor ampliamente usado.",
+        description: "Editor ampliamente usado (Extra `code`).",
         size: 350,
         tag: "Popular",
         why: "Extensiones",
-        gap: true,
+        verificationStatus: "verified",
       },
     ],
   },
@@ -546,11 +602,15 @@ export const GLOSSARY = [
 ] as const;
 
 /** Initial package option ids present when the face opens (canonical where mapped). */
+/** Default browser for new profiles (also selected). */
+export const DEFAULT_BROWSER_ID = "archmaker.browser.zen" as const;
+
+/** Initial package option ids for new profiles (no silent historical rewrite). */
 export const INITIAL_APP_OPTION_IDS = [
   "archmaker.app.micro",
-  "archmaker.browser.firefox",
+  "archmaker.browser.zen",
   "archmaker.browser.vivaldi",
-  "archmaker.pkg.libreoffice-fresh",
+  "archmaker.pkg.onlyoffice-bin",
   "archmaker.app.cursor",
 ] as const;
 
@@ -593,3 +653,13 @@ export function allEnvironments(): FaceOption[] {
 export function allLayers(): FaceLayer[] {
   return LAYERS;
 }
+
+/** Unverified requests remain selectable; they do not seal a fully-supported manifest. */
+export function isUnverifiedOption(
+  option: FaceOption | FacePackage | undefined,
+): boolean {
+  if (!option) return false;
+  if (option.verificationStatus === "unverified") return true;
+  return Boolean("gap" in option && option.gap);
+}
+

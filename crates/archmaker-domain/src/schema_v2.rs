@@ -18,6 +18,9 @@ pub const DRAFT_DOMAIN_V2: &str = "archmaker:draft:v2";
 /// Identidad canónica ONLYOFFICE ya presente en el catálogo (no se inventa).
 pub const ONLYOFFICE_CANONICAL_ID: &str = "archmaker.pkg.onlyoffice-bin";
 
+/// Default de perfil nuevo (catálogo `archmaker.browser.zen`).
+pub const DEFAULT_BROWSER_ID_NEW_PROFILE: &str = "archmaker.browser.zen";
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum DraftSchemaVersion {
     V1,
@@ -306,53 +309,66 @@ impl EncryptionPolicy {
     }
 }
 
-/// Cardinalidad de navegadores: selección múltiple + exactamente un default.
+/// Cardinalidad de navegadores: varios seleccionados + a lo sumo un default.
+///
+/// Perfil sin navegador: selección vacía y `defaultBrowserId = null` (permitido;
+/// RULE-BROWSER-001 sugiere, no bloquea). Nunca default huérfano.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 pub struct BrowserPolicy {
     pub selected_browser_ids: Vec<String>,
-    pub default_browser_id: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub default_browser_id: Option<String>,
 }
 
 impl BrowserPolicy {
+    pub fn none() -> Self {
+        Self {
+            selected_browser_ids: Vec::new(),
+            default_browser_id: None,
+        }
+    }
+
+    pub fn new_profile_zen() -> Self {
+        Self {
+            selected_browser_ids: vec![DEFAULT_BROWSER_ID_NEW_PROFILE.to_string()],
+            default_browser_id: Some(DEFAULT_BROWSER_ID_NEW_PROFILE.to_string()),
+        }
+    }
+
     pub fn validate(&self) -> Result<(), BrowserPolicyError> {
-        if self.selected_browser_ids.is_empty() {
-            return Err(BrowserPolicyError::EmptySelection);
-        }
-        if self.default_browser_id.is_empty() {
-            return Err(BrowserPolicyError::EmptyDefault);
-        }
-        if !self
-            .selected_browser_ids
-            .iter()
-            .any(|id| id == &self.default_browser_id)
-        {
-            return Err(BrowserPolicyError::DefaultNotSelected);
-        }
         let mut sorted = self.selected_browser_ids.clone();
         sorted.sort();
         sorted.dedup();
         if sorted.len() != self.selected_browser_ids.len() {
             return Err(BrowserPolicyError::DuplicateIds);
         }
-        Ok(())
+        match &self.default_browser_id {
+            None => Ok(()),
+            Some(id) if id.is_empty() => Err(BrowserPolicyError::EmptyDefault),
+            Some(id) => {
+                if self.selected_browser_ids.iter().any(|s| s == id) {
+                    Ok(())
+                } else {
+                    Err(BrowserPolicyError::OrphanDefault)
+                }
+            }
+        }
     }
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum BrowserPolicyError {
-    EmptySelection,
     EmptyDefault,
-    DefaultNotSelected,
+    OrphanDefault,
     DuplicateIds,
 }
 
 impl std::fmt::Display for BrowserPolicyError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Self::EmptySelection => write!(f, "selectedBrowserIds vacío"),
-            Self::EmptyDefault => write!(f, "defaultBrowserId vacío"),
-            Self::DefaultNotSelected => {
+            Self::EmptyDefault => write!(f, "defaultBrowserId vacío (usar null)"),
+            Self::OrphanDefault => {
                 write!(f, "defaultBrowserId no pertenece a selectedBrowserIds")
             }
             Self::DuplicateIds => write!(f, "selectedBrowserIds con duplicados"),
@@ -527,18 +543,23 @@ mod tests {
     #[test]
     fn browser_policy_cardinality() {
         let ok = BrowserPolicy {
-            selected_browser_ids: vec!["archmaker.app.firefox".into(), "archmaker.app.zen".into()],
-            default_browser_id: "archmaker.app.zen".into(),
+            selected_browser_ids: vec![
+                "archmaker.browser.firefox".into(),
+                "archmaker.browser.zen".into(),
+            ],
+            default_browser_id: Some("archmaker.browser.zen".into()),
         };
         assert!(ok.validate().is_ok());
         let bad = BrowserPolicy {
-            selected_browser_ids: vec!["archmaker.app.firefox".into()],
-            default_browser_id: "archmaker.app.zen".into(),
+            selected_browser_ids: vec!["archmaker.browser.firefox".into()],
+            default_browser_id: Some("archmaker.browser.zen".into()),
         };
         assert!(matches!(
             bad.validate(),
-            Err(BrowserPolicyError::DefaultNotSelected)
+            Err(BrowserPolicyError::OrphanDefault)
         ));
+        assert!(BrowserPolicy::none().validate().is_ok());
+        assert!(BrowserPolicy::new_profile_zen().validate().is_ok());
     }
 
     #[test]

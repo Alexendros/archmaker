@@ -11,7 +11,7 @@
   },
   "metadata": {
     "owner": "archmaker-core",
-    "note": "MVP-5-02 local catalog aligned with html-catalog-matrix. Options are id/title/tags/provides only; no cmd, version or size facts."
+    "note": "MVP-5-02 local catalog + Forge catalog-providers: verified Arch/AUR providers, browser many+default, ONLYOFFICE canonical, ApexShot unverified (CAT01 open)."
   },
   "steps": [
     {
@@ -27,18 +27,70 @@
             {
               "id": "archmaker.kernel.linux",
               "title": "Linux",
-              "provides": ["fs.ext4", "fs.btrfs"]
+              "provides": [
+                "fs.ext4",
+                "fs.btrfs"
+              ],
+              "provider": {
+                "channel": "core",
+                "packageId": "linux",
+                "sourceUrl": "https://archlinux.org/packages/core/x86_64/linux/",
+                "observedAt": "2026-10-15",
+                "status": "verified",
+                "architecture": "x86_64"
+              }
+            },
+            {
+              "id": "archmaker.kernel.linux-lts",
+              "title": "Linux LTS",
+              "provides": [
+                "fs.ext4",
+                "fs.btrfs"
+              ],
+              "provider": {
+                "channel": "core",
+                "packageId": "linux-lts",
+                "sourceUrl": "https://archlinux.org/packages/core/x86_64/linux-lts/",
+                "observedAt": "2026-10-15",
+                "status": "verified",
+                "architecture": "x86_64",
+                "revision": "6.18.57-1"
+              }
             },
             {
               "id": "archmaker.kernel.zen",
               "title": "Linux Zen",
-              "provides": ["fs.ext4", "fs.btrfs"]
+              "provides": [
+                "fs.ext4",
+                "fs.btrfs"
+              ],
+              "provider": {
+                "channel": "extra",
+                "packageId": "linux-zen",
+                "sourceUrl": "https://archlinux.org/packages/extra/x86_64/linux-zen/",
+                "observedAt": "2026-10-15",
+                "status": "verified",
+                "architecture": "x86_64"
+              }
             },
             {
               "id": "archmaker.kernel.linux-hardened",
               "title": "Linux Hardened",
-              "provides": ["fs.ext4", "fs.btrfs"],
-              "tags": ["cmd-no-migrable"]
+              "provides": [
+                "fs.ext4",
+                "fs.btrfs"
+              ],
+              "tags": [
+                "cmd-no-migrable"
+              ],
+              "provider": {
+                "channel": "extra",
+                "packageId": "linux-hardened",
+                "sourceUrl": "https://archlinux.org/packages/extra/x86_64/linux-hardened/",
+                "observedAt": "2026-10-15",
+                "status": "verified",
+                "architecture": "x86_64"
+              }
             }
           ]
         }
@@ -57,12 +109,16 @@
             {
               "id": "archmaker.filesystem.btrfs",
               "title": "Btrfs",
-              "provides": ["fs.btrfs"]
+              "provides": [
+                "fs.btrfs"
+              ]
             },
             {
               "id": "archmaker.filesystem.ext4",
               "title": "Ext4",
-              "provides": ["fs.ext4"]
+              "provides": [
+                "fs.ext4"
+              ]
             }
           ]
         }
@@ -125,22 +181,138 @@
             {
               "id": "archmaker.compositor.gnome",
               "title": "GNOME",
-              "tags": ["DE"]
+              "tags": [
+                "DE"
+              ],
+              "provider": {
+                "channel": "extra",
+                "packageId": "gnome-shell",
+                "architecture": "x86_64",
+                "sourceUrl": "https://archlinux.org/packages/extra/x86_64/gnome-shell/",
+                "observedAt": "2026-10-15",
+                "status": "verified",
+                "note": "Representative Extra package for the GNOME desktop stack (group/meta not a single pkgname)."
+              }
             },
             {
               "id": "archmaker.compositor.hyprland",
               "title": "Hyprland",
-              "tags": ["WM"]
+              "tags": [
+                "WM"
+              ],
+              "provider": {
+                "channel": "extra",
+                "packageId": "hyprland",
+                "sourceUrl": "https://archlinux.org/packages/extra/x86_64/hyprland/",
+                "observedAt": "2026-10-15",
+                "status": "verified",
+                "architecture": "x86_64"
+              }
             },
             {
               "id": "archmaker.compositor.sway",
               "title": "Sway",
-              "tags": ["WM"]
+              "tags": [
+                "WM"
+              ],
+              "provider": {
+                "channel": "extra",
+                "packageId": "sway",
+                "sourceUrl": "https://archlinux.org/packages/extra/x86_64/sway/",
+                "observedAt": "2026-10-15",
+                "status": "verified",
+                "architecture": "x86_64"
+              }
             },
             {
               "id": "archmaker.compositor.cosmic",
               "title": "COSMIC",
-              "tags": ["DE"]
+              "tags": [
+                "DE"
+              ],
+              "provider": {
+                "channel": "extra",
+                "packageId": "cosmic-session",
+                "sourceUrl": "https://archlinux.org/packages/extra/x86_64/cosmic-session/",
+                "observedAt": "2026-10-15",
+                "status": "verified",
+                "architecture": "x86_64"
+              }
+            },
+            {
+              "id": "archmaker.compositor.kde",
+              "title": "KDE Plasma",
+              "tags": [
+                "DE"
+              ],
+              "provider": {
+                "channel": "extra",
+                "packageId": "plasma-meta",
+                "sourceUrl": "https://archlinux.org/packages/extra/any/plasma-meta/",
+                "observedAt": "2026-10-15",
+                "status": "verified",
+                "architecture": "any"
+              }
+            },
+            {
+              "id": "archmaker.compositor.cinnamon",
+              "title": "Cinnamon",
+              "tags": [
+                "DE"
+              ],
+              "provider": {
+                "channel": "extra",
+                "packageId": "cinnamon",
+                "sourceUrl": "https://archlinux.org/packages/extra/x86_64/cinnamon/",
+                "observedAt": "2026-07-27",
+                "status": "verified",
+                "architecture": "x86_64"
+              }
+            },
+            {
+              "id": "archmaker.compositor.xfce",
+              "title": "XFCE",
+              "tags": [
+                "DE"
+              ],
+              "provider": {
+                "channel": "extra",
+                "packageId": "xfce4-session",
+                "sourceUrl": "https://archlinux.org/packages/extra/x86_64/xfce4-session/",
+                "observedAt": "2026-03-04",
+                "status": "verified",
+                "architecture": "x86_64"
+              }
+            },
+            {
+              "id": "archmaker.compositor.budgie",
+              "title": "Budgie",
+              "tags": [
+                "DE"
+              ],
+              "provider": {
+                "channel": "extra",
+                "packageId": "budgie-desktop",
+                "sourceUrl": "https://archlinux.org/packages/extra/x86_64/budgie-desktop/",
+                "observedAt": "2026-10-07",
+                "status": "verified",
+                "architecture": "x86_64"
+              }
+            },
+            {
+              "id": "archmaker.compositor.i3",
+              "title": "i3",
+              "tags": [
+                "WM"
+              ],
+              "provider": {
+                "channel": "extra",
+                "packageId": "i3-wm",
+                "sourceUrl": "https://archlinux.org/packages/extra/x86_64/i3-wm/",
+                "observedAt": "2026-02-06",
+                "status": "verified",
+                "architecture": "x86_64"
+              }
             }
           ]
         }
@@ -185,8 +357,14 @@
             {
               "id": "archmaker.pkg.libreoffice-fresh",
               "title": "LibreOffice Fresh",
-              "fixed": true,
-              "essentialReason": "Declared fixed in the HTML matrix; not a package fact."
+              "provider": {
+                "channel": "extra",
+                "packageId": "libreoffice-fresh",
+                "sourceUrl": "https://archlinux.org/packages/extra/x86_64/libreoffice-fresh/",
+                "observedAt": "2026-10-15",
+                "status": "verified",
+                "architecture": "x86_64"
+              }
             },
             {
               "id": "archmaker.pkg.hunspell-es",
@@ -203,7 +381,23 @@
             {
               "id": "archmaker.pkg.onlyoffice-bin",
               "title": "OnlyOffice",
-              "tags": ["no-redistribuible-candidato"]
+              "tags": [
+                "no-redistribuible-candidato",
+                "onlyoffice-canonical"
+              ],
+              "provider": {
+                "channel": "aur",
+                "packageId": "onlyoffice-bin",
+                "sourceUrl": "https://aur.archlinux.org/packages/onlyoffice-bin",
+                "observedAt": "2026-10-13",
+                "status": "verified",
+                "architecture": "x86_64",
+                "revision": "10.0.0-1",
+                "note": "AUR; described, not installed by Forge."
+              },
+              "aliases": [
+                "archmaker.app.onlyoffice-standalone"
+              ]
             },
             {
               "id": "archmaker.pkg.pdfarranger",
@@ -320,28 +514,90 @@
     {
       "id": "archmaker.apps.browser",
       "title": "Browser",
-      "mode": "single",
+      "mode": "flat",
       "sections": [
         {
           "id": "archmaker.apps.browser.section",
           "title": "Browser",
-          "cardinality": "one",
+          "cardinality": "many",
           "options": [
             {
               "id": "archmaker.browser.firefox",
               "title": "Firefox",
-              "provides": ["pkg.firefox"]
+              "provides": [
+                "pkg.firefox"
+              ],
+              "browserBase": "Firefox/Mozilla",
+              "renderingEngine": "Gecko",
+              "provider": {
+                "channel": "extra",
+                "packageId": "firefox",
+                "sourceUrl": "https://archlinux.org/packages/extra/x86_64/firefox/",
+                "observedAt": "2026-10-15",
+                "status": "verified",
+                "architecture": "x86_64",
+                "revision": "158.0-1"
+              }
             },
             {
               "id": "archmaker.browser.vivaldi",
               "title": "Vivaldi",
-              "provides": ["pkg.vivaldi"]
+              "provides": [
+                "pkg.vivaldi"
+              ],
+              "browserBase": "Chromium",
+              "renderingEngine": "Blink",
+              "provider": {
+                "channel": "extra",
+                "packageId": "vivaldi",
+                "sourceUrl": "https://archlinux.org/packages/extra/x86_64/vivaldi/",
+                "observedAt": "2026-10-15",
+                "status": "verified",
+                "architecture": "x86_64"
+              }
             },
             {
               "id": "archmaker.browser.brave",
               "title": "Brave",
-              "provides": ["pkg.brave"],
-              "tags": ["no-redistribuible-candidato"]
+              "provides": [
+                "pkg.brave"
+              ],
+              "browserBase": "Chromium",
+              "renderingEngine": "Blink",
+              "provider": {
+                "channel": "aur",
+                "packageId": "brave-bin",
+                "sourceUrl": "https://aur.archlinux.org/packages/brave-bin",
+                "observedAt": "2026-10-15",
+                "status": "verified",
+                "architecture": "x86_64",
+                "note": "AUR; described, not installed by Forge."
+              },
+              "tags": [
+                "no-redistribuible-candidato"
+              ]
+            },
+            {
+              "id": "archmaker.browser.zen",
+              "title": "Zen Browser",
+              "provides": [
+                "pkg.zen-browser"
+              ],
+              "browserBase": "Firefox",
+              "renderingEngine": "Gecko",
+              "provider": {
+                "channel": "aur",
+                "packageId": "zen-browser-bin",
+                "sourceUrl": "https://aur.archlinux.org/packages/zen-browser-bin",
+                "observedAt": "2026-10-09",
+                "status": "verified",
+                "architecture": "x86_64",
+                "revision": "1.23.2b-1",
+                "note": "AUR; described, not installed by Forge."
+              },
+              "tags": [
+                "no-redistribuible-candidato"
+              ]
             }
           ]
         }
@@ -360,64 +616,265 @@
             {
               "id": "archmaker.app.discord",
               "title": "Discord",
-              "provides": ["pkg.discord"]
+              "provides": [
+                "pkg.discord"
+              ],
+              "provider": {
+                "channel": "extra",
+                "packageId": "discord",
+                "sourceUrl": "https://archlinux.org/packages/extra/x86_64/discord/",
+                "observedAt": "2026-10-15",
+                "status": "verified",
+                "architecture": "x86_64"
+              }
             },
             {
               "id": "archmaker.app.telegram",
               "title": "Telegram",
-              "provides": ["pkg.telegram"]
+              "provides": [
+                "pkg.telegram"
+              ],
+              "provider": {
+                "channel": "extra",
+                "packageId": "telegram-desktop",
+                "sourceUrl": "https://archlinux.org/packages/extra/x86_64/telegram-desktop/",
+                "observedAt": "2026-10-15",
+                "status": "verified",
+                "architecture": "x86_64"
+              }
             },
             {
               "id": "archmaker.app.ghostty",
               "title": "Ghostty",
-              "provides": ["pkg.ghostty"]
+              "provides": [
+                "pkg.ghostty"
+              ],
+              "provider": {
+                "channel": "extra",
+                "packageId": "ghostty",
+                "sourceUrl": "https://archlinux.org/packages/extra/x86_64/ghostty/",
+                "observedAt": "2026-04-09",
+                "status": "verified",
+                "architecture": "x86_64"
+              }
             },
             {
               "id": "archmaker.app.kitty",
               "title": "Kitty",
-              "provides": ["pkg.kitty"]
+              "provides": [
+                "pkg.kitty"
+              ],
+              "provider": {
+                "channel": "extra",
+                "packageId": "kitty",
+                "sourceUrl": "https://archlinux.org/packages/extra/x86_64/kitty/",
+                "observedAt": "2026-10-01",
+                "status": "verified",
+                "architecture": "x86_64"
+              }
             },
             {
               "id": "archmaker.app.micro",
               "title": "Micro",
-              "provides": ["pkg.micro"]
+              "provides": [
+                "pkg.micro"
+              ],
+              "provider": {
+                "channel": "extra",
+                "packageId": "micro",
+                "sourceUrl": "https://archlinux.org/packages/extra/x86_64/micro/",
+                "observedAt": "2026-10-15",
+                "status": "verified",
+                "architecture": "x86_64"
+              }
             },
             {
               "id": "archmaker.app.cursor",
               "title": "Cursor",
-              "provides": ["pkg.cursor"],
-              "tags": ["no-redistribuible-candidato"]
+              "provides": [
+                "pkg.cursor"
+              ],
+              "tags": [
+                "no-redistribuible-candidato"
+              ]
             },
             {
               "id": "archmaker.app.btop",
               "title": "btop",
-              "provides": ["pkg.btop"]
+              "provides": [
+                "pkg.btop"
+              ],
+              "provider": {
+                "channel": "extra",
+                "packageId": "btop",
+                "sourceUrl": "https://archlinux.org/packages/extra/x86_64/btop/",
+                "observedAt": "2026-10-15",
+                "status": "verified",
+                "architecture": "x86_64"
+              }
             },
             {
               "id": "archmaker.app.vlc",
               "title": "VLC",
-              "provides": ["pkg.vlc"]
+              "provides": [
+                "pkg.vlc"
+              ]
             },
             {
               "id": "archmaker.app.gimp",
               "title": "GIMP",
-              "provides": ["pkg.gimp"]
+              "provides": [
+                "pkg.gimp"
+              ]
             },
             {
               "id": "archmaker.app.obsidian",
               "title": "Obsidian",
-              "provides": ["pkg.obsidian"]
+              "provides": [
+                "pkg.obsidian"
+              ]
             },
             {
               "id": "archmaker.app.onlyoffice-standalone",
-              "title": "OnlyOffice Standalone",
-              "provides": ["pkg.onlyoffice-standalone"],
-              "tags": ["no-redistribuible-candidato"]
+              "title": "OnlyOffice (alias histórico)",
+              "provides": [
+                "pkg.onlyoffice-standalone"
+              ],
+              "tags": [
+                "no-redistribuible-candidato",
+                "historical-alias",
+                "onlyoffice-alias"
+              ],
+              "canonicalId": "archmaker.pkg.onlyoffice-bin",
+              "provider": {
+                "channel": "aur",
+                "packageId": "onlyoffice-bin",
+                "sourceUrl": "https://aur.archlinux.org/packages/onlyoffice-bin",
+                "observedAt": "2026-10-13",
+                "status": "verified",
+                "architecture": "x86_64",
+                "revision": "10.0.0-1",
+                "note": "Historical face alias of archmaker.pkg.onlyoffice-bin; same AUR package."
+              }
             },
             {
               "id": "archmaker.app.steam",
               "title": "Steam",
-              "provides": ["pkg.steam"]
+              "provides": [
+                "pkg.steam"
+              ],
+              "provider": {
+                "channel": "extra",
+                "packageId": "steam",
+                "sourceUrl": "https://archlinux.org/packages/multilib/x86_64/steam/",
+                "observedAt": "2026-10-15",
+                "status": "verified",
+                "architecture": "x86_64",
+                "note": "multilib/steam on Arch"
+              }
+            },
+            {
+              "id": "archmaker.pkg.flameshot",
+              "title": "Flameshot",
+              "provides": [
+                "pkg.flameshot"
+              ],
+              "provider": {
+                "channel": "extra",
+                "packageId": "flameshot",
+                "sourceUrl": "https://archlinux.org/packages/extra/x86_64/flameshot/",
+                "observedAt": "2026-06-11",
+                "status": "verified",
+                "architecture": "x86_64",
+                "revision": "14.0.0-1"
+              }
+            },
+            {
+              "id": "archmaker.app.apexshot",
+              "title": "ApexShot",
+              "provides": [
+                "pkg.apexshot"
+              ],
+              "tags": [
+                "unverified-request"
+              ],
+              "provider": {
+                "channel": "none",
+                "packageId": "apexshot",
+                "sourceUrl": "https://github.com/apex-shot/apexshot/issues/21",
+                "observedAt": "2026-10-17",
+                "status": "unverified",
+                "note": "No AUR package published; CAT01 not closed. Visible as unverified request."
+              }
+            },
+            {
+              "id": "archmaker.app.zed",
+              "title": "Zed",
+              "provides": [
+                "pkg.zed"
+              ],
+              "provider": {
+                "channel": "extra",
+                "packageId": "zed",
+                "sourceUrl": "https://archlinux.org/packages/extra/x86_64/zed/",
+                "observedAt": "2026-10-17",
+                "status": "verified",
+                "architecture": "x86_64",
+                "revision": "1.24.3-1"
+              }
+            },
+            {
+              "id": "archmaker.app.vscode",
+              "title": "VS Code",
+              "provides": [
+                "pkg.code"
+              ],
+              "provider": {
+                "channel": "extra",
+                "packageId": "code",
+                "sourceUrl": "https://archlinux.org/packages/extra/x86_64/code/",
+                "observedAt": "2026-09-16",
+                "status": "verified",
+                "architecture": "x86_64",
+                "revision": "1.138.0-1",
+                "note": "Official Extra package `code` (Code - OSS)."
+              }
+            },
+            {
+              "id": "archmaker.app.grokbot",
+              "title": "Grokbot",
+              "provides": [
+                "pkg.grokbot"
+              ],
+              "tags": [
+                "unverified-request"
+              ],
+              "provider": {
+                "channel": "none",
+                "packageId": "grokbot",
+                "sourceUrl": "https://github.com/Alexendros/archmaker",
+                "observedAt": "2026-10-17",
+                "status": "unverified",
+                "note": "Product request without verified Arch/AUR provider; blocks fully-supported manifest."
+              }
+            },
+            {
+              "id": "archmaker.app.grokbuild",
+              "title": "Grok Build",
+              "provides": [
+                "pkg.grokbuild"
+              ],
+              "tags": [
+                "unverified-request"
+              ],
+              "provider": {
+                "channel": "none",
+                "packageId": "grokbuild",
+                "sourceUrl": "https://github.com/Alexendros/archmaker",
+                "observedAt": "2026-10-17",
+                "status": "unverified",
+                "note": "Product request without verified Arch/AUR provider; blocks fully-supported manifest."
+              }
             }
           ]
         }

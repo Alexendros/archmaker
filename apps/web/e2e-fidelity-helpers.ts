@@ -146,7 +146,7 @@ export async function completeExampleSelection(page: Page): Promise<void> {
 
   await page.getByRole("button", { name: /Continuar → Apps/i }).click();
   await expect(
-    page.getByRole("checkbox", { name: /^Firefox$/i }),
+    page.getByRole("checkbox", { name: /^Zen Browser$/i }),
   ).toBeChecked();
 
   await page.getByRole("button", { name: /Continuar → Identidad/i }).click();

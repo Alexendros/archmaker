@@ -1,15 +1,15 @@
 import type { Draft } from "./coreport.js";
-import { STEP_IDS, findOptionById } from "./forge-face.js";
+import { STEP_IDS, findOptionById, isUnverifiedOption } from "./forge-face.js";
 
 export type FaceExclusion = {
   stepId: string;
-  reason: "face-only-intent" | "gap-option";
+  reason: "face-only-intent" | "unverified-option";
   optionIds: string[];
 };
 
 /**
- * Face-only selections (intent) and gap packages stay in the UI draft but must
- * not reach RealCore resolve/validate/manifest (AM-RES-001).
+ * Face-only selections (intent) and unverified requests stay in the UI draft
+ * but must not reach a fully-supported RealCore resolve/validate/manifest.
  * Hostname (text) and encrypt (boolean intention) are kept for core fidelity.
  */
 export function listFaceExclusions(draft: Draft): FaceExclusion[] {
@@ -32,23 +32,22 @@ export function listFaceExclusions(draft: Draft): FaceExclusion[] {
     const value = selection.value;
     if (value.kind === "single") {
       const opt = findOptionById(value.optionId);
-      if (opt && "gap" in opt && opt.gap) {
+      if (isUnverifiedOption(opt)) {
         exclusions.push({
           stepId: selection.stepId,
-          reason: "gap-option",
+          reason: "unverified-option",
           optionIds: [value.optionId],
         });
       }
     } else if (value.kind === "multiple") {
-      const gapIds = value.optionIds.filter((id) => {
-        const opt = findOptionById(id);
-        return Boolean(opt && "gap" in opt && opt.gap);
-      });
-      if (gapIds.length > 0) {
+      const unverifiedIds = value.optionIds.filter((id) =>
+        isUnverifiedOption(findOptionById(id)),
+      );
+      if (unverifiedIds.length > 0) {
         exclusions.push({
           stepId: selection.stepId,
-          reason: "gap-option",
-          optionIds: gapIds,
+          reason: "unverified-option",
+          optionIds: unverifiedIds,
         });
       }
     }
@@ -62,14 +61,13 @@ export function draftForCore(draft: Draft): Draft {
     const value = selection.value;
     if (value.kind === "single") {
       const opt = findOptionById(value.optionId);
-      if (opt && "gap" in opt && opt.gap) return [];
+      if (isUnverifiedOption(opt)) return [];
       return [selection];
     }
     if (value.kind === "multiple") {
-      const optionIds = value.optionIds.filter((id) => {
-        const opt = findOptionById(id);
-        return !(opt && "gap" in opt && opt.gap);
-      });
+      const optionIds = value.optionIds.filter(
+        (id) => !isUnverifiedOption(findOptionById(id)),
+      );
       if (optionIds.length === 0) return [];
       return [
         { ...selection, value: { kind: "multiple" as const, optionIds } },

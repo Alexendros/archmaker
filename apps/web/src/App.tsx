@@ -67,6 +67,7 @@ import {
   allEnvironments,
   allLayers,
   findOptionById,
+  isUnverifiedOption,
   type FacePackage,
 } from "./forge-face.js";
 import { allStepProgress } from "./step-progress.js";
@@ -391,21 +392,18 @@ export function App({ port, portKind }: Props) {
     const d = requireDraft();
     if (!d) return;
     const opt = findOptionById(optionId);
-    if (opt && "gap" in opt && opt.gap) {
-      announce("alert", "Opción aún no disponible en el catálogo.");
-      return;
-    }
     applyDraft(chooseSingle(d, stepId, optionId));
-    showToast(`${opt && "title" in opt ? opt.title : optionId} seleccionada.`);
+    const title = opt && "title" in opt ? opt.title : optionId;
+    if (isUnverifiedOption(opt)) {
+      showToast(`${title} seleccionada (solicitud no verificada).`);
+    } else {
+      showToast(`${title} seleccionada.`);
+    }
   }
 
   function onTogglePackage(pkg: FacePackage): void {
     const d = requireDraft();
     if (!d) return;
-    if (pkg.gap) {
-      announce("alert", "Opción aún no disponible en el catálogo.");
-      return;
-    }
     const { draft: next, added } = toggleApp(d, pkg.optionId);
     applyDraft(next);
     showToast(added ? `Añadido ${pkg.title}` : `Quitado ${pkg.title}`, () => {
@@ -852,16 +850,14 @@ export function App({ port, portKind }: Props) {
                 >
                   {KERNELS.map((k) => {
                     const selected = kernelId === k.optionId;
-                    const unavailable = Boolean(k.gap);
+                    const unverified = isUnverifiedOption(k);
                     return (
                       <button
                         key={k.optionId}
                         type="button"
-                        className={`forge-card${selected ? " is-selected" : ""}${unavailable ? " is-gap" : ""}`}
+                        className={`forge-card${selected ? " is-selected" : ""}${unverified ? " is-gap" : ""}`}
                         role="radio"
                         aria-checked={selected}
-                        aria-disabled={unavailable}
-                        disabled={unavailable}
                         data-option-id={k.optionId}
                         onClick={() =>
                           pickSingle(STEP_IDS.kernel, k.optionId)
@@ -892,17 +888,16 @@ export function App({ port, portKind }: Props) {
                   >
                     {BOOTLOADERS.map((b) => {
                       const selected = bootId === b.optionId;
-                      const unavailable = Boolean(b.gap);
+                      const unverified = isUnverifiedOption(b);
                       return (
                         <label
                           key={b.optionId}
-                          className={`forge-radio-label${unavailable ? " is-gap" : ""}`}
+                          className={`forge-radio-label${unverified ? " is-gap" : ""}`}
                         >
                           <input
                             type="radio"
                             name="boot"
                             checked={selected}
-                            disabled={unavailable}
                             onChange={() =>
                               pickSingle(STEP_IDS.boot, b.optionId)
                             }
@@ -976,16 +971,14 @@ export function App({ port, portKind }: Props) {
               >
                 {envs.map((e) => {
                   const selected = envId === e.optionId;
-                  const unavailable = Boolean(e.gap);
+                  const unverified = isUnverifiedOption(e);
                   return (
                     <button
                       key={e.optionId}
                       type="button"
-                      className={`forge-card${selected ? " is-selected" : ""}${unavailable ? " is-gap" : ""}`}
+                      className={`forge-card${selected ? " is-selected" : ""}${unverified ? " is-gap" : ""}`}
                       role="radio"
                       aria-checked={selected}
-                      aria-disabled={unavailable}
-                      disabled={unavailable}
                       data-option-id={e.optionId}
                       onClick={() =>
                         pickSingle(STEP_IDS.compositor, e.optionId)
@@ -1058,11 +1051,11 @@ export function App({ port, portKind }: Props) {
                       >
                         {layer.packages.map((pkg) => {
                           const selected = selectedApps.has(pkg.optionId);
-                          const unavailable = Boolean(pkg.gap);
+                          const unverified = isUnverifiedOption(pkg);
                           return (
                             <div
                               key={pkg.optionId}
-                              className={`forge-pkg-row${selected ? " is-selected" : ""}${unavailable ? " is-gap" : ""}`}
+                              className={`forge-pkg-row${selected ? " is-selected" : ""}${unverified ? " is-gap" : ""}`}
                             >
                               <input
                                 type="checkbox"
@@ -1070,8 +1063,6 @@ export function App({ port, portKind }: Props) {
                                 checked={selected}
                                 aria-checked={selected}
                                 aria-label={pkg.title}
-                                aria-disabled={unavailable}
-                                disabled={unavailable}
                                 data-option-id={pkg.optionId}
                                 onChange={() => onTogglePackage(pkg)}
                               />
@@ -1200,7 +1191,7 @@ export function App({ port, portKind }: Props) {
                 {draft && listFaceExclusions(draft).length > 0 ? (
                   <p role="status">
                     {listFaceExclusions(draft).length} exclusión(es) de cara
-                    (intención o gap) no entran al perfil sellado.
+                    (intención o no verificada) no entran al perfil sellado.
                   </p>
                 ) : null}
                 {hostname ? <p role="status">Hostname: {hostname}</p> : null}
@@ -1302,7 +1293,7 @@ export function App({ port, portKind }: Props) {
         <PackageDialog
           pkg={pkgModal}
           selected={selectedApps.has(pkgModal.optionId)}
-          unavailable={Boolean(pkgModal.gap)}
+          unavailable={isUnverifiedOption(pkgModal)}
           onToggle={() => {
             onTogglePackage(pkgModal);
             setPkgModal(null);

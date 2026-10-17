@@ -181,7 +181,7 @@
       }
     },
     "option": {
-      "description": "A selectable option with intent and metadata only. No installable facts (packages or versions) are declared here.",
+      "description": "A selectable option with intent and optional verified provider metadata. No cmd/hooks/shell.",
       "type": "object",
       "additionalProperties": false,
       "required": ["id", "title"],
@@ -233,6 +233,76 @@
           "items": {
             "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/capabilityId"
           }
+        },
+        "provider": {
+          "$ref": "#/$defs/catalogProvider"
+        },
+        "browserBase": {
+          "description": "Browser family (e.g. Firefox/Mozilla, Chromium). Not the linux-zen kernel.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "renderingEngine": {
+          "description": "Rendering engine (Gecko, Blink, …) with cited provider sources.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "canonicalId": {
+          "description": "When this option is a historical alias, the canonical option id.",
+          "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/entityId"
+        },
+        "aliases": {
+          "description": "Historical alias option ids of this canonical option.",
+          "type": "array",
+          "maxItems": 16,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/entityId"
+          }
+        }
+      }
+    },
+    "catalogProvider": {
+      "description": "Verified Arch/AUR provider capture or explicit unverified request (no install).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["channel", "packageId", "sourceUrl", "observedAt", "status"],
+      "properties": {
+        "channel": {
+          "enum": ["core", "extra", "aur", "none"]
+        },
+        "packageId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "architecture": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "sourceUrl": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "observedAt": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "status": {
+          "enum": ["verified", "unverified"]
+        },
+        "note": {
+          "type": "string",
+          "maxLength": 1024
         }
       }
     },
