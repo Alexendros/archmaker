@@ -38,12 +38,20 @@ política de cifrado/navegadores **sin** ejecutar escrituras en discos.
 | Walking skeleton | Draft v2 manual → CorePort → buildManifest/export → reimport/migración | Sin sonda Linux fingida |
 | Sondas futuras | Solo lectura; IPC tipado; sin root | Fuera de este PR; documentadas como futuras |
 
+## Entregado en main (parcial; tip post-aceptación)
+
+- Contratos v2 + ADRs 0013–0018 + walking skeleton.
+- UI experiencia única / layout; catálogo Zen/ONLYOFFICE/Kitty/Ghostty (ApexShot no verificado).
+- Hardware: sonda, grafo, compatibilidad, plan UEFI/GPT/UKI, HA01–HA25.
+- Migración `face.intent` → `legacyMetadata`; export público sin snapshot privado.
+- Matriz T01–T44 / HA01–HA25: `docs/10-delivery/closure/forge-acceptance-matrix.md`.
+
 ## Excluido (explícito)
 
 - **A6**: helper privilegiado, polkit, escritura de tabla GPT/MBR, LUKS2 real, filesystem real,
-  formateo, `BootOrder`, Secure Boot write.
+  formateo, `BootOrder`, Secure Boot write. HA26–HA28 = not-applicable.
 - Runner, root, shell, `pacstrap`, ISO, sidecars de instalación.
-- UI completa de modos/layout, catálogo ApexShot completo, aceptación T01–T44, AppImage, publicación.
+- Proveedor ApexShot verificado (CAT01 abierto); AppImage candidato nuevo publicado; tags.
 - Reescritura de `mvp5-scope.md` como si la ejecución en discos estuviera permitida.
 
 ## Inventario baseline (A0)
