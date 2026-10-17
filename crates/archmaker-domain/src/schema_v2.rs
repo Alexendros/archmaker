@@ -518,21 +518,16 @@ mod tests {
         let json = format!("{JS_MAX_SAFE_INTEGER}");
         let parsed: SafeByteCount = serde_json::from_str(&json).unwrap();
         assert_eq!(parsed.get(), JS_MAX_SAFE_INTEGER);
-        assert!(serde_json::from_str::<SafeByteCount>(&format!(
-            "{}",
-            JS_MAX_SAFE_INTEGER + 1
-        ))
-        .is_err());
+        assert!(
+            serde_json::from_str::<SafeByteCount>(&format!("{}", JS_MAX_SAFE_INTEGER + 1)).is_err()
+        );
         assert!(serde_json::from_str::<SafeByteCount>("-1").is_err());
     }
 
     #[test]
     fn browser_policy_cardinality() {
         let ok = BrowserPolicy {
-            selected_browser_ids: vec![
-                "archmaker.app.firefox".into(),
-                "archmaker.app.zen".into(),
-            ],
+            selected_browser_ids: vec!["archmaker.app.firefox".into(), "archmaker.app.zen".into()],
             default_browser_id: "archmaker.app.zen".into(),
         };
         assert!(ok.validate().is_ok());

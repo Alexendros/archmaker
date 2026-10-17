@@ -12,15 +12,17 @@ use serde::{Deserialize, Deserializer, Serialize, Serializer};
 pub mod schema_v2;
 
 pub use schema_v2::{
-    decode_draft_schema_version, manual_reference_storage_plan, BootArtifactStrategy, BootCompatibilityStatus,
-    BrowserPolicy, BrowserPolicyError, CapacityVerificationStatus, DeviceHandle, DraftSchemaMigrationEntry,
-    DraftSchemaMigrationReport, DraftSchemaVersion, EncryptionKind, EncryptionPolicy, ExecutionStatus,
-    FilesystemKind, FirmwareDeclaration, FirmwareKind, FirmwareProvenance, HardwareVerificationStatus,
-    LogicalTargetRef, LuksUnlockMethod, PartitionRole, PartitionTableKind, PartitionTableObservation,
+    decode_draft_schema_version, manual_reference_storage_plan, BootArtifactStrategy,
+    BootCompatibilityStatus, BrowserPolicy, BrowserPolicyError, CapacityVerificationStatus,
+    DeviceHandle, DraftSchemaMigrationEntry, DraftSchemaMigrationReport, DraftSchemaVersion,
+    EncryptionKind, EncryptionPolicy, ExecutionStatus, FilesystemKind, FirmwareDeclaration,
+    FirmwareKind, FirmwareProvenance, HardwareVerificationStatus, LogicalTargetRef,
+    LuksUnlockMethod, PartitionRole, PartitionTableKind, PartitionTableObservation,
     PartitionTableObservationStatus, PlanCertifiabilityStatus, PlanValidationStatus, PlannedAction,
-    PlannedPartition, SafeByteCount, SafeIntegerError, SchemaVersionError, StorageLayer, StorageMode,
-    StoragePlan, VerificationStatuses, DRAFT_DOMAIN_V1, DRAFT_DOMAIN_V2, DRAFT_SCHEMA_V1, DRAFT_SCHEMA_V2,
-    JS_MAX_SAFE_INTEGER, MANIFEST_DOMAIN_LABEL_V1, MANIFEST_DOMAIN_LABEL_V2, ONLYOFFICE_CANONICAL_ID,
+    PlannedPartition, SafeByteCount, SafeIntegerError, SchemaVersionError, StorageLayer,
+    StorageMode, StoragePlan, VerificationStatuses, DRAFT_DOMAIN_V1, DRAFT_DOMAIN_V2,
+    DRAFT_SCHEMA_V1, DRAFT_SCHEMA_V2, JS_MAX_SAFE_INTEGER, MANIFEST_DOMAIN_LABEL_V1,
+    MANIFEST_DOMAIN_LABEL_V2, ONLYOFFICE_CANONICAL_ID,
 };
 
 /// Etiqueta histórica v1 (ADR-0007). Preferir [`MANIFEST_DOMAIN_LABEL_V1`].
@@ -297,7 +299,11 @@ pub struct Draft {
     #[serde(skip_serializing_if = "Option::is_none", default, rename = "updatedAt")]
     pub updated_at: Option<String>,
     /// Plan de disco declarativo (`schemaVersion` `"2"`). Ausente en v1.
-    #[serde(skip_serializing_if = "Option::is_none", default, rename = "storagePlan")]
+    #[serde(
+        skip_serializing_if = "Option::is_none",
+        default,
+        rename = "storagePlan"
+    )]
     pub storage_plan: Option<StoragePlan>,
     #[serde(
         skip_serializing_if = "Option::is_none",
@@ -305,7 +311,11 @@ pub struct Draft {
         rename = "encryptionPolicy"
     )]
     pub encryption_policy: Option<EncryptionPolicy>,
-    #[serde(skip_serializing_if = "Option::is_none", default, rename = "browserPolicy")]
+    #[serde(
+        skip_serializing_if = "Option::is_none",
+        default,
+        rename = "browserPolicy"
+    )]
     pub browser_policy: Option<BrowserPolicy>,
     #[serde(skip_serializing_if = "Option::is_none", default)]
     pub verification: Option<VerificationStatuses>,
@@ -505,7 +515,11 @@ pub struct Manifest {
     pub conflicts: Vec<Conflict>,
     #[serde(rename = "contentDigest")]
     pub content_digest: ContentDigest,
-    #[serde(skip_serializing_if = "Option::is_none", default, rename = "storagePlan")]
+    #[serde(
+        skip_serializing_if = "Option::is_none",
+        default,
+        rename = "storagePlan"
+    )]
     pub storage_plan: Option<StoragePlan>,
     #[serde(
         skip_serializing_if = "Option::is_none",
@@ -513,7 +527,11 @@ pub struct Manifest {
         rename = "encryptionPolicy"
     )]
     pub encryption_policy: Option<EncryptionPolicy>,
-    #[serde(skip_serializing_if = "Option::is_none", default, rename = "browserPolicy")]
+    #[serde(
+        skip_serializing_if = "Option::is_none",
+        default,
+        rename = "browserPolicy"
+    )]
     pub browser_policy: Option<BrowserPolicy>,
     #[serde(skip_serializing_if = "Option::is_none", default)]
     pub verification: Option<VerificationStatuses>,
@@ -523,7 +541,9 @@ pub struct Manifest {
 ///
 /// No inventa hardware, no sustituye apps (Firefox/LibreOffice/Flameshot) ni convierte
 /// `encrypt: true` en política LUKS2: esa intención queda en `inheritedEncryptIntent`.
-pub fn migrate_draft_v1_to_v2(draft: Draft) -> Result<(Draft, DraftSchemaMigrationReport), SchemaVersionError> {
+pub fn migrate_draft_v1_to_v2(
+    draft: Draft,
+) -> Result<(Draft, DraftSchemaMigrationReport), SchemaVersionError> {
     let version = decode_draft_schema_version(&draft.schema_version)?;
     match version {
         DraftSchemaVersion::V2 => {
@@ -547,8 +567,7 @@ pub fn migrate_draft_v1_to_v2(draft: Draft) -> Result<(Draft, DraftSchemaMigrati
             }];
 
             let inherited_encrypt = draft.selections.iter().find_map(|selection| {
-                if selection.step_id.contains("encrypt") || selection.step_id.contains("cipher")
-                {
+                if selection.step_id.contains("encrypt") || selection.step_id.contains("cipher") {
                     match &selection.value {
                         SelectionValue::Boolean { value } => Some(*value),
                         _ => None,
@@ -578,9 +597,7 @@ pub fn migrate_draft_v1_to_v2(draft: Draft) -> Result<(Draft, DraftSchemaMigrati
             entries.push(DraftSchemaMigrationEntry {
                 path: "/browserPolicy".to_string(),
                 message_key: "migration.draftSchema.appsPreserved".to_string(),
-                detail: Some(
-                    "no se reescribe Firefox→Zen ni LibreOffice→ONLYOFFICE".to_string(),
-                ),
+                detail: Some("no se reescribe Firefox→Zen ni LibreOffice→ONLYOFFICE".to_string()),
             });
 
             let mut migrated = draft;
@@ -728,10 +745,12 @@ mod tests {
         assert!(serde_json::from_value::<Manifest>(value.clone()).is_err());
         value["domainLabel"] = serde_json::json!(MANIFEST_DOMAIN_LABEL_V2);
         // Fixture still has schemaVersion "1"; deserialization of label alone is allowed.
-        assert!(serde_json::from_value::<ManifestDomainLabel>(
-            serde_json::json!(MANIFEST_DOMAIN_LABEL_V2)
-        )
-        .is_ok());
+        assert!(
+            serde_json::from_value::<ManifestDomainLabel>(serde_json::json!(
+                MANIFEST_DOMAIN_LABEL_V2
+            ))
+            .is_ok()
+        );
     }
 
     #[test]

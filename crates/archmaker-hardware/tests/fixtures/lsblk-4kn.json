@@ -1,0 +1,18 @@
+{
+  "blockdevices": [
+    {
+      "name": "sda",
+      "path": "/dev/sda",
+      "type": "disk",
+      "size": 8001563222016,
+      "model": "FIXTURE-4KN",
+      "serial": "SN-4KN-001",
+      "wwn": "eui.4kn001",
+      "log-sec": 4096,
+      "phy-sec": 4096,
+      "pttype": "gpt",
+      "mountpoints": [],
+      "children": []
+    }
+  ]
+}

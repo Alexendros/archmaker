@@ -1,0 +1,40 @@
+{
+  "blockdevices": [
+    {
+      "name": "loop0",
+      "path": "/dev/loop0",
+      "type": "loop",
+      "size": 2147483648,
+      "ro": true,
+      "rm": false,
+      "fstype": "squashfs",
+      "mountpoints": ["/run/archiso/bootmnt"],
+      "children": []
+    },
+    {
+      "name": "sdb",
+      "path": "/dev/sdb",
+      "type": "disk",
+      "size": 15524150528,
+      "ro": false,
+      "rm": true,
+      "tran": "usb",
+      "model": "FIXTURE-LIVE-USB",
+      "serial": "SN-LIVE-USB",
+      "log-sec": 512,
+      "phy-sec": 512,
+      "pttype": "dos",
+      "mountpoints": [],
+      "children": [
+        {
+          "name": "sdb1",
+          "path": "/dev/sdb1",
+          "type": "part",
+          "fstype": "iso9660",
+          "mountpoints": ["/"],
+          "children": []
+        }
+      ]
+    }
+  ]
+}

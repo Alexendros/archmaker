@@ -1,0 +1,41 @@
+{
+  "blockdevices": [
+    {
+      "name": "nvme0n1",
+      "path": "/dev/nvme0n1",
+      "type": "disk",
+      "size": 512110190592,
+      "ro": false,
+      "rm": false,
+      "tran": "nvme",
+      "model": "FIXTURE-CLEAN",
+      "serial": "SN-CLEAN-001",
+      "wwn": "eui.clean001",
+      "log-sec": 512,
+      "phy-sec": 512,
+      "pttype": "gpt",
+      "fstype": null,
+      "mountpoints": [],
+      "children": [
+        {
+          "name": "nvme0n1p1",
+          "path": "/dev/nvme0n1p1",
+          "type": "part",
+          "size": 2147483648,
+          "fstype": "vfat",
+          "mountpoints": [],
+          "children": []
+        },
+        {
+          "name": "nvme0n1p2",
+          "path": "/dev/nvme0n1p2",
+          "type": "part",
+          "size": 500000000000,
+          "fstype": "ext4",
+          "mountpoints": [],
+          "children": []
+        }
+      ]
+    }
+  ]
+}

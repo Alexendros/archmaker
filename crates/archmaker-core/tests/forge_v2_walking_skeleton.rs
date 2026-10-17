@@ -2,8 +2,9 @@
 //! reimport vía migración v1→v2. Sin sonda Linux fingida ni escritura en discos.
 
 use archmaker_core::{
-    draft_content_digest, manifest_content_digest, migrate_draft_v1_to_v2_report, BuildManifestInput,
-    CorePort, CreateDraftInput, DestinationHandle, ExportArtifactInput, RealCore, SaveDraftInput,
+    draft_content_digest, manifest_content_digest, migrate_draft_v1_to_v2_report,
+    BuildManifestInput, CorePort, CreateDraftInput, DestinationHandle, ExportArtifactInput,
+    RealCore, SaveDraftInput,
 };
 use archmaker_domain::{
     manual_reference_storage_plan, BrowserPolicy, Draft, EncryptionPolicy, ExecutionStatus,
@@ -93,10 +94,7 @@ fn walking_skeleton_v2_save_build_export_and_migrate() {
     assert_eq!(saved.schema_version, DRAFT_SCHEMA_V2);
     assert!(saved.storage_plan.is_some());
     assert_eq!(
-        saved
-            .verification
-            .as_ref()
-            .map(|v| v.execution_status),
+        saved.verification.as_ref().map(|v| v.execution_status),
         Some(ExecutionStatus::NotExecuted)
     );
 

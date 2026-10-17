@@ -3,6 +3,7 @@
 //! ACL Tauri (AppManifest::commands + capabilities) es la primera capa.
 //! `check_invoke` en Rust es la segunda (matriz ventana × operación).
 
+mod hardware_ipc;
 mod save_export;
 
 use std::sync::Mutex;
@@ -12,6 +13,7 @@ use archmaker_core::{
     CreateDraftInput, ExportArtifactInput, ImportDraftInput, LoadCatalogInput, OpenDraftInput,
     RealCore, ResolveDraftInput, SaveDraftInput, ValidateDraftInput, Window,
 };
+use hardware_ipc::HardwareState;
 use save_export::{save_export_with_picker, NativeSavePicker, SaveExportInput};
 use tauri::Manager;
 
@@ -151,6 +153,9 @@ pub fn run() {
                 .expect("desktop catalog loads")
                 .with_store_dir(data_dir);
             app.manage(CoreState(Mutex::new(core)));
+            app.manage(HardwareState(std::sync::Mutex::new(
+                hardware_ipc::HardwareSession::default(),
+            )));
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
@@ -163,7 +168,13 @@ pub fn run() {
             build_manifest,
             export_artifact,
             import_draft,
-            save_export_bytes
+            save_export_bytes,
+            hardware_ipc::inspect_host_hardware,
+            hardware_ipc::inspect_storage_devices,
+            hardware_ipc::refresh_storage_snapshot,
+            hardware_ipc::propose_storage_plan,
+            hardware_ipc::validate_storage_plan,
+            hardware_ipc::import_storage_snapshot
         ])
         .run(tauri::generate_context!())
         .expect("error while running Forge");

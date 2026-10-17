@@ -167,6 +167,27 @@ def infer_covers(crate: str, test_file: str, test_fn: str) -> List[str]:
         'f2_bytes': ['FR-EXPORT-001'],
         'delivery_corpus': ['FR-EXPORT-001', 'NFR-DET-001'],
         'incompatible_target': ['FR-EXPORT-001'],
+        # Forge v2 walking skeleton / schemaVersion gates (#149).
+        'walking_skeleton': [
+            'FR-DRAFT-001',
+            'FR-VALIDATE-001',
+            'FR-MANIFEST-001',
+            'FR-EXPORT-001',
+            'NFR-MIG-001',
+            'NFR-DET-001',
+        ],
+        'forge_v2': [
+            'FR-DRAFT-001',
+            'FR-VALIDATE-001',
+            'FR-MANIFEST-001',
+            'FR-EXPORT-001',
+            'NFR-MIG-001',
+        ],
+        'schema_version': ['FR-DRAFT-001', 'FR-VALIDATE-001', 'NFR-MIG-001'],
+        # Plan A hardware (HA01–HA25): observación/planificación, A6 fuera.
+        'ha_matrix': ['NFR-SEC-001', 'FR-VALIDATE-001', 'NFR-DET-001'],
+        'archmaker-hardware': ['NFR-SEC-001', 'FR-VALIDATE-001', 'NFR-DET-001'],
+        'hardware': ['NFR-SEC-001', 'FR-VALIDATE-001'],
     }
 
     for keyword, reqs in keyword_map.items():
@@ -307,6 +328,8 @@ def infer_web_covers(test_name: str, path: str) -> List[str]:
         covers.append('FR-IMPORT-001')
     if 'offline' in name or 'offline' in path_lower:
         covers.append('NFR-OFF-001')
+    if 'responsive' in name or 'responsive' in path_lower or 'layout' in name:
+        covers.extend(['NFR-ACC-001', 'NFR-OFF-001'])
     return list(dict.fromkeys(covers))
 
 

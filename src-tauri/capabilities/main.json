@@ -2,7 +2,9 @@
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "main-capability",
   "description": "Ventana main: CorePort + guardado nativo acotado (save_export_bytes). Sin shell ni FS global.",
-  "windows": ["main"],
+  "windows": [
+    "main"
+  ],
   "permissions": [
     "allow-create-draft",
     "allow-load-catalog",
@@ -13,6 +15,12 @@
     "allow-build-manifest",
     "allow-export-artifact",
     "allow-import-draft",
-    "allow-save-export-bytes"
+    "allow-save-export-bytes",
+    "allow-inspect-host-hardware",
+    "allow-inspect-storage-devices",
+    "allow-refresh-storage-snapshot",
+    "allow-propose-storage-plan",
+    "allow-validate-storage-plan",
+    "allow-import-storage-snapshot"
   ]
 }

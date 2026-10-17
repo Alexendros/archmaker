@@ -30,7 +30,15 @@ CORE_CMDS = [
     "import_draft",
 ]
 
-APP_CMDS = CORE_CMDS + ["save_export_bytes"]
+HW_CMDS = [
+    "inspect_host_hardware",
+    "inspect_storage_devices",
+    "refresh_storage_snapshot",
+    "propose_storage_plan",
+    "validate_storage_plan",
+    "import_storage_snapshot",
+]
+APP_CMDS = CORE_CMDS + ["save_export_bytes"] + HW_CMDS
 
 build_rs = (ROOT / "src-tauri/build.rs").read_text()
 check(
@@ -44,10 +52,11 @@ cap = json.loads((ROOT / "src-tauri/capabilities/main.json").read_text())
 check("NEG-001 deny-by-default por ventana", cap.get("windows") == ["main"])
 perms = cap.get("permissions") or []
 check(
-    "NEG-001 main concede 9 CorePort + allow-save-export-bytes",
-    len(perms) == 10
+    "NEG-001 main concede CorePort + save_export + hardware probe",
+    len(perms) == 16
     and all(isinstance(p, str) and p.startswith("allow-") for p in perms)
-    and "allow-save-export-bytes" in perms,
+    and "allow-save-export-bytes" in perms
+    and "allow-inspect-host-hardware" in perms,
     str(perms),
 )
 check(

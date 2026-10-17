@@ -1,0 +1,40 @@
+{
+  "blockdevices": [
+    {
+      "name": "sda",
+      "path": "/dev/sda",
+      "type": "disk",
+      "size": 256060514304,
+      "ro": false,
+      "rm": false,
+      "tran": "sata",
+      "model": "FIXTURE-ROOT",
+      "serial": "SN-ROOT-001",
+      "wwn": "eui.root001",
+      "log-sec": 512,
+      "phy-sec": 512,
+      "pttype": "gpt",
+      "mountpoints": [],
+      "children": [
+        {
+          "name": "sda1",
+          "path": "/dev/sda1",
+          "type": "part",
+          "size": 536870912,
+          "fstype": "vfat",
+          "mountpoints": ["/boot/efi"],
+          "children": []
+        },
+        {
+          "name": "sda2",
+          "path": "/dev/sda2",
+          "type": "part",
+          "size": 255000000000,
+          "fstype": "ext4",
+          "mountpoints": ["/"],
+          "children": []
+        }
+      ]
+    }
+  ]
+}

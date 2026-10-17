@@ -22,7 +22,7 @@ pub use archmaker_domain::{
     DraftSchemaVersion, EncryptionPolicy, Libpack, Manifest, ManifestDomainLabel, ManifestRef,
     PresetRef, Producer, ResolvedSelection, Section, Selection, SelectionOrigin, SelectionValue,
     Severity as DomainSeverity, Step, StoragePlan, TargetRef, VerificationStatuses,
-    MANIFEST_DOMAIN_LABEL, MANIFEST_DOMAIN_LABEL_V2, DRAFT_SCHEMA_V2,
+    DRAFT_SCHEMA_V2, MANIFEST_DOMAIN_LABEL, MANIFEST_DOMAIN_LABEL_V2,
 };
 
 /// Envoltorio tipado para el walking skeleton / CorePort consumers.

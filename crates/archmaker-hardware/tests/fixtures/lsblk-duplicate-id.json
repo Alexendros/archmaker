@@ -1,0 +1,28 @@
+{
+  "blockdevices": [
+    {
+      "name": "sda",
+      "path": "/dev/sda",
+      "type": "disk",
+      "size": 100000000000,
+      "serial": "DUPLICATE",
+      "wwn": "eui.dup",
+      "log-sec": 512,
+      "pttype": "gpt",
+      "mountpoints": [],
+      "children": []
+    },
+    {
+      "name": "sdb",
+      "path": "/dev/sdb",
+      "type": "disk",
+      "size": 200000000000,
+      "serial": "DUPLICATE",
+      "wwn": "eui.dup",
+      "log-sec": 512,
+      "pttype": "gpt",
+      "mountpoints": [],
+      "children": []
+    }
+  ]
+}
