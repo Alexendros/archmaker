@@ -5,7 +5,7 @@ priority: P1
 documentStatus: draft
 approvalStatus: pending
 implementationStatus: partial
-verificationStatus: blocked
+verificationStatus: partial
 releaseStatus: ineligible
 owners:
   - architecture
