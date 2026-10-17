@@ -3,6 +3,7 @@ import {
   ESSENTIAL_CONTROLS,
   FORGE_RAIL_STEPS,
   completeExampleSelection,
+  completeStorageDeclaration,
   generateExportAndAssertFidelity,
 } from "./e2e-fidelity-helpers.js";
 
@@ -12,7 +13,7 @@ test.describe("Forge face — rutas del plan", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto(BASE_URL);
     await expect(
-      page.getByRole("heading", { name: /Para qué usarás/i }),
+      page.getByRole("heading", { name: /Disco y particiones/i }),
     ).toBeVisible();
   });
 
@@ -20,8 +21,8 @@ test.describe("Forge face — rutas del plan", () => {
     page,
   }) => {
     expect(FORGE_RAIL_STEPS).toHaveLength(6);
-    expect(ESSENTIAL_CONTROLS.length).toBeGreaterThanOrEqual(20);
-    const rail = page.getByRole("navigation", { name: /Pasos/i });
+    expect(ESSENTIAL_CONTROLS.length).toBeGreaterThanOrEqual(18);
+    const rail = page.getByRole("navigation", { name: /Pasos del configurador$/i });
     await expect(rail).toBeVisible();
     for (const title of FORGE_RAIL_STEPS) {
       await expect(
@@ -31,15 +32,18 @@ test.describe("Forge face — rutas del plan", () => {
     await expect(page.getByRole("button", { name: "Generar" })).toBeVisible();
     await expect(
       page.getByRole("button", { name: "Sencillo", exact: true }),
-    ).toBeVisible();
+    ).toHaveCount(0);
     await expect(
       page.getByRole("button", { name: "Avanzado", exact: true }),
-    ).toBeVisible();
+    ).toHaveCount(0);
     await expect(page.getByRole("button", { name: "Glosario" })).toBeVisible();
-    await expect(page.getByRole("button", { name: "⌘K" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Ctrl+K" })).toBeVisible();
     await expect(
       page.getByRole("button", { name: /Continuar → Sistema base/i }),
     ).toBeVisible();
+    await expect(page.locator(".forge-title")).toContainText("ArchMaker Forge");
+    await expect(page.locator("[data-app-version]")).toBeVisible();
+    await expect(page.locator("body")).not.toContainText("v4.1");
   });
 
   test("F3 ejercicio: selección → Generar → Exportar → SHA-256 == binaryDigest", async ({
@@ -51,53 +55,40 @@ test.describe("Forge face — rutas del plan", () => {
     expect(digest).toHaveLength(64);
   });
 
-  test("arranque: Intención visible y desarrollo premarcado", async ({
+  test("arranque: Disco y particiones; sin paso Intención", async ({
     page,
   }) => {
     await expect(
-      page.getByRole("radio", { name: /Desarrollo con IA/i }),
-    ).toBeChecked();
-    await expect(
-      page.getByRole("navigation", { name: /Pasos/i }),
+      page.getByRole("heading", { name: /Disco y particiones/i }),
     ).toBeVisible();
     await expect(
-      page.getByRole("button", { name: /Intención/i }),
+      page.getByRole("navigation", { name: /Pasos/i }).first(),
     ).toBeVisible();
+    // Paso de rail retirado (no confundir con el checkbox de declaración).
+    await expect(
+      page.getByRole("navigation", { name: /Pasos del configurador/i }).getByRole("button", {
+        name: /^Intención$/i,
+      }),
+    ).toHaveCount(0);
+    await expect(page.getByText(/no modifica discos/i).first()).toBeVisible();
   });
 
-  test("intención: cambiar tarjeta actualiza selección exclusiva", async ({
-    page,
-  }) => {
-    await page.getByRole("radio", { name: /Uso diario/i }).click();
+  test("storage: modo new-disk y acknowledgements", async ({ page }) => {
+    await completeStorageDeclaration(page);
     await expect(
-      page.getByRole("radio", { name: /Uso diario/i }),
+      page.getByRole("radio", {
+        name: /Disco nuevo o sin datos a conservar/i,
+      }),
     ).toBeChecked();
     await expect(
-      page.getByRole("radio", { name: /Desarrollo con IA/i }),
-    ).not.toBeChecked();
+      page.getByRole("checkbox", { name: /declaración de intención/i }),
+    ).toBeChecked();
   });
 
-  test("sistema base sencillo: resumen con systemd-boot y btrfs", async ({
-    page,
-  }) => {
+  test("sistema base: boot y filesystem exclusivos", async ({ page }) => {
     await page
       .getByRole("button", { name: /Continuar → Sistema base/i })
       .click();
-    await expect(page.getByText(/Modo Sencillo activo/i)).toBeVisible();
-    await expect(
-      page.getByText(/Arranque rápido \(systemd-boot\)/i),
-    ).toBeVisible();
-    await expect(page.getByText(/Protección \(Btrfs\)/i)).toBeVisible();
-    await expect(page.getByRole("radio", { name: /^GRUB$/i })).toHaveCount(0);
-  });
-
-  test("sistema base avanzado: boot y filesystem exclusivos", async ({
-    page,
-  }) => {
-    await page
-      .getByRole("button", { name: /Continuar → Sistema base/i })
-      .click();
-    await page.getByRole("button", { name: "Avanzado", exact: true }).click();
 
     const systemd = page.getByRole("radio", { name: /systemd-boot/i });
     await expect(systemd).toBeChecked();
@@ -122,21 +113,7 @@ test.describe("Forge face — rutas del plan", () => {
     await expect(page.getByRole("radio", { name: /Linux Zen/i })).toBeChecked();
   });
 
-  test("sencillo/avanzado: no borra arranque al cambiar de modo", async ({
-    page,
-  }) => {
-    await page
-      .getByRole("button", { name: /Continuar → Sistema base/i })
-      .click();
-    await page.getByRole("button", { name: "Avanzado", exact: true }).click();
-    await page.getByRole("radio", { name: /^GRUB$/i }).click();
-    await page.getByRole("button", { name: "Sencillo", exact: true }).click();
-    await expect(page.getByText(/Arranque rápido \(GRUB\)/i)).toBeVisible();
-    await page.getByRole("button", { name: "Avanzado", exact: true }).click();
-    await expect(page.getByRole("radio", { name: /^GRUB$/i })).toBeChecked();
-  });
-
-  test("entorno: sencillo oculta Hyprland; avanzado lo muestra; GNOME marcado", async ({
+  test("entorno: catálogo completo con Hyprland; GNOME marcado", async ({
     page,
   }) => {
     await page
@@ -145,17 +122,13 @@ test.describe("Forge face — rutas del plan", () => {
     await page.getByRole("button", { name: /Continuar → Entorno/i }).click();
 
     await expect(page.getByRole("radio", { name: /GNOME/i })).toBeChecked();
-    await expect(page.getByRole("radio", { name: /Hyprland/i })).toHaveCount(0);
-    await expect(page.getByRole("radio", { name: /^i3/i })).toHaveCount(0);
-
-    await page.getByRole("button", { name: "Avanzado", exact: true }).click();
     await expect(page.getByRole("radio", { name: /Hyprland/i })).toBeVisible();
     await page.getByRole("radio", { name: /Hyprland/i }).click();
     await expect(page.getByRole("radio", { name: /Hyprland/i })).toBeChecked();
     await expect(page.getByRole("radio", { name: /GNOME/i })).not.toBeChecked();
   });
 
-  test("apps: capas sencillas, toggle y ficha de paquete", async ({ page }) => {
+  test("apps: capas, toggle y ficha de paquete", async ({ page }) => {
     await page
       .getByRole("button", { name: /Continuar → Sistema base/i })
       .click();
@@ -168,17 +141,11 @@ test.describe("Forge face — rutas del plan", () => {
     await expect(
       page.getByRole("group", { name: "Navegación web" }),
     ).toBeVisible();
-    await expect(page.getByRole("group", { name: "Desarrollo" })).toHaveCount(
-      0,
-    );
-    await expect(page.getByRole("group", { name: "Gaming" })).toHaveCount(0);
+    await expect(page.getByRole("group", { name: "Desarrollo" })).toBeVisible();
+    await expect(page.getByRole("group", { name: "Gaming" })).toBeVisible();
 
     const firefox = page.getByRole("checkbox", { name: /^Firefox$/i });
     await expect(firefox).toBeChecked();
-
-    await page.getByRole("button", { name: "Avanzado", exact: true }).click();
-    await expect(page.getByRole("group", { name: "Desarrollo" })).toBeVisible();
-    await expect(page.getByRole("group", { name: "Gaming" })).toBeVisible();
 
     await firefox.uncheck();
     await expect(firefox).not.toBeChecked();
@@ -229,10 +196,10 @@ test.describe("Forge face — rutas del plan", () => {
     );
   });
 
-  test("cabecera: glosario, tema y paleta ⌘K", async ({ page }) => {
+  test("cabecera: glosario, tema y paleta Ctrl+K", async ({ page }) => {
     await page.getByRole("button", { name: "Glosario" }).click();
     await expect(page.getByRole("heading", { name: "Glosario" })).toBeVisible();
-    await expect(page.getByText(/Modo Sencillo \/ Avanzado/i)).toBeVisible();
+    await expect(page.getByText(/Disco y particiones/i).first()).toBeVisible();
     await page.getByRole("button", { name: "Cerrar glosario" }).click();
 
     await page.getByRole("button", { name: "Oscuro" }).click();
@@ -240,7 +207,7 @@ test.describe("Forge face — rutas del plan", () => {
     await page.getByRole("button", { name: "Claro" }).click();
     await expect(page.locator("html")).not.toHaveClass(/dark/);
 
-    await page.getByRole("button", { name: "⌘K" }).click();
+    await page.getByRole("button", { name: "Ctrl+K" }).click();
     await expect(page.getByRole("dialog")).toBeVisible();
     await page.getByPlaceholder(/Busca/i).fill("Steam");
     await page.getByRole("button", { name: /Steam/i }).click();
@@ -279,7 +246,7 @@ test.describe("Forge face — rutas del plan", () => {
     await expect(firefox).toBeChecked();
   });
 
-  test("entorno sencillo: DEs visibles, WMs ocultos", async ({ page }) => {
+  test("entorno: DEs y WMs visibles", async ({ page }) => {
     await page
       .getByRole("button", { name: /Continuar → Sistema base/i })
       .click();
@@ -292,21 +259,45 @@ test.describe("Forge face — rutas del plan", () => {
       /XFCE/i,
       /COSMIC/i,
       /Budgie/i,
+      /Hyprland/i,
+      /Sway/i,
+      /^i3/i,
     ]) {
       await expect(page.getByRole("radio", { name })).toBeVisible();
     }
-    for (const name of [/Hyprland/i, /Sway/i, /^i3/i]) {
-      await expect(page.getByRole("radio", { name })).toHaveCount(0);
-    }
   });
 
-  test("rail: navegar a revisión y volver a intención", async ({ page }) => {
-    await page.getByRole("button", { name: /Revisión/i }).click();
+  test("rail: navegar a revisión y volver a disco", async ({ page }) => {
+    const rail = page.getByRole("navigation", {
+      name: /Pasos del configurador$/i,
+    });
+    await rail.getByRole("button", { name: /Revisión/i }).click();
     await expect(page.getByRole("heading", { name: "Revisión" })).toBeVisible();
-    await page.getByRole("button", { name: /Intención/i }).click();
+    await rail.getByRole("button", { name: /Disco y particiones/i }).click();
     await expect(
-      page.getByRole("heading", { name: /Para qué usarás/i }),
+      page.getByRole("heading", { name: /Disco y particiones/i }),
     ).toBeVisible();
+  });
+
+  test("inspector: resumen y preview esquemática", async ({ page }) => {
+    await expect(
+      page.getByText("Resumen de configuración").first(),
+    ).toBeVisible();
+    await expect(page.getByText("Actividades")).toHaveCount(0);
+    await expect(page.locator("[data-storage-ui-state]")).toBeVisible();
+  });
+
+  test("progreso: atributo data-step-progress en rail", async ({ page }) => {
+    const current = page.locator(
+      '#step-rail [data-step-progress="current"]',
+    );
+    await expect(current).toHaveCount(1);
+    await page
+      .getByRole("button", { name: /Continuar → Sistema base/i })
+      .click();
+    await expect(
+      page.locator('#step-rail [data-step-progress="current"]'),
+    ).toContainText(/Sistema base/i);
   });
 
   test("sin órdenes de instalación en la cara", async ({ page }) => {

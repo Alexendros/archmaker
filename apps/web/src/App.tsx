@@ -38,9 +38,11 @@ import {
   exportStatusMessage,
 } from "./export-delivery.js";
 import { isPreparedCurrent } from "./export-generation.js";
+import { PRODUCT_WINDOW_TITLE } from "./build-meta.js";
 import { ForgeAside } from "./ForgeAside.js";
 import { ForgeHeader } from "./ForgeHeader.js";
 import { ForgeRail } from "./ForgeRail.js";
+import { ForgeStepper } from "./ForgeStepper.js";
 import { PackageDialog } from "./PackageDialog.js";
 import {
   appIds,
@@ -59,14 +61,21 @@ import {
   GLOSSARY,
   INITIAL_APP_OPTION_IDS,
   INITIAL_SINGLE,
-  INTENTS,
   KERNELS,
+  RAIL_STEPS,
   STEP_IDS,
-  filteredEnvironments,
-  filteredLayers,
+  allEnvironments,
+  allLayers,
   findOptionById,
   type FacePackage,
 } from "./forge-face.js";
+import { allStepProgress } from "./step-progress.js";
+import {
+  INITIAL_STORAGE_INTENT,
+  labelStorageMode,
+  type StorageIntent,
+  type StorageMode,
+} from "./storage-intent.js";
 
 type Props = { port: CorePort; portKind: PortKind };
 
@@ -172,7 +181,9 @@ export function App({ port, portKind }: Props) {
   const [validated, setValidated] = useState(false);
   const [busy, setBusy] = useState(false);
   const [step, setStep] = useState(0);
-  const [simpleMode, setSimpleMode] = useState(true);
+  const [visited, setVisited] = useState<Set<number>>(() => new Set([0]));
+  const [invalid, setInvalid] = useState<Set<number>>(() => new Set());
+  const [storage, setStorage] = useState<StorageIntent>(INITIAL_STORAGE_INTENT);
   const [dark, setDark] = useState(false);
   const [toast, setToast] = useState<ToastState>(null);
   const [pkgModal, setPkgModal] = useState<FacePackage | null>(null);
@@ -208,8 +219,6 @@ export function App({ port, portKind }: Props) {
     singleId(draft, STEP_IDS.filesystem) ?? "archmaker.filesystem.btrfs";
   const envId =
     singleId(draft, STEP_IDS.compositor) ?? "archmaker.compositor.gnome";
-  const intentId =
-    singleId(draft, STEP_IDS.intent) ?? "archmaker.intent.desarrollo";
   const selectedApps = useMemo(() => new Set(appIds(draft)), [draft]);
   const hostname = textValue(draft, STEP_IDS.hostname);
   const encrypt = boolValue(draft, STEP_IDS.encrypt);
@@ -218,8 +227,20 @@ export function App({ port, portKind }: Props) {
   const boot = BOOTLOADERS.find((b) => b.optionId === bootId);
   const filesystem = FILESYSTEMS.find((f) => f.optionId === fsId);
   const env = ENVIRONMENTS.find((e) => e.optionId === envId);
-  const envs = filteredEnvironments(simpleMode);
-  const layers = filteredLayers(simpleMode);
+  const envs = allEnvironments();
+  const layers = allLayers();
+  const stepProgress = useMemo(
+    () =>
+      allStepProgress({
+        current: step,
+        visited,
+        invalid,
+        storage,
+        hasDefaults: Boolean(draft),
+        reviewReady: validated && Boolean(manifest),
+      }),
+    [step, visited, invalid, storage, draft, validated, manifest],
+  );
 
   const selectedPackages = useMemo(() => {
     const pkgs: FacePackage[] = [];
@@ -336,6 +357,10 @@ export function App({ port, portKind }: Props) {
   useEffect(() => {
     document.documentElement.classList.toggle("dark", dark);
   }, [dark]);
+
+  useEffect(() => {
+    document.title = PRODUCT_WINDOW_TITLE;
+  }, []);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -455,10 +480,18 @@ export function App({ port, portKind }: Props) {
   async function onGenerate(): Promise<void> {
     if (busy) return;
     setBusy(true);
-    setStep(5);
+    goToStep(RAIL_STEPS.length - 1);
     try {
       const prepared = await prepareExport();
       if (prepared.ok) {
+        setStorage((prev) =>
+          prev.mode !== null ? { ...prev, uiState: "validated" } : prev,
+        );
+        setInvalid((prev) => {
+          const copy = new Set(prev);
+          copy.delete(RAIL_STEPS.length - 1);
+          return copy;
+        });
         showToast("Validación sin bloqueos. Manifest listo.");
       } else if (prepared.reason === "draft-missing") {
         // requireDraft already announced; keep the user on revisión with status.
@@ -646,8 +679,43 @@ export function App({ port, portKind }: Props) {
     showToast("Copia exportable descargada.");
   }
 
+  function goToStep(index: number): void {
+    const next = Math.min(RAIL_STEPS.length - 1, Math.max(0, index));
+    setVisited((prev) => new Set(prev).add(next));
+    setInvalid((prev) => {
+      if (!prev.has(next)) return prev;
+      const copy = new Set(prev);
+      copy.delete(next);
+      return copy;
+    });
+    setStep(next);
+  }
+
   function nav(delta: number): void {
-    setStep((s) => Math.min(5, Math.max(0, s + delta)));
+    goToStep(step + delta);
+  }
+
+  function patchStorage(patch: Partial<StorageIntent>): void {
+    setStorage((prev) => {
+      const next: StorageIntent = { ...prev, ...patch };
+      if (next.mode !== null && next.intentAcknowledged) {
+        next.uiState =
+          next.uiState === "unspecified" ? "declared" : next.uiState;
+      } else if (next.mode === null) {
+        next.uiState = "unspecified";
+      }
+      return next;
+    });
+    setInvalid((prev) => new Set(prev).add(RAIL_STEPS.length - 1));
+    invalidateDerived();
+  }
+
+  function pickStorageMode(mode: StorageMode): void {
+    patchStorage({
+      mode,
+      lossRiskAcknowledged:
+        mode === "replace-disk" ? storage.lossRiskAcknowledged : false,
+    });
   }
 
   return (
@@ -657,47 +725,104 @@ export function App({ port, portKind }: Props) {
       </a>
       <ForgeHeader
         dark={dark}
-        simpleMode={simpleMode}
         onToggleDark={() => setDark((v) => !v)}
-        onSimpleMode={setSimpleMode}
         onGlossary={() => setGlossaryOpen(true)}
         onCommand={() => setCmdOpen(true)}
         onGenerate={() => void onGenerate()}
       />
       <div className="forge-shell">
-        <ForgeRail step={step} simpleMode={simpleMode} onSelect={setStep} />
+        <ForgeRail step={step} progress={stepProgress} onSelect={goToStep} />
+        <ForgeStepper
+          step={step}
+          progress={stepProgress}
+          onSelect={goToStep}
+        />
         <main id="main" className="forge-main" tabIndex={-1}>
           {!ready ? <p role="status">Preparando draft…</p> : null}
 
           {step === 0 ? (
-            <section aria-labelledby="intent-h">
-              <h1 id="intent-h">¿Para qué usarás tu Arch?</h1>
+            <section aria-labelledby="storage-h">
+              <h1 id="storage-h">Disco y particiones</h1>
               <p className="forge-lead">
-                Modo {simpleMode ? "Sencillo" : "Avanzado"}. La intención no
-                cambia el catálogo en esta entrega.
+                Declara el modo de instalación. No hay detección en esta
+                entrega web; el perfil no modifica discos.
               </p>
+              <div
+                className="forge-callout forge-callout-info"
+                role="status"
+              >
+                Esta fase prepara un perfil y no modifica discos.
+              </div>
               <div
                 className="forge-grid-2"
                 role="radiogroup"
-                aria-label="Intención"
+                aria-label="Modo de disco"
               >
-                {INTENTS.map((it) => {
-                  const selected = intentId === it.optionId;
+                {(
+                  [
+                    {
+                      mode: "new-disk" as const,
+                      title: "Disco nuevo o sin datos a conservar",
+                      description:
+                        "Declaración del usuario. No se deduce de un sondeo.",
+                    },
+                    {
+                      mode: "replace-disk" as const,
+                      title: "Reemplazo completo",
+                      description:
+                        "Se perderán los datos del destino. Requiere confirmación.",
+                    },
+                  ] as const
+                ).map((opt) => {
+                  const selected = storage.mode === opt.mode;
                   return (
                     <button
-                      key={it.optionId}
+                      key={opt.mode}
                       type="button"
                       className={`forge-card${selected ? " is-selected" : ""}`}
                       role="radio"
                       aria-checked={selected}
-                      data-option-id={it.optionId}
-                      onClick={() => pickSingle(STEP_IDS.intent, it.optionId)}
+                      data-storage-mode={opt.mode}
+                      onClick={() => pickStorageMode(opt.mode)}
                     >
-                      <span className="forge-card-title">{it.title}</span>
-                      <span className="forge-card-desc">{it.description}</span>
+                      <span className="forge-card-title">{opt.title}</span>
+                      <span className="forge-card-desc">
+                        {opt.description}
+                      </span>
                     </button>
                   );
                 })}
+              </div>
+              <div className="forge-stack forge-narrow">
+                <label className="forge-check">
+                  <input
+                    type="checkbox"
+                    checked={storage.intentAcknowledged}
+                    onChange={(e) =>
+                      patchStorage({ intentAcknowledged: e.target.checked })
+                    }
+                  />
+                  Confirmo que esta es una declaración de intención para el
+                  perfil (no una escritura en disco).
+                </label>
+                {storage.mode === "replace-disk" ? (
+                  <label className="forge-check">
+                    <input
+                      type="checkbox"
+                      checked={storage.lossRiskAcknowledged}
+                      onChange={(e) =>
+                        patchStorage({
+                          lossRiskAcknowledged: e.target.checked,
+                        })
+                      }
+                    />
+                    Entiendo el riesgo de pérdida total en un reemplazo.
+                  </label>
+                ) : null}
+                <p className="forge-muted" role="status">
+                  Modo: {labelStorageMode(storage.mode)}. Estado:{" "}
+                  {storage.uiState}. No hay botón Formatear en esta entrega.
+                </p>
               </div>
               <div className="forge-nav-row forge-nav-end">
                 <button
@@ -715,135 +840,107 @@ export function App({ port, portKind }: Props) {
             <section aria-labelledby="base-h">
               <h2 id="base-h">Sistema base</h2>
               <p className="forge-lead">
-                {simpleMode
-                  ? "Resumen. Pasa a Avanzado para elegir kernel, arranque y sistema de archivos."
-                  : "Elige kernel, arranque y sistema de archivos."}
+                Elige kernel, arranque y sistema de archivos. UKI no es un
+                gestor de arranque aparte.
               </p>
-              {simpleMode ? (
-                <div className="forge-stack">
-                  <div className="forge-info-card is-accent">
-                    <strong>Kernel {kernel?.title}</strong>
-                    <p>{kernel?.description}</p>
-                  </div>
-                  <div className="forge-info-card">
-                    <strong>
-                      Arranque rápido ({boot?.title ?? "systemd-boot"})
-                    </strong>
-                    <p>
-                      Entradas clave-valor en UEFI. En Avanzado puedes elegir
-                      GRUB o Limine.
-                    </p>
-                  </div>
-                  <div className="forge-info-card">
-                    <strong>Protección ({filesystem?.title ?? "Btrfs"})</strong>
-                    <p>
-                      Snapshots y recuperación ante actualizaciones fallidas.
-                    </p>
-                  </div>
-                  <div className="forge-callout forge-callout-info">
-                    Modo Sencillo activo: kernel estable, systemd-boot y Btrfs.
-                  </div>
+              <div className="forge-stack">
+                <h3 className="forge-section-label">Kernel</h3>
+                <div
+                  role="radiogroup"
+                  aria-label="Kernel"
+                  className="forge-stack"
+                >
+                  {KERNELS.map((k) => {
+                    const selected = kernelId === k.optionId;
+                    const unavailable = Boolean(k.gap);
+                    return (
+                      <button
+                        key={k.optionId}
+                        type="button"
+                        className={`forge-card${selected ? " is-selected" : ""}${unavailable ? " is-gap" : ""}`}
+                        role="radio"
+                        aria-checked={selected}
+                        aria-disabled={unavailable}
+                        disabled={unavailable}
+                        data-option-id={k.optionId}
+                        onClick={() =>
+                          pickSingle(STEP_IDS.kernel, k.optionId)
+                        }
+                      >
+                        <span className="forge-card-row">
+                          <span className="forge-card-title">
+                            {k.title}{" "}
+                            <span className="forge-chip">{k.version}</span>
+                          </span>
+                          {k.tag ? (
+                            <span className="forge-tag">{k.tag}</span>
+                          ) : null}
+                        </span>
+                        <span className="forge-card-desc">
+                          {k.description}
+                        </span>
+                      </button>
+                    );
+                  })}
                 </div>
-              ) : (
-                <div className="forge-stack">
-                  <h3 className="forge-section-label">Kernel</h3>
+                <fieldset className="forge-fieldset">
+                  <legend>Bootloader</legend>
                   <div
                     role="radiogroup"
-                    aria-label="Kernel"
-                    className="forge-stack"
+                    aria-label="Bootloader"
+                    className="forge-radio-row"
                   >
-                    {KERNELS.map((k) => {
-                      const selected = kernelId === k.optionId;
-                      const unavailable = Boolean(k.gap);
+                    {BOOTLOADERS.map((b) => {
+                      const selected = bootId === b.optionId;
+                      const unavailable = Boolean(b.gap);
                       return (
-                        <button
-                          key={k.optionId}
-                          type="button"
-                          className={`forge-card${selected ? " is-selected" : ""}${unavailable ? " is-gap" : ""}`}
-                          role="radio"
-                          aria-checked={selected}
-                          aria-disabled={unavailable}
-                          disabled={unavailable}
-                          data-option-id={k.optionId}
-                          onClick={() =>
-                            pickSingle(STEP_IDS.kernel, k.optionId)
-                          }
+                        <label
+                          key={b.optionId}
+                          className={`forge-radio-label${unavailable ? " is-gap" : ""}`}
                         >
-                          <span className="forge-card-row">
-                            <span className="forge-card-title">
-                              {k.title}{" "}
-                              <span className="forge-chip">{k.version}</span>
-                            </span>
-                            {k.tag ? (
-                              <span className="forge-tag">{k.tag}</span>
-                            ) : null}
-                          </span>
-                          <span className="forge-card-desc">
-                            {k.description}
-                          </span>
-                        </button>
+                          <input
+                            type="radio"
+                            name="boot"
+                            checked={selected}
+                            disabled={unavailable}
+                            onChange={() =>
+                              pickSingle(STEP_IDS.boot, b.optionId)
+                            }
+                            data-option-id={b.optionId}
+                          />
+                          {b.title}
+                        </label>
                       );
                     })}
                   </div>
-                  <fieldset className="forge-fieldset">
-                    <legend>Bootloader</legend>
-                    <div
-                      role="radiogroup"
-                      aria-label="Bootloader"
-                      className="forge-radio-row"
-                    >
-                      {BOOTLOADERS.map((b) => {
-                        const selected = bootId === b.optionId;
-                        const unavailable = Boolean(b.gap);
-                        return (
-                          <label
-                            key={b.optionId}
-                            className={`forge-radio-label${unavailable ? " is-gap" : ""}`}
-                          >
-                            <input
-                              type="radio"
-                              name="boot"
-                              checked={selected}
-                              disabled={unavailable}
-                              onChange={() =>
-                                pickSingle(STEP_IDS.boot, b.optionId)
-                              }
-                              data-option-id={b.optionId}
-                            />
-                            {b.title}
-                          </label>
-                        );
-                      })}
-                    </div>
-                  </fieldset>
-                  <fieldset className="forge-fieldset">
-                    <legend>Filesystem</legend>
-                    <div
-                      role="radiogroup"
-                      aria-label="Filesystem"
-                      className="forge-radio-row"
-                    >
-                      {FILESYSTEMS.map((f) => {
-                        const selected = fsId === f.optionId;
-                        return (
-                          <label key={f.optionId} className="forge-radio-label">
-                            <input
-                              type="radio"
-                              name="fs"
-                              checked={selected}
-                              onChange={() =>
-                                pickSingle(STEP_IDS.filesystem, f.optionId)
-                              }
-                              data-option-id={f.optionId}
-                            />
-                            {f.title}
-                          </label>
-                        );
-                      })}
-                    </div>
-                  </fieldset>
-                </div>
-              )}
+                </fieldset>
+                <fieldset className="forge-fieldset">
+                  <legend>Filesystem</legend>
+                  <div
+                    role="radiogroup"
+                    aria-label="Filesystem"
+                    className="forge-radio-row"
+                  >
+                    {FILESYSTEMS.map((f) => {
+                      const selected = fsId === f.optionId;
+                      return (
+                        <label key={f.optionId} className="forge-radio-label">
+                          <input
+                            type="radio"
+                            name="fs"
+                            checked={selected}
+                            onChange={() =>
+                              pickSingle(STEP_IDS.filesystem, f.optionId)
+                            }
+                            data-option-id={f.optionId}
+                          />
+                          {f.title}
+                        </label>
+                      );
+                    })}
+                  </div>
+                </fieldset>
+              </div>
               <div className="forge-nav-row">
                 <button
                   type="button"
@@ -866,15 +963,11 @@ export function App({ port, portKind }: Props) {
           {step === 2 ? (
             <section aria-labelledby="env-h">
               <div className="forge-heading-row">
-                <h2 id="env-h">
-                  Entorno gráfico {simpleMode ? "(solo escritorios)" : ""}
-                </h2>
+                <h2 id="env-h">Entorno gráfico</h2>
                 <span className="forge-chip">{envs.length} opciones</span>
               </div>
               <p className="forge-lead">
-                {simpleMode
-                  ? "Sencillo oculta gestores de ventanas técnicos."
-                  : "Avanzado muestra escritorios y gestores."}
+                Escritorios y gestores de ventanas del catálogo.
               </p>
               <div
                 className="forge-grid-2"
@@ -939,7 +1032,6 @@ export function App({ port, portKind }: Props) {
             <section aria-labelledby="apps-h">
               <h2 id="apps-h">Apps y paquetes</h2>
               <p className="forge-lead">
-                Modo {simpleMode ? "Sencillo" : "Avanzado"} ·{" "}
                 {selectedApps.size} seleccionadas · {totalSize} MB
               </p>
               <div className="forge-stack" id="options">
@@ -1093,9 +1185,10 @@ export function App({ port, portKind }: Props) {
               <div className="forge-callout forge-callout-info">
                 <strong>Listo para forjar</strong>
                 <p>
-                  Kernel {kernel?.title ?? "—"} · Arranque {boot?.title ?? "—"}{" "}
-                  · {filesystem?.title ?? "—"} · {selectedApps.size} apps ·{" "}
-                  {env?.title ?? "—"} {env?.version ?? ""}
+                  Disco {labelStorageMode(storage.mode)} · Kernel{" "}
+                  {kernel?.title ?? "—"} · Arranque {boot?.title ?? "—"} ·{" "}
+                  {filesystem?.title ?? "—"} · {selectedApps.size} apps ·{" "}
+                  {env?.title ?? "—"}
                 </p>
                 {!validated ? (
                   <p role="status">Pendiente de validar.</p>
@@ -1184,7 +1277,8 @@ export function App({ port, portKind }: Props) {
           bootTitle={boot?.title ?? "systemd-boot"}
           filesystemTitle={filesystem?.title ?? "Btrfs"}
           env={env}
-          simpleMode={simpleMode}
+          storage={storage}
+          hasManifest={Boolean(manifest)}
           apps={selectedPackages}
           appCount={selectedApps.size}
           totalSize={totalSize}

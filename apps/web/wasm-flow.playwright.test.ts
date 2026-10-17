@@ -21,7 +21,7 @@ test.describe("WASM CorePort — recorrido real", () => {
       page.getByRole("heading", { name: /Motor no disponible/i }),
     ).toHaveCount(0);
     await expect(
-      page.getByRole("heading", { name: /Para qué usarás/i }),
+      page.getByRole("heading", { name: /Disco y particiones/i }),
     ).toBeVisible({ timeout: 60_000 });
     await expect(page.locator("#toast-region")).toContainText(/Draft listo/i, {
       timeout: 60_000,
@@ -34,7 +34,7 @@ test.describe("WASM CorePort — recorrido real", () => {
   }) => {
     test.setTimeout(120_000);
     await expect(
-      page.getByRole("heading", { name: /Para qué usarás/i }),
+      page.getByRole("heading", { name: /Disco y particiones/i }),
     ).toBeVisible({ timeout: 60_000 });
     await expect(page.locator("#toast-region")).toContainText(/Draft listo/i, {
       timeout: 60_000,
@@ -46,11 +46,16 @@ test.describe("WASM CorePort — recorrido real", () => {
       { timeout: 60_000 },
     );
     // Edit via rail (invalidates prepare).
-    await page.getByRole("button", { name: /Intención/i }).click();
+    await page
+      .getByRole("navigation", { name: /Pasos del configurador$/i })
+      .getByRole("button", { name: /Disco y particiones/i })
+      .click();
     await expect(
-      page.getByRole("heading", { name: /Para qué usarás/i }),
+      page.getByRole("heading", { name: /Disco y particiones/i }),
     ).toBeVisible();
-    await page.getByRole("radio", { name: /Uso diario/i }).click();
+    await page
+      .getByRole("radio", { name: /Disco nuevo o sin datos a conservar/i })
+      .click();
     await page.getByRole("button", { name: "Generar" }).click();
     await expect(page.getByRole("heading", { name: "Revisión" })).toBeVisible();
     await expect(page.locator("#toast-region")).toContainText(
@@ -76,7 +81,7 @@ test.describe("WASM CorePort — recorrido real", () => {
   }) => {
     test.setTimeout(180_000);
     await expect(
-      page.getByRole("heading", { name: /Para qué usarás/i }),
+      page.getByRole("heading", { name: /Disco y particiones/i }),
     ).toBeVisible({ timeout: 60_000 });
     await expect(page.locator("#toast-region")).toContainText(/Draft listo/i, {
       timeout: 60_000,

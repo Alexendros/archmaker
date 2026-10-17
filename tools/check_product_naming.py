@@ -232,16 +232,16 @@ def t_name_02() -> None:
     conf = (ROOT / "src-tauri/tauri.conf.json").read_text(encoding="utf-8")
     html = (ROOT / "apps/web/index.html").read_text(encoding="utf-8")
     header = (ROOT / "apps/web/src/ForgeHeader.tsx").read_text(encoding="utf-8")
+    build_meta = (ROOT / "apps/web/src/build-meta.ts").read_text(encoding="utf-8")
     save = (ROOT / "src-tauri/src/save_export.rs").read_text(encoding="utf-8")
     lib = (ROOT / "src-tauri/src/lib.rs").read_text(encoding="utf-8")
     face = ROOT / "apps/web/src/forge-face.ts"
     ok = (
         '"productName": "Forge"' in conf
-        and '"title": "Forge"' in conf
-        and "Forge" in html
-        and "ArchMaker" in html
-        and "Forge" in header
-        and "ArchMaker" in header
+        and '"title": "ArchMaker Forge"' in conf
+        and "ArchMaker Forge" in html
+        and "PRODUCT_WINDOW_TITLE" in header
+        and 'PRODUCT_WINDOW_TITLE = "ArchMaker Forge"' in build_meta
         and "Guardar perfil Forge" in save
         and "running Forge" in lib
         and face.is_file()
