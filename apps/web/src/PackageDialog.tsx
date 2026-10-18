@@ -33,7 +33,7 @@ export function PackageDialog({
           <div>
             <h2 id="package-title">{pkg.title}</h2>
             <p className="forge-muted">
-              {pkg.size} MB · {pkg.tag}
+              ≈{pkg.size} MB (estimación de cara) · {pkg.tag}
             </p>
           </div>
           <button type="button" className="forge-btn-icon" onClick={onClose}>

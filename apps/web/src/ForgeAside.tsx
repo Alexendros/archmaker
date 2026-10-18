@@ -1,3 +1,4 @@
+import type { Diagnostic, ResolvedSelection } from "./coreport.js";
 import type { FaceOption, FacePackage } from "./forge-face.js";
 import {
   labelStorageMode,
@@ -14,8 +15,13 @@ type Props = {
   hasManifest: boolean;
   apps: FacePackage[];
   appCount: number;
-  totalSize: number;
+  /** Suma de estimaciones de cara; no presentar como requisito total certificado. */
+  totalSizeEstimate: number;
+  /** Diagnósticos locales (kernel) antes de generar. */
   diagnostics: { title: string; description: string; kind: "info" | "warn" }[];
+  /** Resultado efectivo del motor tras generate (H05). */
+  effectiveSelections?: ResolvedSelection[];
+  engineDiagnostics?: Diagnostic[];
   onPickEnv?: (optionId: string) => void;
 };
 
@@ -28,11 +34,14 @@ export function ForgeAside({
   hasManifest,
   apps,
   appCount,
-  totalSize,
+  totalSizeEstimate,
   diagnostics,
+  effectiveSelections,
+  engineDiagnostics,
   onPickEnv,
 }: Props) {
   const previewLabel = env?.title ?? "Sin entorno";
+  const showManifest = hasManifest && Boolean(effectiveSelections);
   return (
     <aside className="forge-aside" aria-label="Inspector" id="inspector">
       <div className="forge-panel">
@@ -90,40 +99,73 @@ export function ForgeAside({
       <div className="forge-panel">
         <div className="forge-panel-head">
           <span>
-            {hasManifest ? "Manifiesto" : "Resumen de configuración"}
+            {showManifest ? "Manifiesto" : "Resumen de configuración"}
           </span>
           <span className="forge-chip">
-            {appCount} apps · {totalSize} MB
+            {showManifest
+              ? `${effectiveSelections?.length ?? 0} efectivas`
+              : `${appCount} apps solicitadas · ≈${totalSizeEstimate} MB (estimación)`}
           </span>
         </div>
         <div className="forge-manifest-body">
-          {diagnostics.map((d) => (
-            <div
-              key={d.title}
-              className={`forge-diag forge-diag-${d.kind}`}
-              role="status"
-            >
-              <strong>{d.title}</strong>
-              <p>{d.description}</p>
-              {d.kind === "warn" && onPickEnv ? (
-                <button
-                  type="button"
-                  className="forge-btn-dark"
-                  onClick={() => onPickEnv("archmaker.compositor.hyprland")}
+          {showManifest && engineDiagnostics && engineDiagnostics.length > 0
+            ? engineDiagnostics.map((d) => (
+                <div
+                  key={`${d.code}-${d.path}`}
+                  className={`forge-diag forge-diag-${d.severity ? "warn" : "info"}`}
+                  role="status"
                 >
-                  Usar Hyprland
-                </button>
-              ) : null}
-            </div>
-          ))}
-          <ul className="forge-app-list">
-            {apps.map((p) => (
-              <li key={p.optionId}>
-                <span>{p.title}</span>
-                <span className="forge-muted">{p.size} MB</span>
-              </li>
-            ))}
-          </ul>
+                  <strong>
+                    {d.code}
+                    {d.blocking ? " (bloqueo)" : ""}
+                  </strong>
+                  <p>
+                    {d.messageKey}
+                    {d.path ? ` · ${d.path}` : ""}
+                  </p>
+                </div>
+              ))
+            : diagnostics.map((d) => (
+                <div
+                  key={d.title}
+                  className={`forge-diag forge-diag-${d.kind}`}
+                  role="status"
+                >
+                  <strong>{d.title}</strong>
+                  <p>{d.description}</p>
+                  {d.kind === "warn" && onPickEnv ? (
+                    <button
+                      type="button"
+                      className="forge-btn-dark"
+                      onClick={() => onPickEnv("archmaker.compositor.hyprland")}
+                    >
+                      Usar Hyprland
+                    </button>
+                  ) : null}
+                </div>
+              ))}
+          {showManifest && effectiveSelections ? (
+            <ul className="forge-app-list">
+              {effectiveSelections.map((sel) => (
+                <li key={`${sel.stepId}:${sel.optionId}`}>
+                  <span>
+                    {sel.optionId}
+                    {sel.origin === "derived" ? " (derivada)" : ""}
+                  </span>
+                  <span className="forge-muted">{sel.stepId}</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <ul className="forge-app-list">
+              {apps.map((p) => (
+                <li key={p.optionId}>
+                  <span>{p.title}</span>
+                  <span className="forge-muted">≈{p.size} MB (estimación)</span>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
     </aside>

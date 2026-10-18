@@ -82,6 +82,11 @@ import {
   uiStateForIntent,
   withFaceV2Fields,
 } from "./storage-plan-face.js";
+import {
+  catalogOptionTitle,
+  parseCatalogView,
+  type CatalogView,
+} from "./catalog-view.js";
 
 type Props = { port: CorePort; portKind: PortKind };
 
@@ -182,6 +187,7 @@ function withInitialSelections(draft: Draft): Draft {
 export function App({ port, portKind }: Props) {
   const [draft, setDraft] = useState<Draft | null>(null);
   const [catalogRef, setCatalogRef] = useState<CatalogRef>(DESKTOP_CATALOG_REF);
+  const [catalogView, setCatalogView] = useState<CatalogView | null>(null);
   const [manifest, setManifest] = useState<Manifest | null>(null);
   const [diagnostics, setDiagnostics] = useState<Diagnostic[]>([]);
   const [validated, setValidated] = useState(false);
@@ -231,10 +237,28 @@ export function App({ port, portKind }: Props) {
   const hostname = textValue(draft, STEP_IDS.hostname);
   const encrypt = boolValue(draft, STEP_IDS.encrypt);
 
-  const kernel = KERNELS.find((k) => k.optionId === kernelId);
-  const boot = BOOTLOADERS.find((b) => b.optionId === bootId);
-  const filesystem = FILESYSTEMS.find((f) => f.optionId === fsId);
+  const kernelFace = KERNELS.find((k) => k.optionId === kernelId);
+  const bootFace = BOOTLOADERS.find((b) => b.optionId === bootId);
+  const filesystemFace = FILESYSTEMS.find((f) => f.optionId === fsId);
   const env = ENVIRONMENTS.find((e) => e.optionId === envId);
+  const kernel = kernelFace
+    ? {
+        ...kernelFace,
+        title: catalogOptionTitle(catalogView, kernelId) ?? kernelFace.title,
+      }
+    : undefined;
+  const boot = bootFace
+    ? {
+        ...bootFace,
+        title: catalogOptionTitle(catalogView, bootId) ?? bootFace.title,
+      }
+    : undefined;
+  const filesystem = filesystemFace
+    ? {
+        ...filesystemFace,
+        title: catalogOptionTitle(catalogView, fsId) ?? filesystemFace.title,
+      }
+    : undefined;
   const envs = allEnvironments();
   const layers = allLayers();
   const stepProgress = useMemo(
@@ -316,6 +340,8 @@ export function App({ port, portKind }: Props) {
         fail(loaded.error, "Cargar catálogo");
         return;
       }
+      const viewed = parseCatalogView(loaded.value);
+      if (viewed) setCatalogView(viewed);
       const ref = DESKTOP_CATALOG_REF;
       setCatalogRef(ref);
 
@@ -884,7 +910,8 @@ export function App({ port, portKind }: Props) {
                       >
                         <span className="forge-card-row">
                           <span className="forge-card-title">
-                            {k.title}{" "}
+                            {catalogOptionTitle(catalogView, k.optionId) ??
+                              k.title}{" "}
                             <span className="forge-chip">{k.version}</span>
                           </span>
                           {k.tag ? (
@@ -920,7 +947,8 @@ export function App({ port, portKind }: Props) {
                             }
                             data-option-id={b.optionId}
                           />
-                          {b.title}
+                          {catalogOptionTitle(catalogView, b.optionId) ??
+                            b.title}
                         </label>
                       );
                     })}
@@ -946,7 +974,8 @@ export function App({ port, portKind }: Props) {
                             }
                             data-option-id={f.optionId}
                           />
-                          {f.title}
+                          {catalogOptionTitle(catalogView, f.optionId) ??
+                            f.title}
                         </label>
                       );
                     })}
@@ -1042,7 +1071,8 @@ export function App({ port, portKind }: Props) {
             <section aria-labelledby="apps-h">
               <h2 id="apps-h">Apps y paquetes</h2>
               <p className="forge-lead">
-                {selectedApps.size} seleccionadas · {totalSize} MB
+                {selectedApps.size} seleccionadas · ≈{totalSize} MB (estimación
+                de cara)
               </p>
               <div className="forge-stack" id="options">
                 {layers.map((layer) => {
@@ -1298,8 +1328,10 @@ export function App({ port, portKind }: Props) {
           hasManifest={Boolean(manifest)}
           apps={selectedPackages}
           appCount={selectedApps.size}
-          totalSize={totalSize}
+          totalSizeEstimate={totalSize}
           diagnostics={sideDiagnostics}
+          effectiveSelections={manifest?.effectiveSelections}
+          engineDiagnostics={diagnostics}
           onPickEnv={(optionId) => pickSingle(STEP_IDS.compositor, optionId)}
         />
       </div>
