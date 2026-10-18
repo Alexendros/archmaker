@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "generated_at": "1792252810",
-    "git_sha": "d02487e6e3971bc0d7f57b87326b0e7eae3e7e16",
+    "generated_at": "1792325574",
+    "git_sha": "8d47016706e014d171d2bcd0d65fdd9ff53ca17a",
     "requirements_file": "docs/01-product/requirements.md",
     "inventory_file": "docs/10-delivery/tests-inventory.json",
     "validators_file": "docs/10-delivery/validators.json"
@@ -79,19 +79,11 @@
         "TST-WEB-WASM-FLOW.PLAYWRIGHT",
         "TST-WEB-MOCK-FLOW.PLAYWRIGHT"
       ],
-      "validators": [
-        "VAL-SCHEMA-REFS",
-        "VAL-NEG-CAPABILITIES"
-      ],
+      "validators": ["VAL-SCHEMA-REFS", "VAL-NEG-CAPABILITIES"],
       "evidence_count": 47,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": [
-        "negative",
-        "integration",
-        "schema",
-        "unit"
-      ],
+      "evidence_types": ["schema", "negative", "unit", "integration"],
       "coverage_status": "covered"
     },
     {
@@ -163,6 +155,9 @@
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_UNKNOWN_WINDOW_YIELDS_TYPED_PROTO_ERROR",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-DIALOG_AND_PICKER_CAPABILITY_FILES_ABSENT_SCOPED_SAVE_ONLY",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_ALLOWLIST_COVERS_COREPORT_PLUS_SCOPED_SAVE",
+        "TST-ARCHMAKER-CORE-F1_STORAGE_FIDELITY-STORAGE_MODE_ROUND_TRIP_AND_DIGEST_CHANGES",
+        "TST-ARCHMAKER-CORE-F1_STORAGE_FIDELITY-INCOMPLETE_REPLACE_WITHOUT_LOSS_ACK_IS_NOT_CERTIFIABLE_AND_SAVEABLE",
+        "TST-ARCHMAKER-CORE-F1_STORAGE_FIDELITY-MODE_WITHOUT_INTENT_ACK_NEVER_CERTIFIABLE",
         "TST-ARCHMAKER-HARDWARE-T_MATRIX-T31_IMPORTED_REPORT_NOT_OBSERVED_BOUND",
         "TST-ARCHMAKER-HARDWARE-T_MATRIX-T32_SESSION_HANDLE_NOT_PORTABLE_LOGICAL_REF",
         "TST-ARCHMAKER-HARDWARE-T_MATRIX-T33_MBR_OBSERVED_GPT_PROPOSAL_WITHOUT_WRITE",
@@ -177,19 +172,11 @@
         "TST-WEB-DRAFT-PERSISTENCE.PLAYWRIGHT",
         "TST-WEB-PRODUCT-ACCEPTANCE.PLAYWRIGHT"
       ],
-      "validators": [
-        "VAL-SCHEMA-REFS",
-        "VAL-NEG-CAPABILITIES"
-      ],
-      "evidence_count": 75,
+      "validators": ["VAL-SCHEMA-REFS", "VAL-NEG-CAPABILITIES"],
+      "evidence_count": 78,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": [
-        "negative",
-        "integration",
-        "schema",
-        "unit"
-      ],
+      "evidence_types": ["schema", "negative", "unit", "integration"],
       "coverage_status": "covered"
     },
     {
@@ -248,11 +235,7 @@
       "evidence_count": 26,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": [
-        "contract",
-        "integration",
-        "unit"
-      ],
+      "evidence_types": ["contract", "unit", "integration"],
       "coverage_status": "covered"
     },
     {
@@ -268,17 +251,11 @@
         "TST-ARCHMAKER-CORE-CORE_CONTRACT-IMPORT_DRAFT_MIGRATES_V51_SAMPLE",
         "TST-WEB-CONSENTED-IMPORT.PLAYWRIGHT"
       ],
-      "validators": [
-        "VAL-MIG"
-      ],
+      "validators": ["VAL-MIG"],
       "evidence_count": 4,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": [
-        "integration",
-        "schema",
-        "unit"
-      ],
+      "evidence_types": ["schema", "unit", "integration"],
       "coverage_status": "covered"
     },
     {
@@ -360,12 +337,12 @@
       "has_executable_evidence": true,
       "passes_ci": true,
       "evidence_types": [
-        "negative",
-        "unit",
         "contract",
+        "unit",
+        "schema",
         "canonicalize",
-        "integration",
-        "schema"
+        "negative",
+        "integration"
       ],
       "coverage_status": "covered"
     },
@@ -409,11 +386,7 @@
       "evidence_count": 10,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": [
-        "negative",
-        "integration",
-        "unit"
-      ],
+      "evidence_types": ["negative", "unit", "integration"],
       "coverage_status": "covered"
     },
     {
@@ -506,11 +479,7 @@
       "evidence_count": 60,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": [
-        "contract",
-        "integration",
-        "unit"
-      ],
+      "evidence_types": ["contract", "unit", "integration"],
       "coverage_status": "covered"
     },
     {
@@ -530,11 +499,7 @@
       "evidence_count": 3,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": [
-        "unit",
-        "visual",
-        "a11y"
-      ],
+      "evidence_types": ["a11y", "unit", "visual"],
       "coverage_status": "covered"
     },
     {
@@ -583,6 +548,9 @@
         "TST-ARCHMAKER-CORE-T_MATRIX-T41_NO_BROWSER_POLICY_DEFINED_NO_ORPHAN_DEFAULT",
         "TST-ARCHMAKER-CORE-T_MATRIX-T42_UNVERIFIED_REQUEST_KEPT_NOT_CERTIFIED_SUPPORT",
         "TST-ARCHMAKER-CORE-NEGATIVE_CAPABILITIES-NEG_JSON_DEPTH_LIMIT_ABORTS",
+        "TST-ARCHMAKER-CORE-F1_STORAGE_FIDELITY-STORAGE_MODE_ROUND_TRIP_AND_DIGEST_CHANGES",
+        "TST-ARCHMAKER-CORE-F1_STORAGE_FIDELITY-INCOMPLETE_REPLACE_WITHOUT_LOSS_ACK_IS_NOT_CERTIFIABLE_AND_SAVEABLE",
+        "TST-ARCHMAKER-CORE-F1_STORAGE_FIDELITY-MODE_WITHOUT_INTENT_ACK_NEVER_CERTIFIABLE",
         "TST-ARCHMAKER-HARDWARE-HA_MATRIX-HA01_UEFI64_MODE_AND_BITNESS",
         "TST-ARCHMAKER-HARDWARE-HA_MATRIX-HA02_UEFI32_NOT_CONFUSED_WITH_UEFI64",
         "TST-ARCHMAKER-HARDWARE-HA_MATRIX-HA03_BIOS_CSM_DOES_NOT_CONCLUDE_NO_UEFI",
@@ -621,17 +589,15 @@
         "TST-WEB-FORGE-HELPERS.PLAYWRIGHT",
         "TST-WEB-PRODUCT-ACCEPTANCE.PLAYWRIGHT"
       ],
-      "validators": [
-        "VAL-CANONICALIZE"
-      ],
-      "evidence_count": 75,
+      "validators": ["VAL-CANONICALIZE"],
+      "evidence_count": 78,
       "has_executable_evidence": true,
       "passes_ci": true,
       "evidence_types": [
-        "negative",
-        "unit",
         "contract",
+        "unit",
         "canonicalize",
+        "negative",
         "integration"
       ],
       "coverage_status": "covered"
@@ -665,17 +631,11 @@
         "TST-ARCHMAKER-HARDWARE-T_MATRIX-T44_RESTRICTED_NAMESPACE_PARTIAL_NOT_FULL_HOST_CERT",
         "TST-WEB-PRODUCT-ACCEPTANCE.PLAYWRIGHT"
       ],
-      "validators": [
-        "VAL-MIG"
-      ],
+      "validators": ["VAL-MIG"],
       "evidence_count": 20,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": [
-        "integration",
-        "schema",
-        "unit"
-      ],
+      "evidence_types": ["schema", "unit", "integration"],
       "coverage_status": "covered"
     },
     {
@@ -738,10 +698,10 @@
       "has_executable_evidence": true,
       "passes_ci": true,
       "evidence_types": [
-        "negative",
-        "unit",
         "contract",
+        "unit",
         "visual",
+        "negative",
         "integration"
       ],
       "coverage_status": "covered"
@@ -777,11 +737,7 @@
       "evidence_count": 17,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": [
-        "negative",
-        "integration",
-        "unit"
-      ],
+      "evidence_types": ["negative", "unit", "integration"],
       "coverage_status": "covered"
     },
     {
@@ -863,16 +819,11 @@
         "TST-ARCHMAKER-HARDWARE-T_MATRIX-T43_REDACTED_PUBLIC_SNAPSHOT_HASH_DIFFERS_FROM_PRIVATE",
         "TST-ARCHMAKER-HARDWARE-T_MATRIX-T44_RESTRICTED_NAMESPACE_PARTIAL_NOT_FULL_HOST_CERT"
       ],
-      "validators": [
-        "VAL-NEG-CAPABILITIES"
-      ],
+      "validators": ["VAL-NEG-CAPABILITIES"],
       "evidence_count": 70,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": [
-        "negative",
-        "unit"
-      ],
+      "evidence_types": ["negative", "unit"],
       "coverage_status": "covered"
     }
   ],
@@ -891,14 +842,8 @@
     "NFR-MIG-001",
     "NFR-PORT-001"
   ],
-  "deferred_requirements": [
-    "FR-PRESET-001",
-    "FR-RUN-001",
-    "FR-ENT-001"
-  ],
-  "pending_requirements": [
-    "NFR-OBS-001"
-  ],
+  "deferred_requirements": ["FR-PRESET-001", "FR-RUN-001", "FR-ENT-001"],
+  "pending_requirements": ["NFR-OBS-001"],
   "orphan_details": {
     "tests_without_requirement": [],
     "validators_without_requirement": []
