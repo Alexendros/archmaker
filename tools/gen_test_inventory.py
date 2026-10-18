@@ -172,6 +172,8 @@ def infer_covers(crate: str, test_file: str, test_fn: str) -> List[str]:
         # Cierre F0–F3: nombres sin keyword legacy (persist/face/fidelity/bytes).
         'persist': ['FR-DRAFT-001'],
         'f1_identity': ['FR-DRAFT-001'],
+        'f1_storage_fidelity': ['FR-DRAFT-001', 'NFR-DET-001'],
+        'storage_fidelity': ['FR-DRAFT-001', 'NFR-DET-001'],
         'open_and_create': ['FR-DRAFT-001'],
         'exclusion_diagnostic': ['FR-VALIDATE-001'],
         'c07_face': ['FR-VALIDATE-001'],

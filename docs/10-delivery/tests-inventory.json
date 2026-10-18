@@ -1,6 +1,6 @@
 {
-  "generated_at": "1792252810",
-  "git_sha": "d02487e6e3971bc0d7f57b87326b0e7eae3e7e16",
+  "generated_at": "1792322761",
+  "git_sha": "947ea795a291ef29c17b5ede49c40c4cf588570e",
   "tests": [
     {
       "id": "TST-ARCHMAKER-CANONICALIZATION-VECTORS-GOLDEN_CORPUS_BYTE_IDENTITY_AND_DIGEST",
@@ -8,9 +8,7 @@
       "location": "crates/archmaker-canonicalization/tests/vectors.rs",
       "command": "cargo test -p archmaker-canonicalization --test vectors golden_corpus_byte_identity_and_digest",
       "workflow": "ci",
-      "covers": [
-        "NFR-DET-001"
-      ],
+      "covers": ["NFR-DET-001"],
       "description": "vectors::golden_corpus_byte_identity_and_digest"
     },
     {
@@ -19,9 +17,7 @@
       "location": "crates/archmaker-canonicalization/tests/vectors.rs",
       "command": "cargo test -p archmaker-canonicalization --test vectors m_key_order_byte_identity",
       "workflow": "ci",
-      "covers": [
-        "NFR-DET-001"
-      ],
+      "covers": ["NFR-DET-001"],
       "description": "vectors::m_key_order_byte_identity"
     },
     {
@@ -45,9 +41,7 @@
       "location": "crates/archmaker-canonicalization/tests/vectors.rs",
       "command": "cargo test -p archmaker-canonicalization --test vectors t_ephemeral_byte_identity",
       "workflow": "ci",
-      "covers": [
-        "NFR-DET-001"
-      ],
+      "covers": ["NFR-DET-001"],
       "description": "vectors::t_ephemeral_byte_identity"
     },
     {
@@ -56,11 +50,7 @@
       "location": "crates/archmaker-wasm/tests/parity.rs",
       "command": "cargo test -p archmaker-wasm --test parity parity_maps_vectors",
       "workflow": "ci",
-      "covers": [
-        "NFR-DET-001",
-        "NFR-PORT-001",
-        "NFR-OFF-001"
-      ],
+      "covers": ["NFR-DET-001", "NFR-PORT-001", "NFR-OFF-001"],
       "description": "parity::parity_maps_vectors"
     },
     {
@@ -69,11 +59,7 @@
       "location": "crates/archmaker-wasm/tests/parity.rs",
       "command": "cargo test -p archmaker-wasm --test parity parity_domain_vectors",
       "workflow": "ci",
-      "covers": [
-        "NFR-DET-001",
-        "NFR-PORT-001",
-        "NFR-OFF-001"
-      ],
+      "covers": ["NFR-DET-001", "NFR-PORT-001", "NFR-OFF-001"],
       "description": "parity::parity_domain_vectors"
     },
     {
@@ -82,11 +68,7 @@
       "location": "crates/archmaker-wasm/tests/parity.rs",
       "command": "cargo test -p archmaker-wasm --test parity parity_unicode_vectors",
       "workflow": "ci",
-      "covers": [
-        "NFR-DET-001",
-        "NFR-PORT-001",
-        "NFR-OFF-001"
-      ],
+      "covers": ["NFR-DET-001", "NFR-PORT-001", "NFR-OFF-001"],
       "description": "parity::parity_unicode_vectors"
     },
     {
@@ -95,12 +77,7 @@
       "location": "crates/archmaker-wasm/tests/parity.rs",
       "command": "cargo test -p archmaker-wasm --test parity parity_create_draft_deterministic_bytes",
       "workflow": "ci",
-      "covers": [
-        "FR-DRAFT-001",
-        "NFR-DET-001",
-        "NFR-PORT-001",
-        "NFR-OFF-001"
-      ],
+      "covers": ["FR-DRAFT-001", "NFR-DET-001", "NFR-PORT-001", "NFR-OFF-001"],
       "description": "parity::parity_create_draft_deterministic_bytes"
     },
     {
@@ -234,9 +211,7 @@
       "location": "crates/archmaker-core/tests/f7_p95_sample.rs",
       "command": "cargo test -p archmaker-core --test f7_p95_sample f7_p95_one_sample_prints_json_when_env_set",
       "workflow": "ci",
-      "covers": [
-        "NFR-DET-001"
-      ],
+      "covers": ["NFR-DET-001"],
       "description": "f7_p95_sample::f7_p95_one_sample_prints_json_when_env_set"
     },
     {
@@ -372,9 +347,7 @@
       "location": "crates/archmaker-core/tests/f0_findings.rs",
       "command": "cargo test -p archmaker-core --test f0_findings p5_independent_core_instances_share_no_draft_store",
       "workflow": "ci",
-      "covers": [
-        "FR-DRAFT-001"
-      ],
+      "covers": ["FR-DRAFT-001"],
       "description": "f0_findings::p5_independent_core_instances_share_no_draft_store"
     },
     {
@@ -383,9 +356,7 @@
       "location": "crates/archmaker-core/tests/f0_findings.rs",
       "command": "cargo test -p archmaker-core --test f0_findings c01_draft_create_rejects_existing_id",
       "workflow": "ci",
-      "covers": [
-        "FR-DRAFT-001"
-      ],
+      "covers": ["FR-DRAFT-001"],
       "description": "f0_findings::c01_draft_create_rejects_existing_id"
     },
     {
@@ -394,10 +365,7 @@
       "location": "crates/archmaker-core/tests/f0_findings.rs",
       "command": "cargo test -p archmaker-core --test f0_findings c01_wasm_production_uses_platform_entropy",
       "workflow": "ci",
-      "covers": [
-        "NFR-OFF-001",
-        "NFR-PORT-001"
-      ],
+      "covers": ["NFR-OFF-001", "NFR-PORT-001"],
       "description": "f0_findings::c01_wasm_production_uses_platform_entropy"
     },
     {
@@ -406,9 +374,7 @@
       "location": "crates/archmaker-core/tests/f0_findings.rs",
       "command": "cargo test -p archmaker-core --test f0_findings c02_export_binary_digest_matches_renderer_bytes",
       "workflow": "ci",
-      "covers": [
-        "FR-EXPORT-001"
-      ],
+      "covers": ["FR-EXPORT-001"],
       "description": "f0_findings::c02_export_binary_digest_matches_renderer_bytes"
     },
     {
@@ -417,9 +383,7 @@
       "location": "crates/archmaker-core/tests/f0_findings.rs",
       "command": "cargo test -p archmaker-core --test f0_findings c03_resolve_hostname_encrypt_preserved_as_intention",
       "workflow": "ci",
-      "covers": [
-        "FR-RESOLVE-001"
-      ],
+      "covers": ["FR-RESOLVE-001"],
       "description": "f0_findings::c03_resolve_hostname_encrypt_preserved_as_intention"
     },
     {
@@ -428,9 +392,7 @@
       "location": "crates/archmaker-core/tests/f0_findings.rs",
       "command": "cargo test -p archmaker-core --test f0_findings c04_import_checks_file_size_before_read_with_consent",
       "workflow": "ci",
-      "covers": [
-        "FR-IMPORT-001"
-      ],
+      "covers": ["FR-IMPORT-001"],
       "description": "f0_findings::c04_import_checks_file_size_before_read_with_consent"
     },
     {
@@ -439,9 +401,7 @@
       "location": "crates/archmaker-core/tests/f0_findings.rs",
       "command": "cargo test -p archmaker-core --test f0_findings c05_persist_has_typed_save_states_and_serialized_writes",
       "workflow": "ci",
-      "covers": [
-        "FR-DRAFT-001"
-      ],
+      "covers": ["FR-DRAFT-001"],
       "description": "f0_findings::c05_persist_has_typed_save_states_and_serialized_writes"
     },
     {
@@ -465,9 +425,7 @@
       "location": "crates/archmaker-core/tests/f0_findings.rs",
       "command": "cargo test -p archmaker-core --test f0_findings c07_face_no_longer_invents_base_or_sway_warn",
       "workflow": "ci",
-      "covers": [
-        "FR-VALIDATE-001"
-      ],
+      "covers": ["FR-VALIDATE-001"],
       "description": "f0_findings::c07_face_no_longer_invents_base_or_sway_warn"
     },
     {
@@ -476,9 +434,7 @@
       "location": "crates/archmaker-core/tests/f0_findings.rs",
       "command": "cargo test -p archmaker-core --test f0_findings c0_draft_corpus_fixture_digests",
       "workflow": "ci",
-      "covers": [
-        "FR-DRAFT-001"
-      ],
+      "covers": ["FR-DRAFT-001"],
       "description": "f0_findings::c0_draft_corpus_fixture_digests"
     },
     {
@@ -487,9 +443,7 @@
       "location": "crates/archmaker-core/tests/f3_fidelity.rs",
       "command": "cargo test -p archmaker-core --test f3_fidelity hostname_and_encrypt_intention_reach_manifest",
       "workflow": "ci",
-      "covers": [
-        "FR-MANIFEST-001"
-      ],
+      "covers": ["FR-MANIFEST-001"],
       "description": "f3_fidelity::hostname_and_encrypt_intention_reach_manifest"
     },
     {
@@ -498,9 +452,7 @@
       "location": "crates/archmaker-core/tests/f3_fidelity.rs",
       "command": "cargo test -p archmaker-core --test f3_fidelity unsupported_number_and_secret_ref_emit_exclusion_diagnostic",
       "workflow": "ci",
-      "covers": [
-        "FR-VALIDATE-001"
-      ],
+      "covers": ["FR-VALIDATE-001"],
       "description": "f3_fidelity::unsupported_number_and_secret_ref_emit_exclusion_diagnostic"
     },
     {
@@ -509,9 +461,7 @@
       "location": "crates/archmaker-core/tests/f3_fidelity.rs",
       "command": "cargo test -p archmaker-core --test f3_fidelity catalog_ref_ok_digest_version_and_id",
       "workflow": "ci",
-      "covers": [
-        "FR-CAT-001"
-      ],
+      "covers": ["FR-CAT-001"],
       "description": "f3_fidelity::catalog_ref_ok_digest_version_and_id"
     },
     {
@@ -520,11 +470,7 @@
       "location": "crates/archmaker-core/tests/core_contract.rs",
       "command": "cargo test -p archmaker-core --test core_contract new_uuid_v4_wasm_safe_is_valid_without_host_entropy",
       "workflow": "ci",
-      "covers": [
-        "NFR-OFF-001",
-        "NFR-PORT-001",
-        "NFR-DET-001"
-      ],
+      "covers": ["NFR-OFF-001", "NFR-PORT-001", "NFR-DET-001"],
       "description": "core_contract::new_uuid_v4_wasm_safe_is_valid_without_host_entropy"
     },
     {
@@ -533,10 +479,7 @@
       "location": "crates/archmaker-core/tests/core_contract.rs",
       "command": "cargo test -p archmaker-core --test core_contract resolve_draft_rejects_face_intent_option",
       "workflow": "ci",
-      "covers": [
-        "FR-DRAFT-001",
-        "FR-RESOLVE-001"
-      ],
+      "covers": ["FR-DRAFT-001", "FR-RESOLVE-001"],
       "description": "core_contract::resolve_draft_rejects_face_intent_option"
     },
     {
@@ -545,9 +488,7 @@
       "location": "crates/archmaker-core/tests/core_contract.rs",
       "command": "cargo test -p archmaker-core --test core_contract create_draft_valid_defaults",
       "workflow": "ci",
-      "covers": [
-        "FR-DRAFT-001"
-      ],
+      "covers": ["FR-DRAFT-001"],
       "description": "core_contract::create_draft_valid_defaults"
     },
     {
@@ -556,9 +497,7 @@
       "location": "crates/archmaker-core/tests/core_contract.rs",
       "command": "cargo test -p archmaker-core --test core_contract create_draft_honors_given_id",
       "workflow": "ci",
-      "covers": [
-        "FR-DRAFT-001"
-      ],
+      "covers": ["FR-DRAFT-001"],
       "description": "core_contract::create_draft_honors_given_id"
     },
     {
@@ -567,9 +506,7 @@
       "location": "crates/archmaker-core/tests/core_contract.rs",
       "command": "cargo test -p archmaker-core --test core_contract create_draft_rejects_bad_target",
       "workflow": "ci",
-      "covers": [
-        "FR-DRAFT-001"
-      ],
+      "covers": ["FR-DRAFT-001"],
       "description": "core_contract::create_draft_rejects_bad_target"
     },
     {
@@ -578,10 +515,7 @@
       "location": "crates/archmaker-core/tests/core_contract.rs",
       "command": "cargo test -p archmaker-core --test core_contract create_draft_rejects_unknown_catalog_and_bad_id",
       "workflow": "ci",
-      "covers": [
-        "FR-DRAFT-001",
-        "FR-CAT-001"
-      ],
+      "covers": ["FR-DRAFT-001", "FR-CAT-001"],
       "description": "core_contract::create_draft_rejects_unknown_catalog_and_bad_id"
     },
     {
@@ -590,9 +524,7 @@
       "location": "crates/archmaker-core/tests/core_contract.rs",
       "command": "cargo test -p archmaker-core --test core_contract load_catalog_embedded_and_digest",
       "workflow": "ci",
-      "covers": [
-        "FR-CAT-001"
-      ],
+      "covers": ["FR-CAT-001"],
       "description": "core_contract::load_catalog_embedded_and_digest"
     },
     {
@@ -601,9 +533,7 @@
       "location": "crates/archmaker-core/tests/core_contract.rs",
       "command": "cargo test -p archmaker-core --test core_contract load_catalog_digest_mismatch",
       "workflow": "ci",
-      "covers": [
-        "FR-CAT-001"
-      ],
+      "covers": ["FR-CAT-001"],
       "description": "core_contract::load_catalog_digest_mismatch"
     },
     {
@@ -612,9 +542,7 @@
       "location": "crates/archmaker-core/tests/core_contract.rs",
       "command": "cargo test -p archmaker-core --test core_contract load_catalog_file_round_trip_and_missing",
       "workflow": "ci",
-      "covers": [
-        "FR-CAT-001"
-      ],
+      "covers": ["FR-CAT-001"],
       "description": "core_contract::load_catalog_file_round_trip_and_missing"
     },
     {
@@ -623,9 +551,7 @@
       "location": "crates/archmaker-core/tests/core_contract.rs",
       "command": "cargo test -p archmaker-core --test core_contract save_draft_increments_and_persists",
       "workflow": "ci",
-      "covers": [
-        "FR-DRAFT-001"
-      ],
+      "covers": ["FR-DRAFT-001"],
       "description": "core_contract::save_draft_increments_and_persists"
     },
     {
@@ -634,9 +560,7 @@
       "location": "crates/archmaker-core/tests/core_contract.rs",
       "command": "cargo test -p archmaker-core --test core_contract save_draft_conflict_on_stale_revision",
       "workflow": "ci",
-      "covers": [
-        "FR-DRAFT-001"
-      ],
+      "covers": ["FR-DRAFT-001"],
       "description": "core_contract::save_draft_conflict_on_stale_revision"
     },
     {
@@ -645,10 +569,7 @@
       "location": "crates/archmaker-core/tests/core_contract.rs",
       "command": "cargo test -p archmaker-core --test core_contract resolve_draft_valid_and_deterministic",
       "workflow": "ci",
-      "covers": [
-        "FR-DRAFT-001",
-        "FR-RESOLVE-001"
-      ],
+      "covers": ["FR-DRAFT-001", "FR-RESOLVE-001"],
       "description": "core_contract::resolve_draft_valid_and_deterministic"
     },
     {
@@ -657,10 +578,7 @@
       "location": "crates/archmaker-core/tests/core_contract.rs",
       "command": "cargo test -p archmaker-core --test core_contract resolve_draft_rejects_unknown_option",
       "workflow": "ci",
-      "covers": [
-        "FR-DRAFT-001",
-        "FR-RESOLVE-001"
-      ],
+      "covers": ["FR-DRAFT-001", "FR-RESOLVE-001"],
       "description": "core_contract::resolve_draft_rejects_unknown_option"
     },
     {
@@ -669,10 +587,7 @@
       "location": "crates/archmaker-core/tests/core_contract.rs",
       "command": "cargo test -p archmaker-core --test core_contract validate_draft_clean_and_blocking",
       "workflow": "ci",
-      "covers": [
-        "FR-DRAFT-001",
-        "FR-VALIDATE-001"
-      ],
+      "covers": ["FR-DRAFT-001", "FR-VALIDATE-001"],
       "description": "core_contract::validate_draft_clean_and_blocking"
     },
     {
@@ -681,9 +596,7 @@
       "location": "crates/archmaker-core/tests/core_contract.rs",
       "command": "cargo test -p archmaker-core --test core_contract build_manifest_sealed_and_blocked",
       "workflow": "ci",
-      "covers": [
-        "FR-MANIFEST-001"
-      ],
+      "covers": ["FR-MANIFEST-001"],
       "description": "core_contract::build_manifest_sealed_and_blocked"
     },
     {
@@ -692,9 +605,7 @@
       "location": "crates/archmaker-core/tests/core_contract.rs",
       "command": "cargo test -p archmaker-core --test core_contract build_manifest_honors_expected_resolution_digest",
       "workflow": "ci",
-      "covers": [
-        "FR-MANIFEST-001"
-      ],
+      "covers": ["FR-MANIFEST-001"],
       "description": "core_contract::build_manifest_honors_expected_resolution_digest"
     },
     {
@@ -703,9 +614,7 @@
       "location": "crates/archmaker-core/tests/core_contract.rs",
       "command": "cargo test -p archmaker-core --test core_contract export_artifact_byte_idempotent",
       "workflow": "ci",
-      "covers": [
-        "FR-EXPORT-001"
-      ],
+      "covers": ["FR-EXPORT-001"],
       "description": "core_contract::export_artifact_byte_idempotent"
     },
     {
@@ -714,9 +623,7 @@
       "location": "crates/archmaker-core/tests/core_contract.rs",
       "command": "cargo test -p archmaker-core --test core_contract export_adapters_diverge_bytes_and_fill_content",
       "workflow": "ci",
-      "covers": [
-        "FR-EXPORT-001"
-      ],
+      "covers": ["FR-EXPORT-001"],
       "description": "core_contract::export_adapters_diverge_bytes_and_fill_content"
     },
     {
@@ -725,9 +632,7 @@
       "location": "crates/archmaker-core/tests/core_contract.rs",
       "command": "cargo test -p archmaker-core --test core_contract export_artifact_rejects_bad_target_and_handle",
       "workflow": "ci",
-      "covers": [
-        "FR-EXPORT-001"
-      ],
+      "covers": ["FR-EXPORT-001"],
       "description": "core_contract::export_artifact_rejects_bad_target_and_handle"
     },
     {
@@ -736,11 +641,7 @@
       "location": "crates/archmaker-core/tests/core_contract.rs",
       "command": "cargo test -p archmaker-core --test core_contract end_to_end_create_save_resolve_validate_build_export",
       "workflow": "ci",
-      "covers": [
-        "FR-RESOLVE-001",
-        "FR-VALIDATE-001",
-        "FR-EXPORT-001"
-      ],
+      "covers": ["FR-RESOLVE-001", "FR-VALIDATE-001", "FR-EXPORT-001"],
       "description": "core_contract::end_to_end_create_save_resolve_validate_build_export"
     },
     {
@@ -749,9 +650,7 @@
       "location": "crates/archmaker-core/tests/core_contract.rs",
       "command": "cargo test -p archmaker-core --test core_contract load_local_catalog_with_provenance",
       "workflow": "ci",
-      "covers": [
-        "FR-CAT-001"
-      ],
+      "covers": ["FR-CAT-001"],
       "description": "core_contract::load_local_catalog_with_provenance"
     },
     {
@@ -760,11 +659,7 @@
       "location": "crates/archmaker-core/tests/core_contract.rs",
       "command": "cargo test -p archmaker-core --test core_contract import_draft_migrates_v51_sample",
       "workflow": "ci",
-      "covers": [
-        "FR-DRAFT-001",
-        "FR-IMPORT-001",
-        "NFR-MIG-001"
-      ],
+      "covers": ["FR-DRAFT-001", "FR-IMPORT-001", "NFR-MIG-001"],
       "description": "core_contract::import_draft_migrates_v51_sample"
     },
     {
@@ -773,9 +668,7 @@
       "location": "crates/archmaker-core/tests/core_contract.rs",
       "command": "cargo test -p archmaker-core --test core_contract export_artifact_without_store_dir_returns_content",
       "workflow": "ci",
-      "covers": [
-        "FR-EXPORT-001"
-      ],
+      "covers": ["FR-EXPORT-001"],
       "description": "core_contract::export_artifact_without_store_dir_returns_content"
     },
     {
@@ -784,9 +677,7 @@
       "location": "crates/archmaker-core/tests/core_contract.rs",
       "command": "cargo test -p archmaker-core --test core_contract open_draft_rehydrates_from_seed",
       "workflow": "ci",
-      "covers": [
-        "FR-DRAFT-001"
-      ],
+      "covers": ["FR-DRAFT-001"],
       "description": "core_contract::open_draft_rehydrates_from_seed"
     },
     {
@@ -795,9 +686,7 @@
       "location": "crates/archmaker-core/tests/core_contract.rs",
       "command": "cargo test -p archmaker-core --test core_contract save_draft_applies_changeset_replace",
       "workflow": "ci",
-      "covers": [
-        "FR-DRAFT-001"
-      ],
+      "covers": ["FR-DRAFT-001"],
       "description": "core_contract::save_draft_applies_changeset_replace"
     },
     {
@@ -975,9 +864,7 @@
       "location": "crates/archmaker-core/tests/catalog_providers.rs",
       "command": "cargo test -p archmaker-core --test catalog_providers catalog_loads_with_zen_and_browser_many",
       "workflow": "ci",
-      "covers": [
-        "FR-CAT-001"
-      ],
+      "covers": ["FR-CAT-001"],
       "description": "catalog_providers::catalog_loads_with_zen_and_browser_many"
     },
     {
@@ -986,10 +873,7 @@
       "location": "crates/archmaker-core/tests/catalog_providers.rs",
       "command": "cargo test -p archmaker-core --test catalog_providers onlyoffice_canonical_alias_not_duplicate_install",
       "workflow": "ci",
-      "covers": [
-        "FR-CAT-001",
-        "NFR-DET-001"
-      ],
+      "covers": ["FR-CAT-001", "NFR-DET-001"],
       "description": "catalog_providers::onlyoffice_canonical_alias_not_duplicate_install"
     },
     {
@@ -998,9 +882,7 @@
       "location": "crates/archmaker-core/tests/catalog_providers.rs",
       "command": "cargo test -p archmaker-core --test catalog_providers libreoffice_not_fixed_for_new_onlyoffice_profiles",
       "workflow": "ci",
-      "covers": [
-        "FR-CAT-001"
-      ],
+      "covers": ["FR-CAT-001"],
       "description": "catalog_providers::libreoffice_not_fixed_for_new_onlyoffice_profiles"
     },
     {
@@ -1009,9 +891,7 @@
       "location": "crates/archmaker-core/tests/catalog_providers.rs",
       "command": "cargo test -p archmaker-core --test catalog_providers apexshot_unverified_cat01_open",
       "workflow": "ci",
-      "covers": [
-        "FR-CAT-001"
-      ],
+      "covers": ["FR-CAT-001"],
       "description": "catalog_providers::apexshot_unverified_cat01_open"
     },
     {
@@ -1020,9 +900,7 @@
       "location": "crates/archmaker-core/tests/catalog_providers.rs",
       "command": "cargo test -p archmaker-core --test catalog_providers new_profile_browser_policy_zen_default",
       "workflow": "ci",
-      "covers": [
-        "FR-CAT-001"
-      ],
+      "covers": ["FR-CAT-001"],
       "description": "catalog_providers::new_profile_browser_policy_zen_default"
     },
     {
@@ -1031,9 +909,7 @@
       "location": "crates/archmaker-core/tests/catalog_providers.rs",
       "command": "cargo test -p archmaker-core --test catalog_providers verified_gaps_closed_for_lts_des_editors",
       "workflow": "ci",
-      "covers": [
-        "FR-CAT-001"
-      ],
+      "covers": ["FR-CAT-001"],
       "description": "catalog_providers::verified_gaps_closed_for_lts_des_editors"
     },
     {
@@ -1042,9 +918,7 @@
       "location": "crates/archmaker-core/tests/catalog_providers.rs",
       "command": "cargo test -p archmaker-core --test catalog_providers grok_requests_remain_unverified",
       "workflow": "ci",
-      "covers": [
-        "FR-CAT-001"
-      ],
+      "covers": ["FR-CAT-001"],
       "description": "catalog_providers::grok_requests_remain_unverified"
     },
     {
@@ -1053,9 +927,7 @@
       "location": "crates/archmaker-core/tests/f1_identity.rs",
       "command": "cargo test -p archmaker-core --test f1_identity create_draft_rejects_existing_id_without_overwrite",
       "workflow": "ci",
-      "covers": [
-        "FR-DRAFT-001"
-      ],
+      "covers": ["FR-DRAFT-001"],
       "description": "f1_identity::create_draft_rejects_existing_id_without_overwrite"
     },
     {
@@ -1064,9 +936,7 @@
       "location": "crates/archmaker-core/tests/f1_identity.rs",
       "command": "cargo test -p archmaker-core --test f1_identity open_and_create_remain_distinct",
       "workflow": "ci",
-      "covers": [
-        "FR-DRAFT-001"
-      ],
+      "covers": ["FR-DRAFT-001"],
       "description": "f1_identity::open_and_create_remain_distinct"
     },
     {
@@ -1075,11 +945,7 @@
       "location": "crates/archmaker-core/tests/f1_identity.rs",
       "command": "cargo test -p archmaker-core --test f1_identity production_uuids_unique_v4_batch",
       "workflow": "ci",
-      "covers": [
-        "NFR-DET-001",
-        "NFR-PORT-001",
-        "FR-DRAFT-001"
-      ],
+      "covers": ["NFR-DET-001", "NFR-PORT-001", "FR-DRAFT-001"],
       "description": "f1_identity::production_uuids_unique_v4_batch"
     },
     {
@@ -1088,11 +954,7 @@
       "location": "crates/archmaker-core/tests/f1_identity.rs",
       "command": "cargo test -p archmaker-core --test f1_identity wasm_safe_counter_remains_test_only_path",
       "workflow": "ci",
-      "covers": [
-        "NFR-OFF-001",
-        "NFR-PORT-001",
-        "FR-DRAFT-001"
-      ],
+      "covers": ["NFR-OFF-001", "NFR-PORT-001", "FR-DRAFT-001"],
       "description": "f1_identity::wasm_safe_counter_remains_test_only_path"
     },
     {
@@ -1101,11 +963,7 @@
       "location": "crates/archmaker-core/tests/f1_identity.rs",
       "command": "cargo test -p archmaker-core --test f1_identity create_draft_auto_id_uses_production_uuid",
       "workflow": "ci",
-      "covers": [
-        "FR-DRAFT-001",
-        "NFR-DET-001",
-        "NFR-PORT-001"
-      ],
+      "covers": ["FR-DRAFT-001", "NFR-DET-001", "NFR-PORT-001"],
       "description": "f1_identity::create_draft_auto_id_uses_production_uuid"
     },
     {
@@ -1114,9 +972,7 @@
       "location": "crates/archmaker-core/tests/f2_bytes.rs",
       "command": "cargo test -p archmaker-core --test f2_bytes f2_export_carries_renderer_bytes_for_supported_targets",
       "workflow": "ci",
-      "covers": [
-        "FR-EXPORT-001"
-      ],
+      "covers": ["FR-EXPORT-001"],
       "description": "f2_bytes::f2_export_carries_renderer_bytes_for_supported_targets"
     },
     {
@@ -1125,10 +981,7 @@
       "location": "crates/archmaker-core/tests/f2_bytes.rs",
       "command": "cargo test -p archmaker-core --test f2_bytes f2_report_bytes_are_markdown_text_not_json_string",
       "workflow": "ci",
-      "covers": [
-        "NFR-DET-001",
-        "FR-EXPORT-001"
-      ],
+      "covers": ["NFR-DET-001", "FR-EXPORT-001"],
       "description": "f2_bytes::f2_report_bytes_are_markdown_text_not_json_string"
     },
     {
@@ -1137,9 +990,7 @@
       "location": "crates/archmaker-core/tests/f2_bytes.rs",
       "command": "cargo test -p archmaker-core --test f2_bytes f2_incompatible_target_is_rejected",
       "workflow": "ci",
-      "covers": [
-        "FR-EXPORT-001"
-      ],
+      "covers": ["FR-EXPORT-001"],
       "description": "f2_bytes::f2_incompatible_target_is_rejected"
     },
     {
@@ -1148,11 +999,40 @@
       "location": "crates/archmaker-core/tests/f2_bytes.rs",
       "command": "cargo test -p archmaker-core --test f2_bytes f2_delivery_corpus_digests",
       "workflow": "ci",
-      "covers": [
-        "FR-EXPORT-001",
-        "NFR-DET-001"
-      ],
+      "covers": ["FR-EXPORT-001", "NFR-DET-001"],
       "description": "f2_bytes::f2_delivery_corpus_digests"
+    },
+    {
+      "id": "TST-ARCHMAKER-CORE-T_MATRIX-T37_LUKS_CHANGES_DIGEST",
+      "type": "unit",
+      "location": "crates/archmaker-core/tests/t_matrix.rs",
+      "command": "cargo test -p archmaker-core --test t_matrix t37_luks_changes_digest",
+      "workflow": "ci",
+      "covers": [
+        "FR-DRAFT-001",
+        "FR-VALIDATE-001",
+        "FR-MANIFEST-001",
+        "NFR-DET-001",
+        "NFR-SEC-001",
+        "NFR-MIG-001"
+      ],
+      "description": "t_matrix::t37_luks_changes_digest"
+    },
+    {
+      "id": "TST-ARCHMAKER-CORE-T_MATRIX-T37_DEFAULT_BROWSER_ALONE_CHANGES_DIGEST",
+      "type": "unit",
+      "location": "crates/archmaker-core/tests/t_matrix.rs",
+      "command": "cargo test -p archmaker-core --test t_matrix t37_default_browser_alone_changes_digest",
+      "workflow": "ci",
+      "covers": [
+        "FR-DRAFT-001",
+        "FR-VALIDATE-001",
+        "FR-MANIFEST-001",
+        "NFR-DET-001",
+        "NFR-SEC-001",
+        "NFR-MIG-001"
+      ],
+      "description": "t_matrix::t37_default_browser_alone_changes_digest"
     },
     {
       "id": "TST-ARCHMAKER-CORE-T_MATRIX-T37_LUKS_OR_DEFAULT_BROWSER_CHANGES_DIGEST",
@@ -1421,16 +1301,39 @@
       "description": "negative_capabilities::neg_allowlist_covers_coreport_plus_scoped_save"
     },
     {
+      "id": "TST-ARCHMAKER-CORE-F1_STORAGE_FIDELITY-STORAGE_MODE_ROUND_TRIP_AND_DIGEST_CHANGES",
+      "type": "unit",
+      "location": "crates/archmaker-core/tests/f1_storage_fidelity.rs",
+      "command": "cargo test -p archmaker-core --test f1_storage_fidelity storage_mode_round_trip_and_digest_changes",
+      "workflow": "ci",
+      "covers": ["FR-DRAFT-001", "NFR-DET-001"],
+      "description": "f1_storage_fidelity::storage_mode_round_trip_and_digest_changes"
+    },
+    {
+      "id": "TST-ARCHMAKER-CORE-F1_STORAGE_FIDELITY-INCOMPLETE_REPLACE_WITHOUT_LOSS_ACK_IS_NOT_CERTIFIABLE_AND_SAVEABLE",
+      "type": "unit",
+      "location": "crates/archmaker-core/tests/f1_storage_fidelity.rs",
+      "command": "cargo test -p archmaker-core --test f1_storage_fidelity incomplete_replace_without_loss_ack_is_not_certifiable_and_saveable",
+      "workflow": "ci",
+      "covers": ["FR-DRAFT-001", "NFR-DET-001"],
+      "description": "f1_storage_fidelity::incomplete_replace_without_loss_ack_is_not_certifiable_and_saveable"
+    },
+    {
+      "id": "TST-ARCHMAKER-CORE-F1_STORAGE_FIDELITY-MODE_WITHOUT_INTENT_ACK_NEVER_CERTIFIABLE",
+      "type": "unit",
+      "location": "crates/archmaker-core/tests/f1_storage_fidelity.rs",
+      "command": "cargo test -p archmaker-core --test f1_storage_fidelity mode_without_intent_ack_never_certifiable",
+      "workflow": "ci",
+      "covers": ["FR-DRAFT-001", "NFR-DET-001"],
+      "description": "f1_storage_fidelity::mode_without_intent_ack_never_certifiable"
+    },
+    {
       "id": "TST-ARCHMAKER-HARDWARE-HA_MATRIX-HA01_UEFI64_MODE_AND_BITNESS",
       "type": "unit",
       "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
       "command": "cargo test -p archmaker-hardware --test ha_matrix ha01_uefi64_mode_and_bitness",
       "workflow": "ci",
-      "covers": [
-        "NFR-SEC-001",
-        "FR-VALIDATE-001",
-        "NFR-DET-001"
-      ],
+      "covers": ["NFR-SEC-001", "FR-VALIDATE-001", "NFR-DET-001"],
       "description": "ha_matrix::ha01_uefi64_mode_and_bitness"
     },
     {
@@ -1439,11 +1342,7 @@
       "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
       "command": "cargo test -p archmaker-hardware --test ha_matrix ha02_uefi32_not_confused_with_uefi64",
       "workflow": "ci",
-      "covers": [
-        "NFR-SEC-001",
-        "FR-VALIDATE-001",
-        "NFR-DET-001"
-      ],
+      "covers": ["NFR-SEC-001", "FR-VALIDATE-001", "NFR-DET-001"],
       "description": "ha_matrix::ha02_uefi32_not_confused_with_uefi64"
     },
     {
@@ -1452,11 +1351,7 @@
       "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
       "command": "cargo test -p archmaker-hardware --test ha_matrix ha03_bios_csm_does_not_conclude_no_uefi",
       "workflow": "ci",
-      "covers": [
-        "NFR-SEC-001",
-        "FR-VALIDATE-001",
-        "NFR-DET-001"
-      ],
+      "covers": ["NFR-SEC-001", "FR-VALIDATE-001", "NFR-DET-001"],
       "description": "ha_matrix::ha03_bios_csm_does_not_conclude_no_uefi"
     },
     {
@@ -1465,11 +1360,7 @@
       "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
       "command": "cargo test -p archmaker-hardware --test ha_matrix ha04_container_hidden_efi_unknown",
       "workflow": "ci",
-      "covers": [
-        "NFR-SEC-001",
-        "FR-VALIDATE-001",
-        "NFR-DET-001"
-      ],
+      "covers": ["NFR-SEC-001", "FR-VALIDATE-001", "NFR-DET-001"],
       "description": "ha_matrix::ha04_container_hidden_efi_unknown"
     },
     {
@@ -1478,11 +1369,7 @@
       "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
       "command": "cargo test -p archmaker-hardware --test ha_matrix ha05_secure_boot_states_do_not_block_alone",
       "workflow": "ci",
-      "covers": [
-        "NFR-SEC-001",
-        "FR-VALIDATE-001",
-        "NFR-DET-001"
-      ],
+      "covers": ["NFR-SEC-001", "FR-VALIDATE-001", "NFR-DET-001"],
       "description": "ha_matrix::ha05_secure_boot_states_do_not_block_alone"
     },
     {
@@ -1491,11 +1378,7 @@
       "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
       "command": "cargo test -p archmaker-hardware --test ha_matrix ha06_efivarfs_denied_is_unknown_not_incompatible",
       "workflow": "ci",
-      "covers": [
-        "NFR-SEC-001",
-        "FR-VALIDATE-001",
-        "NFR-DET-001"
-      ],
+      "covers": ["NFR-SEC-001", "FR-VALIDATE-001", "NFR-DET-001"],
       "description": "ha_matrix::ha06_efivarfs_denied_is_unknown_not_incompatible"
     },
     {
@@ -1504,11 +1387,7 @@
       "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
       "command": "cargo test -p archmaker-hardware --test ha_matrix ha07_host_not_destination",
       "workflow": "ci",
-      "covers": [
-        "NFR-SEC-001",
-        "FR-VALIDATE-001",
-        "NFR-DET-001"
-      ],
+      "covers": ["NFR-SEC-001", "FR-VALIDATE-001", "NFR-DET-001"],
       "description": "ha_matrix::ha07_host_not_destination"
     },
     {
@@ -1517,11 +1396,7 @@
       "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
       "command": "cargo test -p archmaker-hardware --test ha_matrix ha08_logical_sector_512_and_4k",
       "workflow": "ci",
-      "covers": [
-        "NFR-SEC-001",
-        "FR-VALIDATE-001",
-        "NFR-DET-001"
-      ],
+      "covers": ["NFR-SEC-001", "FR-VALIDATE-001", "NFR-DET-001"],
       "description": "ha_matrix::ha08_logical_sector_512_and_4k"
     },
     {
@@ -1530,11 +1405,7 @@
       "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
       "command": "cargo test -p archmaker-hardware --test ha_matrix ha09_missing_table_does_not_mean_empty",
       "workflow": "ci",
-      "covers": [
-        "NFR-SEC-001",
-        "FR-VALIDATE-001",
-        "NFR-DET-001"
-      ],
+      "covers": ["NFR-SEC-001", "FR-VALIDATE-001", "NFR-DET-001"],
       "description": "ha_matrix::ha09_missing_table_does_not_mean_empty"
     },
     {
@@ -1543,11 +1414,7 @@
       "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
       "command": "cargo test -p archmaker-hardware --test ha_matrix ha10_partial_table_not_hardware_verified",
       "workflow": "ci",
-      "covers": [
-        "NFR-SEC-001",
-        "FR-VALIDATE-001",
-        "NFR-DET-001"
-      ],
+      "covers": ["NFR-SEC-001", "FR-VALIDATE-001", "NFR-DET-001"],
       "description": "ha_matrix::ha10_partial_table_not_hardware_verified"
     },
     {
@@ -1556,11 +1423,7 @@
       "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
       "command": "cargo test -p archmaker-hardware --test ha_matrix ha11_esp_policy_without_format",
       "workflow": "ci",
-      "covers": [
-        "NFR-SEC-001",
-        "FR-VALIDATE-001",
-        "NFR-DET-001"
-      ],
+      "covers": ["NFR-SEC-001", "FR-VALIDATE-001", "NFR-DET-001"],
       "description": "ha_matrix::ha11_esp_policy_without_format"
     },
     {
@@ -1569,11 +1432,7 @@
       "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
       "command": "cargo test -p archmaker-hardware --test ha_matrix ha12_luks_lvm_parents_protected",
       "workflow": "ci",
-      "covers": [
-        "NFR-SEC-001",
-        "FR-VALIDATE-001",
-        "NFR-DET-001"
-      ],
+      "covers": ["NFR-SEC-001", "FR-VALIDATE-001", "NFR-DET-001"],
       "description": "ha_matrix::ha12_luks_lvm_parents_protected"
     },
     {
@@ -1582,11 +1441,7 @@
       "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
       "command": "cargo test -p archmaker-hardware --test ha_matrix ha13_live_loop_protected",
       "workflow": "ci",
-      "covers": [
-        "NFR-SEC-001",
-        "FR-VALIDATE-001",
-        "NFR-DET-001"
-      ],
+      "covers": ["NFR-SEC-001", "FR-VALIDATE-001", "NFR-DET-001"],
       "description": "ha_matrix::ha13_live_loop_protected"
     },
     {
@@ -1595,11 +1450,7 @@
       "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
       "command": "cargo test -p archmaker-hardware --test ha_matrix ha14_mounted_swap_raid_not_ignored",
       "workflow": "ci",
-      "covers": [
-        "NFR-SEC-001",
-        "FR-VALIDATE-001",
-        "NFR-DET-001"
-      ],
+      "covers": ["NFR-SEC-001", "FR-VALIDATE-001", "NFR-DET-001"],
       "description": "ha_matrix::ha14_mounted_swap_raid_not_ignored"
     },
     {
@@ -1608,11 +1459,7 @@
       "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
       "command": "cargo test -p archmaker-hardware --test ha_matrix ha15_duplicate_identity_blocks",
       "workflow": "ci",
-      "covers": [
-        "NFR-SEC-001",
-        "FR-VALIDATE-001",
-        "NFR-DET-001"
-      ],
+      "covers": ["NFR-SEC-001", "FR-VALIDATE-001", "NFR-DET-001"],
       "description": "ha_matrix::ha15_duplicate_identity_blocks"
     },
     {
@@ -1621,11 +1468,7 @@
       "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
       "command": "cargo test -p archmaker-hardware --test ha_matrix ha16_refresh_marks_stale_on_change",
       "workflow": "ci",
-      "covers": [
-        "NFR-SEC-001",
-        "FR-VALIDATE-001",
-        "NFR-DET-001"
-      ],
+      "covers": ["NFR-SEC-001", "FR-VALIDATE-001", "NFR-DET-001"],
       "description": "ha_matrix::ha16_refresh_marks_stale_on_change"
     },
     {
@@ -1634,11 +1477,7 @@
       "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
       "command": "cargo test -p archmaker-hardware --test ha_matrix ha17_overlap_or_insufficient_capacity_rejected",
       "workflow": "ci",
-      "covers": [
-        "NFR-SEC-001",
-        "FR-VALIDATE-001",
-        "NFR-DET-001"
-      ],
+      "covers": ["NFR-SEC-001", "FR-VALIDATE-001", "NFR-DET-001"],
       "description": "ha_matrix::ha17_overlap_or_insufficient_capacity_rejected"
     },
     {
@@ -1647,11 +1486,7 @@
       "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
       "command": "cargo test -p archmaker-hardware --test ha_matrix ha18_bootloader_incompatible_with_bios",
       "workflow": "ci",
-      "covers": [
-        "NFR-SEC-001",
-        "FR-VALIDATE-001",
-        "NFR-DET-001"
-      ],
+      "covers": ["NFR-SEC-001", "FR-VALIDATE-001", "NFR-DET-001"],
       "description": "ha_matrix::ha18_bootloader_incompatible_with_bios"
     },
     {
@@ -1660,11 +1495,7 @@
       "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
       "command": "cargo test -p archmaker-hardware --test ha_matrix ha19_invalid_lsblk_json_does_not_yield_fake_snapshot",
       "workflow": "ci",
-      "covers": [
-        "NFR-DET-001",
-        "NFR-SEC-001",
-        "FR-VALIDATE-001"
-      ],
+      "covers": ["NFR-DET-001", "NFR-SEC-001", "FR-VALIDATE-001"],
       "description": "ha_matrix::ha19_invalid_lsblk_json_does_not_yield_fake_snapshot"
     },
     {
@@ -1673,11 +1504,7 @@
       "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
       "command": "cargo test -p archmaker-hardware --test ha_matrix ha20_opaque_handles_no_dev_paths",
       "workflow": "ci",
-      "covers": [
-        "NFR-SEC-001",
-        "FR-VALIDATE-001",
-        "NFR-DET-001"
-      ],
+      "covers": ["NFR-SEC-001", "FR-VALIDATE-001", "NFR-DET-001"],
       "description": "ha_matrix::ha20_opaque_handles_no_dev_paths"
     },
     {
@@ -1686,11 +1513,7 @@
       "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
       "command": "cargo test -p archmaker-hardware --test ha_matrix ha21_plan_has_no_secrets",
       "workflow": "ci",
-      "covers": [
-        "NFR-SEC-001",
-        "FR-VALIDATE-001",
-        "NFR-DET-001"
-      ],
+      "covers": ["NFR-SEC-001", "FR-VALIDATE-001", "NFR-DET-001"],
       "description": "ha_matrix::ha21_plan_has_no_secrets"
     },
     {
@@ -1699,11 +1522,7 @@
       "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
       "command": "cargo test -p archmaker-hardware --test ha_matrix ha21b_public_snapshot_omits_serial_wwn",
       "workflow": "ci",
-      "covers": [
-        "NFR-SEC-001",
-        "FR-VALIDATE-001",
-        "NFR-DET-001"
-      ],
+      "covers": ["NFR-SEC-001", "FR-VALIDATE-001", "NFR-DET-001"],
       "description": "ha_matrix::ha21b_public_snapshot_omits_serial_wwn"
     },
     {
@@ -1712,11 +1531,7 @@
       "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
       "command": "cargo test -p archmaker-hardware --test ha_matrix ha22_manual_profile_without_hardware_keeps_gaps",
       "workflow": "ci",
-      "covers": [
-        "NFR-SEC-001",
-        "FR-VALIDATE-001",
-        "NFR-DET-001"
-      ],
+      "covers": ["NFR-SEC-001", "FR-VALIDATE-001", "NFR-DET-001"],
       "description": "ha_matrix::ha22_manual_profile_without_hardware_keeps_gaps"
     },
     {
@@ -1725,11 +1540,7 @@
       "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
       "command": "cargo test -p archmaker-hardware --test ha_matrix ha23_policy_change_changes_digest",
       "workflow": "ci",
-      "covers": [
-        "NFR-SEC-001",
-        "FR-VALIDATE-001",
-        "NFR-DET-001"
-      ],
+      "covers": ["NFR-SEC-001", "FR-VALIDATE-001", "NFR-DET-001"],
       "description": "ha_matrix::ha23_policy_change_changes_digest"
     },
     {
@@ -1738,11 +1549,7 @@
       "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
       "command": "cargo test -p archmaker-hardware --test ha_matrix ha24_zero_writes_execution_not_executed_observed_ne_planned",
       "workflow": "ci",
-      "covers": [
-        "NFR-SEC-001",
-        "FR-VALIDATE-001",
-        "NFR-DET-001"
-      ],
+      "covers": ["NFR-SEC-001", "FR-VALIDATE-001", "NFR-DET-001"],
       "description": "ha_matrix::ha24_zero_writes_execution_not_executed_observed_ne_planned"
     },
     {
@@ -1751,11 +1558,7 @@
       "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
       "command": "cargo test -p archmaker-hardware --test ha_matrix ha25_browser_path_is_manual_origin",
       "workflow": "ci",
-      "covers": [
-        "NFR-SEC-001",
-        "FR-VALIDATE-001",
-        "NFR-DET-001"
-      ],
+      "covers": ["NFR-SEC-001", "FR-VALIDATE-001", "NFR-DET-001"],
       "description": "ha_matrix::ha25_browser_path_is_manual_origin"
     },
     {
@@ -1764,11 +1567,7 @@
       "location": "crates/archmaker-hardware/tests/ha_matrix.rs",
       "command": "cargo test -p archmaker-hardware --test ha_matrix ha15b_insufficient_identity_ambiguous",
       "workflow": "ci",
-      "covers": [
-        "NFR-SEC-001",
-        "FR-VALIDATE-001",
-        "NFR-DET-001"
-      ],
+      "covers": ["NFR-SEC-001", "FR-VALIDATE-001", "NFR-DET-001"],
       "description": "ha_matrix::ha15b_insufficient_identity_ambiguous"
     },
     {
@@ -1905,10 +1704,7 @@
       "location": "apps/web/forge-helpers.playwright.test.ts",
       "command": "cd apps/web && pnpm test forge-helpers.playwright",
       "workflow": "ci",
-      "covers": [
-        "FR-DRAFT-001",
-        "NFR-DET-001"
-      ],
+      "covers": ["FR-DRAFT-001", "NFR-DET-001"],
       "description": "Web test forge-helpers.playwright"
     },
     {
@@ -1917,10 +1713,7 @@
       "location": "apps/web/responsive-layout.playwright.test.ts",
       "command": "cd apps/web && pnpm test responsive-layout.playwright",
       "workflow": "ci",
-      "covers": [
-        "NFR-ACC-001",
-        "NFR-OFF-001"
-      ],
+      "covers": ["NFR-ACC-001", "NFR-OFF-001"],
       "description": "Web test responsive-layout.playwright"
     },
     {
@@ -1946,9 +1739,7 @@
       "location": "apps/web/a11y-playwright.test.ts",
       "command": "cd apps/web && pnpm test a11y-playwright",
       "workflow": "ci",
-      "covers": [
-        "NFR-ACC-001"
-      ],
+      "covers": ["NFR-ACC-001"],
       "description": "Web test a11y-playwright"
     },
     {
@@ -1974,9 +1765,7 @@
       "location": "apps/web/draft-persistence.playwright.test.ts",
       "command": "cd apps/web && pnpm test draft-persistence.playwright",
       "workflow": "ci",
-      "covers": [
-        "FR-DRAFT-001"
-      ],
+      "covers": ["FR-DRAFT-001"],
       "description": "Web test draft-persistence.playwright"
     },
     {
@@ -1985,10 +1774,7 @@
       "location": "apps/web/visual-regression.test.ts",
       "command": "cd apps/web && pnpm test visual-regression",
       "workflow": "ci",
-      "covers": [
-        "NFR-ACC-001",
-        "NFR-OFF-001"
-      ],
+      "covers": ["NFR-ACC-001", "NFR-OFF-001"],
       "description": "Web test visual-regression"
     },
     {
@@ -1997,9 +1783,7 @@
       "location": "apps/web/export-delivery.playwright.test.ts",
       "command": "cd apps/web && pnpm test export-delivery.playwright",
       "workflow": "ci",
-      "covers": [
-        "FR-EXPORT-001"
-      ],
+      "covers": ["FR-EXPORT-001"],
       "description": "Web test export-delivery.playwright"
     },
     {
@@ -2008,9 +1792,7 @@
       "location": "apps/web/consented-import.playwright.test.ts",
       "command": "cd apps/web && pnpm test consented-import.playwright",
       "workflow": "ci",
-      "covers": [
-        "FR-IMPORT-001"
-      ],
+      "covers": ["FR-IMPORT-001"],
       "description": "Web test consented-import.playwright"
     },
     {
@@ -2035,9 +1817,7 @@
       "location": "apps/web/wasm-offline.playwright.test.ts",
       "command": "cd apps/web && pnpm test wasm-offline.playwright",
       "workflow": "ci",
-      "covers": [
-        "NFR-OFF-001"
-      ],
+      "covers": ["NFR-OFF-001"],
       "description": "Web test wasm-offline.playwright"
     }
   ],
@@ -2048,9 +1828,7 @@
       "location": "tools/check_negative_capabilities.py",
       "command": "python3 tools/check_negative_capabilities.py",
       "workflow": "ci",
-      "covers": [
-        "NFR-SEC-001"
-      ],
+      "covers": ["NFR-SEC-001"],
       "description": "Validador check_negative_capabilities",
       "transversal": false
     },
@@ -2120,10 +1898,7 @@
       "location": "tools/validate_mig.py",
       "command": "python3 tools/validate_mig.py",
       "workflow": "ci",
-      "covers": [
-        "FR-IMPORT-001",
-        "NFR-MIG-001"
-      ],
+      "covers": ["FR-IMPORT-001", "NFR-MIG-001"],
       "description": "Validador validate_mig",
       "transversal": false
     },
@@ -2133,11 +1908,7 @@
       "location": "tools/validate_tauri_schemas.py",
       "command": "python3 tools/validate_tauri_schemas.py",
       "workflow": "ci",
-      "covers": [
-        "FR-DRAFT-001",
-        "FR-CAT-001",
-        "FR-MANIFEST-001"
-      ],
+      "covers": ["FR-DRAFT-001", "FR-CAT-001", "FR-MANIFEST-001"],
       "description": "Validador validate_tauri_schemas",
       "transversal": false
     },
@@ -2157,9 +1928,7 @@
       "location": "tools/check_product_naming.py",
       "command": "python3 tools/check_product_naming.py",
       "workflow": "ci",
-      "covers": [
-        "NFR-MARK-001"
-      ],
+      "covers": ["NFR-MARK-001"],
       "description": "Validador check_product_naming",
       "transversal": true
     },
@@ -2229,10 +1998,7 @@
       "location": "tools/canonicalize.py",
       "command": "python3 tools/canonicalize.py",
       "workflow": "ci",
-      "covers": [
-        "NFR-DET-001",
-        "FR-MANIFEST-001"
-      ],
+      "covers": ["NFR-DET-001", "FR-MANIFEST-001"],
       "description": "Validador canonicalize",
       "transversal": false
     },
@@ -2252,11 +2018,7 @@
       "location": "tools/validate_schema_refs.py",
       "command": "python3 tools/validate_schema_refs.py",
       "workflow": "ci",
-      "covers": [
-        "FR-DRAFT-001",
-        "FR-CAT-001",
-        "FR-MANIFEST-001"
-      ],
+      "covers": ["FR-DRAFT-001", "FR-CAT-001", "FR-MANIFEST-001"],
       "description": "Validador validate_schema_refs",
       "transversal": false
     },
@@ -2286,11 +2048,7 @@
       "location": "tools/test_validate_closure_jsonschema_pin.py",
       "command": "python3 tools/test_validate_closure_jsonschema_pin.py",
       "workflow": "ci",
-      "covers": [
-        "FR-DRAFT-001",
-        "FR-CAT-001",
-        "FR-MANIFEST-001"
-      ],
+      "covers": ["FR-DRAFT-001", "FR-CAT-001", "FR-MANIFEST-001"],
       "description": "Validador test_validate_closure_jsonschema_pin",
       "transversal": false
     },
