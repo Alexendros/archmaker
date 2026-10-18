@@ -139,6 +139,11 @@ src/styles/
 `@layer` fija la precedencia: `reset` < `tokens` < `base` < `layout` < `components` <
 `utilities` < `overrides`. Una capa solo contiene lo que le corresponde.
 
+**Entrega web (Forge / Vite):** con CSP `style-src 'self'` (DEC-009), el runtime no inyecta
+`<style>` desde `import` de CSS. Tokens + monolito `apps/web/src/styles.css` se sirven como
+`<link rel="stylesheet" href="/forge-face.css">` (plugin Vite). La capa `overrides` en el
+monolito queda vacía salvo excepción `AUD-*` documentada (post-#172).
+
 | Capa       | Contiene                                    | No contiene                         | Ejemplo                             |
 | ---------- | ------------------------------------------- | ----------------------------------- | ----------------------------------- |
 | reset      | normalización de agente de usuario          | tokens ni estilos de marca          | `box-sizing`, `margin: 0`           |

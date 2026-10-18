@@ -7,6 +7,8 @@ approvalStatus: pending
 implementationStatus: not-started
 verificationStatus: not-verified
 releaseStatus: ineligible
+# historical-cara: cuerpo «Cara y pasos» / preguntas Sencillo-Avanzado = pre-Forge;
+# as-built vigente en docs/10-delivery/closure/ y apps/web (RAIL_STEPS).
 owners:
   - architecture
   - release
@@ -35,7 +37,7 @@ dependsOn:
 
 1. La autoridad de alcance es DOC-DEL-MVP5-001. Este documento detalla el hueco; no redefine el alcance.
 2. La semántica vive en Rust. Las listas de `apps/web/src/forge-face.ts` son presentación duplicada, no una segunda fuente.
-3. La cara a conectar es `/home/alexendros/Aplicaciones/Repertorio/archmaker_forge.html` (16 oct, fuera del repo). `reference/v5.1/` sigue inmutable; el canon de opciones sigue siendo [`docs/12-research/html-catalog-matrix.md`](../12-research/html-catalog-matrix.md), regenerado desde `reference/v5.1/index.html`.
+3. Referencia visual histórica (fuera del repo): `/home/alexendros/Aplicaciones/Repertorio/archmaker_neubat.html` (nombre de archivo conservado; no es norma G6). Runtime: `apps/web/`. `reference/v5.1/` sigue inmutable; el canon de opciones sigue siendo [`docs/12-research/html-catalog-matrix.md`](../12-research/html-catalog-matrix.md), regenerado desde `reference/v5.1/index.html`.
 4. Versiones y megabytes del HTML siguen «no verificada» (CON-011). Kernel 7.1.2, tamaños y refs pacman literales no entran al catálogo como hechos.
 5. ADR-0011 permanece `proposed`. No se crean esquemas de cláusula nuevos.
 6. MockCorePort del baseline MVP-4 se queda. La paridad posterior es la de las operaciones CorePort que ya existen, en Tauri y WASM.
@@ -74,13 +76,15 @@ Dejar escrito qué falta para el slice MVP-5 respecto del baseline `implementati
 
 Cuando el alcance esté `accepted`, el producto debe poder seleccionar, resolver, validar y exportar un draft con las opciones de la matriz, sin escribir imagen ni llamar a pacman. Hasta ese acto, nadie implementa el slice: el propio alcance lo dice en el criterio de salida.
 
-## Cara y pasos
+## Cara y pasos (histórico pre-Forge; no as-built)
 
-La cara externa y la UI actual (`RAIL_STEPS` en `forge-face.ts`) muestran seis pasos: Intención, Sistema base, Entorno, Apps, Identidad, Revisión, más Sencillo/Avanzado.
+> **No as-built.** La cara vigente (2026-10-17+) es experiencia única: Disco y particiones → Sistema base → Entorno → Apps → Identidad y seguridad → Revisión. Sin Sencillo/Avanzado. Ver banner superior y `docs/10-delivery/closure/honest-ux.md`.
 
-El canon semántico de MVP-5 son cinco pasos de la matriz: base, environment, libpacks, apps, build. Intención, identidad, revisión y el modo Sencillo/Avanzado siguen siendo presentación. `archmaker.face.intent`, `archmaker.face.hostname` y `archmaker.face.encrypt` no se promueven a entidades de catálogo. La pantalla de laboratorio puede quedar como prueba, como ya permite el alcance.
+Texto histórico (estado _previo_ al incremento Forge): la cara externa y la UI de entonces listaban Intención, Sistema base, Entorno, Apps, Identidad, Revisión, más Sencillo/Avanzado.
 
-Sencillo/Avanzado no añade una regla. Oculta en la vista opciones ya clasificadas. Si el catálogo no tiene el atributo que distingue DE de WM, o la capa que el modo sencillo enseña, ese atributo es un hueco explícito de `catalog-matrix`, no un filtro nuevo en TypeScript ni una regla R005.
+El canon semántico de MVP-5 siguen siendo cinco pasos de la matriz: base, environment, libpacks, apps, build. Identidad/revisión y (históricamente) Intención/modo dual son o fueron presentación; `archmaker.face.intent`, `archmaker.face.hostname` y `archmaker.face.encrypt` no se promueven a entidades de catálogo.
+
+Sencillo/Avanzado (histórico) no añadía una regla: solo ocultaba opciones. El atributo ausente DE/WM o capa es hueco de `catalog-matrix`, no filtro nuevo en TypeScript ni R005. **Cerrado en cara:** no se restaura el modo dual.
 
 Controles de la cara que no tienen fila en la matriz no se inventan: se dejan sin opción de catálogo.
 
@@ -156,7 +160,7 @@ Rust sigue siendo la única autoridad semántica. TypeScript declara la frontera
 ## Preguntas abiertas
 
 - Quién firma MVP-5-01. No es un cambio que este documento aplique solo.
-- Si, al aceptar el alcance, Sencillo/Avanzado se queda como filtro de vista o pasa a metadato de catálogo. Recomendación de esta spec: filtro de vista; el atributo ausente es hueco, no regla nueva.
+- ~~Si Sencillo/Avanzado se queda como filtro de vista o metadato de catálogo.~~ **Cerrada (cara Forge):** experiencia única; sin modo dual. El atributo ausente DE/WM sigue siendo hueco de catálogo, no regla nueva.
 
 ## Trazabilidad
 

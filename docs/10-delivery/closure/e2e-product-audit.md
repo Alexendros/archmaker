@@ -20,41 +20,41 @@ dependsOn:
 
 ## Alcance verificable (CONDITIONAL-CLEAR)
 
-| Verificable | Fuera de alcance |
-| --- | --- |
-| Recorrido Forge 6 pasos | Imagen Arch real / ISO |
+| Verificable                                                         | Fuera de alcance              |
+| ------------------------------------------------------------------- | ----------------------------- |
+| Recorrido Forge 6 pasos                                             | Imagen Arch real / ISO        |
 | Controles esenciales (rail, cabecera, Continuar, Generar, Exportar) | root, discos, pacstrap, shell |
-| `archmaker-profile` bytes íntegros | Instalación en hardware |
-| SHA-256(archivo) == `binaryDigest` (toast) | Runner / sidecars |
-| Fidelidad F3: hostname + cifrado como **intención** | «La imagen se instala» |
+| `archmaker-profile` bytes íntegros                                  | Instalación en hardware       |
+| SHA-256(archivo) == `binaryDigest` (toast)                          | Runner / sidecars             |
+| Fidelidad F3: hostname + cifrado como **intención**                 | «La imagen se instala»        |
 
 Si el operador pide «imagen se instala»: no aplica bajo el veredicto vigente. Se verifica en su lugar la paridad **selección → export → digest**.
 
 ## Inventario (apps/web)
 
-Pasos (`RAIL_STEPS`): Intención → Sistema base → Entorno → Apps → Identidad → Revisión.
+Pasos (`RAIL_STEPS`): Disco y particiones → Sistema base → Entorno → Apps → Identidad y seguridad → Revisión (experiencia única; sin Sencillo/Avanzado). Ver `honest-ux.md`.
 
 Controles esenciales: ver `ESSENTIAL_CONTROLS` en `apps/web/e2e-fidelity-helpers.ts` (asserido en mock-flow).
 
 ## Pruebas
 
-| Suite | Qué cubre |
-| --- | --- |
-| `mock-flow.playwright.test.ts` | Inventario + ejercicio F3 mock |
-| `wasm-flow.playwright.test.ts` | Motor real + digest + ejercicio F3 WASM |
-| `product-acceptance.playwright.test.ts` | P5: T-MIG sesión/cuota, teclado, stale/reentrada |
-| `consented-import` / `export-delivery` / `a11y` | F4 / F2 / axe (ya existentes) |
-| `pnpm --dir apps/web test-e2e:fidelity` | Subconjunto inventario + F3 mock |
-| `pnpm --dir apps/web test-f7:e2e-wasm-x3` | Tres invocaciones WASM separadas |
+| Suite                                           | Qué cubre                                        |
+| ----------------------------------------------- | ------------------------------------------------ |
+| `mock-flow.playwright.test.ts`                  | Inventario + ejercicio F3 mock                   |
+| `wasm-flow.playwright.test.ts`                  | Motor real + digest + ejercicio F3 WASM          |
+| `product-acceptance.playwright.test.ts`         | P5: T-MIG sesión/cuota, teclado, stale/reentrada |
+| `consented-import` / `export-delivery` / `a11y` | F4 / F2 / axe (ya existentes)                    |
+| `pnpm --dir apps/web test-e2e:fidelity`         | Subconjunto inventario + F3 mock                 |
+| `pnpm --dir apps/web test-f7:e2e-wasm-x3`       | Tres invocaciones WASM separadas                 |
 
 ## Escritorio (F5)
 
-| Comprobación | Resultado |
-| --- | --- |
-| `pnpm --dir apps/web` vite build → `apps/web/dist` | ok (corrida documentada; asociar a `sourceSha` + `RUN_ID` en evidencia externa) |
-| `cargo build -p archmaker` → ELF `target/debug/archmaker` | ok |
-| Tests unitarios `save_export*` (picker simulado) | ok (suite lib) |
-| Humo GUI interactivo del diálogo `rfd` | **no ejecutado** — requiere portal de escritorio estable; no se lanza GUI en el agent |
+| Comprobación                                              | Resultado                                                                             |
+| --------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| `pnpm --dir apps/web` vite build → `apps/web/dist`        | ok (corrida documentada; asociar a `sourceSha` + `RUN_ID` en evidencia externa)       |
+| `cargo build -p archmaker` → ELF `target/debug/archmaker` | ok                                                                                    |
+| Tests unitarios `save_export*` (picker simulado)          | ok (suite lib)                                                                        |
+| Humo GUI interactivo del diálogo `rfd`                    | **no ejecutado** — requiere portal de escritorio estable; no se lanza GUI en el agent |
 
 Lógica de cancelar/sobrescribir/atómico: `f5-desktop-notes.md` + tests Tauri. Web verifica descarga + digest (paridad selección→export).
 
