@@ -50,7 +50,9 @@
 - `reference/v5.1/` es evidencia inmutable verificada por SHA-256. La UI React vive en `apps/web/` (`forge-face.ts`); el dominio está en `crates/archmaker-core` y se expone por CorePort.
 - Arranque de adaptadores vía `apps/web/src/create-core-port.ts`: Desktop → TauriCorePort (`invoke` de `@tauri-apps/api/core`); navegador → WasmCorePort (`tools/build-wasm.sh`); MockCorePort solo con `?mock=1` u opt-in explícito, nunca por fallo silencioso de Tauri/WASM.
 - ADR-0011 (propuesto, `in-review`): la selección del configurador produce un contrato JSON de aplicación; cada cláusula tiene schema en `contracts/json-schema/`, issue `kind:clause` y tests verificados en Rust. No añade target de imagen.
-- Alcance declarativo Forge (draft): `docs/10-delivery/forge-declarative-scope.md`. ADR-0013…0018 (UKI ESP, estados ortogonales, handles, digests v2, ONLYOFFICE/navegadores, A6 excluida). No reescribe `mvp5-scope.md`.
+- Alcance declarativo Forge (draft): `docs/10-delivery/forge-declarative-scope.md`. ADR-0013…0018 (UKI ESP, estados ortogonales, handles, digests v2, ONLYOFFICE/navegadores, A6 excluida). No reescribe `mvp5-scope.md`. Mantener `executionStatus=not-executed` en ese alcance.
+- Cadena de integridad Forge (selección → documento persistido → motor → resolución/validación → UI efectiva → export → reimportación). Registro: `docs/10-delivery/closure/forge-integrity-findings-2026-10-18.md`; matriz: `docs/10-delivery/closure/forge-acceptance-matrix.md`. `StorageIntent` y campos v2 deben llegar íntegros al borrador/`draftForCore`/export; TypeScript no inventa semántica.
+- En `apps/web` con Vite, la CSP (`style-src 'self'`) exige CSS por `<link>` a `/forge-face.css` (plugin Vite); inyectar `<style>` inline deja la cara sin estilos.
 - La revisión auditada de arranque (UEFI / systemd-boot) vive en `docs/12-research/bootloader-review.md`.
 - La referencia visual histórica de la cara vive fuera del repo, en `/home/alexendros/Aplicaciones/Repertorio/archmaker_neubat.html` (no en Descargas); el nombre de ese archivo se conserva.
 - Archify es la herramienta externa de diagramación; no es el producto, el motor ni la GUI.
