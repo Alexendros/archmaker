@@ -9,7 +9,7 @@
     "Cargo.toml": "58bb5637b8fe88ef55b8f96ab1b2e6680556530158bced5b6635d2f947764c63",
     "README.md": "dc0f3af9eecf7432b672d559fb9aee5db7c25742e7f61642513e0b069562a155",
     "apps/web/package.json": "6da69deab35891dfefd64c54a9434f624e1e653ad8abd4c0d99d9c1e98d88418",
-    "apps/web/src/App.tsx": "f0f1999a228a4e2b6564363bc1a112777c5e9457524598406ce9abbf94724198",
+    "apps/web/src/App.tsx": "8a6a207853e91f18fe6950ed893bca276f10805f1c96a2d6589f412c85a0efff",
     "apps/web/src/coreport.ts": "719cc9a4a881ff8f602c88c54cd426678efe38c5e9f5331f152a9bd72f6368ce",
     "apps/web/src/create-core-port.ts": "a05bad12eb740832bedd1700f72cf1fdf87973305eb89a37723086b103048754",
     "apps/web/src/draft-for-core.ts": "91b6305f5a321afdd7ca0f88b4bde2953f1d44beee9b320884364e55eb7ac460",

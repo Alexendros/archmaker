@@ -30,6 +30,7 @@ export function useDialogFocusTrap(
       document.getElementById("inspector"),
       document.querySelector<HTMLElement>(".forge-header"),
       document.querySelector<HTMLElement>(".forge-rail"),
+      document.querySelector<HTMLElement>(".forge-stepper"),
     ].filter((el): el is HTMLElement => Boolean(el));
 
     for (const el of inertTargets) {
