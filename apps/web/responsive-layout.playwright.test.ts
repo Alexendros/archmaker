@@ -9,16 +9,19 @@ const VIEWPORTS = [
   { name: "1440", width: 1440, height: 900 },
 ] as const;
 
+/** CSS de cara vía /forge-face.css (CSP style-src 'self'; sin <style> de Vite). */
 async function layoutCssSource(page: {
-  evaluate: (fn: () => string) => Promise<string>;
+  request: {
+    get: (
+      url: string,
+    ) => Promise<{ ok: () => boolean; text: () => Promise<string> }>;
+  };
+  url: () => string;
 }): Promise<string> {
-  return page.evaluate(() => {
-    const parts: string[] = [];
-    for (const el of document.querySelectorAll("style")) {
-      parts.push(el.textContent ?? "");
-    }
-    return parts.join("\n");
-  });
+  const origin = new URL(page.url()).origin;
+  const res = await page.request.get(`${origin}/forge-face.css`);
+  expect(res.ok()).toBe(true);
+  return res.text();
 }
 
 test.describe("Forge — responsive-layout", () => {
@@ -56,11 +59,11 @@ test.describe("Forge — responsive-layout", () => {
 
       await expect(page.locator("#step-rail")).toBeAttached();
       await expect(page.locator("#step-stepper")).toBeAttached();
-      const railOrStepper = page
-        .locator("#step-rail, #step-stepper")
-        .locator("button")
+      // Rail y stepper coexisten en DOM; solo uno es visible por viewport (CSS).
+      const visibleNavButton = page
+        .locator("#step-rail:visible button, #step-stepper:visible button")
         .first();
-      await expect(railOrStepper).toBeVisible();
+      await expect(visibleNavButton).toBeVisible();
 
       await page.keyboard.press("Control+k");
       await expect(page.getByRole("dialog")).toBeVisible();
@@ -85,9 +88,7 @@ test.describe("Forge — responsive-layout", () => {
     ).toBeVisible();
 
     const css = await layoutCssSource(page);
-    expect(css).toMatch(
-      /\.forge-shell\s*\{[^}]*minmax\(\s*0\s*,\s*1fr\s*\)/s,
-    );
+    expect(css).toMatch(/\.forge-shell\s*\{[^}]*minmax\(\s*0\s*,\s*1fr\s*\)/s);
     expect(css).toMatch(/minmax\(\s*12rem\s*,\s*17\.5rem\s*\)/);
     expect(css).toMatch(/minmax\(\s*14rem\s*,\s*22\.5rem\s*\)/);
     expect(css).not.toMatch(/max-width:\s*56rem/);

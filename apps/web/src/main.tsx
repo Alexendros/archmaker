@@ -1,7 +1,8 @@
 import { createRoot } from "react-dom/client";
 import { App } from "./App.js";
 import { createCorePort } from "./create-core-port.js";
-import "./styles.css";
+/* Estilos vía <link href="/forge-face.css"> (plugin Vite): CSP style-src 'self'
+   sin <style> inyectado. El @import de tokens vive en styles.css para el plugin. */
 
 function renderBootError(message: string): void {
   const root = document.getElementById("root");

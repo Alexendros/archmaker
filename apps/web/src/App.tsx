@@ -203,6 +203,7 @@ export function App({ port, portKind }: Props) {
   const [cmdOpen, setCmdOpen] = useState(false);
   const [glossaryOpen, setGlossaryOpen] = useState(false);
   const [ready, setReady] = useState(false);
+  const [bootError, setBootError] = useState<string | null>(null);
   const [persistStatus, setPersistStatus] = useState<PersistStatus>("idle");
   const [persistExportable, setPersistExportable] = useState<string | null>(
     null,
@@ -337,6 +338,8 @@ export function App({ port, portKind }: Props) {
       const loaded = await port.loadCatalog({ source: "embedded" });
       if (cancelled) return;
       if (!loaded.ok) {
+        const msg = `Cargar catálogo: ${loaded.error.code} (${loaded.error.messageKey})`;
+        setBootError(msg);
         fail(loaded.error, "Cargar catálogo");
         return;
       }
@@ -378,6 +381,8 @@ export function App({ port, portKind }: Props) {
       });
       if (cancelled) return;
       if (!res.ok) {
+        const msg = `Crear draft: ${res.error.code} (${res.error.messageKey})`;
+        setBootError(msg);
         fail(res.error, "Crear draft");
         return;
       }
@@ -391,6 +396,8 @@ export function App({ port, portKind }: Props) {
       });
       if (cancelled) return;
       if (!saved.ok) {
+        const msg = `Guardar selecciones iniciales: ${saved.error.code} (${saved.error.messageKey})`;
+        setBootError(msg);
         fail(saved.error, "Guardar selecciones iniciales");
         return;
       }
@@ -741,6 +748,7 @@ export function App({ port, portKind }: Props) {
   }
 
   function goToStep(index: number): void {
+    if (!ready || bootError) return;
     const next = Math.min(RAIL_STEPS.length - 1, Math.max(0, index));
     setVisited((prev) => new Set(prev).add(next));
     // H13: visitar un paso no elimina su invalidez; solo una corrección o
@@ -785,12 +793,38 @@ export function App({ port, portKind }: Props) {
         onGenerate={() => void onGenerate()}
       />
       <div className="forge-shell">
-        <ForgeRail step={step} progress={stepProgress} onSelect={goToStep} />
-        <ForgeStepper step={step} progress={stepProgress} onSelect={goToStep} />
-        <main id="main" className="forge-main" tabIndex={-1}>
-          {!ready ? <p role="status">Preparando draft…</p> : null}
+        <ForgeRail
+          step={step}
+          progress={stepProgress}
+          onSelect={goToStep}
+          disabled={!ready || Boolean(bootError)}
+        />
+        <ForgeStepper
+          step={step}
+          progress={stepProgress}
+          onSelect={goToStep}
+          disabled={!ready || Boolean(bootError)}
+        />
+        <main
+          id="main"
+          className="forge-main"
+          tabIndex={-1}
+          aria-busy={!ready && !bootError ? true : undefined}
+        >
+          {bootError ? (
+            <section className="forge-boot-error" role="alert">
+              <h1>No se pudo preparar el perfil</h1>
+              <p>{bootError}</p>
+              <p>
+                Recarga la página o comprueba el motor (Tauri/WASM). El
+                simulador solo se activa con <code>?mock=1</code> de forma
+                explícita.
+              </p>
+            </section>
+          ) : null}
+          {!ready && !bootError ? <p role="status">Preparando draft…</p> : null}
 
-          {step === 0 ? (
+          {ready && !bootError && step === 0 ? (
             <section aria-labelledby="storage-h">
               <h1 id="storage-h">Disco y particiones</h1>
               <p className="forge-lead">
@@ -881,7 +915,7 @@ export function App({ port, portKind }: Props) {
             </section>
           ) : null}
 
-          {step === 1 ? (
+          {ready && !bootError && step === 1 ? (
             <section aria-labelledby="base-h">
               <h2 id="base-h">Sistema base</h2>
               <p className="forge-lead">
@@ -1005,7 +1039,7 @@ export function App({ port, portKind }: Props) {
             </section>
           ) : null}
 
-          {step === 2 ? (
+          {ready && !bootError && step === 2 ? (
             <section aria-labelledby="env-h">
               <div className="forge-heading-row">
                 <h2 id="env-h">Entorno gráfico</h2>
@@ -1078,7 +1112,7 @@ export function App({ port, portKind }: Props) {
             </section>
           ) : null}
 
-          {step === 3 ? (
+          {ready && !bootError && step === 3 ? (
             <section aria-labelledby="apps-h">
               <h2 id="apps-h">Apps y paquetes</h2>
               <p className="forge-lead">
@@ -1169,7 +1203,7 @@ export function App({ port, portKind }: Props) {
             </section>
           ) : null}
 
-          {step === 4 ? (
+          {ready && !bootError && step === 4 ? (
             <section aria-labelledby="id-h">
               <h2 id="id-h">Identidad y seguridad</h2>
               <div className="forge-stack forge-narrow">
@@ -1228,7 +1262,7 @@ export function App({ port, portKind }: Props) {
             </section>
           ) : null}
 
-          {step === 5 ? (
+          {ready && !bootError && step === 5 ? (
             <section aria-labelledby="review-h">
               <h2 id="review-h">Revisión</h2>
               <div className="forge-callout forge-callout-info">

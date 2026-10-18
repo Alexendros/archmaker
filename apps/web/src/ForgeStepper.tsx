@@ -5,15 +5,18 @@ type Props = {
   step: number;
   progress: StepProgress[];
   onSelect: (index: number) => void;
+  /** Sin draft listo: navegación inerte (CSP/boot gate). */
+  disabled?: boolean;
 };
 
 /** Stepper horizontal cuando el rail lateral se oculta. */
-export function ForgeStepper({ step, progress, onSelect }: Props) {
+export function ForgeStepper({ step, progress, onSelect, disabled }: Props) {
   return (
     <nav
       className="forge-stepper"
       aria-label="Pasos del configurador (compacto)"
       id="step-stepper"
+      aria-disabled={disabled || undefined}
     >
       <ol className="forge-stepper-list">
         {RAIL_STEPS.map((s, i) => {
@@ -27,6 +30,7 @@ export function ForgeStepper({ step, progress, onSelect }: Props) {
                 aria-current={active ? "step" : undefined}
                 data-step-progress={status}
                 title={s.title}
+                disabled={disabled}
                 onClick={() => onSelect(i)}
               >
                 <span className="forge-stepper-num" aria-hidden="true">

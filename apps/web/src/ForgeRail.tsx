@@ -5,6 +5,8 @@ type Props = {
   step: number;
   progress: StepProgress[];
   onSelect: (index: number) => void;
+  /** Sin draft listo: navegación inerte (CSP/boot gate). */
+  disabled?: boolean;
 };
 
 function progressLabel(p: StepProgress): string {
@@ -28,12 +30,13 @@ function progressMark(p: StepProgress, index: number): string {
   return String(index + 1);
 }
 
-export function ForgeRail({ step, progress, onSelect }: Props) {
+export function ForgeRail({ step, progress, onSelect, disabled }: Props) {
   return (
     <nav
       className="forge-rail"
       aria-label="Pasos del configurador"
       id="step-rail"
+      aria-disabled={disabled || undefined}
     >
       <ol>
         {RAIL_STEPS.map((s, i) => {
@@ -46,6 +49,7 @@ export function ForgeRail({ step, progress, onSelect }: Props) {
                 className={`forge-rail-item is-${status}${active ? " is-current" : ""}`}
                 aria-current={active ? "step" : undefined}
                 data-step-progress={status}
+                disabled={disabled}
                 onClick={() => onSelect(i)}
               >
                 <span className="forge-rail-num" aria-hidden="true">
