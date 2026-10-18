@@ -236,4 +236,64 @@ test.describe("storage-plan-face H01/H02", () => {
     });
     expect(plan?.planStatus).toBe("not-certifiable");
   });
+
+  test("H01: storagePlan sobrevive withFaceV2Fields → draftForCore", async () => {
+    const { withFaceV2Fields } = await import("./src/storage-plan-face.js");
+    const intent = {
+      mode: "new-disk" as const,
+      intentAcknowledged: true,
+      lossRiskAcknowledged: false,
+      uiState: "proposed" as const,
+    };
+    const projected = withFaceV2Fields(emptyDraft(), intent);
+    const forCore = draftForCore(projected);
+    expect(forCore.storagePlan?.mode).toBe("new-disk");
+    expect(forCore.storagePlan?.intentAcknowledged).toBe(true);
+    expect(forCore.verification?.planValidationStatus).toBe("not-validated");
+    expect(forCore.verification?.executionStatus).toBe("not-executed");
+  });
+});
+
+test.describe("catalog-view H06", () => {
+  test("título del catálogo prevalece sobre la constante de cara", async () => {
+    const { mergeFaceOptionsFromCatalog, parseCatalogView } =
+      await import("./src/catalog-view.js");
+    const { KERNELS, STEP_IDS: ids } = await import("./src/forge-face.js");
+    const faceLinux = KERNELS.find(
+      (k) => k.optionId === "archmaker.kernel.linux",
+    );
+    expect(faceLinux?.title).toBeTruthy();
+
+    const catalog = parseCatalogView({
+      namespace: "archmaker.core",
+      id: "desktop",
+      version: "test",
+      steps: [
+        {
+          id: ids.kernel,
+          title: "Kernel",
+          options: [
+            {
+              id: "archmaker.kernel.linux",
+              title: "Linux-FROM-CATALOG-FIXTURE",
+              description: "desde catálogo",
+            },
+            {
+              id: "archmaker.kernel.linux-lts",
+              title: "LTS-FROM-CATALOG",
+            },
+          ],
+        },
+      ],
+    });
+    expect(catalog).not.toBeNull();
+    const merged = mergeFaceOptionsFromCatalog(catalog, ids.kernel, KERNELS);
+    expect(merged.map((o) => o.optionId)).toEqual([
+      "archmaker.kernel.linux",
+      "archmaker.kernel.linux-lts",
+    ]);
+    expect(merged[0]?.title).toBe("Linux-FROM-CATALOG-FIXTURE");
+    expect(merged[0]?.title).not.toBe(faceLinux!.title);
+    expect(merged[0]?.description).toBe(faceLinux!.description);
+  });
 });

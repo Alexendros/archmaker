@@ -309,21 +309,42 @@ fn t42_unverified_request_kept_not_certified_support() {
             request_id: None,
         })
         .expect("validate");
-    let mentions_unverified = validated.diagnostics.iter().any(|d| {
-        d.message_key.contains("unverified")
-            || d.code.contains("UNVER")
-            || d.path.contains("grokbot")
-            || d.blocking
+    // H16: no basta con «cualquier diagnóstico»; exige AM-PROV-001 concreto.
+    let unverified_diag = validated.diagnostics.iter().find(|d| {
+        d.code == "AM-PROV-001" && d.message_key == "diagnostic.unverifiedProviderSelected"
     });
     assert!(
-        validated.blocking || mentions_unverified || !validated.diagnostics.is_empty(),
-        "validate debe señalar la solicitud no verificada (blocking={}, diags={:?})",
-        validated.blocking,
+        unverified_diag.is_some(),
+        "validate debe emitir AM-PROV-001 para grokbot (diags={:?})",
         validated
             .diagnostics
             .iter()
-            .map(|d| (&d.code, &d.message_key))
+            .map(|d| (&d.code, &d.message_key, &d.path))
             .collect::<Vec<_>>()
+    );
+    assert!(
+        unverified_diag.unwrap().blocking,
+        "AM-PROV-001 debe ser blocking"
+    );
+    assert!(
+        unverified_diag.unwrap().path.contains("grokbot"),
+        "path debe citar la opción no verificada"
+    );
+    assert!(
+        validated.blocking,
+        "validate.blocking debe ser true con solicitud no verificada"
+    );
+    // Ausencia de certificación: buildManifest no sella un perfil plenamente soportado.
+    let build = core.build_manifest(BuildManifestInput {
+        draft: draft.clone(),
+        catalog_ref: catalog_ref.clone(),
+        target_ref: export_target(),
+        expected_resolution_digest: None,
+        request_id: None,
+    });
+    assert!(
+        build.is_err(),
+        "manifiesto no debe sellarse con solicitud no verificada certificada"
     );
     assert!(
         draft
