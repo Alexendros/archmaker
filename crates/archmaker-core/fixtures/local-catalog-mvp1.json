@@ -27,10 +27,7 @@
             {
               "id": "archmaker.kernel.linux",
               "title": "Linux",
-              "provides": [
-                "fs.ext4",
-                "fs.btrfs"
-              ],
+              "provides": ["fs.ext4", "fs.btrfs"],
               "provider": {
                 "channel": "core",
                 "packageId": "linux",
@@ -43,10 +40,7 @@
             {
               "id": "archmaker.kernel.linux-lts",
               "title": "Linux LTS",
-              "provides": [
-                "fs.ext4",
-                "fs.btrfs"
-              ],
+              "provides": ["fs.ext4", "fs.btrfs"],
               "provider": {
                 "channel": "core",
                 "packageId": "linux-lts",
@@ -60,10 +54,7 @@
             {
               "id": "archmaker.kernel.zen",
               "title": "Linux Zen",
-              "provides": [
-                "fs.ext4",
-                "fs.btrfs"
-              ],
+              "provides": ["fs.ext4", "fs.btrfs"],
               "provider": {
                 "channel": "extra",
                 "packageId": "linux-zen",
@@ -76,13 +67,8 @@
             {
               "id": "archmaker.kernel.linux-hardened",
               "title": "Linux Hardened",
-              "provides": [
-                "fs.ext4",
-                "fs.btrfs"
-              ],
-              "tags": [
-                "cmd-no-migrable"
-              ],
+              "provides": ["fs.ext4", "fs.btrfs"],
+              "tags": ["cmd-no-migrable"],
               "provider": {
                 "channel": "extra",
                 "packageId": "linux-hardened",
@@ -109,16 +95,12 @@
             {
               "id": "archmaker.filesystem.btrfs",
               "title": "Btrfs",
-              "provides": [
-                "fs.btrfs"
-              ]
+              "provides": ["fs.btrfs"]
             },
             {
               "id": "archmaker.filesystem.ext4",
               "title": "Ext4",
-              "provides": [
-                "fs.ext4"
-              ]
+              "provides": ["fs.ext4"]
             }
           ]
         }
@@ -181,9 +163,7 @@
             {
               "id": "archmaker.compositor.gnome",
               "title": "GNOME",
-              "tags": [
-                "DE"
-              ],
+              "tags": ["DE"],
               "provider": {
                 "channel": "extra",
                 "packageId": "gnome-shell",
@@ -197,9 +177,7 @@
             {
               "id": "archmaker.compositor.hyprland",
               "title": "Hyprland",
-              "tags": [
-                "WM"
-              ],
+              "tags": ["WM"],
               "provider": {
                 "channel": "extra",
                 "packageId": "hyprland",
@@ -212,9 +190,7 @@
             {
               "id": "archmaker.compositor.sway",
               "title": "Sway",
-              "tags": [
-                "WM"
-              ],
+              "tags": ["WM"],
               "provider": {
                 "channel": "extra",
                 "packageId": "sway",
@@ -227,9 +203,7 @@
             {
               "id": "archmaker.compositor.cosmic",
               "title": "COSMIC",
-              "tags": [
-                "DE"
-              ],
+              "tags": ["DE"],
               "provider": {
                 "channel": "extra",
                 "packageId": "cosmic-session",
@@ -242,9 +216,7 @@
             {
               "id": "archmaker.compositor.kde",
               "title": "KDE Plasma",
-              "tags": [
-                "DE"
-              ],
+              "tags": ["DE"],
               "provider": {
                 "channel": "extra",
                 "packageId": "plasma-meta",
@@ -257,9 +229,7 @@
             {
               "id": "archmaker.compositor.cinnamon",
               "title": "Cinnamon",
-              "tags": [
-                "DE"
-              ],
+              "tags": ["DE"],
               "provider": {
                 "channel": "extra",
                 "packageId": "cinnamon",
@@ -272,9 +242,7 @@
             {
               "id": "archmaker.compositor.xfce",
               "title": "XFCE",
-              "tags": [
-                "DE"
-              ],
+              "tags": ["DE"],
               "provider": {
                 "channel": "extra",
                 "packageId": "xfce4-session",
@@ -287,9 +255,7 @@
             {
               "id": "archmaker.compositor.budgie",
               "title": "Budgie",
-              "tags": [
-                "DE"
-              ],
+              "tags": ["DE"],
               "provider": {
                 "channel": "extra",
                 "packageId": "budgie-desktop",
@@ -302,9 +268,7 @@
             {
               "id": "archmaker.compositor.i3",
               "title": "i3",
-              "tags": [
-                "WM"
-              ],
+              "tags": ["WM"],
               "provider": {
                 "channel": "extra",
                 "packageId": "i3-wm",
@@ -381,10 +345,7 @@
             {
               "id": "archmaker.pkg.onlyoffice-bin",
               "title": "OnlyOffice",
-              "tags": [
-                "no-redistribuible-candidato",
-                "onlyoffice-canonical"
-              ],
+              "tags": ["no-redistribuible-candidato", "onlyoffice-canonical"],
               "provider": {
                 "channel": "aur",
                 "packageId": "onlyoffice-bin",
@@ -395,9 +356,7 @@
                 "revision": "10.0.0-1",
                 "note": "AUR; described, not installed by Forge."
               },
-              "aliases": [
-                "archmaker.app.onlyoffice-standalone"
-              ]
+              "aliases": ["archmaker.app.onlyoffice-standalone"]
             },
             {
               "id": "archmaker.pkg.pdfarranger",
@@ -524,9 +483,7 @@
             {
               "id": "archmaker.browser.firefox",
               "title": "Firefox",
-              "provides": [
-                "pkg.firefox"
-              ],
+              "provides": ["pkg.firefox"],
               "browserBase": "Firefox/Mozilla",
               "renderingEngine": "Gecko",
               "provider": {
@@ -542,9 +499,7 @@
             {
               "id": "archmaker.browser.vivaldi",
               "title": "Vivaldi",
-              "provides": [
-                "pkg.vivaldi"
-              ],
+              "provides": ["pkg.vivaldi"],
               "browserBase": "Chromium",
               "renderingEngine": "Blink",
               "provider": {
@@ -559,9 +514,7 @@
             {
               "id": "archmaker.browser.brave",
               "title": "Brave",
-              "provides": [
-                "pkg.brave"
-              ],
+              "provides": ["pkg.brave"],
               "browserBase": "Chromium",
               "renderingEngine": "Blink",
               "provider": {
@@ -573,16 +526,12 @@
                 "architecture": "x86_64",
                 "note": "AUR; described, not installed by Forge."
               },
-              "tags": [
-                "no-redistribuible-candidato"
-              ]
+              "tags": ["no-redistribuible-candidato"]
             },
             {
               "id": "archmaker.browser.zen",
               "title": "Zen Browser",
-              "provides": [
-                "pkg.zen-browser"
-              ],
+              "provides": ["pkg.zen-browser"],
               "browserBase": "Firefox",
               "renderingEngine": "Gecko",
               "provider": {
@@ -595,9 +544,7 @@
                 "revision": "1.23.2b-1",
                 "note": "AUR; described, not installed by Forge."
               },
-              "tags": [
-                "no-redistribuible-candidato"
-              ]
+              "tags": ["no-redistribuible-candidato"]
             }
           ]
         }
@@ -616,9 +563,7 @@
             {
               "id": "archmaker.app.discord",
               "title": "Discord",
-              "provides": [
-                "pkg.discord"
-              ],
+              "provides": ["pkg.discord"],
               "provider": {
                 "channel": "extra",
                 "packageId": "discord",
@@ -631,9 +576,7 @@
             {
               "id": "archmaker.app.telegram",
               "title": "Telegram",
-              "provides": [
-                "pkg.telegram"
-              ],
+              "provides": ["pkg.telegram"],
               "provider": {
                 "channel": "extra",
                 "packageId": "telegram-desktop",
@@ -646,9 +589,7 @@
             {
               "id": "archmaker.app.ghostty",
               "title": "Ghostty",
-              "provides": [
-                "pkg.ghostty"
-              ],
+              "provides": ["pkg.ghostty"],
               "provider": {
                 "channel": "extra",
                 "packageId": "ghostty",
@@ -661,9 +602,7 @@
             {
               "id": "archmaker.app.kitty",
               "title": "Kitty",
-              "provides": [
-                "pkg.kitty"
-              ],
+              "provides": ["pkg.kitty"],
               "provider": {
                 "channel": "extra",
                 "packageId": "kitty",
@@ -676,9 +615,7 @@
             {
               "id": "archmaker.app.micro",
               "title": "Micro",
-              "provides": [
-                "pkg.micro"
-              ],
+              "provides": ["pkg.micro"],
               "provider": {
                 "channel": "extra",
                 "packageId": "micro",
@@ -691,19 +628,13 @@
             {
               "id": "archmaker.app.cursor",
               "title": "Cursor",
-              "provides": [
-                "pkg.cursor"
-              ],
-              "tags": [
-                "no-redistribuible-candidato"
-              ]
+              "provides": ["pkg.cursor"],
+              "tags": ["no-redistribuible-candidato"]
             },
             {
               "id": "archmaker.app.btop",
               "title": "btop",
-              "provides": [
-                "pkg.btop"
-              ],
+              "provides": ["pkg.btop"],
               "provider": {
                 "channel": "extra",
                 "packageId": "btop",
@@ -716,30 +647,22 @@
             {
               "id": "archmaker.app.vlc",
               "title": "VLC",
-              "provides": [
-                "pkg.vlc"
-              ]
+              "provides": ["pkg.vlc"]
             },
             {
               "id": "archmaker.app.gimp",
               "title": "GIMP",
-              "provides": [
-                "pkg.gimp"
-              ]
+              "provides": ["pkg.gimp"]
             },
             {
               "id": "archmaker.app.obsidian",
               "title": "Obsidian",
-              "provides": [
-                "pkg.obsidian"
-              ]
+              "provides": ["pkg.obsidian"]
             },
             {
               "id": "archmaker.app.onlyoffice-standalone",
               "title": "OnlyOffice (alias histórico)",
-              "provides": [
-                "pkg.onlyoffice-standalone"
-              ],
+              "provides": ["pkg.onlyoffice-standalone"],
               "tags": [
                 "no-redistribuible-candidato",
                 "historical-alias",
@@ -760,9 +683,7 @@
             {
               "id": "archmaker.app.steam",
               "title": "Steam",
-              "provides": [
-                "pkg.steam"
-              ],
+              "provides": ["pkg.steam"],
               "provider": {
                 "channel": "extra",
                 "packageId": "steam",
@@ -776,9 +697,7 @@
             {
               "id": "archmaker.pkg.flameshot",
               "title": "Flameshot",
-              "provides": [
-                "pkg.flameshot"
-              ],
+              "provides": ["pkg.flameshot"],
               "provider": {
                 "channel": "extra",
                 "packageId": "flameshot",
@@ -792,12 +711,8 @@
             {
               "id": "archmaker.app.apexshot",
               "title": "ApexShot",
-              "provides": [
-                "pkg.apexshot"
-              ],
-              "tags": [
-                "unverified-request"
-              ],
+              "provides": ["pkg.apexshot"],
+              "tags": ["unverified-request"],
               "provider": {
                 "channel": "none",
                 "packageId": "apexshot",
@@ -810,9 +725,7 @@
             {
               "id": "archmaker.app.zed",
               "title": "Zed",
-              "provides": [
-                "pkg.zed"
-              ],
+              "provides": ["pkg.zed"],
               "provider": {
                 "channel": "extra",
                 "packageId": "zed",
@@ -825,10 +738,8 @@
             },
             {
               "id": "archmaker.app.vscode",
-              "title": "VS Code",
-              "provides": [
-                "pkg.code"
-              ],
+              "title": "Code - OSS",
+              "provides": ["pkg.code"],
               "provider": {
                 "channel": "extra",
                 "packageId": "code",
@@ -837,18 +748,14 @@
                 "status": "verified",
                 "architecture": "x86_64",
                 "revision": "1.138.0-1",
-                "note": "Official Extra package `code` (Code - OSS)."
+                "note": "Official Extra package `code` (Code - OSS); distinct from proprietary Visual Studio Code."
               }
             },
             {
               "id": "archmaker.app.grokbot",
               "title": "Grokbot",
-              "provides": [
-                "pkg.grokbot"
-              ],
-              "tags": [
-                "unverified-request"
-              ],
+              "provides": ["pkg.grokbot"],
+              "tags": ["unverified-request"],
               "provider": {
                 "channel": "none",
                 "packageId": "grokbot",
@@ -861,12 +768,8 @@
             {
               "id": "archmaker.app.grokbuild",
               "title": "Grok Build",
-              "provides": [
-                "pkg.grokbuild"
-              ],
-              "tags": [
-                "unverified-request"
-              ],
+              "provides": ["pkg.grokbuild"],
+              "tags": ["unverified-request"],
               "provider": {
                 "channel": "none",
                 "packageId": "grokbuild",

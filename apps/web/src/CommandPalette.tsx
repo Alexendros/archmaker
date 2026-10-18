@@ -67,7 +67,7 @@ export function CommandPalette({ selectedIds, onToggle, onClose }: Props) {
                   {p.title}
                   {selectedIds.has(p.optionId) ? " · seleccionada" : ""}
                 </span>
-                <span className="forge-muted">≈{p.size} MB</span>
+                <span className="forge-muted">≈{p.size} MB (estimación)</span>
               </button>
             </li>
           ))}

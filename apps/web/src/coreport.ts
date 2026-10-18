@@ -59,9 +59,10 @@ export type StoragePlan = {
     provenance: "observed" | "declared" | "unknown" | "unavailable";
   };
   partitionTable: "gpt" | "mbr" | "unspecified";
+  /** Alineado con partitionTableObservation del schema draft-v2-defs. */
   observedPartitionTable?: {
-    status: "unknown" | "absent" | "gpt" | "mbr" | "other";
-    kind?: string;
+    status: "observed" | "declared" | "unknown" | "unavailable";
+    kind?: "gpt" | "mbr";
   };
   logicalTargetRef?: { id: string };
   declaredCapacityBytes?: number;

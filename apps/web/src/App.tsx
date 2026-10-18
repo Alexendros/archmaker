@@ -83,7 +83,7 @@ import {
   withFaceV2Fields,
 } from "./storage-plan-face.js";
 import {
-  catalogOptionTitle,
+  mergeFaceOptionsFromCatalog,
   parseCatalogView,
   type CatalogView,
 } from "./catalog-view.js";
@@ -237,28 +237,27 @@ export function App({ port, portKind }: Props) {
   const hostname = textValue(draft, STEP_IDS.hostname);
   const encrypt = boolValue(draft, STEP_IDS.encrypt);
 
-  const kernelFace = KERNELS.find((k) => k.optionId === kernelId);
-  const bootFace = BOOTLOADERS.find((b) => b.optionId === bootId);
-  const filesystemFace = FILESYSTEMS.find((f) => f.optionId === fsId);
+  const kernelOptions = useMemo(
+    () => mergeFaceOptionsFromCatalog(catalogView, STEP_IDS.kernel, KERNELS),
+    [catalogView],
+  );
+  const bootOptions = useMemo(
+    () => mergeFaceOptionsFromCatalog(catalogView, STEP_IDS.boot, BOOTLOADERS),
+    [catalogView],
+  );
+  const filesystemOptions = useMemo(
+    () =>
+      mergeFaceOptionsFromCatalog(
+        catalogView,
+        STEP_IDS.filesystem,
+        FILESYSTEMS,
+      ),
+    [catalogView],
+  );
   const env = ENVIRONMENTS.find((e) => e.optionId === envId);
-  const kernel = kernelFace
-    ? {
-        ...kernelFace,
-        title: catalogOptionTitle(catalogView, kernelId) ?? kernelFace.title,
-      }
-    : undefined;
-  const boot = bootFace
-    ? {
-        ...bootFace,
-        title: catalogOptionTitle(catalogView, bootId) ?? bootFace.title,
-      }
-    : undefined;
-  const filesystem = filesystemFace
-    ? {
-        ...filesystemFace,
-        title: catalogOptionTitle(catalogView, fsId) ?? filesystemFace.title,
-      }
-    : undefined;
+  const kernel = kernelOptions.find((k) => k.optionId === kernelId);
+  const boot = bootOptions.find((b) => b.optionId === bootId);
+  const filesystem = filesystemOptions.find((f) => f.optionId === fsId);
   const envs = allEnvironments();
   const layers = allLayers();
   const stepProgress = useMemo(
@@ -895,7 +894,7 @@ export function App({ port, portKind }: Props) {
                   aria-label="Kernel"
                   className="forge-stack"
                 >
-                  {KERNELS.map((k) => {
+                  {kernelOptions.map((k) => {
                     const selected = kernelId === k.optionId;
                     const unverified = isUnverifiedOption(k);
                     return (
@@ -910,9 +909,15 @@ export function App({ port, portKind }: Props) {
                       >
                         <span className="forge-card-row">
                           <span className="forge-card-title">
-                            {catalogOptionTitle(catalogView, k.optionId) ??
-                              k.title}{" "}
-                            <span className="forge-chip">{k.version}</span>
+                            {k.title}{" "}
+                            {k.version ? (
+                              <span
+                                className="forge-chip"
+                                title="Etiqueta editorial de cara; no es revisión del catálogo"
+                              >
+                                {k.version}
+                              </span>
+                            ) : null}
                           </span>
                           {k.tag ? (
                             <span className="forge-tag">{k.tag}</span>
@@ -930,7 +935,7 @@ export function App({ port, portKind }: Props) {
                     aria-label="Bootloader"
                     className="forge-radio-row"
                   >
-                    {BOOTLOADERS.map((b) => {
+                    {bootOptions.map((b) => {
                       const selected = bootId === b.optionId;
                       const unverified = isUnverifiedOption(b);
                       return (
@@ -947,8 +952,7 @@ export function App({ port, portKind }: Props) {
                             }
                             data-option-id={b.optionId}
                           />
-                          {catalogOptionTitle(catalogView, b.optionId) ??
-                            b.title}
+                          {b.title}
                         </label>
                       );
                     })}
@@ -961,7 +965,7 @@ export function App({ port, portKind }: Props) {
                     aria-label="Filesystem"
                     className="forge-radio-row"
                   >
-                    {FILESYSTEMS.map((f) => {
+                    {filesystemOptions.map((f) => {
                       const selected = fsId === f.optionId;
                       return (
                         <label key={f.optionId} className="forge-radio-label">
@@ -974,8 +978,7 @@ export function App({ port, portKind }: Props) {
                             }
                             data-option-id={f.optionId}
                           />
-                          {catalogOptionTitle(catalogView, f.optionId) ??
-                            f.title}
+                          {f.title}
                         </label>
                       );
                     })}
@@ -1033,7 +1036,14 @@ export function App({ port, portKind }: Props) {
                       <span className="forge-card-row">
                         <span className="forge-card-title">
                           {e.title}{" "}
-                          <span className="forge-chip">{e.version}</span>
+                          {e.version ? (
+                            <span
+                              className="forge-chip"
+                              title="Etiqueta editorial de cara; no es revisión del catálogo"
+                            >
+                              {e.version}
+                            </span>
+                          ) : null}
                         </span>
                         <span className="forge-chip">{e.protocol}</span>
                       </span>
@@ -1122,7 +1132,7 @@ export function App({ port, portKind }: Props) {
                                   <span className="forge-card-title">
                                     {pkg.title}{" "}
                                     <span className="forge-muted">
-                                      {pkg.size} MB
+                                      ≈{pkg.size} MB (estimación)
                                     </span>
                                   </span>
                                   <span className="forge-tag">{pkg.tag}</span>
