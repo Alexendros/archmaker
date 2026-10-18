@@ -289,7 +289,7 @@ export const DESKTOP_CATALOG_REF: CatalogRef = {
   version: "1.0.0",
   digest: {
     algorithm: "sha256",
-    value: "df45351a9fbd0063729d11e2b496e88f5be64c3fce6fb975002fff7c05f0fae5",
+    value: "dc40565079c99039a39e95063233337af58f0f3b80ee9d7c34d415db11983991",
   },
 };
 
