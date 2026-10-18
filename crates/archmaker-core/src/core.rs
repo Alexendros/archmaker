@@ -10,11 +10,11 @@ use std::sync::atomic::{AtomicU64, Ordering};
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use archmaker_domain::{
-    decode_draft_schema_version, is_document_version, is_integer_version, is_semver, Artifact,
-    ArtifactRef, BinaryDigest, BinaryKind, CapabilityRef, Catalog, CatalogRef, ContentDigest,
-    ContentKind, DigestAlgorithm, Draft, DraftSchemaVersion, Manifest, ManifestDomainLabel,
-    ManifestRef, PresetRef, Producer, ResolvedSelection, Selection, SelectionOrigin,
-    SelectionValue, TargetRef, DRAFT_DOMAIN_V1, DRAFT_DOMAIN_V2,
+    decode_draft_schema_version, is_document_version, is_integer_version, is_semver,
+    project_declared_v2_fields, Artifact, ArtifactRef, BinaryDigest, BinaryKind, CapabilityRef,
+    Catalog, CatalogRef, ContentDigest, ContentKind, DigestAlgorithm, Draft, DraftSchemaVersion,
+    Manifest, ManifestDomainLabel, ManifestRef, PresetRef, Producer, ResolvedSelection, Selection,
+    SelectionOrigin, SelectionValue, TargetRef, DRAFT_DOMAIN_V1, DRAFT_DOMAIN_V2,
 };
 use archmaker_resolution::{Catalog as ResolutionCatalog, CatalogOption};
 use archmaker_rules::{
@@ -755,8 +755,11 @@ fn ensure_draft_shape(draft: &Draft, source: &str) -> Result<()> {
                 if plan.boot_artifact_strategy != archmaker_domain::BootArtifactStrategy::UkiOnEsp {
                     return Err(CoreError::schema_invalid(source));
                 }
+                // Reemplazo sin lossRisk solo es admisible como plan incompleto (not-certifiable).
                 if plan.mode == archmaker_domain::StorageMode::ReplaceDisk
                     && plan.loss_risk_acknowledged != Some(true)
+                    && plan.plan_status
+                        != archmaker_domain::PlanCertifiabilityStatus::NotCertifiable
                 {
                     return Err(CoreError::schema_invalid(source));
                 }
@@ -1141,6 +1144,7 @@ impl CorePort for RealCore {
     fn save_draft(&self, input: SaveDraftInput) -> Result<Draft> {
         let source = CoreOp::SaveDraft.source();
         let mut draft = input.draft;
+        project_declared_v2_fields(&mut draft);
         ensure_draft_shape(&draft, source)?;
         self.ensure_catalog_match(&draft.catalog_ref, source)?;
         ensure_target(&draft.target_ref, &union_targets(), source)?;
@@ -1165,6 +1169,7 @@ impl CorePort for RealCore {
                 return Err(CoreError::doc_conflict(source));
             }
             apply_changeset(&mut draft, changeset, source)?;
+            project_declared_v2_fields(&mut draft);
             ensure_draft_shape(&draft, source)?;
         }
         draft.revision = input.expected_revision + 1;
@@ -1190,10 +1195,11 @@ impl CorePort for RealCore {
         if let Some(draft) = self.drafts.borrow().get(&input.draft_id).cloned() {
             return Ok(draft);
         }
-        if let Some(seed) = input.seed {
+        if let Some(mut seed) = input.seed {
             if seed.id != input.draft_id {
                 return Err(CoreError::schema_invalid(source));
             }
+            project_declared_v2_fields(&mut seed);
             ensure_draft_shape(&seed, source)?;
             self.ensure_catalog_match(&seed.catalog_ref, source)?;
             self.drafts

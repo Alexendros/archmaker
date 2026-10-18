@@ -202,3 +202,38 @@ test.describe("create-core-port F7 motor real", () => {
     ).toBe(true);
   });
 });
+
+test.describe("storage-plan-face H01/H02", () => {
+  test("modo con confirmaciones queda verification-pending, nunca certifiable", async () => {
+    const { storagePlanFromIntent, uiStateForIntent, withFaceV2Fields } =
+      await import("./src/storage-plan-face.js");
+    const intent = {
+      mode: "new-disk" as const,
+      intentAcknowledged: true,
+      lossRiskAcknowledged: false,
+      uiState: "proposed" as const,
+    };
+    expect(uiStateForIntent(intent)).toBe("proposed");
+    const plan = storagePlanFromIntent(intent);
+    expect(plan?.planStatus).toBe("verification-pending");
+    expect(plan?.planStatus).not.toBe("certifiable");
+
+    const draft = withFaceV2Fields(emptyDraft(), intent);
+    expect(draft.schemaVersion).toBe("2");
+    expect(draft.storagePlan?.mode).toBe("new-disk");
+    expect(draft.verification?.executionStatus).toBe("not-executed");
+    expect(draft.verification?.planValidationStatus).toBe("not-validated");
+  });
+
+  test("reemplazo sin lossRisk queda not-certifiable", async () => {
+    const { storagePlanFromIntent } =
+      await import("./src/storage-plan-face.js");
+    const plan = storagePlanFromIntent({
+      mode: "replace-disk",
+      intentAcknowledged: true,
+      lossRiskAcknowledged: false,
+      uiState: "declared",
+    });
+    expect(plan?.planStatus).toBe("not-certifiable");
+  });
+});

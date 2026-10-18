@@ -17,7 +17,8 @@ pub use catalog_providers::{
     ProviderStatus, ONLYOFFICE_HISTORICAL_ALIAS_ID,
 };
 pub use schema_v2::{
-    decode_draft_schema_version, manual_reference_storage_plan, BootArtifactStrategy,
+    declared_storage_plan_from_intent, decode_draft_schema_version, encryption_policy_from_intent,
+    manual_reference_storage_plan, project_declared_v2_fields, BootArtifactStrategy,
     BootCompatibilityStatus, BrowserPolicy, BrowserPolicyError, CapacityVerificationStatus,
     DeviceHandle, DraftSchemaMigrationEntry, DraftSchemaMigrationReport, DraftSchemaVersion,
     EncryptionKind, EncryptionPolicy, ExecutionStatus, FilesystemKind, FirmwareDeclaration,

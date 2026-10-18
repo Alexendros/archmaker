@@ -1,16 +1,14 @@
 /**
- * Intención de disco declarativa en la cara (schema v2 pending en core).
+ * Intención de disco declarativa en la cara (draft.storagePlan v2).
  * No finge detección ni escritura. Estados ortogonales: no hay «ejecutado».
+ * La materialización canónica del plan la hace Rust; aquí solo modo y acks.
  */
 
 export type StorageMode = "new-disk" | "replace-disk";
 
 /** Procedencia / ciclo visibles en UI (ortogonales; A6 fuera). */
 export type StorageUiState =
-  | "declared"
-  | "proposed"
-  | "validated"
-  | "unspecified";
+  "declared" | "proposed" | "validated" | "unspecified";
 
 export type StorageIntent = {
   mode: StorageMode | null;

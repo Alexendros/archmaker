@@ -43,6 +43,71 @@ export type SelectionValue =
 
 export type Selection = { stepId: string; value: SelectionValue };
 
+/** Draft/manifiesto v2 — espejo de contracts/json-schema/draft-v2-defs.schema.json */
+export type StorageModeV2 = "new-disk" | "replace-disk";
+
+export type PlanCertifiabilityStatus =
+  | "certifiable"
+  | "not-certifiable"
+  | "capacity-unverified"
+  | "verification-pending";
+
+export type StoragePlan = {
+  mode: StorageModeV2;
+  firmware: {
+    kind: "uefi" | "bios" | "unspecified";
+    provenance: "observed" | "declared" | "unknown" | "unavailable";
+  };
+  partitionTable: "gpt" | "mbr" | "unspecified";
+  observedPartitionTable?: {
+    status: "unknown" | "absent" | "gpt" | "mbr" | "other";
+    kind?: string;
+  };
+  logicalTargetRef?: { id: string };
+  declaredCapacityBytes?: number;
+  partitions: Array<{
+    role: "esp" | "system";
+    sizeBytes: number;
+    layers: Array<
+      | { kind: "fat32"; mountPoint: string }
+      | { kind: "luks2"; unlock: "passphrase-requested-at-install" }
+      | {
+          kind: "filesystem";
+          fs: "fat32" | "ext4" | "btrfs";
+          mountPoint: string;
+        }
+    >;
+    plannedAction: "create" | "replace" | "keep-declared";
+  }>;
+  bootArtifactStrategy: "uki-on-esp";
+  intentAcknowledged: boolean;
+  lossRiskAcknowledged?: boolean;
+  planStatus: PlanCertifiabilityStatus;
+};
+
+export type EncryptionPolicy = {
+  kind: "none" | "luks2";
+  unlock?: "passphrase-requested-at-install";
+  coversMountPoint?: string;
+  initramfsNote?: string;
+};
+
+export type BrowserPolicy = {
+  selectedBrowserIds: string[];
+  defaultBrowserId?: string | null;
+};
+
+export type VerificationStatuses = {
+  planValidationStatus: "not-validated" | "valid" | "invalid" | "pending";
+  hardwareVerificationStatus:
+    "not-verified" | "verified" | "pending" | "unavailable";
+  bootCompatibilityStatus:
+    "unknown" | "compatible" | "conditional" | "incompatible";
+  capacityVerificationStatus:
+    "unverified" | "sufficient" | "insufficient" | "unknown";
+  executionStatus: "not-executed";
+};
+
 export type Draft = {
   id: string;
   schemaVersion: string;
@@ -52,6 +117,12 @@ export type Draft = {
   targetRef: TargetRef;
   selections: Selection[];
   contentDigest?: ContentDigest;
+  storagePlan?: StoragePlan;
+  encryptionPolicy?: EncryptionPolicy;
+  browserPolicy?: BrowserPolicy;
+  verification?: VerificationStatuses;
+  inheritedEncryptIntent?: boolean;
+  legacyMetadata?: Record<string, unknown>;
 };
 
 export type Diagnostic = {
@@ -99,6 +170,10 @@ export type Manifest = {
   requiredCapabilities: { id: string }[];
   conflicts: unknown[];
   contentDigest: ContentDigest;
+  storagePlan?: StoragePlan;
+  encryptionPolicy?: EncryptionPolicy;
+  browserPolicy?: BrowserPolicy;
+  verification?: VerificationStatuses;
 };
 
 export type Artifact = {
