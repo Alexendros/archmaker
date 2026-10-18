@@ -17,7 +17,7 @@ reviewers:
 
 - Plan: FORGE-INTEGRITY-2026-10-18
 - SHA auditado / inicial: `ff1c4fa24d8ae818fab3cc4f38c8f3cb8ab80e07`
-- SHA candidato de esta serie: tip de `fix/forge-integrity-f5-tests-evidence` (rellenar tras merge)
+- SHA candidato de esta serie (tip PR #167): `ee7c515c` en `fix/forge-integrity-f5-tests-evidence`
 - Dictamen: **NO-GO** de cierre completo. Subconjunto web/core corregido en PRs; desktop/offline **blocked**; revisión independiente **pending**.
 
 ## H01–H16
