@@ -22,16 +22,16 @@ dependsOn:
 
 ## Dictamen
 
-| Eje | Estado | Notas |
-| --- | ------ | ----- |
-| `publicationStatus` | **not-published** | No tags, no assets en GitHub Releases nuevos |
-| AppImage tip | **blocked** | Existe `Forge_0.1.0_amd64.AppImage` local, pero `sourceSha` de evidencia P6 (`ccab5229…`) ≠ tip Forge |
-| Gate P6 desktop/offline | **blocked** | Residual portal E2E rfd; ver `p6-desktop-offline.md` |
-| DPI 125/150/200 | **pending** | Sin medición en este tip |
-| Tres instalaciones limpias tip | **pending** | Probe P6 cubrió un tip anterior; no reejecutado sobre tip Forge |
-| Firma / cosign | **pending** | Sin autorización de firma del candidato nuevo |
-| A6 escritura discos | **N/A** | Fuera de alcance (HA26–28) |
-| Detección/plan Tauri | **partial** | Código en tip (`archmaker-hardware` + IPC); recorrido GUI tip no cerrado en evidencia |
+| Eje                            | Estado            | Notas                                                                                                                       |
+| ------------------------------ | ----------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `publicationStatus`            | **not-published** | No tags, no assets en GitHub Releases nuevos                                                                                |
+| AppImage tip                   | **blocked**       | Existe `Forge_0.1.0_amd64.AppImage` local, pero `sourceSha` de evidencia P6 (`ccab5229…`) ≠ tip Forge                       |
+| Gate P6 desktop/offline        | **blocked**       | Portal: cancelar/guardar vistos en debug 2026-10-18; sobrescribir y destino sin permisos failed. No es el AppImage del tip. |
+| DPI 125/150/200                | **pending**       | Sin medición en este tip                                                                                                    |
+| Tres instalaciones limpias tip | **pending**       | Probe P6 cubrió un tip anterior; no reejecutado sobre tip Forge                                                             |
+| Firma / cosign                 | **pending**       | Sin autorización de firma del candidato nuevo                                                                               |
+| A6 escritura discos            | **N/A**           | Fuera de alcance (HA26–28)                                                                                                  |
+| Detección/plan Tauri           | **partial**       | Código en tip (`archmaker-hardware` + IPC); recorrido GUI tip no cerrado en evidencia                                       |
 
 ## Tip de referencia
 

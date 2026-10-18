@@ -34,22 +34,26 @@ Residuales automatizables **cerrados** (2026-10-17, probe
 `--unshare-net` sobre AppRun extraído; `/tmp` del host es `noexec`). El gate
 global sigue **blocked** por E2E portal rfd.
 
+Sonda 2026-10-18 (`tools/run_p6_portal_e2e.py`, binario debug, no AppImage del
+tip): cancelar y guardar **passed**; sobrescribir y destino sin permisos
+**failed**. No actualiza la evidencia versionada a `passed`.
+
 ## Casos (2026-10-17, `SOURCE_SHA` ccab5229…)
 
-| Id | Estado | Evidencia |
-| --- | --- | --- |
-| env-display | passed | `DISPLAY=:0` / `WAYLAND_DISPLAY=wayland-0` |
-| env-portal | passed | `xdg-desktop-portal` + FileChooser v4 |
-| appimage-build | passed | Forge AppImage local sha256 `a064aee2…` (no published) |
-| appimage-launch | passed | proceso vivo ≥5s con display |
-| ipc-allowed | passed | `cargo test -p archmaker --lib` (gate main) |
-| ipc-denied | passed | restricted / unknown cmd denegados |
-| clean-install-x3 | passed | 3 HOME independientes; FUSE AppImage; timeout 124 |
-| boot-offline | passed | extract + `bwrap --unshare-net` AppRun; timeout 124 |
-| gui-dialog-real | blocked | falta E2E rfd vía portal (no se sustituye por picker) |
-| gui-cancel | blocked | falta cancelación nativa |
-| gui-overwrite | blocked | falta sobrescritura nativa |
-| gui-destination-noperms | blocked | falta destino sin permisos |
+| Id                      | Estado  | Evidencia                                              |
+| ----------------------- | ------- | ------------------------------------------------------ |
+| env-display             | passed  | `DISPLAY=:0` / `WAYLAND_DISPLAY=wayland-0`             |
+| env-portal              | passed  | `xdg-desktop-portal` + FileChooser v4                  |
+| appimage-build          | passed  | Forge AppImage local sha256 `a064aee2…` (no published) |
+| appimage-launch         | passed  | proceso vivo ≥5s con display                           |
+| ipc-allowed             | passed  | `cargo test -p archmaker --lib` (gate main)            |
+| ipc-denied              | passed  | restricted / unknown cmd denegados                     |
+| clean-install-x3        | passed  | 3 HOME independientes; FUSE AppImage; timeout 124      |
+| boot-offline            | passed  | extract + `bwrap --unshare-net` AppRun; timeout 124    |
+| gui-dialog-real         | blocked | falta E2E rfd vía portal (no se sustituye por picker)  |
+| gui-cancel              | blocked | falta cancelación nativa                               |
+| gui-overwrite           | blocked | falta sobrescritura nativa                             |
+| gui-destination-noperms | blocked | falta destino sin permisos                             |
 
 ## Evidencia ausente nombrada (bloquea `passed`)
 
