@@ -52,8 +52,8 @@ export function useDialogFocusTrap(
         event.preventDefault();
         return;
       }
-      const first = list[0];
-      const last = list[list.length - 1];
+      const first = list[0]!;
+      const last = list[list.length - 1]!;
       if (event.shiftKey && document.activeElement === first) {
         event.preventDefault();
         last.focus();
