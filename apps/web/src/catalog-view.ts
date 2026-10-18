@@ -139,3 +139,65 @@ export function catalogHasProvider(
   }
   return false;
 }
+
+/** Opciones canónicas de un paso (orden del catálogo). */
+export function catalogOptionsForStep(
+  catalog: CatalogView | null,
+  stepId: string,
+): CatalogOptionView[] {
+  if (!catalog) return [];
+  const step = catalog.steps.find((s) => s.id === stepId);
+  if (!step) return [];
+  const out: CatalogOptionView[] = [];
+  for (const section of step.sections ?? []) {
+    for (const opt of section.options ?? []) {
+      out.push(opt);
+    }
+  }
+  return out;
+}
+
+type FaceLike = {
+  htmlId: string;
+  optionId: string;
+  stepId: string;
+  title: string;
+  description: string;
+  tag?: string;
+  version?: string;
+  gap?: boolean;
+  verificationStatus?: "verified" | "unverified";
+};
+
+/**
+ * H06: ids y títulos desde el catálogo; copy editorial (descripción, tag, version)
+ * desde la cara cuando existe. Sin catálogo, se conservan las constantes de cara.
+ */
+export function mergeFaceOptionsFromCatalog<T extends FaceLike>(
+  catalog: CatalogView | null,
+  stepId: string,
+  faceDefaults: T[],
+): T[] {
+  const fromCatalog = catalogOptionsForStep(catalog, stepId);
+  if (fromCatalog.length === 0) return faceDefaults;
+
+  return fromCatalog.map((co) => {
+    const face = faceDefaults.find((f) => f.optionId === co.id);
+    if (face) {
+      return { ...face, title: co.title };
+    }
+    return {
+      ...(faceDefaults[0]
+        ? {
+            gap: faceDefaults[0].gap,
+            verificationStatus: faceDefaults[0].verificationStatus,
+          }
+        : {}),
+      htmlId: co.id.replace(/\./g, "-"),
+      optionId: co.id,
+      stepId,
+      title: co.title,
+      description: co.description ?? "",
+    } as T;
+  });
+}
