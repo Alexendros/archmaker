@@ -202,6 +202,29 @@ test.describe("Forge face — rutas del plan", () => {
     );
   });
 
+  test("importar: Tab llega al botón y Enter abre el selector", async ({
+    page,
+  }) => {
+    await page.getByRole("button", { name: "Generar" }).click();
+    await expect(page.getByRole("heading", { name: "Revisión" })).toBeVisible();
+    await page.locator("#main").focus();
+    let reached = false;
+    for (let i = 0; i < 40; i++) {
+      await page.keyboard.press("Tab");
+      const name = await page.evaluate(() =>
+        (document.activeElement?.textContent ?? "").replace(/\s+/g, " ").trim(),
+      );
+      if (name === "Importar") {
+        reached = true;
+        break;
+      }
+    }
+    expect(reached).toBe(true);
+    const chooser = page.waitForEvent("filechooser");
+    await page.keyboard.press("Enter");
+    await chooser;
+  });
+
   test("cabecera: glosario, tema y paleta Ctrl+K", async ({ page }) => {
     await page.getByRole("button", { name: "Glosario" }).click();
     await expect(page.getByRole("heading", { name: "Glosario" })).toBeVisible();

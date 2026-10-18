@@ -213,6 +213,7 @@ export function App({ port, portKind }: Props) {
   );
   const [importBusy, setImportBusy] = useState(false);
   const generationRef = useRef(0);
+  const importInputRef = useRef<HTMLInputElement>(null);
   const preparedGenerationRef = useRef<number | null>(null);
   const draftRef = useRef<Draft | null>(null);
   draftRef.current = draft;
@@ -1337,20 +1338,27 @@ export function App({ port, portKind }: Props) {
                 >
                   ← Atrás
                 </button>
-                <label className="forge-btn-ghost">
+                <button
+                  type="button"
+                  className="forge-btn-ghost"
+                  disabled={importBusy || Boolean(importPending)}
+                  onClick={() => importInputRef.current?.click()}
+                >
                   {importBusy ? "Analizando…" : "Importar"}
-                  <input
-                    type="file"
-                    accept="application/json,.json"
-                    hidden
-                    disabled={importBusy || Boolean(importPending)}
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      if (file) void onImportFile(file);
-                      e.target.value = "";
-                    }}
-                  />
-                </label>
+                </button>
+                <input
+                  ref={importInputRef}
+                  type="file"
+                  accept="application/json,.json"
+                  hidden
+                  tabIndex={-1}
+                  disabled={importBusy || Boolean(importPending)}
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) void onImportFile(file);
+                    e.target.value = "";
+                  }}
+                />
                 <button
                   type="button"
                   className="forge-btn-primary"
