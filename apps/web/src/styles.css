@@ -2,7 +2,9 @@
    CSP style-src 'self' (Vite no debe inyectar <style> inline). */
 @import "../../packages/tokens/tokens.css";
 
-@layer reset, tokens, base, layout, components, utilities;
+/* Capas alineadas al DS; `overrides` queda vacía a propósito: el runtime es
+   monolito (styles.css + tokens), no el árbol multi-archivo del doc. */
+@layer reset, tokens, base, layout, components, utilities, overrides;
 
 @layer base {
   body {
@@ -36,7 +38,7 @@
     max-width: 40rem;
     margin: 4rem auto;
     padding: var(--ds-space-6);
-    border: var(--ds-border-thin) var(--color-danger, #b00020);
+    border: var(--ds-border-thin) var(--color-danger);
     border-radius: var(--ds-radius-md);
     background: var(--color-surface);
   }
@@ -65,7 +67,7 @@
     background: var(--color-canvas);
     position: sticky;
     top: 0;
-    z-index: 40;
+    z-index: var(--ds-z-sticky);
   }
   .forge-brand {
     display: flex;
@@ -77,7 +79,7 @@
     height: 2rem;
     border-radius: var(--ds-radius-sm);
     background: var(--color-action);
-    color: #fff;
+    color: var(--button-fg);
     display: grid;
     place-items: center;
     font-weight: 700;
@@ -97,7 +99,7 @@
     padding: 0.125rem 0.375rem;
     border-radius: var(--ds-radius-sm);
     background: var(--color-action);
-    color: #fff;
+    color: var(--button-fg);
     vertical-align: middle;
   }
   .forge-subtitle {
@@ -178,7 +180,7 @@
     color: var(--color-action);
   }
   .forge-stepper-item.is-invalid {
-    border-color: var(--color-danger, #b42318);
+    border-color: var(--color-danger);
   }
   .forge-stepper-num {
     font-weight: 700;
@@ -222,7 +224,7 @@
   }
   .forge-btn-primary {
     background: var(--color-action);
-    color: #fff;
+    color: var(--button-fg);
     border: var(--ds-border-thin) var(--color-action);
     border-radius: var(--ds-radius-sm);
     padding: var(--ds-space-2) var(--ds-space-4);
@@ -246,26 +248,6 @@
     border-radius: var(--ds-radius-sm);
     padding: var(--ds-space-1) var(--ds-space-2);
     font-size: 0.6875rem;
-  }
-  .forge-mode-toggle {
-    display: flex;
-    gap: var(--ds-space-1);
-    padding: var(--ds-space-1);
-    background: var(--color-surface);
-    border: var(--ds-border-thin) var(--color-border);
-    border-radius: var(--ds-radius-md);
-  }
-  .forge-mode-toggle button {
-    border: none;
-    background: transparent;
-    border-radius: var(--ds-radius-sm);
-    padding: var(--ds-space-1) var(--ds-space-3);
-    font-size: 0.75rem;
-    color: var(--color-text-muted);
-  }
-  .forge-mode-active {
-    background: var(--color-text) !important;
-    color: var(--color-canvas) !important;
   }
   .forge-cmd-btn {
     display: none;
@@ -301,6 +283,8 @@
     border: var(--ds-border-thin) transparent;
     background: transparent;
   }
+  /* Herencia baseline: current = selected (action), no --rail-item-current-bg
+     (azul de token) hasta captura auditada contra reference/v5.1. */
   .forge-rail-item.is-current {
     background: var(--option-card-selected-bg);
     border-color: var(--color-action);
@@ -319,18 +303,18 @@
   }
   .forge-rail-item.is-current .forge-rail-num {
     background: var(--color-action);
-    color: #fff;
+    color: var(--button-fg);
     border-color: var(--color-action);
   }
   .forge-rail-item.is-complete .forge-rail-num {
     background: var(--color-success);
-    color: #fff;
+    color: var(--button-fg);
     border-color: var(--color-success);
   }
   .forge-rail-item.is-invalid .forge-rail-num {
-    background: var(--color-danger, #b42318);
-    color: #fff;
-    border-color: var(--color-danger, #b42318);
+    background: var(--color-danger);
+    color: var(--button-fg);
+    border-color: var(--color-danger);
   }
   .forge-rail-title {
     display: block;
@@ -447,7 +431,7 @@
   }
   .forge-card.is-selected .forge-tag {
     background: var(--color-action);
-    color: #fff;
+    color: var(--button-fg);
     border-color: var(--color-action);
   }
   .forge-info-card {
@@ -498,13 +482,25 @@
     height: 2.75rem;
     border-radius: var(--ds-radius-sm);
     border: var(--ds-border-thin) var(--color-border);
-    background: linear-gradient(135deg, #e5e7eb, #d2d2d2);
+    background: linear-gradient(
+      135deg,
+      var(--ds-color-neutral-150),
+      var(--ds-color-neutral-200)
+    );
   }
   .forge-preview-mini[data-env="gnome"] {
-    background: linear-gradient(135deg, #2a2a2a, #151515);
+    background: linear-gradient(
+      135deg,
+      var(--ds-color-neutral-800),
+      var(--ds-color-neutral-900)
+    );
   }
   .forge-preview-mini[data-env="kde"] {
-    background: linear-gradient(135deg, #1e3a5f, #2d5aa0);
+    background: linear-gradient(
+      135deg,
+      var(--ds-color-blue-900),
+      var(--ds-color-blue-500)
+    );
   }
   .forge-nav-row {
     display: flex;
@@ -599,13 +595,17 @@
     margin: var(--ds-space-3);
     border-radius: var(--ds-radius-sm);
     border: var(--ds-border-thin) var(--color-border);
-    background: radial-gradient(120% 120% at 20% 10%, #2a2a2a 0%, #151515 60%);
+    background: radial-gradient(
+      120% 120% at 20% 10%,
+      var(--ds-color-neutral-800) 0%,
+      var(--ds-color-neutral-900) 60%
+    );
     overflow: hidden;
   }
   .forge-preview-bar {
     height: 1.5rem;
     background: rgba(0, 0, 0, 0.8);
-    color: #fff;
+    color: var(--ds-color-neutral-0);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -720,7 +720,7 @@
   .forge-drawer-backdrop {
     position: fixed;
     inset: 0;
-    z-index: 50;
+    z-index: var(--ds-z-dialog);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -751,7 +751,7 @@
   .forge-cmd,
   .forge-drawer {
     position: relative;
-    z-index: 1;
+    z-index: var(--ds-z-base);
     background: var(--color-canvas);
     border: var(--ds-border-thin) var(--color-border);
     border-radius: var(--ds-radius-md);
@@ -825,4 +825,8 @@
   .forge-cmd-list button:focus-visible {
     background: var(--color-surface);
   }
+}
+
+@layer overrides {
+  /* Reservada: sin overrides de producto en esta entrega. */
 }
