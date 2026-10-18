@@ -21,6 +21,7 @@ dependsOn:
 - Documento: DOC-DEL-CLO-INV-001 · Estado: draft · Propietario: Arquitectura
 - `BASE_SHA` observado: `56c2a198cc36da3a30d727487f082d13fda1b1f5`
 - `SOURCE_SHA_F0` es el commit que contiene este árbol. No se escribe aquí por adelantado y el manifiesto de evidencia no guarda su propio digest.
+- Tip post-integridad/GUI (denominadores F0 intactos): `2aaf5a3a591e7fa6ce835a5edda6e386dda97665` (#168–#174). No reescribe este inventario.
 - Esto no acepta el alcance ni sustituye a un revisor independiente. No reabre OP-1..OP-8.
 
 ## Targets

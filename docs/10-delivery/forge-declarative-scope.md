@@ -20,6 +20,8 @@ dependsOn:
 
 - Documento: DOC-DEL-FORGE-DECL-001 · Estado: draft · Propietario: Arquitectura · Fecha: 2026-10-17
 - Base GitHub: `b6c0b50a6dcb5b42410d5e067019cf323494ccc4` (`origin/main`).
+- Tip GUI (CSP/higiene, sin cambio de autoridad): `2aaf5a3a591e7fa6ce835a5edda6e386dda97665` (#171–#174).
+  `executionStatus` permanece `not-executed`; este alcance sigue `draft` / `pending`.
 - **No reescribe** [`mvp5-scope.md`](mvp5-scope.md): MVP-5 sigue cerrado; este documento registra un
   alcance _adicional_ pendiente de `accepted` para sondas de solo lectura y UI posteriores.
 

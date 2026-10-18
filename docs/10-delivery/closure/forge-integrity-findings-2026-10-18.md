@@ -18,7 +18,7 @@ reviewers:
 - Plan: FORGE-INTEGRITY-2026-10-18
 - SHA auditado / inicial: `ff1c4fa24d8ae818fab3cc4f38c8f3cb8ab80e07`
 - SHA de trabajo (baseline residual): `dcb96b726efd2ec5e50a9732168c5e6e41898669` (`origin/main` al abrir la serie residual)
-- SHA candidato de esta serie residual: `c0cbc25dd6e51d6320cac5953103bc353709e4ed` (rama `fix/forge-integrity-residual-tests`; fusionar #168/#169/#170)
+- SHA tip post-GUI (H17 + higiene + as-built + AGENTS): `2aaf5a3a591e7fa6ce835a5edda6e386dda97665` (`main` tras #171–#174)
 - Dictamen: **NO-GO** de cierre completo. Subconjunto web/core de integridad de cara y contratos v2 corregido en PRs; desktop/offline **blocked**; revisión independiente **pending**. `technicalResult` V8: **no emitido**.
 
 ## Autoridad y bloqueos explícitos
@@ -73,9 +73,9 @@ reviewers:
 
 ## Nota de mantenibilidad GUI (post-H17)
 
-Higiene de tokens en `styles.css` (CSS muerto Sencillo/Avanzado, literales → tokens, capa `overrides` vacía; rail current documentado como herencia selected). Sin V8/GO. PR de higiene de diseño tras #171.
+Higiene de tokens en `styles.css` (CSS muerto Sencillo/Avanzado, literales → tokens, capa `overrides` vacía; rail current documentado como herencia selected) en #172. As-built `App.tsx` refrescado en #173. Hechos en `AGENTS.md` (#174). Sin V8/GO.
 
-## PRs de la serie residual (2026-10-18)
+## PRs de la serie residual y follow-ups GUI (2026-10-18)
 
 | PR   | Tema                                  |
 | ---- | ------------------------------------- |
@@ -83,6 +83,9 @@ Higiene de tokens en `styles.css` (CSS muerto Sencillo/Avanzado, literales → t
 | #169 | H06/H09/H10 catálogo y etiquetas      |
 | #170 | H16 T42 + H01 cadena + este registro  |
 | #171 | H17 CSP `/forge-face.css` + boot gate |
+| #172 | Higiene tokens / baselines / a11y F6  |
+| #173 | Hash as-built `App.tsx`               |
+| #174 | `AGENTS.md` CSP + integridad          |
 
 ## Comandos locales de referencia (serie residual)
 
