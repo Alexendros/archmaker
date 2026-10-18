@@ -11,9 +11,10 @@ Tres capas distintas (detalle: [`docs/10-delivery/closure/f8-governance.md`](doc
 | Baseline de código   | **passed** — tag `implementation-baseline-mvp5`; F0–F8 fusionados en `main`                                                        |
 | Aprobación funcional | **pending** — matriz F7 ejecutable; sin `RC_SHA_FUNCIONAL` ni aceptación independiente (`f7-candidate.md`)                         |
 | Release binaria      | **published** — [Neubat v0.1.0](https://github.com/Alexendros/archmaker/releases/tag/v0.1.0) AppImage x86_64; verificación parcial |
+| Versión de código    | **0.2.0** — tag `v0.2.0`; sin GitHub Release de paquete hasta un AppImage validado con tests                                       |
 
-- Código actual de `main` y el AppImage publicado son identidades distintas: el tip de `main`
-  puede incluir harness F7, diagramas y docs posteriores a `v0.1.0`; el tag **no se mueve**.
+- Código actual de `main` y el AppImage publicado son identidades distintas. La versión de
+  código es `0.2.0`. El tag `v0.1.0` no se mueve y sigue siendo la única release binaria.
 - Canal publicado: AppImage Linux x86_64 (`v0.1.0` como **Neubat**); nombre visible vigente **Forge**. `RC_SHA` de la release:
   `9297ed7cc47f42a9611aed0093b5ab040daca512`; `ARTIFACT_SHA256`
   `6567464f5e2f21398fd3eef35592f0e9d377fd2cc7887c1e46df092b5a8e6d81`. Changelog: [`CHANGELOG.md`](CHANGELOG.md).
