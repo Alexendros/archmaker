@@ -146,20 +146,54 @@ export function retryPersistDraftLocal(draft: Draft): Promise<PersistResult> {
   return persistDraftLocal(draft);
 }
 
-export async function loadLastDraftLocal(): Promise<Draft | null> {
+export type LoadLastDraftResult =
+  | { kind: "none" }
+  | { kind: "found"; draft: Draft }
+  | { kind: "error"; reason: PersistFailureReason; message: string };
+
+/**
+ * Distingue ausencia de borrador, borrador recuperado y fallo de almacén (H14).
+ * No convierte un error de IndexedDB en «perfil nuevo» silencioso.
+ */
+export async function loadLastDraftLocal(): Promise<LoadLastDraftResult> {
+  let id: string | null;
   try {
-    const id = window.localStorage.getItem(LAST_ID_KEY);
-    if (!id) return null;
+    id = window.localStorage.getItem(LAST_ID_KEY);
+  } catch (err) {
+    const reason = classifyPersistError(err);
+    return {
+      kind: "error",
+      reason,
+      message:
+        reason === "unavailable"
+          ? "Almacén local no disponible."
+          : "No se pudo leer el identificador del último perfil.",
+    };
+  }
+  if (!id) return { kind: "none" };
+  try {
     const db = await openDb();
-    return await new Promise((resolve, reject) => {
+    const draft = await new Promise<Draft | null>((resolve, reject) => {
       const tx = db.transaction(STORE, "readonly");
       const req = tx.objectStore(STORE).get(id);
       req.onsuccess = () => resolve((req.result as Draft | undefined) ?? null);
       req.onerror = () =>
         reject(req.error ?? new Error("indexedDB get failed"));
     });
-  } catch {
-    return null;
+    if (!draft) return { kind: "none" };
+    return { kind: "found", draft };
+  } catch (err) {
+    const reason = classifyPersistError(err);
+    return {
+      kind: "error",
+      reason,
+      message:
+        reason === "unavailable"
+          ? "Almacén local no disponible."
+          : reason === "quota"
+            ? "Sin espacio en el almacén local."
+            : "No se pudo recuperar el perfil local.",
+    };
   }
 }
 

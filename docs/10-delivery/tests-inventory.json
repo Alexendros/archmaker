@@ -1,6 +1,6 @@
 {
-  "generated_at": "1792322368",
-  "git_sha": "b53421f8e46dee7d99f44b49ecac70bff21ff28b",
+  "generated_at": "1792324470",
+  "git_sha": "a56e64bb31fde9cec18ee07bf2bdcb2523a347f4",
   "tests": [
     {
       "id": "TST-ARCHMAKER-CANONICALIZATION-VECTORS-GOLDEN_CORPUS_BYTE_IDENTITY_AND_DIGEST",
@@ -1001,6 +1001,38 @@
       "workflow": "ci",
       "covers": ["FR-EXPORT-001", "NFR-DET-001"],
       "description": "f2_bytes::f2_delivery_corpus_digests"
+    },
+    {
+      "id": "TST-ARCHMAKER-CORE-T_MATRIX-T37_LUKS_CHANGES_DIGEST",
+      "type": "unit",
+      "location": "crates/archmaker-core/tests/t_matrix.rs",
+      "command": "cargo test -p archmaker-core --test t_matrix t37_luks_changes_digest",
+      "workflow": "ci",
+      "covers": [
+        "FR-DRAFT-001",
+        "FR-VALIDATE-001",
+        "FR-MANIFEST-001",
+        "NFR-DET-001",
+        "NFR-SEC-001",
+        "NFR-MIG-001"
+      ],
+      "description": "t_matrix::t37_luks_changes_digest"
+    },
+    {
+      "id": "TST-ARCHMAKER-CORE-T_MATRIX-T37_DEFAULT_BROWSER_ALONE_CHANGES_DIGEST",
+      "type": "unit",
+      "location": "crates/archmaker-core/tests/t_matrix.rs",
+      "command": "cargo test -p archmaker-core --test t_matrix t37_default_browser_alone_changes_digest",
+      "workflow": "ci",
+      "covers": [
+        "FR-DRAFT-001",
+        "FR-VALIDATE-001",
+        "FR-MANIFEST-001",
+        "NFR-DET-001",
+        "NFR-SEC-001",
+        "NFR-MIG-001"
+      ],
+      "description": "t_matrix::t37_default_browser_alone_changes_digest"
     },
     {
       "id": "TST-ARCHMAKER-CORE-T_MATRIX-T37_LUKS_OR_DEFAULT_BROWSER_CHANGES_DIGEST",

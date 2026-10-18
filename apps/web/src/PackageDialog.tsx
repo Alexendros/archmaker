@@ -1,4 +1,6 @@
+import { useCallback, useRef } from "react";
 import type { FacePackage } from "./forge-face.js";
+import { useDialogFocusTrap } from "./use-dialog-focus.js";
 
 type Props = {
   pkg: FacePackage;
@@ -15,25 +17,32 @@ export function PackageDialog({
   onToggle,
   onClose,
 }: Props) {
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const stableClose = useCallback(() => onClose(), [onClose]);
+  useDialogFocusTrap(dialogRef, stableClose);
+
   return (
     <div className="forge-modal-backdrop">
       <button
         type="button"
         className="forge-modal-scrim"
         aria-label="Cerrar ficha"
+        tabIndex={-1}
         onClick={onClose}
       />
       <div
+        ref={dialogRef}
         className="forge-modal"
         role="dialog"
         aria-modal="true"
         aria-labelledby="package-title"
+        tabIndex={-1}
       >
         <div className="forge-modal-head">
           <div>
             <h2 id="package-title">{pkg.title}</h2>
             <p className="forge-muted">
-              {pkg.size} MB · {pkg.tag}
+              ≈{pkg.size} MB (estimación de cara) · {pkg.tag}
             </p>
           </div>
           <button type="button" className="forge-btn-icon" onClick={onClose}>

@@ -30,6 +30,10 @@ export type FacePackage = {
   optionId: string;
   title: string;
   description: string;
+  /**
+   * Estimación editorial de cara (MB). No es metadato oficial del catálogo;
+   * la UI debe etiquetarla como estimación o omitirla como cifra fiable (H09).
+   */
   size: number;
   tag: string;
   why: string;
@@ -351,7 +355,8 @@ export const LAYERS: FaceLayer[] = [
         htmlId: "apexshot",
         optionId: "archmaker.app.apexshot",
         title: "ApexShot",
-        description: "Capturas modernas (solicitud; proveedor Arch/AUR no verificado).",
+        description:
+          "Capturas modernas (solicitud; proveedor Arch/AUR no verificado).",
         size: 30,
         tag: "No verificada",
         why: "Alternativa a Flameshot",
@@ -503,10 +508,12 @@ export const LAYERS: FaceLayer[] = [
         htmlId: "cursor",
         optionId: "archmaker.app.cursor",
         title: "Cursor",
-        description: "Editor con asistencia.",
+        description:
+          "Editor con asistencia (sin provider en catálogo; solicitud no verificada).",
         size: 380,
-        tag: "Recomendado",
+        tag: "No verificada",
         why: "Asistencia al escribir código",
+        verificationStatus: "unverified",
       },
       {
         htmlId: "grokbot",
@@ -541,10 +548,11 @@ export const LAYERS: FaceLayer[] = [
       {
         htmlId: "vscode",
         optionId: "archmaker.app.vscode",
-        title: "VS Code",
-        description: "Editor ampliamente usado (Extra `code`).",
+        title: "Code - OSS",
+        description:
+          "Editor Code - OSS del repositorio Extra (`code`). Distinto del binario propietario de Visual Studio Code.",
         size: 350,
-        tag: "Popular",
+        tag: "Code - OSS",
         why: "Extensiones",
         verificationStatus: "verified",
       },
@@ -561,10 +569,12 @@ export const LAYERS: FaceLayer[] = [
         htmlId: "steam",
         optionId: "archmaker.app.steam",
         title: "Steam",
-        description: "Biblioteca de juegos.",
+        description:
+          "Biblioteca de juegos. En Arch vive en multilib; el canal del catálogo sigue en extra hasta ADR de ProviderChannel (H07 blocked).",
         size: 400,
         tag: "Gaming",
         why: "Catálogo amplio",
+        verificationStatus: "verified",
       },
     ],
   },
@@ -611,7 +621,7 @@ export const INITIAL_APP_OPTION_IDS = [
   "archmaker.browser.zen",
   "archmaker.browser.vivaldi",
   "archmaker.pkg.onlyoffice-bin",
-  "archmaker.app.cursor",
+  // Cursor sin provider: no preseleccionar como verificado (H08).
 ] as const;
 
 export const INITIAL_SINGLE = {
@@ -662,4 +672,3 @@ export function isUnverifiedOption(
   if (option.verificationStatus === "unverified") return true;
   return Boolean("gap" in option && option.gap);
 }
-

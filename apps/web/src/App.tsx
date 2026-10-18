@@ -82,6 +82,11 @@ import {
   uiStateForIntent,
   withFaceV2Fields,
 } from "./storage-plan-face.js";
+import {
+  catalogOptionTitle,
+  parseCatalogView,
+  type CatalogView,
+} from "./catalog-view.js";
 
 type Props = { port: CorePort; portKind: PortKind };
 
@@ -182,6 +187,7 @@ function withInitialSelections(draft: Draft): Draft {
 export function App({ port, portKind }: Props) {
   const [draft, setDraft] = useState<Draft | null>(null);
   const [catalogRef, setCatalogRef] = useState<CatalogRef>(DESKTOP_CATALOG_REF);
+  const [catalogView, setCatalogView] = useState<CatalogView | null>(null);
   const [manifest, setManifest] = useState<Manifest | null>(null);
   const [diagnostics, setDiagnostics] = useState<Diagnostic[]>([]);
   const [validated, setValidated] = useState(false);
@@ -206,6 +212,8 @@ export function App({ port, portKind }: Props) {
   const [importBusy, setImportBusy] = useState(false);
   const generationRef = useRef(0);
   const preparedGenerationRef = useRef<number | null>(null);
+  const draftRef = useRef<Draft | null>(null);
+  draftRef.current = draft;
 
   useEffect(() => subscribePersistStatus(setPersistStatus), []);
 
@@ -229,10 +237,28 @@ export function App({ port, portKind }: Props) {
   const hostname = textValue(draft, STEP_IDS.hostname);
   const encrypt = boolValue(draft, STEP_IDS.encrypt);
 
-  const kernel = KERNELS.find((k) => k.optionId === kernelId);
-  const boot = BOOTLOADERS.find((b) => b.optionId === bootId);
-  const filesystem = FILESYSTEMS.find((f) => f.optionId === fsId);
+  const kernelFace = KERNELS.find((k) => k.optionId === kernelId);
+  const bootFace = BOOTLOADERS.find((b) => b.optionId === bootId);
+  const filesystemFace = FILESYSTEMS.find((f) => f.optionId === fsId);
   const env = ENVIRONMENTS.find((e) => e.optionId === envId);
+  const kernel = kernelFace
+    ? {
+        ...kernelFace,
+        title: catalogOptionTitle(catalogView, kernelId) ?? kernelFace.title,
+      }
+    : undefined;
+  const boot = bootFace
+    ? {
+        ...bootFace,
+        title: catalogOptionTitle(catalogView, bootId) ?? bootFace.title,
+      }
+    : undefined;
+  const filesystem = filesystemFace
+    ? {
+        ...filesystemFace,
+        title: catalogOptionTitle(catalogView, fsId) ?? filesystemFace.title,
+      }
+    : undefined;
   const envs = allEnvironments();
   const layers = allLayers();
   const stepProgress = useMemo(
@@ -314,15 +340,23 @@ export function App({ port, portKind }: Props) {
         fail(loaded.error, "Cargar catálogo");
         return;
       }
+      const viewed = parseCatalogView(loaded.value);
+      if (viewed) setCatalogView(viewed);
       const ref = DESKTOP_CATALOG_REF;
       setCatalogRef(ref);
 
       const local = await loadLastDraftLocal();
       if (cancelled) return;
-      if (local) {
+      if (local.kind === "error") {
+        announce(
+          "alert",
+          `${local.message} Se abrirá un perfil nuevo (recuperación fallida).`,
+        );
+        // Continúa a createDraft con causa visible (H14): no es silencio.
+      } else if (local.kind === "found") {
         const opened = await port.openDraft({
-          draftId: local.id,
-          seed: local,
+          draftId: local.draft.id,
+          seed: local.draft,
         });
         if (cancelled) return;
         if (opened.ok) {
@@ -332,6 +366,10 @@ export function App({ port, portKind }: Props) {
           announce("status", "Perfil recuperado.");
           return;
         }
+        announce(
+          "alert",
+          `Perfil local incompatible: ${opened.error.code} (${opened.error.messageKey})`,
+        );
       }
 
       const res = await port.createDraft({
@@ -420,13 +458,10 @@ export function App({ port, portKind }: Props) {
     const { draft: next, added } = toggleApp(d, pkg.optionId);
     applyDraft(next);
     showToast(added ? `Añadido ${pkg.title}` : `Quitado ${pkg.title}`, () => {
-      setDraft((prev) => {
-        if (!prev) return prev;
-        const undone = toggleApp(prev, pkg.optionId).draft;
-        invalidateDerived();
-        void persistDraftLocal(undone).then(handlePersistResult);
-        return undone;
-      });
+      // H11: invalidación y persistencia fuera del actualizador de setDraft.
+      const prev = draftRef.current;
+      if (!prev) return;
+      applyDraft(toggleApp(prev, pkg.optionId).draft);
     });
   }
 
@@ -590,6 +625,8 @@ export function App({ port, portKind }: Props) {
 
   async function onImportFile(file: File): Promise<void> {
     setImportBusy(true);
+    // H12: congelar generación al elegir el archivo, antes del análisis async.
+    const generationAtPick = generationRef.current;
     try {
       const analysis = await analyzeImportFile({
         file,
@@ -597,6 +634,13 @@ export function App({ port, portKind }: Props) {
         catalogRef,
         targetRef: DRAFT_TARGET,
       });
+      if (generationAtPick !== generationRef.current) {
+        announce(
+          "alert",
+          "La configuración cambió durante el análisis; vuelve a importar.",
+        );
+        return;
+      }
       if (analysis.kind === "too-large") {
         announce(
           "alert",
@@ -608,12 +652,11 @@ export function App({ port, portKind }: Props) {
         fail(analysis.error, "Importar");
         return;
       }
-      const generation = generationRef.current;
       if (analysis.kind === "needs_blocking_confirm") {
         setImportPending({
           kind: "needs_blocking_confirm",
           sourceBytes: analysis.sourceBytes,
-          generation,
+          generation: generationAtPick,
           error: analysis.error,
         });
         announce(
@@ -625,7 +668,7 @@ export function App({ port, portKind }: Props) {
       setImportPending({
         kind: "ready",
         sourceBytes: analysis.sourceBytes,
-        generation,
+        generation: generationAtPick,
         payload: analysis.payload,
         needsBlockingConfirm: analysis.needsBlockingConfirm,
       });
@@ -700,12 +743,8 @@ export function App({ port, portKind }: Props) {
   function goToStep(index: number): void {
     const next = Math.min(RAIL_STEPS.length - 1, Math.max(0, index));
     setVisited((prev) => new Set(prev).add(next));
-    setInvalid((prev) => {
-      if (!prev.has(next)) return prev;
-      const copy = new Set(prev);
-      copy.delete(next);
-      return copy;
-    });
+    // H13: visitar un paso no elimina su invalidez; solo una corrección o
+    // nueva validación puede limpiarla (p. ej. onGenerate en revisión).
     setStep(next);
   }
 
@@ -871,7 +910,8 @@ export function App({ port, portKind }: Props) {
                       >
                         <span className="forge-card-row">
                           <span className="forge-card-title">
-                            {k.title}{" "}
+                            {catalogOptionTitle(catalogView, k.optionId) ??
+                              k.title}{" "}
                             <span className="forge-chip">{k.version}</span>
                           </span>
                           {k.tag ? (
@@ -907,7 +947,8 @@ export function App({ port, portKind }: Props) {
                             }
                             data-option-id={b.optionId}
                           />
-                          {b.title}
+                          {catalogOptionTitle(catalogView, b.optionId) ??
+                            b.title}
                         </label>
                       );
                     })}
@@ -933,7 +974,8 @@ export function App({ port, portKind }: Props) {
                             }
                             data-option-id={f.optionId}
                           />
-                          {f.title}
+                          {catalogOptionTitle(catalogView, f.optionId) ??
+                            f.title}
                         </label>
                       );
                     })}
@@ -1029,7 +1071,8 @@ export function App({ port, portKind }: Props) {
             <section aria-labelledby="apps-h">
               <h2 id="apps-h">Apps y paquetes</h2>
               <p className="forge-lead">
-                {selectedApps.size} seleccionadas · {totalSize} MB
+                {selectedApps.size} seleccionadas · ≈{totalSize} MB (estimación
+                de cara)
               </p>
               <div className="forge-stack" id="options">
                 {layers.map((layer) => {
@@ -1285,8 +1328,10 @@ export function App({ port, portKind }: Props) {
           hasManifest={Boolean(manifest)}
           apps={selectedPackages}
           appCount={selectedApps.size}
-          totalSize={totalSize}
+          totalSizeEstimate={totalSize}
           diagnostics={sideDiagnostics}
+          effectiveSelections={manifest?.effectiveSelections}
+          engineDiagnostics={diagnostics}
           onPickEnv={(optionId) => pickSingle(STEP_IDS.compositor, optionId)}
         />
       </div>

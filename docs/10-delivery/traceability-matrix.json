@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "generated_at": "1792322368",
-    "git_sha": "b53421f8e46dee7d99f44b49ecac70bff21ff28b",
+    "generated_at": "1792324470",
+    "git_sha": "a56e64bb31fde9cec18ee07bf2bdcb2523a347f4",
     "requirements_file": "docs/01-product/requirements.md",
     "inventory_file": "docs/10-delivery/tests-inventory.json",
     "validators_file": "docs/10-delivery/validators.json"
@@ -83,7 +83,7 @@
       "evidence_count": 47,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["unit", "negative", "schema", "integration"],
+      "evidence_types": ["negative", "integration", "unit", "schema"],
       "coverage_status": "covered"
     },
     {
@@ -137,6 +137,8 @@
         "TST-ARCHMAKER-CORE-F1_IDENTITY-PRODUCTION_UUIDS_UNIQUE_V4_BATCH",
         "TST-ARCHMAKER-CORE-F1_IDENTITY-WASM_SAFE_COUNTER_REMAINS_TEST_ONLY_PATH",
         "TST-ARCHMAKER-CORE-F1_IDENTITY-CREATE_DRAFT_AUTO_ID_USES_PRODUCTION_UUID",
+        "TST-ARCHMAKER-CORE-T_MATRIX-T37_LUKS_CHANGES_DIGEST",
+        "TST-ARCHMAKER-CORE-T_MATRIX-T37_DEFAULT_BROWSER_ALONE_CHANGES_DIGEST",
         "TST-ARCHMAKER-CORE-T_MATRIX-T37_LUKS_OR_DEFAULT_BROWSER_CHANGES_DIGEST",
         "TST-ARCHMAKER-CORE-T_MATRIX-T38_V2_DOCUMENT_NOT_LABELED_AS_V1_DOMAIN",
         "TST-ARCHMAKER-CORE-T_MATRIX-T39_FUTURE_SCHEMA_VERSION_REJECTED",
@@ -173,10 +175,10 @@
         "TST-WEB-PRODUCT-ACCEPTANCE.PLAYWRIGHT"
       ],
       "validators": ["VAL-SCHEMA-REFS", "VAL-NEG-CAPABILITIES"],
-      "evidence_count": 78,
+      "evidence_count": 80,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["unit", "negative", "schema", "integration"],
+      "evidence_types": ["negative", "integration", "unit", "schema"],
       "coverage_status": "covered"
     },
     {
@@ -235,7 +237,7 @@
       "evidence_count": 26,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["unit", "contract", "integration"],
+      "evidence_types": ["integration", "unit", "contract"],
       "coverage_status": "covered"
     },
     {
@@ -255,7 +257,7 @@
       "evidence_count": 4,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["unit", "schema", "integration"],
+      "evidence_types": ["schema", "integration", "unit"],
       "coverage_status": "covered"
     },
     {
@@ -299,6 +301,8 @@
         "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_BYTES_001_IDEMPOTENT_EXPORT_SAME_SELECTION",
         "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_HOST_001_NO_SPAWN_NO_ROOT_NO_NETWORK_FOR_MANIFEST",
         "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_BOOT_001_REJECTS_SATISFIED_UNTIL_IMAGE_ADMITTED",
+        "TST-ARCHMAKER-CORE-T_MATRIX-T37_LUKS_CHANGES_DIGEST",
+        "TST-ARCHMAKER-CORE-T_MATRIX-T37_DEFAULT_BROWSER_ALONE_CHANGES_DIGEST",
         "TST-ARCHMAKER-CORE-T_MATRIX-T37_LUKS_OR_DEFAULT_BROWSER_CHANGES_DIGEST",
         "TST-ARCHMAKER-CORE-T_MATRIX-T38_V2_DOCUMENT_NOT_LABELED_AS_V1_DOMAIN",
         "TST-ARCHMAKER-CORE-T_MATRIX-T39_FUTURE_SCHEMA_VERSION_REJECTED",
@@ -333,16 +337,16 @@
         "VAL-SCHEMA-REFS",
         "VAL-NEG-CAPABILITIES"
       ],
-      "evidence_count": 63,
+      "evidence_count": 65,
       "has_executable_evidence": true,
       "passes_ci": true,
       "evidence_types": [
-        "unit",
         "negative",
         "schema",
-        "contract",
+        "canonicalize",
         "integration",
-        "canonicalize"
+        "contract",
+        "unit"
       ],
       "coverage_status": "covered"
     },
@@ -386,7 +390,7 @@
       "evidence_count": 10,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["unit", "negative", "integration"],
+      "evidence_types": ["unit", "integration", "negative"],
       "coverage_status": "covered"
     },
     {
@@ -430,6 +434,8 @@
         "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_BYTES_001_IDEMPOTENT_EXPORT_SAME_SELECTION",
         "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_HOST_001_NO_SPAWN_NO_ROOT_NO_NETWORK_FOR_MANIFEST",
         "TST-ARCHMAKER-CORE-APPLICATION_CONTRACT-CLAUSE_BOOT_001_REJECTS_SATISFIED_UNTIL_IMAGE_ADMITTED",
+        "TST-ARCHMAKER-CORE-T_MATRIX-T37_LUKS_CHANGES_DIGEST",
+        "TST-ARCHMAKER-CORE-T_MATRIX-T37_DEFAULT_BROWSER_ALONE_CHANGES_DIGEST",
         "TST-ARCHMAKER-CORE-T_MATRIX-T37_LUKS_OR_DEFAULT_BROWSER_CHANGES_DIGEST",
         "TST-ARCHMAKER-CORE-T_MATRIX-T38_V2_DOCUMENT_NOT_LABELED_AS_V1_DOMAIN",
         "TST-ARCHMAKER-CORE-T_MATRIX-T39_FUTURE_SCHEMA_VERSION_REJECTED",
@@ -476,10 +482,10 @@
         "TST-WEB-PRODUCT-ACCEPTANCE.PLAYWRIGHT"
       ],
       "validators": [],
-      "evidence_count": 60,
+      "evidence_count": 62,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["unit", "contract", "integration"],
+      "evidence_types": ["integration", "unit", "contract"],
       "coverage_status": "covered"
     },
     {
@@ -499,7 +505,7 @@
       "evidence_count": 3,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["unit", "a11y", "visual"],
+      "evidence_types": ["visual", "a11y", "unit"],
       "coverage_status": "covered"
     },
     {
@@ -541,6 +547,8 @@
         "TST-ARCHMAKER-CORE-F1_IDENTITY-CREATE_DRAFT_AUTO_ID_USES_PRODUCTION_UUID",
         "TST-ARCHMAKER-CORE-F2_BYTES-F2_REPORT_BYTES_ARE_MARKDOWN_TEXT_NOT_JSON_STRING",
         "TST-ARCHMAKER-CORE-F2_BYTES-F2_DELIVERY_CORPUS_DIGESTS",
+        "TST-ARCHMAKER-CORE-T_MATRIX-T37_LUKS_CHANGES_DIGEST",
+        "TST-ARCHMAKER-CORE-T_MATRIX-T37_DEFAULT_BROWSER_ALONE_CHANGES_DIGEST",
         "TST-ARCHMAKER-CORE-T_MATRIX-T37_LUKS_OR_DEFAULT_BROWSER_CHANGES_DIGEST",
         "TST-ARCHMAKER-CORE-T_MATRIX-T38_V2_DOCUMENT_NOT_LABELED_AS_V1_DOMAIN",
         "TST-ARCHMAKER-CORE-T_MATRIX-T39_FUTURE_SCHEMA_VERSION_REJECTED",
@@ -590,15 +598,15 @@
         "TST-WEB-PRODUCT-ACCEPTANCE.PLAYWRIGHT"
       ],
       "validators": ["VAL-CANONICALIZE"],
-      "evidence_count": 78,
+      "evidence_count": 80,
       "has_executable_evidence": true,
       "passes_ci": true,
       "evidence_types": [
-        "unit",
         "negative",
-        "contract",
+        "canonicalize",
         "integration",
-        "canonicalize"
+        "contract",
+        "unit"
       ],
       "coverage_status": "covered"
     },
@@ -615,6 +623,8 @@
         "TST-ARCHMAKER-CORE-FORGE_V2_WALKING_SKELETON-ONLYOFFICE_CANONICAL_ID_IS_CATALOG_KNOWN",
         "TST-ARCHMAKER-CORE-FORGE_V2_WALKING_SKELETON-WALKING_SKELETON_V2_SAVE_BUILD_EXPORT_AND_MIGRATE",
         "TST-ARCHMAKER-CORE-FORGE_V2_WALKING_SKELETON-REJECTS_FUTURE_SCHEMA_VERSION_ON_SAVE",
+        "TST-ARCHMAKER-CORE-T_MATRIX-T37_LUKS_CHANGES_DIGEST",
+        "TST-ARCHMAKER-CORE-T_MATRIX-T37_DEFAULT_BROWSER_ALONE_CHANGES_DIGEST",
         "TST-ARCHMAKER-CORE-T_MATRIX-T37_LUKS_OR_DEFAULT_BROWSER_CHANGES_DIGEST",
         "TST-ARCHMAKER-CORE-T_MATRIX-T38_V2_DOCUMENT_NOT_LABELED_AS_V1_DOMAIN",
         "TST-ARCHMAKER-CORE-T_MATRIX-T39_FUTURE_SCHEMA_VERSION_REJECTED",
@@ -632,10 +642,10 @@
         "TST-WEB-PRODUCT-ACCEPTANCE.PLAYWRIGHT"
       ],
       "validators": ["VAL-MIG"],
-      "evidence_count": 20,
+      "evidence_count": 22,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["unit", "schema", "integration"],
+      "evidence_types": ["schema", "integration", "unit"],
       "coverage_status": "covered"
     },
     {
@@ -698,11 +708,11 @@
       "has_executable_evidence": true,
       "passes_ci": true,
       "evidence_types": [
-        "unit",
         "negative",
-        "contract",
         "visual",
-        "integration"
+        "integration",
+        "contract",
+        "unit"
       ],
       "coverage_status": "covered"
     },
@@ -737,7 +747,7 @@
       "evidence_count": 17,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["unit", "negative", "integration"],
+      "evidence_types": ["unit", "integration", "negative"],
       "coverage_status": "covered"
     },
     {
@@ -765,6 +775,8 @@
         "TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-NAMED_ALLOWED_INVOKE_RESOLVES_OP",
         "TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-DENIED_ERROR_SOURCE_IDENTIFIES_WINDOW_AND_COMMAND",
         "TST-ARCHMAKER-CORE-F0_FINDINGS-C06_EXPORT_CAPABILITY_SCOPED_SAVE_ONLY",
+        "TST-ARCHMAKER-CORE-T_MATRIX-T37_LUKS_CHANGES_DIGEST",
+        "TST-ARCHMAKER-CORE-T_MATRIX-T37_DEFAULT_BROWSER_ALONE_CHANGES_DIGEST",
         "TST-ARCHMAKER-CORE-T_MATRIX-T37_LUKS_OR_DEFAULT_BROWSER_CHANGES_DIGEST",
         "TST-ARCHMAKER-CORE-T_MATRIX-T38_V2_DOCUMENT_NOT_LABELED_AS_V1_DOMAIN",
         "TST-ARCHMAKER-CORE-T_MATRIX-T39_FUTURE_SCHEMA_VERSION_REJECTED",
@@ -820,10 +832,10 @@
         "TST-ARCHMAKER-HARDWARE-T_MATRIX-T44_RESTRICTED_NAMESPACE_PARTIAL_NOT_FULL_HOST_CERT"
       ],
       "validators": ["VAL-NEG-CAPABILITIES"],
-      "evidence_count": 70,
+      "evidence_count": 72,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["unit", "negative"],
+      "evidence_types": ["negative", "unit"],
       "coverage_status": "covered"
     }
   ],

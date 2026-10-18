@@ -435,9 +435,21 @@ fn resolution_content_digest(
 
 fn entity_ids(value: &SelectionValue) -> Vec<String> {
     match value {
-        SelectionValue::Single { option_id } => vec![option_id.clone()],
+        SelectionValue::Single { option_id } => {
+            let id = archmaker_domain::resolve_onlyoffice_canonical(option_id)
+                .unwrap_or(option_id)
+                .to_string();
+            vec![id]
+        }
         SelectionValue::Multiple { option_ids } => {
-            let mut ids = option_ids.clone();
+            let mut ids: Vec<String> = option_ids
+                .iter()
+                .map(|id| {
+                    archmaker_domain::resolve_onlyoffice_canonical(id)
+                        .unwrap_or(id.as_str())
+                        .to_string()
+                })
+                .collect();
             ids.sort();
             ids.dedup();
             ids
