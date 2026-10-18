@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "generated_at": "1792322368",
-    "git_sha": "b53421f8e46dee7d99f44b49ecac70bff21ff28b",
+    "generated_at": "1792325574",
+    "git_sha": "8d47016706e014d171d2bcd0d65fdd9ff53ca17a",
     "requirements_file": "docs/01-product/requirements.md",
     "inventory_file": "docs/10-delivery/tests-inventory.json",
     "validators_file": "docs/10-delivery/validators.json"
@@ -83,7 +83,7 @@
       "evidence_count": 47,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["unit", "negative", "schema", "integration"],
+      "evidence_types": ["schema", "negative", "unit", "integration"],
       "coverage_status": "covered"
     },
     {
@@ -176,7 +176,7 @@
       "evidence_count": 78,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["unit", "negative", "schema", "integration"],
+      "evidence_types": ["schema", "negative", "unit", "integration"],
       "coverage_status": "covered"
     },
     {
@@ -235,7 +235,7 @@
       "evidence_count": 26,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["unit", "contract", "integration"],
+      "evidence_types": ["contract", "unit", "integration"],
       "coverage_status": "covered"
     },
     {
@@ -255,7 +255,7 @@
       "evidence_count": 4,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["unit", "schema", "integration"],
+      "evidence_types": ["schema", "unit", "integration"],
       "coverage_status": "covered"
     },
     {
@@ -337,12 +337,12 @@
       "has_executable_evidence": true,
       "passes_ci": true,
       "evidence_types": [
-        "unit",
-        "negative",
-        "schema",
         "contract",
-        "integration",
-        "canonicalize"
+        "unit",
+        "schema",
+        "canonicalize",
+        "negative",
+        "integration"
       ],
       "coverage_status": "covered"
     },
@@ -386,7 +386,7 @@
       "evidence_count": 10,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["unit", "negative", "integration"],
+      "evidence_types": ["negative", "unit", "integration"],
       "coverage_status": "covered"
     },
     {
@@ -479,7 +479,7 @@
       "evidence_count": 60,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["unit", "contract", "integration"],
+      "evidence_types": ["contract", "unit", "integration"],
       "coverage_status": "covered"
     },
     {
@@ -499,7 +499,7 @@
       "evidence_count": 3,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["unit", "a11y", "visual"],
+      "evidence_types": ["a11y", "unit", "visual"],
       "coverage_status": "covered"
     },
     {
@@ -594,11 +594,11 @@
       "has_executable_evidence": true,
       "passes_ci": true,
       "evidence_types": [
-        "unit",
-        "negative",
         "contract",
-        "integration",
-        "canonicalize"
+        "unit",
+        "canonicalize",
+        "negative",
+        "integration"
       ],
       "coverage_status": "covered"
     },
@@ -635,7 +635,7 @@
       "evidence_count": 20,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["unit", "schema", "integration"],
+      "evidence_types": ["schema", "unit", "integration"],
       "coverage_status": "covered"
     },
     {
@@ -698,10 +698,10 @@
       "has_executable_evidence": true,
       "passes_ci": true,
       "evidence_types": [
-        "unit",
-        "negative",
         "contract",
+        "unit",
         "visual",
+        "negative",
         "integration"
       ],
       "coverage_status": "covered"
@@ -737,7 +737,7 @@
       "evidence_count": 17,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["unit", "negative", "integration"],
+      "evidence_types": ["negative", "unit", "integration"],
       "coverage_status": "covered"
     },
     {
@@ -823,7 +823,7 @@
       "evidence_count": 70,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["unit", "negative"],
+      "evidence_types": ["negative", "unit"],
       "coverage_status": "covered"
     }
   ],
