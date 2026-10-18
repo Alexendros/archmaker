@@ -22,7 +22,9 @@ test.describe("Forge face — rutas del plan", () => {
   }) => {
     expect(FORGE_RAIL_STEPS).toHaveLength(6);
     expect(ESSENTIAL_CONTROLS.length).toBeGreaterThanOrEqual(18);
-    const rail = page.getByRole("navigation", { name: /Pasos del configurador$/i });
+    const rail = page.getByRole("navigation", {
+      name: /Pasos del configurador$/i,
+    });
     await expect(rail).toBeVisible();
     for (const title of FORGE_RAIL_STEPS) {
       await expect(
@@ -66,9 +68,11 @@ test.describe("Forge face — rutas del plan", () => {
     ).toBeVisible();
     // Paso de rail retirado (no confundir con el checkbox de declaración).
     await expect(
-      page.getByRole("navigation", { name: /Pasos del configurador/i }).getByRole("button", {
-        name: /^Intención$/i,
-      }),
+      page
+        .getByRole("navigation", { name: /Pasos del configurador/i })
+        .getByRole("button", {
+          name: /^Intención$/i,
+        }),
     ).toHaveCount(0);
     await expect(page.getByText(/no modifica discos/i).first()).toBeVisible();
   });
@@ -155,7 +159,9 @@ test.describe("Forge face — rutas del plan", () => {
 
     await page.getByRole("button", { name: /Zen Browser/i }).click();
     await expect(page.getByRole("dialog")).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Zen Browser" })).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Zen Browser" }),
+    ).toBeVisible();
     await page.getByRole("button", { name: "Añadir" }).click();
     await expect(zen).toBeChecked();
   });
@@ -231,6 +237,77 @@ test.describe("Forge face — rutas del plan", () => {
     await expect(page.getByRole("dialog")).toHaveCount(0);
   });
 
+  test("H15: glosario atrapa Tab, inerta stepper y Escape restaura disparador", async ({
+    page,
+  }) => {
+    const glossaryBtn = page.getByRole("button", { name: "Glosario" });
+    await glossaryBtn.click();
+    const dialog = page.getByRole("dialog", { name: "Glosario" });
+    await expect(dialog).toBeVisible();
+
+    await expect(page.locator(".forge-stepper")).toHaveAttribute("inert", "");
+    await expect(page.locator("#main")).toHaveAttribute("inert", "");
+
+    const focusInside = await page.evaluate(() => {
+      const dlg = document.querySelector('[role="dialog"][aria-modal="true"]');
+      return Boolean(dlg && dlg.contains(document.activeElement));
+    });
+    expect(focusInside).toBe(true);
+
+    for (let i = 0; i < 8; i++) {
+      await page.keyboard.press("Tab");
+      const stillInside = await page.evaluate(() => {
+        const dlg = document.querySelector(
+          '[role="dialog"][aria-modal="true"]',
+        );
+        return Boolean(dlg && dlg.contains(document.activeElement));
+      });
+      expect(stillInside).toBe(true);
+    }
+
+    await page.keyboard.press("Escape");
+    await expect(dialog).toHaveCount(0);
+    await expect(glossaryBtn).toBeFocused();
+  });
+
+  test("H15: informe de importación atrapa foco y Escape cancela", async ({
+    page,
+  }) => {
+    await page.getByRole("button", { name: "Generar" }).click();
+    await expect(page.getByRole("heading", { name: "Revisión" })).toBeVisible({
+      timeout: 60_000,
+    });
+
+    const downloadPromise = page.waitForEvent("download");
+    await page.getByRole("button", { name: "Exportar" }).click();
+    const download = await downloadPromise;
+    const path = await download.path();
+    expect(path).toBeTruthy();
+
+    await page
+      .locator('input[type="file"][accept*="json"]')
+      .setInputFiles(path!);
+    const dialog = page.getByRole("dialog", {
+      name: /Informe de importación/i,
+    });
+    await expect(dialog).toBeVisible({ timeout: 30_000 });
+    await expect(page.locator(".forge-stepper")).toHaveAttribute("inert", "");
+
+    for (let i = 0; i < 6; i++) {
+      await page.keyboard.press("Tab");
+      const stillInside = await page.evaluate(() => {
+        const dlg = document.querySelector(
+          '[role="dialog"][aria-modal="true"]',
+        );
+        return Boolean(dlg && dlg.contains(document.activeElement));
+      });
+      expect(stillInside).toBe(true);
+    }
+
+    await page.keyboard.press("Escape");
+    await expect(dialog).toHaveCount(0);
+  });
+
   test("toast Deshacer restaura el paquete", async ({ page }) => {
     await page
       .getByRole("button", { name: /Continuar → Sistema base/i })
@@ -288,9 +365,7 @@ test.describe("Forge face — rutas del plan", () => {
   });
 
   test("progreso: atributo data-step-progress en rail", async ({ page }) => {
-    const current = page.locator(
-      '#step-rail [data-step-progress="current"]',
-    );
+    const current = page.locator('#step-rail [data-step-progress="current"]');
     await expect(current).toHaveCount(1);
     await page
       .getByRole("button", { name: /Continuar → Sistema base/i })

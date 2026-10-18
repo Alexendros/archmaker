@@ -43,6 +43,8 @@ import { ForgeAside } from "./ForgeAside.js";
 import { ForgeHeader } from "./ForgeHeader.js";
 import { ForgeRail } from "./ForgeRail.js";
 import { ForgeStepper } from "./ForgeStepper.js";
+import { GlossaryDrawer } from "./GlossaryDrawer.js";
+import { ImportReportDialog } from "./ImportReportDialog.js";
 import { PackageDialog } from "./PackageDialog.js";
 import {
   appIds,
@@ -58,7 +60,6 @@ import {
   BOOTLOADERS,
   ENVIRONMENTS,
   FILESYSTEMS,
-  GLOSSARY,
   INITIAL_APP_OPTION_IDS,
   INITIAL_SINGLE,
   KERNELS,
@@ -1361,85 +1362,12 @@ export function App({ port, portKind }: Props) {
       ) : null}
 
       {importPending ? (
-        <div className="forge-modal-backdrop">
-          <button
-            type="button"
-            className="forge-modal-scrim"
-            aria-label="Cancelar importación"
-            onClick={() => setImportPending(null)}
-          />
-          <div
-            className="forge-modal"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="import-report-title"
-          >
-            <div className="forge-modal-head">
-              <div>
-                <h2 id="import-report-title">Informe de importación</h2>
-                <p className="forge-muted">
-                  El perfil actual no se sustituye hasta que confirmes.
-                </p>
-              </div>
-              <button
-                type="button"
-                className="forge-btn-icon"
-                onClick={() => setImportPending(null)}
-              >
-                Cerrar
-              </button>
-            </div>
-            {importPending.kind === "needs_blocking_confirm" ? (
-              <p role="alert">
-                Hay pérdidas bloqueantes ({importPending.error.code}). Confirma
-                para aplicarlas o cancela para conservar el perfil actual.
-              </p>
-            ) : (
-              <>
-                <p role="status">
-                  {summarizeReport(importPending.payload.report)}
-                </p>
-                {importPending.payload.report.entries.length > 0 ? (
-                  <ul className="forge-stack">
-                    {importPending.payload.report.entries.map((entry) => (
-                      <li key={`${entry.path}-${entry.messageKey}`}>
-                        <strong>{entry.path}</strong>: {entry.messageKey}
-                        {entry.blocking ? " (bloqueante)" : ""}
-                        {entry.detail ? ` — ${entry.detail}` : ""}
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p>Sin entradas de migración detalladas.</p>
-                )}
-              </>
-            )}
-            <div className="forge-modal-actions">
-              <button
-                type="button"
-                className="forge-btn-primary"
-                disabled={importBusy}
-                onClick={() =>
-                  void onConfirmImport(
-                    importPending.kind === "needs_blocking_confirm" ||
-                      (importPending.kind === "ready" &&
-                        importPending.needsBlockingConfirm),
-                  )
-                }
-              >
-                {importBusy ? "Aplicando…" : "Confirmar e importar"}
-              </button>
-              <button
-                type="button"
-                className="forge-btn-ghost"
-                disabled={importBusy}
-                onClick={() => setImportPending(null)}
-              >
-                Cancelar
-              </button>
-            </div>
-          </div>
-        </div>
+        <ImportReportDialog
+          pending={importPending}
+          busy={importBusy}
+          onConfirm={(confirmBlocking) => void onConfirmImport(confirmBlocking)}
+          onClose={() => setImportPending(null)}
+        />
       ) : null}
 
       {cmdOpen ? (
@@ -1451,34 +1379,7 @@ export function App({ port, portKind }: Props) {
       ) : null}
 
       {glossaryOpen ? (
-        <div className="forge-drawer-backdrop">
-          <button
-            type="button"
-            className="forge-modal-scrim"
-            aria-label="Cerrar glosario"
-            onClick={() => setGlossaryOpen(false)}
-          />
-          <aside className="forge-drawer" aria-labelledby="glossary-title">
-            <div className="forge-modal-head">
-              <h2 id="glossary-title">Glosario</h2>
-              <button
-                type="button"
-                className="forge-btn-icon"
-                onClick={() => setGlossaryOpen(false)}
-              >
-                Cerrar
-              </button>
-            </div>
-            <div className="forge-stack">
-              {GLOSSARY.map((g) => (
-                <div key={g.title} className="forge-info-card">
-                  <strong>{g.title}</strong>
-                  <p>{g.body}</p>
-                </div>
-              ))}
-            </div>
-          </aside>
-        </div>
+        <GlossaryDrawer onClose={() => setGlossaryOpen(false)} />
       ) : null}
 
       <div id="toast-region" aria-live="polite" role="status" />
