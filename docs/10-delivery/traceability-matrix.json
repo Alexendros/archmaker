@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "generated_at": "1792324470",
-    "git_sha": "a56e64bb31fde9cec18ee07bf2bdcb2523a347f4",
+    "generated_at": "1792357115",
+    "git_sha": "d5dbbccdb2b9aa1db86fd0b621897af6d4cbfc92",
     "requirements_file": "docs/01-product/requirements.md",
     "inventory_file": "docs/10-delivery/tests-inventory.json",
     "validators_file": "docs/10-delivery/validators.json"
@@ -83,7 +83,7 @@
       "evidence_count": 47,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["negative", "integration", "unit", "schema"],
+      "evidence_types": ["schema", "integration", "unit", "negative"],
       "coverage_status": "covered"
     },
     {
@@ -178,7 +178,7 @@
       "evidence_count": 80,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["negative", "integration", "unit", "schema"],
+      "evidence_types": ["schema", "integration", "unit", "negative"],
       "coverage_status": "covered"
     },
     {
@@ -206,8 +206,20 @@
       "deferred": false,
       "pending": false,
       "tests": [
+        "TST-ARCHMAKER-CONSTITUTE-FETCH-FIXTURE_FETCH_STAYS_INSIDE_PROFILE_AND_CITES_DIGEST",
+        "TST-ARCHMAKER-CONSTITUTE-FETCH-MISSING_FIXTURE_IS_OFFLINE_AND_WRITES_NOTHING",
+        "TST-ARCHMAKER-CONSTITUTE-FETCH-NAME_OUTSIDE_PROFILE_IS_REJECTED",
+        "TST-ARCHMAKER-CONSTITUTE-FETCH-DEFERRED_BIN_IS_NOT_COPIED_INTO_OUTPUT",
+        "TST-ARCHMAKER-CONSTITUTE-FETCH-OUTPUT_NAMED_AIROOTFS_IS_REFUSED",
+        "TST-ARCHMAKER-CONSTITUTE-FETCH-A_PROFILE_LINE_THAT_IS_NOT_A_PACKAGE_NAME_IS_REJECTED",
+        "TST-ARCHMAKER-CONSTITUTE-FETCH-ARGV_REJECTS_A_SCRIPT_AND_THE_BIN_FETCHES_THE_FIXTURE",
+        "TST-ARCHMAKER-CONSTITUTE-FETCH-IMAGE_REQUEST_DOES_NOT_CREATE_AN_ISO_OR_ACCEPT_A_SCRIPT",
         "TST-ARCHMAKER-CORE-F0_FINDINGS-C02_EXPORT_BINARY_DIGEST_MATCHES_RENDERER_BYTES",
         "TST-ARCHMAKER-CORE-F0_FINDINGS-C06_EXPORT_CAPABILITY_SCOPED_SAVE_ONLY",
+        "TST-ARCHMAKER-CORE-ISO02_LIVE_PROFILE-ISO02_SAME_MANIFEST_SAME_BYTES_WITHOUT_PACSTRAP_OR_CMD",
+        "TST-ARCHMAKER-CORE-ISO02_LIVE_PROFILE-ISO02_NON_REDISTRIBUTABLE_IS_NAMED_DEFERRED_NOT_INSTALLED",
+        "TST-ARCHMAKER-CORE-ISO02_LIVE_PROFILE-ISO02_BLOCKING_MANIFEST_YIELDS_NO_PROFILE",
+        "TST-ARCHMAKER-CORE-ISO02_LIVE_PROFILE-ISO02_UNKNOWN_TARGET_STILL_REJECTED",
         "TST-ARCHMAKER-CORE-CORE_CONTRACT-EXPORT_ARTIFACT_BYTE_IDEMPOTENT",
         "TST-ARCHMAKER-CORE-CORE_CONTRACT-EXPORT_ADAPTERS_DIVERGE_BYTES_AND_FILL_CONTENT",
         "TST-ARCHMAKER-CORE-CORE_CONTRACT-EXPORT_ARTIFACT_REJECTS_BAD_TARGET_AND_HANDLE",
@@ -234,10 +246,10 @@
         "TST-WEB-PRODUCT-ACCEPTANCE.PLAYWRIGHT"
       ],
       "validators": [],
-      "evidence_count": 26,
+      "evidence_count": 38,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["integration", "unit", "contract"],
+      "evidence_types": ["integration", "contract", "unit"],
       "coverage_status": "covered"
     },
     {
@@ -287,6 +299,8 @@
         "TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-NAMED_ALLOWED_INVOKE_RESOLVES_OP",
         "TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-DENIED_ERROR_SOURCE_IDENTIFIES_WINDOW_AND_COMMAND",
         "TST-ARCHMAKER-CORE-F0_FINDINGS-C06_EXPORT_CAPABILITY_SCOPED_SAVE_ONLY",
+        "TST-ARCHMAKER-CORE-ISO02_LIVE_PROFILE-ISO02_SAME_MANIFEST_SAME_BYTES_WITHOUT_PACSTRAP_OR_CMD",
+        "TST-ARCHMAKER-CORE-ISO02_LIVE_PROFILE-ISO02_BLOCKING_MANIFEST_YIELDS_NO_PROFILE",
         "TST-ARCHMAKER-CORE-F3_FIDELITY-HOSTNAME_AND_ENCRYPT_INTENTION_REACH_MANIFEST",
         "TST-ARCHMAKER-CORE-CORE_CONTRACT-BUILD_MANIFEST_SEALED_AND_BLOCKED",
         "TST-ARCHMAKER-CORE-CORE_CONTRACT-BUILD_MANIFEST_HONORS_EXPECTED_RESOLUTION_DIGEST",
@@ -337,16 +351,16 @@
         "VAL-SCHEMA-REFS",
         "VAL-NEG-CAPABILITIES"
       ],
-      "evidence_count": 65,
+      "evidence_count": 67,
       "has_executable_evidence": true,
       "passes_ci": true,
       "evidence_types": [
-        "negative",
-        "schema",
-        "canonicalize",
         "integration",
         "contract",
-        "unit"
+        "negative",
+        "canonicalize",
+        "unit",
+        "schema"
       ],
       "coverage_status": "covered"
     },
@@ -485,7 +499,7 @@
       "evidence_count": 62,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["integration", "unit", "contract"],
+      "evidence_types": ["integration", "contract", "unit"],
       "coverage_status": "covered"
     },
     {
@@ -505,7 +519,7 @@
       "evidence_count": 3,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["visual", "a11y", "unit"],
+      "evidence_types": ["a11y", "visual", "unit"],
       "coverage_status": "covered"
     },
     {
@@ -530,6 +544,10 @@
         "TST-ARCHMAKER-WASM-PARITY-PARITY_DESKTOP_CATALOG_MANIFEST_CANONICAL_BYTES",
         "TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-MALFORMED_JSON_RETURNS_TYPED_SCHEMA_ERROR",
         "TST-ARCHMAKER-CORE-F7_P95_SAMPLE-F7_P95_ONE_SAMPLE_PRINTS_JSON_WHEN_ENV_SET",
+        "TST-ARCHMAKER-CORE-ISO02_LIVE_PROFILE-ISO02_SAME_MANIFEST_SAME_BYTES_WITHOUT_PACSTRAP_OR_CMD",
+        "TST-ARCHMAKER-CORE-ISO02_LIVE_PROFILE-ISO02_NON_REDISTRIBUTABLE_IS_NAMED_DEFERRED_NOT_INSTALLED",
+        "TST-ARCHMAKER-CORE-ISO02_LIVE_PROFILE-ISO02_BLOCKING_MANIFEST_YIELDS_NO_PROFILE",
+        "TST-ARCHMAKER-CORE-ISO02_LIVE_PROFILE-ISO02_UNKNOWN_TARGET_STILL_REJECTED",
         "TST-ARCHMAKER-CORE-CORE_CONTRACT-NEW_UUID_V4_WASM_SAFE_IS_VALID_WITHOUT_HOST_ENTROPY",
         "TST-ARCHMAKER-CORE-FORGE_V2_WALKING_SKELETON-ONLYOFFICE_CANONICAL_ID_IS_CATALOG_KNOWN",
         "TST-ARCHMAKER-CORE-FORGE_V2_WALKING_SKELETON-WALKING_SKELETON_V2_SAVE_BUILD_EXPORT_AND_MIGRATE",
@@ -598,14 +616,14 @@
         "TST-WEB-PRODUCT-ACCEPTANCE.PLAYWRIGHT"
       ],
       "validators": ["VAL-CANONICALIZE"],
-      "evidence_count": 80,
+      "evidence_count": 84,
       "has_executable_evidence": true,
       "passes_ci": true,
       "evidence_types": [
-        "negative",
-        "canonicalize",
         "integration",
         "contract",
+        "negative",
+        "canonicalize",
         "unit"
       ],
       "coverage_status": "covered"
@@ -673,6 +691,7 @@
       "deferred": false,
       "pending": false,
       "tests": [
+        "TST-ARCHMAKER-CONSTITUTE-FETCH-MISSING_FIXTURE_IS_OFFLINE_AND_WRITES_NOTHING",
         "TST-ARCHMAKER-WASM-PARITY-PARITY_MAPS_VECTORS",
         "TST-ARCHMAKER-WASM-PARITY-PARITY_DOMAIN_VECTORS",
         "TST-ARCHMAKER-WASM-PARITY-PARITY_UNICODE_VECTORS",
@@ -704,14 +723,14 @@
         "TST-WEB-WASM-OFFLINE.PLAYWRIGHT"
       ],
       "validators": [],
-      "evidence_count": 29,
+      "evidence_count": 30,
       "has_executable_evidence": true,
       "passes_ci": true,
       "evidence_types": [
-        "negative",
-        "visual",
         "integration",
         "contract",
+        "visual",
+        "negative",
         "unit"
       ],
       "coverage_status": "covered"
@@ -759,6 +778,14 @@
       "deferred": false,
       "pending": false,
       "tests": [
+        "TST-ARCHMAKER-CONSTITUTE-FETCH-FIXTURE_FETCH_STAYS_INSIDE_PROFILE_AND_CITES_DIGEST",
+        "TST-ARCHMAKER-CONSTITUTE-FETCH-MISSING_FIXTURE_IS_OFFLINE_AND_WRITES_NOTHING",
+        "TST-ARCHMAKER-CONSTITUTE-FETCH-NAME_OUTSIDE_PROFILE_IS_REJECTED",
+        "TST-ARCHMAKER-CONSTITUTE-FETCH-DEFERRED_BIN_IS_NOT_COPIED_INTO_OUTPUT",
+        "TST-ARCHMAKER-CONSTITUTE-FETCH-OUTPUT_NAMED_AIROOTFS_IS_REFUSED",
+        "TST-ARCHMAKER-CONSTITUTE-FETCH-A_PROFILE_LINE_THAT_IS_NOT_A_PACKAGE_NAME_IS_REJECTED",
+        "TST-ARCHMAKER-CONSTITUTE-FETCH-ARGV_REJECTS_A_SCRIPT_AND_THE_BIN_FETCHES_THE_FIXTURE",
+        "TST-ARCHMAKER-CONSTITUTE-FETCH-IMAGE_REQUEST_DOES_NOT_CREATE_AN_ISO_OR_ACCEPT_A_SCRIPT",
         "TST-ARCHMAKER-CANONICALIZATION-VECTORS-N_NEGATIVE_ZERO_BYTE_IDENTITY",
         "TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-DENIED_INVOKE_RETURNS_TYPED_PROTO_001",
         "TST-ARCHMAKER-WASM-INVOKE_NEGATIVE-ALLOWED_INVOKE_PASSES_CAPABILITY_GATE",
@@ -775,6 +802,10 @@
         "TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-NAMED_ALLOWED_INVOKE_RESOLVES_OP",
         "TST-ARCHMAKER-CORE-CAPABILITIES_NEGATIVE-DENIED_ERROR_SOURCE_IDENTIFIES_WINDOW_AND_COMMAND",
         "TST-ARCHMAKER-CORE-F0_FINDINGS-C06_EXPORT_CAPABILITY_SCOPED_SAVE_ONLY",
+        "TST-ARCHMAKER-CORE-ISO02_LIVE_PROFILE-ISO02_SAME_MANIFEST_SAME_BYTES_WITHOUT_PACSTRAP_OR_CMD",
+        "TST-ARCHMAKER-CORE-ISO02_LIVE_PROFILE-ISO02_NON_REDISTRIBUTABLE_IS_NAMED_DEFERRED_NOT_INSTALLED",
+        "TST-ARCHMAKER-CORE-ISO02_LIVE_PROFILE-ISO02_BLOCKING_MANIFEST_YIELDS_NO_PROFILE",
+        "TST-ARCHMAKER-CORE-ISO02_LIVE_PROFILE-ISO02_UNKNOWN_TARGET_STILL_REJECTED",
         "TST-ARCHMAKER-CORE-T_MATRIX-T37_LUKS_CHANGES_DIGEST",
         "TST-ARCHMAKER-CORE-T_MATRIX-T37_DEFAULT_BROWSER_ALONE_CHANGES_DIGEST",
         "TST-ARCHMAKER-CORE-T_MATRIX-T37_LUKS_OR_DEFAULT_BROWSER_CHANGES_DIGEST",
@@ -832,10 +863,10 @@
         "TST-ARCHMAKER-HARDWARE-T_MATRIX-T44_RESTRICTED_NAMESPACE_PARTIAL_NOT_FULL_HOST_CERT"
       ],
       "validators": ["VAL-NEG-CAPABILITIES"],
-      "evidence_count": 72,
+      "evidence_count": 84,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["negative", "unit"],
+      "evidence_types": ["unit", "negative"],
       "coverage_status": "covered"
     }
   ],

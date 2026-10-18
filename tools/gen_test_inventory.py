@@ -201,6 +201,10 @@ def infer_covers(crate: str, test_file: str, test_fn: str) -> List[str]:
         'ha_matrix': ['NFR-SEC-001', 'FR-VALIDATE-001', 'NFR-DET-001'],
         'archmaker-hardware': ['NFR-SEC-001', 'FR-VALIDATE-001', 'NFR-DET-001'],
         'hardware': ['NFR-SEC-001', 'FR-VALIDATE-001'],
+        # Perfil vivo ISO-02: mismos bytes, sin shell y sin target desconocido.
+        'iso02_live_profile': ['FR-EXPORT-001', 'NFR-DET-001', 'NFR-SEC-001'],
+        # Constitución tipada: la petición no ejecuta mkarchiso ni sale del perfil.
+        'archmaker-constitute': ['FR-EXPORT-001', 'NFR-SEC-001'],
     }
 
     for keyword, reqs in keyword_map.items():
