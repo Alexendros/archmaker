@@ -236,4 +236,20 @@ test.describe("storage-plan-face H01/H02", () => {
     });
     expect(plan?.planStatus).toBe("not-certifiable");
   });
+
+  test("H01: storagePlan sobrevive withFaceV2Fields → draftForCore", async () => {
+    const { withFaceV2Fields } = await import("./src/storage-plan-face.js");
+    const intent = {
+      mode: "new-disk" as const,
+      intentAcknowledged: true,
+      lossRiskAcknowledged: false,
+      uiState: "proposed" as const,
+    };
+    const projected = withFaceV2Fields(emptyDraft(), intent);
+    const forCore = draftForCore(projected);
+    expect(forCore.storagePlan?.mode).toBe("new-disk");
+    expect(forCore.storagePlan?.intentAcknowledged).toBe(true);
+    expect(forCore.verification?.planValidationStatus).toBe("not-validated");
+    expect(forCore.verification?.executionStatus).toBe("not-executed");
+  });
 });

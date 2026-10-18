@@ -13,8 +13,9 @@ use archmaker_domain::{
     decode_draft_schema_version, is_document_version, is_integer_version, is_semver,
     project_declared_v2_fields, Artifact, ArtifactRef, BinaryDigest, BinaryKind, CapabilityRef,
     Catalog, CatalogRef, ContentDigest, ContentKind, DigestAlgorithm, Draft, DraftSchemaVersion,
-    Manifest, ManifestDomainLabel, ManifestRef, PresetRef, Producer, ResolvedSelection, Selection,
-    SelectionOrigin, SelectionValue, TargetRef, DRAFT_DOMAIN_V1, DRAFT_DOMAIN_V2,
+    Manifest, ManifestDomainLabel, ManifestRef, PresetRef, Producer, ProviderStatus,
+    ResolvedSelection, Selection, SelectionOrigin, SelectionValue, TargetRef, DRAFT_DOMAIN_V1,
+    DRAFT_DOMAIN_V2,
 };
 use archmaker_resolution::{Catalog as ResolutionCatalog, CatalogOption};
 use archmaker_rules::{
@@ -480,6 +481,46 @@ fn face_exclusion_diagnostic(step_id: &str, kind: &str) -> Diagnostic {
     }
 }
 
+/// Solicitud con proveedor Unverified: se conserva en el draft, no certifica soporte.
+fn unverified_provider_diagnostic(step_id: &str, option_id: &str) -> Diagnostic {
+    Diagnostic {
+        code: "AM-PROV-001".to_string(),
+        severity: archmaker_rules::Severity::Error,
+        blocking: true,
+        path: format!("/selections/{step_id}/{option_id}"),
+        message_key: "diagnostic.unverifiedProviderSelected".to_string(),
+        source: "archmaker-core".to_string(),
+        rule_id: "PROV-UNVERIFIED-001".to_string(),
+        suggestions: vec![format!(
+            "option '{option_id}' remains an unverified request; it is not certified support"
+        )],
+    }
+}
+
+fn append_unverified_provider_diagnostics(
+    draft: &Draft,
+    catalog: &Catalog,
+    diagnostics: &mut Vec<Diagnostic>,
+) {
+    for selection in &draft.selections {
+        for option_id in entity_ids(&selection.value) {
+            let provider = catalog
+                .steps
+                .iter()
+                .flat_map(|s| s.sections.iter())
+                .flat_map(|sec| sec.options.iter())
+                .find(|o| o.id == option_id)
+                .and_then(|o| o.provider.as_ref());
+            if provider.is_some_and(|p| p.status == ProviderStatus::Unverified) {
+                diagnostics.push(unverified_provider_diagnostic(
+                    &selection.step_id,
+                    &option_id,
+                ));
+            }
+        }
+    }
+}
+
 /// Preserve supported face scalars (hostname text, encrypt boolean intention) and
 /// emit a visible exclusion diagnostic for unsupported scalar kinds.
 fn append_face_scalar_selections(
@@ -902,6 +943,7 @@ fn resolve_internal(
     }
     let mut diagnostics = resolved.diagnostics;
     append_face_scalar_selections(draft, &mut effective, &mut diagnostics);
+    append_unverified_provider_diagnostics(draft, &core.catalog_embedded, &mut diagnostics);
     effective.sort_by(|a, b| (&a.step_id, &a.option_id).cmp(&(&b.step_id, &b.option_id)));
     let provided_refs = resolved
         .provided_capabilities
