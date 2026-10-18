@@ -8,6 +8,7 @@
 #           DEC-011 (AppImage Linux x86_64, nombre visible Forge).
 # Pipeline: checkout RC → frontend + AppImage → SBOM → sign (cosign keyless) →
 #           verify offline (trusted_root.json) → provenance SLSA v1 → publish.
+# El tag v* no publica: publish solo con workflow_dispatch y publish_package.
 #
 # Política supply-chain (docs/09-quality/ci-cd.md):
 #   - Solo acciones con SHA ya verificado (checkout, setup-python, setup-node).
@@ -21,6 +22,12 @@ on:
   push:
     tags: ["v*"]
   workflow_dispatch:
+    inputs:
+      publish_package:
+        description: Publica el AppImage solo si ya está validado con tests
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -30,8 +37,21 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  hold:
+    name: Paquete en espera del AppImage validado
+    if: github.event_name != 'workflow_dispatch' || (inputs.publish_package != true && inputs.publish_package != 'true')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: No publicar la release de paquete
+        run: |
+          echo "El tag de versión no publica la GitHub Release."
+          echo "El AppImage espera estar totalmente funcional y validado con tests."
+          echo "Para publicar: workflow_dispatch con publish_package=true sobre ese tag."
+
   package:
     name: AppImage + checksums + SBOM (F9)
+    if: github.event_name == 'workflow_dispatch' && (inputs.publish_package == true || inputs.publish_package == 'true')
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:

@@ -7,8 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+Nada pendiente de anotar. La GitHub Release del paquete `0.2.0` espera un AppImage Forge funcional y validado con tests. El tag `v0.1.0` no se mueve.
+
+## [0.2.0] - 2026-10-18
+
+Versión de código de `main` desde `v0.1.0`, incluido el perfil vivo. No hay GitHub Release ni AppImage de esta versión. El contrato de productor (`PRODUCER_VERSION` y `PIPELINE_VERSION`) sigue en `0.1.0`. El tag `v0.1.0` no se mueve.
+
 ### Added
 
+- Perfil vivo `archmaker-live-profile` y petición tipada `constitute_image` (botón «Pedir imagen»). La cara no ejecuta `mkarchiso` ni un shell. La ISO `Forge-aaa81a961b0a-x86_64.iso` se generó una vez en una VM Arch y no está en el repositorio. El arranque UEFI de esa ISO en VM cubre LiveISO. La instalación en SSD sigue `not_run`.
+- Trazabilidad de las pruebas de constitución e ISO-02, y hashes as-built alineados con el árbol.
 - Evolución Forge verificable (plan consolidado): contratos draft/manifiesto v2,
   experiencia única (sin Sencillo/Avanzado), catálogo Zen/ONLYOFFICE/Kitty/Ghostty,
   sonda Linux de solo lectura + plan UEFI/GPT/UKI, migración `legacyMetadata`,
@@ -88,11 +96,11 @@ público **Neubat** (DEC-011 / ADR-0010 opción 3 / MVP-6 accepted solo para esa
 
 ### Identidades de la release
 
-| Campo            | Valor                                                              |
-| ---------------- | ------------------------------------------------------------------ |
-| Tag              | `v0.1.0`                                                           |
-| `RC_SHA`         | `9297ed7cc47f42a9611aed0093b5ab040daca512`                         |
-| `ARTIFACT_SHA256`| `6567464f5e2f21398fd3eef35592f0e9d377fd2cc7887c1e46df092b5a8e6d81` |
+| Campo             | Valor                                                              |
+| ----------------- | ------------------------------------------------------------------ |
+| Tag               | `v0.1.0`                                                           |
+| `RC_SHA`          | `9297ed7cc47f42a9611aed0093b5ab040daca512`                         |
+| `ARTIFACT_SHA256` | `6567464f5e2f21398fd3eef35592f0e9d377fd2cc7887c1e46df092b5a8e6d81` |
 
 ### Known limitations
 
@@ -107,5 +115,6 @@ público **Neubat** (DEC-011 / ADR-0010 opción 3 / MVP-6 accepted solo para esa
 - Front matter R2: `releaseStatus` del doc F9 permanece `ineligible` mientras
   `implementationStatus` ≠ `complete` o `verificationStatus` ≠ `passed`.
 
-[Unreleased]: https://github.com/Alexendros/archmaker/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/Alexendros/archmaker/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/Alexendros/archmaker/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/Alexendros/archmaker/releases/tag/v0.1.0

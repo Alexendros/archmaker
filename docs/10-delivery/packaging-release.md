@@ -49,17 +49,21 @@ Artefactos: el código del tag que GitHub adjunta y las notas. Sin binarios, sin
 Sigue la política de artefactos, canales y firma de este documento. **Canal autorizado (F8 /
 DEC-011 / MVP-6 accepted):**
 
-| Campo            | Valor                                                |
-| ---------------- | ---------------------------------------------------- |
-| Plataforma       | AppImage Linux x86_64                                |
+| Campo            | Valor                                                  |
+| ---------------- | ------------------------------------------------------ |
+| Plataforma       | AppImage Linux x86_64                                  |
 | Nombre visible   | Forge (ADR-0012; `v0.1.0` histórico Neubat / ADR-0010) |
-| Hosting          | GitHub Release del tag `v*` (`release.yml`)          |
-| Familias no Done | `.deb`, `.rpm`, OBS, AUR, Flatpak → deferred/blocked |
+| Hosting          | GitHub Release del tag `v*` (`release.yml`)            |
+| Familias no Done | `.deb`, `.rpm`, OBS, AUR, Flatpak → deferred/blocked   |
 
 F9 construyó desde `RC_SHA` `9297ed7…`, publicó
 [`v0.1.0`](https://github.com/Alexendros/archmaker/releases/tag/v0.1.0) (AppImage + SBOM +
 checksums + provenance) sin alterar bytes tras el digest. Residual DEC-006 / cosign local y
 3× install GUI siguen abiertos; R2 mantiene `releaseStatus=ineligible` en el doc F9.
+
+Desde `0.2.0`, un tag `v*` anota la versión de código y no publica el paquete. El job de
+AppImage en `release.yml` solo corre con `workflow_dispatch` y `publish_package=true`, cuando
+el AppImage esté funcional y validado con tests. `v0.1.0` permanece la release binaria publicada.
 
 Canales `nightly` / `beta` / `stable` son política de promoción del paquete. No son tags que
 `plan-release.yml` dispare. El AUR, si se reabre, es PKGBUILD fuente, no repositorio binario
@@ -83,14 +87,14 @@ Cada release publica, como mínimo:
 
 | Artefacto         | Descripción                                                              | Estado                              |
 | ----------------- | ------------------------------------------------------------------------ | ----------------------------------- |
-| Binarios/paquetes | **AppImage Linux x86_64 (Forge)**; `.deb`/`.rpm` deferred.              | published (`v0.1.0`)                |
+| Binarios/paquetes | **AppImage Linux x86_64 (Forge)**; `.deb`/`.rpm` deferred.               | published (`v0.1.0`)                |
 | Checksums         | `SHA256SUMS` por release; verificación `sha256sum --check`.              | published (`v0.1.0`)                |
 | Firmas            | Firma de artefactos y de `SHA256SUMS` con Sigstore (+ offline evaluada). | parcial (cosign local deferred)     |
 | SBOM              | CycloneDX y/o SPDX con el inventario de dependencias.                    | published (`sbom.cdx.json`)         |
 | Provenance        | Atestación SLSA v1 / in-toto ligada a commit y workflow.                 | published (`slsa-provenance.json`)  |
 | Source tarball    | Código fuente reproducible del commit taggeado.                          | via GitHub Release source           |
-| Changelog         | Formato Keep a Changelog; cambios por versión.                           | `CHANGELOG.md` (`[0.1.0]`)          |
-| Compatibilidad    | Matriz: Forge AppImage / Linux x86_64 (DEC-008).                        | published (canal único)             |
+| Changelog         | Formato Keep a Changelog; cambios por versión.                           | `[0.2.0]` código; paquete `[0.1.0]` |
+| Compatibilidad    | Matriz: Forge AppImage / Linux x86_64 (DEC-008).                         | published (canal único)             |
 
 - **Checksums**: el digest es la identidad del artefacto y se reutiliza en la promoción (sin rebuild).
 - **Firmas**: la firma se aplica una vez; la verificación es requisito de instalación del updater.

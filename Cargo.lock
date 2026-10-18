@@ -49,7 +49,7 @@ checksum = "330a5ed07fa54e4702c9d6c4174f74427fc0ef6e214bbd677ae50a5099946470"
 
 [[package]]
 name = "archmaker"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "archmaker-constitute",
  "archmaker-core",
@@ -65,7 +65,7 @@ dependencies = [
 
 [[package]]
 name = "archmaker-canonicalization"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "hex",
  "serde_json",
@@ -74,7 +74,7 @@ dependencies = [
 
 [[package]]
 name = "archmaker-constitute"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "hex",
  "serde_json",
@@ -83,7 +83,7 @@ dependencies = [
 
 [[package]]
 name = "archmaker-core"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "archmaker-canonicalization",
  "archmaker-domain",
@@ -98,7 +98,7 @@ dependencies = [
 
 [[package]]
 name = "archmaker-domain"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "serde",
  "serde_json",
@@ -106,7 +106,7 @@ dependencies = [
 
 [[package]]
 name = "archmaker-hardware"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "archmaker-domain",
  "serde",
@@ -116,7 +116,7 @@ dependencies = [
 
 [[package]]
 name = "archmaker-resolution"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "archmaker-canonicalization",
  "archmaker-rules",
@@ -125,7 +125,7 @@ dependencies = [
 
 [[package]]
 name = "archmaker-rules"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "serde",
  "serde_json",
@@ -133,7 +133,7 @@ dependencies = [
 
 [[package]]
 name = "archmaker-wasm"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "archmaker-canonicalization",
  "archmaker-core",
