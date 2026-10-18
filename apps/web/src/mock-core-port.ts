@@ -42,6 +42,16 @@ function digest(value = FIXED_DIGEST) {
   return { algorithm: "sha256" as const, value, kind: "content" as const };
 }
 
+/** El simulador solo abre el informe si el archivo declara la versión que migra el motor. */
+function isSimulatorV51(text: string): boolean {
+  try {
+    const root = JSON.parse(text) as { archmaker?: { version?: unknown } };
+    return root.archmaker?.version === "5.1.0";
+  } catch {
+    return false;
+  }
+}
+
 function initialSelections(): Selection[] {
   return [
     {
@@ -476,8 +486,19 @@ export class MockCorePort implements CorePort {
         ),
       };
     }
+    const v51 = isSimulatorV51(text);
+    if (!blockingFixture && !v51) {
+      return {
+        ok: false,
+        error: typedError(
+          "AM-MIG-001",
+          "mock-core",
+          "error.migration.unsupported",
+        ),
+      };
+    }
     const draft: Draft = {
-      id: input.draftId ?? FIXED_DRAFT_ID,
+      id: v51 ? crypto.randomUUID() : (input.draftId ?? FIXED_DRAFT_ID),
       schemaVersion: "1",
       documentVersion: "vNext",
       revision: 0,
@@ -502,7 +523,15 @@ export class MockCorePort implements CorePort {
                   blocking: true,
                 },
               ]
-            : [],
+            : [
+                {
+                  path: "/archmaker/version",
+                  fate: "preserved",
+                  messageKey: "migration.simulatorDoesNotMigrate",
+                  detail: "El simulador no migra el contenido v5.1.",
+                  blocking: false,
+                },
+              ],
           blocking: blockingFixture,
         },
         changeset: { schemaVersion: "1", operations: [] },
