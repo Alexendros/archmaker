@@ -18,7 +18,7 @@ reviewers:
 - Plan: FORGE-INTEGRITY-2026-10-18
 - SHA auditado / inicial: `ff1c4fa24d8ae818fab3cc4f38c8f3cb8ab80e07`
 - SHA de trabajo (baseline residual): `dcb96b726efd2ec5e50a9732168c5e6e41898669` (`origin/main` al abrir la serie residual)
-- SHA candidato de esta serie residual: tip de PR #170 (`fix/forge-integrity-residual-tests`), tras fusionar #168/#169/#170
+- SHA candidato de esta serie residual: `c0cbc25dd6e51d6320cac5953103bc353709e4ed` (rama `fix/forge-integrity-residual-tests`; fusionar #168/#169/#170)
 - Dictamen: **NO-GO** de cierre completo. Subconjunto web/core de integridad de cara y contratos v2 corregido en PRs; desktop/offline **blocked**; revisión independiente **pending**. `technicalResult` V8: **no emitido**.
 
 ## Autoridad y bloqueos explícitos
