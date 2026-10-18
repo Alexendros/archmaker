@@ -116,9 +116,12 @@ test.describe("F6 viewports y foco", () => {
     test(`rail y skip link visibles a ${width}px`, async ({ page }) => {
       await page.setViewportSize({ width, height: 800 });
       await page.goto(BASE_URL);
-      await page.waitForLoadState("networkidle");
       await expect(
-        page.locator("nav, [role='navigation']").first(),
+        page.getByRole("heading", { name: /Disco y particiones/i }),
+      ).toBeVisible({ timeout: 30_000 });
+      // Rail y stepper coexisten; solo uno es visible por viewport (CSS).
+      await expect(
+        page.locator("#step-rail:visible, #step-stepper:visible").first(),
       ).toBeVisible();
       await page.keyboard.press("Tab");
       const tag = await page.evaluate(() => document.activeElement?.tagName);
