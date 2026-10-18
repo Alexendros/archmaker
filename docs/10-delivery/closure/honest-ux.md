@@ -21,20 +21,21 @@ dependsOn:
 - Documento: DOC-DEL-CLO-UX-001 · Estado: draft · Propietario: Arquitectura
 - No rediseña la cara Forge. No toca capabilities de Tauri (dueño: F5).
 
-## Seis pasos visibles (`RAIL_STEPS`)
+## Recorrido de la cara
 
-Flujo vigente en `apps/web/src/forge-face.ts` → `RAIL_STEPS` (experiencia única; sin Sencillo/Avanzado):
+Nota 2026-10-18 (orden del operador, ISO-01). El rail de seis pasos, con «Disco y particiones» primero, deja de ser el recorrido. El código de `RAIL_STEPS` se alinea en el task de cara; hasta ese cambio esta tabla es la decisión, no una descripción del binario anterior.
+
+Flujo: Sistema base → Entorno → Apps → Identidad y seguridad → Revisión (experiencia única; sin Sencillo/Avanzado). En Revisión se pide la imagen. No hay paso de disco.
 
 | #   | id                  | Título                |
 | --- | ------------------- | --------------------- |
-| 1   | `storage`           | Disco y particiones   |
-| 2   | `base`              | Sistema base          |
-| 3   | `environment`       | Entorno               |
-| 4   | `apps`              | Apps                  |
-| 5   | `identity-security` | Identidad y seguridad |
-| 6   | `review`            | Revisión              |
+| 1   | `base`              | Sistema base          |
+| 2   | `environment`       | Entorno               |
+| 3   | `apps`              | Apps                  |
+| 4   | `identity-security` | Identidad y seguridad |
+| 5   | `review`            | Revisión              |
 
-Denominador: 6/6. Progreso semántico (`visited` / `complete` / `invalid` / `pending` / `current`); visitar no valida.
+Denominador previsto: 5/5. Progreso semántico (`visited` / `complete` / `invalid` / `pending` / `current`); visitar no valida. El mensaje «Archivo guardado» y el gate P6 no son el éxito de este slice.
 
 ## C-07 — tamaño y avisos
 

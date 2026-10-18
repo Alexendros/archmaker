@@ -10,7 +10,8 @@ export type FaceExclusion = {
 /**
  * Face-only selections (intent) and unverified requests stay in the UI draft
  * but must not reach a fully-supported RealCore resolve/validate/manifest.
- * Hostname (text) and encrypt (boolean intention) are kept for core fidelity.
+ * Hostname (text) is kept. Disk, filesystem and encrypt selections do not
+ * reach the engine: the face no longer authors them.
  */
 export function listFaceExclusions(draft: Draft): FaceExclusion[] {
   const exclusions: FaceExclusion[] = [];
@@ -55,8 +56,26 @@ export function listFaceExclusions(draft: Draft): FaceExclusion[] {
   return exclusions;
 }
 
+const DISK_STEPS = new Set<string>([
+  STEP_IDS.filesystem,
+  STEP_IDS.encrypt,
+]);
+
+/** Drop disk plan and disk selections. Imported drafts do not reopen that step. */
+export function withoutDiskPlan(draft: Draft): Draft {
+  const selections = draft.selections.filter(
+    (selection) => !DISK_STEPS.has(selection.stepId),
+  );
+  const next: Draft = { ...draft, selections };
+  delete next.storagePlan;
+  delete next.encryptionPolicy;
+  delete next.inheritedEncryptIntent;
+  return next;
+}
+
 export function draftForCore(draft: Draft): Draft {
-  const selections = draft.selections.flatMap((selection) => {
+  const stripped = withoutDiskPlan(draft);
+  const selections = stripped.selections.flatMap((selection) => {
     if (selection.stepId === STEP_IDS.intent) return [];
     const value = selection.value;
     if (value.kind === "single") {
@@ -75,5 +94,5 @@ export function draftForCore(draft: Draft): Draft {
     }
     return [selection];
   });
-  return { ...draft, selections };
+  return { ...stripped, selections };
 }

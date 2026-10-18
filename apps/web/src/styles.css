@@ -117,7 +117,10 @@
   }
   .forge-shell {
     display: grid;
-    grid-template-columns: minmax(12rem, 17.5rem) minmax(0, 1fr) minmax(14rem, 22.5rem);
+    grid-template-columns: minmax(12rem, 17.5rem) minmax(0, 1fr) minmax(
+        14rem,
+        22.5rem
+      );
     gap: 0;
     align-items: start;
     min-height: calc(100vh - 4rem);
@@ -335,6 +338,9 @@
     font-size: 1.375rem;
     margin: 0;
   }
+  .forge-main h2.forge-section-label {
+    font-size: 0.8125rem;
+  }
   .forge-lead {
     color: var(--color-text-muted);
     font-size: 0.875rem;
@@ -442,7 +448,11 @@
   }
   .forge-info-card.is-accent {
     background: var(--option-card-selected-bg);
-    border-color: color-mix(in oklab, var(--color-action) 30%, var(--color-border));
+    border-color: color-mix(
+      in oklab,
+      var(--color-action) 30%,
+      var(--color-border)
+    );
   }
   .forge-info-card p,
   .forge-diag p {
@@ -664,7 +674,11 @@
   }
   .forge-diag-warn {
     border-left-color: var(--color-warning);
-    background: color-mix(in oklab, var(--color-warning) 12%, var(--color-canvas));
+    background: color-mix(
+      in oklab,
+      var(--color-warning) 12%,
+      var(--color-canvas)
+    );
   }
   .forge-app-list {
     list-style: none;

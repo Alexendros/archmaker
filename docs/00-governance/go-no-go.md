@@ -34,7 +34,7 @@ reviewers:
   (alcance `mvp5-scope.md` accepted: catálogo de matriz, UI de cinco pasos, paridad Tauri/WASM).
 - Reevaluación slice MVP-5 (MVP-5-05): **CONDITIONAL-CLEAR — walking skeleton MVP-0 + slices MVP-1..MVP-5**
   (remediación operativa + Prove-It). Baseline emitida: `implementation-baseline-mvp5`
-  (tags previos intactos). Exclusiones del alcance vigentes (sin runner/ISO).
+  (tags previos intactos). Exclusiones del alcance vigentes hasta el slice ISO-01 de abajo.
 - Post-slice cierre F0–F9 (código en `main` + release): **no** amplía el veredicto al
   runner/ISO. Capas separadas (DOC-DEL-CLO-F8-001 / DOC-DEL-CLO-F9-001): baseline de
   código **passed**; aprobación funcional **pending** (runner F7 estricto y P95 harness
@@ -44,15 +44,19 @@ reviewers:
   install GUI). Ver `docs/10-delivery/closure/f8-governance.md` y `f9-release.md`.
 - Post P0–P6 (cierre ArchMaker/Forge): nomenclatura ADR-0012, integridad de evidencia,
   P95 web, Archify AS_BUILT, aceptación web y desktop/offline **blocked** (P6) documentados
-  en `docs/10-delivery/closure/`. Sin ampliar veredicto a runner/ISO ni publicar un tag nuevo.
+  en `docs/10-delivery/closure/`. Ese cierre no publica un tag nuevo ni abre el runner de instalación.
 - Alcance autorizado: `docs/10-delivery/walking-skeleton.md` (DOC-DEL-WSK-001),
   `docs/10-delivery/mvp1-scope.md` (DOC-DEL-MVP1-001), `docs/10-delivery/mvp2-scope.md`
   (DOC-DEL-MVP2-001), `docs/10-delivery/mvp3-scope.md` (DOC-DEL-MVP3-001),
   `docs/10-delivery/mvp4-scope.md` (DOC-DEL-MVP4-001), `docs/10-delivery/mvp5-scope.md`
   (DOC-DEL-MVP5-001) y empaquetado AppImage de `docs/10-delivery/mvp6-scope.md`
-  (DOC-DEL-MVP6-001, solo esa plataforma). Bloqueados: runner real, root, discos, shell
-  arbitraria, catálogos remotos, firma criptográfica de catálogo en carga, Enterprise, ISO,
-  `.deb`/`.rpm`/OBS/AUR binario como Done de MVP-6.
+  (DOC-DEL-MVP6-001, solo esa plataforma). Slice **ISO-01** (2026-10-18, ADR-0019 / DEC-013,
+  `iso-scope.md` accepted): perfil archiso desde el manifiesto sellado, una corrida
+  `mkarchiso` en proceso separado de constitución, y arranque vivo UEFI x86_64. La
+  instalación en SSD es prueba de archinstall en esa sesión, no escritura de Forge.
+  Bloqueados: runner de instalación (ADR-0004), root, escritura en discos (A6), shell
+  arbitraria, catálogos remotos, firma criptográfica de catálogo en carga, Enterprise,
+  aarch64, `.deb`/`.rpm`/OBS/AUR binario como Done de MVP-6.
 
 ## Motivo del resultado mecánico
 
@@ -126,9 +130,15 @@ los slices **MVP-1** (`mvp1-scope.md`), **MVP-2** (`mvp2-scope.md`), **MVP-3**
 nombre visible vigente **Forge** por ADR-0012 / DEC-012). Alcance **adicional**
 declarativo/sonda (ADR-0013…0018, `forge-declarative-scope.md`): planificación y
 observación de solo lectura; **no** reescribe MVP-5 como permiso de ejecución.
-**No** autorizado: runner real, root, escritura en discos (A6), shell arbitraria,
-catálogos remotos, firma criptográfica de catálogo en carga, Enterprise, ISO, ni
-`.deb`/`.rpm`/OBS/AUR binario como Done.
+**Autorizado además, solo ISO-01:** perfil `archmaker-live-profile`, una corrida
+`mkarchiso` fuera de la cara y el arranque vivo UEFI x86_64 (ADR-0019 / DEC-013).
+El botón de Revisión pide la imagen con una operación tipada: no ejecuta shell ni
+`mkarchiso`. La ISO del 2026-10-18 se generó en una VM, no desde el WebView. Sin la
+línea de este párrafo no había exporter ni `mkarchiso`.
+**No** autorizado: runner de instalación, root, escritura en discos (A6), shell
+arbitraria, catálogos remotos, firma criptográfica de catálogo en carga, Enterprise,
+aarch64, ni `.deb`/`.rpm`/OBS/AUR binario como Done. `mvp5-scope.md` no se reabre.
+`forge-declarative-scope.md` permanece con `executionStatus=not-executed`.
 
 La presencia de F0–F8 en `main` y la publicación F9 (`v0.1.0`) **no** equivalen a
 aprobación funcional firmada ni a `RC_SHA_FUNCIONAL`. El acto de gobierno F8/DEC-011

@@ -51,6 +51,7 @@ consumidores referencian los identificadores `DEC-*` y **no** reafirman su estad
 | DEC-010 | Sin telemetría en MVP                                                      | 2026-10-06 | product      | P1        | accepted | no         |
 | DEC-011 | Nombre público Neubat + canal inicial AppImage Linux x86_64                | 2026-10-16 | product      | P0        | accepted | no         |
 | DEC-012 | Nombre visible Forge (GUI) + motor ArchMaker; ids técnicos intactos        | 2026-10-17 | product      | P0        | accepted | no         |
+| DEC-013 | Target `archmaker-live-profile` y proceso de constitución, sin A6          | 2026-10-18 | architecture | P0        | accepted | no         |
 
 ## Registro estructurado
 
@@ -61,8 +62,20 @@ consumidores referencian los identificadores `DEC-*` y **no** reafirman su estad
 - Fecha y autoridad: 2026-10-05 · `product` · `accepted`.
 - ADR: ADR-0003. Requisitos: FR-EXPORT-001, FR-MANIFEST-001. Riesgos: —. Gates: G2, G10.
 - Consecuencia: conjunto de `ExportTarget` fijado (`archmaker-profile`, `archinstall-profile`,
-  `report`).
+  `report`). DEC-013 añade un cuarto id; no borra estos tres.
 - Issue de seguimiento: AUD-016.
+
+### DEC-013 — Perfil vivo y constitución de la imagen
+
+- Pregunta: ¿cómo se amplía el conjunto de export para la imagen viva sin abrir discos?
+- Decisión: target técnico `archmaker-live-profile` y un proceso separado de constitución
+  (descarga tipada y una corrida `mkarchiso`). No es el runner de instalación de ADR-0004.
+- Fecha y autoridad: 2026-10-18 · `architecture` · `accepted`.
+- ADR: ADR-0019. Requisitos: FR-ART-ISO-001, FR-FETCH-001, FR-ISO-001, NFR-MARK-001.
+  Riesgos: RSK-008 (no reabierto: este proceso no eleva). Gates: G2, G4, G8, G10.
+- Consecuencia: el fichero público es `Forge-<prefijo-de-digest>-x86_64.iso` y se describe
+  como derivada de Arch Linux. El contrato de código cambia en ISO-02.
+- Issue de seguimiento: ISO-02.
 
 ### DEC-002 — Ámbito de los identificadores
 
@@ -191,7 +204,6 @@ consumidores referencian los identificadores `DEC-*` y **no** reafirman su estad
   `RC_SHA` de `main` sin alterar bytes tras el digest.
 - Issue de seguimiento: MVP-6-02, MVP-6-03 (F9).
 
-
 ### DEC-012 — Nombre visible Forge (GUI de ArchMaker)
 
 - Pregunta: ¿qué nombre visible usa la GUI no publicada tras `v0.1.0`, sin alterar la identidad
@@ -210,26 +222,27 @@ consumidores referencian los identificadores `DEC-*` y **no** reafirman su estad
 
 Las únicas desviaciones aceptadas son `DEC-007` y `DEC-008`; ambas se detallan en su registro. El
 resto de decisiones coinciden con la recomendación o la precisan (DEC-005, DEC-006, DEC-009,
-DEC-010, DEC-011, DEC-012).
+DEC-010, DEC-011, DEC-012, DEC-013).
 
 ## Consecuencias aplicadas y no aplicadas
 
-| ID      | Consecuencia                                                         | Estado              | Issue            |
-| ------- | -------------------------------------------------------------------- | ------------------- | ---------------- |
-| DEC-001 | Conjunto de `ExportTarget` fijado en contratos y DTO.                | aplicada            | AUD-016          |
-| DEC-002 | Namespace global `vendor.kind.id`; habilita detección de duplicados. | aplicada            | AUD-011          |
-| DEC-003 | Dominio agnóstico del target; sin `pacstrap`/shell en runtime.       | aplicada            | AUD-016          |
-| DEC-004 | Transporte y elevación fijados; runner v1 diferido a su gate.        | aplicada (diseño)   | AUD-018          |
-| DEC-005 | Licencia Apache-2.0 única en `LICENSE`.                              | aplicada            | AUD-022          |
-| DEC-006 | Firma keyless y verificación offline definidas.                      | parcial (política)  | AUD-019, AUD-022 |
-| DEC-006 | Pipeline real de build/attest/SBOM y firmas.                         | parcial (F9 `v0.1.0`: SBOM/provenance/checksums; cosign local deferred) | AUD-022 |
-| DEC-007 | `THR-UPD-001` cerrado antes de MVP-0.                                | no aplicada         | AUD-019          |
-| DEC-007 | Updater deshabilitado por defecto en builds de desarrollo.           | aplicada            | AUD-019          |
-| DEC-008 | Matriz de soporte y pruebas reducida a x86_64.                       | aplicada            | AUD-020          |
-| DEC-009 | Sin CDN en runtime; CSP `self` y recursos empaquetados.              | aplicada            | AUD-020          |
-| DEC-010 | MVP sin telemetría; solo eventos locales redactados.                 | aplicada            | —                |
-| DEC-011 | Nombre público Neubat; AppImage x86_64 como único canal inicial.     | aplicada (gobierno + release `v0.1.0`) | MVP-6-02/03 (F9) |
-| DEC-012 | Nombre visible Forge; motor ArchMaker; sin renombrar ids técnicos.   | aplicada            | ADR-0012         |
+| ID      | Consecuencia                                                         | Estado                                                                  | Issue            |
+| ------- | -------------------------------------------------------------------- | ----------------------------------------------------------------------- | ---------------- |
+| DEC-001 | Conjunto de `ExportTarget` fijado en contratos y DTO.                | aplicada                                                                | AUD-016          |
+| DEC-002 | Namespace global `vendor.kind.id`; habilita detección de duplicados. | aplicada                                                                | AUD-011          |
+| DEC-003 | Dominio agnóstico del target; sin `pacstrap`/shell en runtime.       | aplicada                                                                | AUD-016          |
+| DEC-004 | Transporte y elevación fijados; runner v1 diferido a su gate.        | aplicada (diseño)                                                       | AUD-018          |
+| DEC-005 | Licencia Apache-2.0 única en `LICENSE`.                              | aplicada                                                                | AUD-022          |
+| DEC-006 | Firma keyless y verificación offline definidas.                      | parcial (política)                                                      | AUD-019, AUD-022 |
+| DEC-006 | Pipeline real de build/attest/SBOM y firmas.                         | parcial (F9 `v0.1.0`: SBOM/provenance/checksums; cosign local deferred) | AUD-022          |
+| DEC-007 | `THR-UPD-001` cerrado antes de MVP-0.                                | no aplicada                                                             | AUD-019          |
+| DEC-007 | Updater deshabilitado por defecto en builds de desarrollo.           | aplicada                                                                | AUD-019          |
+| DEC-008 | Matriz de soporte y pruebas reducida a x86_64.                       | aplicada                                                                | AUD-020          |
+| DEC-009 | Sin CDN en runtime; CSP `self` y recursos empaquetados.              | aplicada                                                                | AUD-020          |
+| DEC-010 | MVP sin telemetría; solo eventos locales redactados.                 | aplicada                                                                | —                |
+| DEC-011 | Nombre público Neubat; AppImage x86_64 como único canal inicial.     | aplicada (gobierno + release `v0.1.0`)                                  | MVP-6-02/03 (F9) |
+| DEC-012 | Nombre visible Forge; motor ArchMaker; sin renombrar ids técnicos.   | aplicada                                                                | ADR-0012         |
+| DEC-013 | Target `archmaker-live-profile`; proceso de constitución sin A6.     | aplicada al target; la cara no ejecuta `mkarchiso`                      | ISO-02           |
 
 ## Reglas de validación (R2)
 
@@ -253,8 +266,9 @@ Equivalencias aplicadas:
 
 ## Historia
 
-Se conservan `DEC-001`..`DEC-012` sin eliminar ninguna. Todas están en estado `accepted`; ninguna
+Se conservan `DEC-001`..`DEC-013` sin eliminar ninguna. Todas están en estado `accepted`; ninguna
 está `superseded`, `rejected` ni `proposed`, por lo que no se declara sucesora. `DEC-005` y
 `DEC-006` fueron aceptadas el 2026-10-05 y **clarificadas** el 2026-10-06. `DEC-009` y `DEC-010`
 pasan de `proposed` a `accepted` el 2026-10-06. `DEC-011` se acepta el 2026-10-16 con ADR-0010
-opción 3 y MVP-6 AppImage. `DEC-012` se acepta el 2026-10-17 con ADR-0012 (Forge).
+opción 3 y MVP-6 AppImage. `DEC-012` se acepta el 2026-10-17 con ADR-0012 (Forge). `DEC-013` se
+acepta el 2026-10-18 con ADR-0019 (perfil vivo; el contrato de código queda para ISO-02).

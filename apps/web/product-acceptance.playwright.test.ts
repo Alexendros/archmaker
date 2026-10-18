@@ -144,13 +144,13 @@ test.describe("P5 product-acceptance — integridad y recorrido", () => {
     expect(outcome.status).toBe("error");
   });
 
-  test("teclado: recorrido esencial Disco → Continuar → Generar", async ({
+  test("teclado: recorrido esencial Continuar → Generar", async ({
     page,
   }) => {
     test.setTimeout(90_000);
     await page.goto(MOCK_URL);
     await expect(
-      page.getByRole("heading", { name: /Disco y particiones/i }),
+      page.getByRole("heading", { name: /Sistema base/i }),
     ).toBeVisible({ timeout: 30_000 });
 
     // Skip link / foco inicial
@@ -160,16 +160,13 @@ test.describe("P5 product-acceptance — integridad y recorrido", () => {
 
     // Continuar con teclado (foco + Enter en el CTA)
     const continueBtn = page.getByRole("button", {
-      name: /Continuar → Sistema base/i,
+      name: /Continuar → Entorno/i,
     });
     await continueBtn.focus();
     await page.keyboard.press("Enter");
     await expect(
-      page.getByRole("heading", { name: "Sistema base" }),
+      page.getByRole("heading", { name: /Entorno/i }),
     ).toBeVisible({ timeout: 15_000 });
-    await expect(
-      page.getByRole("radio", { name: /systemd-boot/i }),
-    ).toBeChecked();
 
     // Generar (cabecera) con teclado
     const generate = page.getByRole("button", { name: "Generar" });

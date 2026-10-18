@@ -96,4 +96,7 @@ export class TauriCorePort implements CorePort {
   importDraft(input: ImportDraftInput): Promise<Result<unknown>> {
     return this.call<unknown>("import_draft", input);
   }
+  requestLiveImage(): Promise<Result<never>> {
+    return this.call<never>("constitute_image", {});
+  }
 }

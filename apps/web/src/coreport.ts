@@ -265,6 +265,8 @@ export interface CorePort {
   buildManifest(input: BuildManifestInput): Promise<Result<Manifest>>;
   exportArtifact(input: ExportArtifactInput): Promise<Result<Artifact>>;
   importDraft(input: ImportDraftInput): Promise<Result<unknown>>;
+  /** Pide la imagen al proceso de constitución. No acepta un shell ni una ruta. */
+  requestLiveImage(): Promise<Result<never>>;
 }
 
 export function typedError(

@@ -249,8 +249,12 @@ fn c03_resolve_hostname_encrypt_preserved_as_intention() {
     let face = read_repo("apps/web/src/draft-for-core.ts");
     assert!(face.contains("STEP_IDS.intent"));
     assert!(
-        !face.contains("STEP_IDS.hostname") && !face.contains("STEP_IDS.encrypt"),
-        "draftForCore no quita hostname ni encrypt"
+        !face.contains("STEP_IDS.hostname"),
+        "draftForCore no quita hostname"
+    );
+    assert!(
+        face.contains("STEP_IDS.encrypt") && face.contains("storagePlan"),
+        "la cara no entrega cifrado ni plan de disco al motor"
     );
     let app = read_repo("apps/web/src/App.tsx");
     assert!(
@@ -373,7 +377,14 @@ fn c05_persist_has_typed_save_states_and_serialized_writes() {
 fn c06_export_capability_scoped_save_only() {
     // F5: guardado nativo acotado; sin dialog.json/picker.json ni FS global.
     let app = read_repo("apps/web/src/App.tsx");
-    assert!(app.contains("deliverArtifact("));
+    assert!(
+        app.contains("requestLiveImage"),
+        "Revisión pide la imagen por la operación tipada"
+    );
+    assert!(
+        !app.contains("deliverArtifact("),
+        "pedir imagen no abre el diálogo de guardado"
+    );
     let delivery = read_repo("apps/web/src/export-delivery.ts");
     assert!(delivery.contains("save_export_bytes"));
     assert!(delivery.contains("confirmedSaveOutcome") || delivery.contains("file-saved"));

@@ -67,10 +67,6 @@ function initialSelections(): Selection[] {
       value: { kind: "single", optionId: INITIAL_SINGLE.boot },
     },
     {
-      stepId: STEP_IDS.filesystem,
-      value: { kind: "single", optionId: INITIAL_SINGLE.filesystem },
-    },
-    {
       stepId: STEP_IDS.compositor,
       value: { kind: "single", optionId: INITIAL_SINGLE.compositor },
     },
@@ -353,6 +349,7 @@ export class MockCorePort implements CorePort {
   }
 
   async buildManifest(input: BuildManifestInput): Promise<Result<Manifest>> {
+    // El perfil vivo lo renderiza archmaker-core. El mock no inventa nombres de paquete.
     const allowed = ["archmaker-profile", "archinstall-profile", "report"];
     if (!allowed.includes(input.targetRef.id)) {
       return {
@@ -395,7 +392,11 @@ export class MockCorePort implements CorePort {
   }
 
   async exportArtifact(input: ExportArtifactInput): Promise<Result<Artifact>> {
-    if (input.manifest.targetRef.id !== input.targetRef.id) {
+    const allowed = ["archmaker-profile", "archinstall-profile", "report"];
+    if (
+      input.manifest.targetRef.id !== input.targetRef.id ||
+      !allowed.includes(input.targetRef.id)
+    ) {
       return {
         ok: false,
         error: typedError(
@@ -537,6 +538,17 @@ export class MockCorePort implements CorePort {
         changeset: { schemaVersion: "1", operations: [] },
         originalDigest: "0".repeat(64),
       },
+    };
+  }
+
+  async requestLiveImage(): Promise<Result<never>> {
+    return {
+      ok: false,
+      error: typedError(
+        "constitution-mkarchiso-absent",
+        "mock-core",
+        "error.constitution.mkarchisoAbsent",
+      ),
     };
   }
 }

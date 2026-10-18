@@ -1,8 +1,4 @@
 import { RAIL_STEPS } from "./forge-face.js";
-import {
-  storageStepComplete,
-  type StorageIntent,
-} from "./storage-intent.js";
 
 export type StepProgress =
   | "visited"
@@ -15,7 +11,6 @@ export type StepProgressInput = {
   current: number;
   visited: ReadonlySet<number>;
   invalid: ReadonlySet<number>;
-  storage: StorageIntent;
   hasDefaults: boolean;
   reviewReady: boolean;
 };
@@ -23,8 +18,6 @@ export type StepProgressInput = {
 function stepComplete(index: number, input: StepProgressInput): boolean {
   const id = RAIL_STEPS[index]?.id;
   switch (id) {
-    case "storage":
-      return storageStepComplete(input.storage);
     case "base":
     case "environment":
     case "apps":

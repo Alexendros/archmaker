@@ -318,18 +318,18 @@ y hasheado con `domainLabel: archmaker:manifest:v1` (ADR-0007).
 Schema `https://archmaker.dev/schemas/artifact.schema.json`. Declara target, productor, versiones,
 `mediaType` y digests (DEC-001, ADR-0003).
 
-| Campo             | Tipo                      | Oblig. | `$defs`                                   | Notas                                                        |
-| ----------------- | ------------------------- | ------ | ----------------------------------------- | ------------------------------------------------------------ |
-| `documentVersion` | documentVersion           | Sí     | —                                         | —                                                            |
-| `schemaVersion`   | schemaVersion             | Sí     | —                                         | —                                                            |
-| `artifactRef`     | ArtifactRef               | Sí     | `artifact.schema.json#/$defs/artifactRef` | `{ binaryDigest, mediaType }`.                               |
-| `targetRef`       | TargetRef                 | Sí     | —                                         | `id` ∈ `archmaker-profile`, `archinstall-profile`, `report`. |
-| `producer`        | Producer                  | Sí     | `common#/$defs/producer`                  | —                                                            |
-| `mediaType`       | string                    | Sí     | —                                         | IANA.                                                        |
-| `binaryDigest`    | BinaryDigest              | Sí     | `common#/$defs/binaryDigest`              | Bytes exactos.                                               |
-| `manifestRef`     | ManifestRef               | Sí     | `artifact.schema.json#/$defs/manifestRef` | `{ contentDigest }` semántico.                               |
-| `experimental`    | boolean                   | No     | —                                         | `true` para `archinstall-profile`.                           |
-| `content`         | object \| array \| string | No     | —                                         | Mapa abierto definido por el adapter (SRC-003).              |
+| Campo             | Tipo                      | Oblig. | `$defs`                                   | Notas                                                                                            |
+| ----------------- | ------------------------- | ------ | ----------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `documentVersion` | documentVersion           | Sí     | —                                         | —                                                                                                |
+| `schemaVersion`   | schemaVersion             | Sí     | —                                         | —                                                                                                |
+| `artifactRef`     | ArtifactRef               | Sí     | `artifact.schema.json#/$defs/artifactRef` | `{ binaryDigest, mediaType }`.                                                                   |
+| `targetRef`       | TargetRef                 | Sí     | —                                         | `id` ∈ `archmaker-profile`, `archinstall-profile`, `report`, `archmaker-live-profile` (DEC-013). |
+| `producer`        | Producer                  | Sí     | `common#/$defs/producer`                  | —                                                                                                |
+| `mediaType`       | string                    | Sí     | —                                         | IANA.                                                                                            |
+| `binaryDigest`    | BinaryDigest              | Sí     | `common#/$defs/binaryDigest`              | Bytes exactos.                                                                                   |
+| `manifestRef`     | ManifestRef               | Sí     | `artifact.schema.json#/$defs/manifestRef` | `{ contentDigest }` semántico.                                                                   |
+| `experimental`    | boolean                   | No     | —                                         | `true` para `archinstall-profile`.                                                               |
+| `content`         | object \| array \| string | No     | —                                         | Mapa abierto definido por el adapter (SRC-003).                                                  |
 
 ## Regla de paridad Rust/TypeScript/WASM
 

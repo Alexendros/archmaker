@@ -53,6 +53,50 @@ fn gate_save_export(window: &tauri::Window) -> Result<(), serde_json::Value> {
     }
 }
 
+fn gate_constitute_image(window: &tauri::Window) -> Result<(), serde_json::Value> {
+    let label = window.label();
+    match Window::parse(label) {
+        Some(Window::Main) => Ok(()),
+        Some(other) => Err(core_error_value(CoreError::proto_denied(&format!(
+            "archmaker-invoke.{}.constitute_image",
+            other.as_str()
+        )))),
+        None => Err(core_error_value(unknown_command_error(
+            label,
+            "constitute_image",
+        ))),
+    }
+}
+
+fn constitution_payload(code: &str) -> serde_json::Value {
+    let message_key = match code {
+        archmaker_constitute::CODE_IMAGE_ABSENT => "error.constitution.mkarchisoAbsent",
+        archmaker_constitute::CODE_IMAGE_REFUSED => "error.constitution.mkarchisoRefused",
+        archmaker_constitute::CODE_SCRIPT => "error.constitution.scriptRejected",
+        _ => "error.constitution.unavailable",
+    };
+    serde_json::json!({
+        "code": code,
+        "family": "CONST",
+        "category": "contract",
+        "severity": "error",
+        "retryable": false,
+        "messageKey": message_key,
+        "source": "archmaker-constitute",
+    })
+}
+
+/// La página no elige ruta ni script. Un objeto vacío pide la imagen;
+/// cualquier otro payload se rechaza. Nunca ejecuta `mkarchiso`.
+fn constitute_image_decision(input: &serde_json::Value, search_path: &str) -> serde_json::Value {
+    let empty = matches!(input, serde_json::Value::Object(map) if map.is_empty());
+    if !empty {
+        return constitution_payload(archmaker_constitute::CODE_SCRIPT);
+    }
+    let err = archmaker_constitute::request_live_image(search_path);
+    constitution_payload(err.code)
+}
+
 fn parse_input<T>(op: CoreOp, input: serde_json::Value) -> Result<T, serde_json::Value>
 where
     T: serde::de::DeserializeOwned,
@@ -143,6 +187,18 @@ fn save_export_bytes(
         .map_err(core_error_value)
 }
 
+/// Pide la imagen viva. No acepta ruta, script ni directorio.
+/// Siempre falla de forma tipada: este proceso no lanza `mkarchiso`.
+#[tauri::command]
+fn constitute_image(
+    window: tauri::Window,
+    input: serde_json::Value,
+) -> Result<serde_json::Value, serde_json::Value> {
+    gate_constitute_image(&window)?;
+    let search = std::env::var("PATH").unwrap_or_default();
+    Err(constitute_image_decision(&input, &search))
+}
+
 /// Arranque de producción (runtime Wry).
 pub fn run() {
     tauri::Builder::default()
@@ -169,6 +225,7 @@ pub fn run() {
             export_artifact,
             import_draft,
             save_export_bytes,
+            constitute_image,
             hardware_ipc::inspect_host_hardware,
             hardware_ipc::inspect_storage_devices,
             hardware_ipc::refresh_storage_snapshot,
@@ -321,6 +378,63 @@ mod tests {
             is_acl_denial(&err),
             "expected ACL denial for save_export_bytes, got: {err:?}"
         );
+    }
+
+    #[test]
+    fn constitute_image_denied_on_restricted_window() {
+        let app = tauri::test::mock_builder()
+            .build(tauri::generate_context!())
+            .expect("mock app");
+        let restricted = WebviewWindowBuilder::new(&app, "restricted", Default::default())
+            .build()
+            .expect("restricted");
+        let err = tauri::test::get_ipc_response(
+            &restricted,
+            InvokeRequest {
+                cmd: "constitute_image".into(),
+                callback: tauri::ipc::CallbackFn(0),
+                error: tauri::ipc::CallbackFn(1),
+                url: invoke_url(),
+                body: tauri::ipc::InvokeBody::default(),
+                headers: Default::default(),
+                invoke_key: tauri::test::INVOKE_KEY.to_string(),
+            },
+        )
+        .expect_err("restricted must not request the image");
+        assert!(
+            is_acl_denial(&err),
+            "expected ACL denial for constitute_image, got: {err:?}"
+        );
+    }
+
+    #[test]
+    fn constitute_image_decision_does_not_create_files_or_accept_a_script() {
+        let dir =
+            std::env::temp_dir().join(format!("archmaker-constitute-image-{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&dir);
+        std::fs::create_dir_all(&dir).unwrap();
+        let search = dir.to_str().expect("utf8");
+
+        let absent = super::constitute_image_decision(&serde_json::json!({}), search);
+        assert_eq!(absent["code"], "constitution-mkarchiso-absent");
+        assert_eq!(absent["messageKey"], "error.constitution.mkarchisoAbsent");
+        assert_eq!(absent["source"], "archmaker-constitute");
+        assert!(std::fs::read_dir(&dir).unwrap().next().is_none());
+
+        let tool = dir.join("mkarchiso");
+        std::fs::write(&tool, b"not-executed\n").unwrap();
+        let refused = super::constitute_image_decision(&serde_json::json!({}), search);
+        assert_eq!(refused["code"], "constitution-mkarchiso-refused");
+        assert_eq!(refused["messageKey"], "error.constitution.mkarchisoRefused");
+        assert_eq!(std::fs::read(&tool).unwrap(), b"not-executed\n");
+        assert_eq!(std::fs::read_dir(&dir).unwrap().count(), 1);
+
+        let script =
+            super::constitute_image_decision(&serde_json::json!({"path": "/tmp/run.sh"}), search);
+        assert_eq!(script["code"], "constitution-script-rejected");
+        assert_eq!(std::fs::read_dir(&dir).unwrap().count(), 1);
+
+        let _ = std::fs::remove_dir_all(&dir);
     }
 
     #[test]

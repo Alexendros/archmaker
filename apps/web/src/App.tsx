@@ -30,14 +30,6 @@ import {
   type PersistResult,
   type PersistStatus,
 } from "./draft-persistence.js";
-import {
-  DeliveryError,
-  deliverArtifact,
-  destinationTokenFor,
-  exportFilename,
-  exportStatusMessage,
-} from "./export-delivery.js";
-import { isPreparedCurrent } from "./export-generation.js";
 import { PRODUCT_WINDOW_TITLE } from "./build-meta.js";
 import { ForgeAside } from "./ForgeAside.js";
 import { ForgeHeader } from "./ForgeHeader.js";
@@ -48,9 +40,7 @@ import { ImportReportDialog } from "./ImportReportDialog.js";
 import { PackageDialog } from "./PackageDialog.js";
 import {
   appIds,
-  boolValue,
   chooseSingle,
-  setBool,
   setText,
   singleId,
   textValue,
@@ -59,7 +49,6 @@ import {
 import {
   BOOTLOADERS,
   ENVIRONMENTS,
-  FILESYSTEMS,
   INITIAL_APP_OPTION_IDS,
   INITIAL_SINGLE,
   KERNELS,
@@ -72,17 +61,7 @@ import {
   type FacePackage,
 } from "./forge-face.js";
 import { allStepProgress } from "./step-progress.js";
-import {
-  INITIAL_STORAGE_INTENT,
-  labelStorageMode,
-  type StorageIntent,
-  type StorageMode,
-} from "./storage-intent.js";
-import {
-  intentFromStoragePlan,
-  uiStateForIntent,
-  withFaceV2Fields,
-} from "./storage-plan-face.js";
+import { withFaceV2Fields } from "./storage-plan-face.js";
 import {
   mergeFaceOptionsFromCatalog,
   parseCatalogView,
@@ -167,10 +146,6 @@ function withInitialSelections(draft: Draft): Draft {
         value: { kind: "single", optionId: INITIAL_SINGLE.boot },
       },
       {
-        stepId: STEP_IDS.filesystem,
-        value: { kind: "single", optionId: INITIAL_SINGLE.filesystem },
-      },
-      {
         stepId: STEP_IDS.compositor,
         value: { kind: "single", optionId: INITIAL_SINGLE.compositor },
       },
@@ -196,7 +171,6 @@ export function App({ port, portKind }: Props) {
   const [step, setStep] = useState(0);
   const [visited, setVisited] = useState<Set<number>>(() => new Set([0]));
   const [invalid, setInvalid] = useState<Set<number>>(() => new Set());
-  const [storage, setStorage] = useState<StorageIntent>(INITIAL_STORAGE_INTENT);
   const [dark, setDark] = useState(false);
   const [toast, setToast] = useState<ToastState>(null);
   const [pkgModal, setPkgModal] = useState<FacePackage | null>(null);
@@ -233,13 +207,10 @@ export function App({ port, portKind }: Props) {
   const bootId =
     singleId(draft, STEP_IDS.boot) ?? "archmaker.boot.systemd-boot";
   const kernelId = singleId(draft, STEP_IDS.kernel) ?? "archmaker.kernel.linux";
-  const fsId =
-    singleId(draft, STEP_IDS.filesystem) ?? "archmaker.filesystem.btrfs";
   const envId =
     singleId(draft, STEP_IDS.compositor) ?? "archmaker.compositor.gnome";
   const selectedApps = useMemo(() => new Set(appIds(draft)), [draft]);
   const hostname = textValue(draft, STEP_IDS.hostname);
-  const encrypt = boolValue(draft, STEP_IDS.encrypt);
 
   const kernelOptions = useMemo(
     () => mergeFaceOptionsFromCatalog(catalogView, STEP_IDS.kernel, KERNELS),
@@ -249,19 +220,9 @@ export function App({ port, portKind }: Props) {
     () => mergeFaceOptionsFromCatalog(catalogView, STEP_IDS.boot, BOOTLOADERS),
     [catalogView],
   );
-  const filesystemOptions = useMemo(
-    () =>
-      mergeFaceOptionsFromCatalog(
-        catalogView,
-        STEP_IDS.filesystem,
-        FILESYSTEMS,
-      ),
-    [catalogView],
-  );
   const env = ENVIRONMENTS.find((e) => e.optionId === envId);
   const kernel = kernelOptions.find((k) => k.optionId === kernelId);
   const boot = bootOptions.find((b) => b.optionId === bootId);
-  const filesystem = filesystemOptions.find((f) => f.optionId === fsId);
   const envs = allEnvironments();
   const layers = allLayers();
   const stepProgress = useMemo(
@@ -270,11 +231,10 @@ export function App({ port, portKind }: Props) {
         current: step,
         visited,
         invalid,
-        storage,
         hasDefaults: Boolean(draft),
         reviewReady: validated && Boolean(manifest),
       }),
-    [step, visited, invalid, storage, draft, validated, manifest],
+    [step, visited, invalid, draft, validated, manifest],
   );
 
   const selectedPackages = useMemo(() => {
@@ -321,17 +281,13 @@ export function App({ port, portKind }: Props) {
   }, []);
 
   const applyDraft = useCallback(
-    (next: Draft, nextStorage?: StorageIntent) => {
-      const intent =
-        nextStorage ??
-        (next.storagePlan ? intentFromStoragePlan(next.storagePlan) : storage);
-      const projected = withFaceV2Fields(next, intent);
+    (next: Draft) => {
+      const projected = withFaceV2Fields(next);
       setDraft(projected);
-      setStorage({ ...intent, uiState: uiStateForIntent(intent) });
       invalidateDerived();
       void persistDraftLocal(projected).then(handlePersistResult);
     },
-    [handlePersistResult, invalidateDerived, storage],
+    [handlePersistResult, invalidateDerived],
   );
 
   useEffect(() => {
@@ -365,8 +321,9 @@ export function App({ port, portKind }: Props) {
         });
         if (cancelled) return;
         if (opened.ok) {
-          setDraft(opened.value);
-          setStorage(intentFromStoragePlan(opened.value.storagePlan));
+          const recovered = withFaceV2Fields(opened.value);
+          setDraft(recovered);
+          void persistDraftLocal(recovered).then(handlePersistResult);
           setReady(true);
           announce("status", "Perfil recuperado.");
           return;
@@ -388,10 +345,7 @@ export function App({ port, portKind }: Props) {
         fail(res.error, "Crear draft");
         return;
       }
-      let next = withFaceV2Fields(
-        withInitialSelections(res.value),
-        INITIAL_STORAGE_INTENT,
-      );
+      let next = withFaceV2Fields(withInitialSelections(res.value));
       const saved = await port.saveDraft({
         draft: next,
         expectedRevision: next.revision,
@@ -403,9 +357,8 @@ export function App({ port, portKind }: Props) {
         fail(saved.error, "Guardar selecciones iniciales");
         return;
       }
-      next = saved.value;
+      next = withFaceV2Fields(saved.value);
       setDraft(next);
-      setStorage(intentFromStoragePlan(next.storagePlan));
       void persistDraftLocal(next).then(handlePersistResult);
       setReady(true);
       announce("status", `Draft listo (${portKind}). Arranque: systemd-boot.`);
@@ -539,21 +492,16 @@ export function App({ port, portKind }: Props) {
     try {
       const prepared = await prepareExport();
       if (prepared.ok) {
-        // El manifiesto de catálogo no certifica el plan de almacenamiento (H02).
         setInvalid((prev) => {
           const copy = new Set(prev);
           copy.delete(RAIL_STEPS.length - 1);
           return copy;
         });
         const exclusions = draft ? listFaceExclusions(draft).length : 0;
-        const storageNote =
-          storage.mode !== null && storage.uiState !== "validated"
-            ? " Plan de disco: declarado/propuesto, no validado."
-            : "";
         showToast(
           exclusions > 0
-            ? `Manifest listo con ${exclusions} exclusión(es) de cara.${storageNote}`
-            : `Validación sin bloqueos. Manifest listo.${storageNote}`,
+            ? `Manifest listo con ${exclusions} exclusión(es) de cara.`
+            : "Validación sin bloqueos. Manifest listo.",
         );
       } else if (prepared.reason === "draft-missing") {
         // requireDraft already announced; keep the user on revisión with status.
@@ -566,67 +514,13 @@ export function App({ port, portKind }: Props) {
 
   async function onForge(): Promise<void> {
     if (busy) return;
-    const d = requireDraft();
-    if (!d) return;
     setBusy(true);
     try {
-      let man = manifest;
-      const gate = {
-        generation: generationRef.current,
-        preparedGeneration: preparedGenerationRef.current,
-      };
-      if (!man || !isPreparedCurrent(gate)) {
-        const prepared = await prepareExport();
-        if (!prepared.ok) return;
-        man = prepared.manifest;
-      }
-      if (
-        !isPreparedCurrent({
-          generation: generationRef.current,
-          preparedGeneration: preparedGenerationRef.current,
-        })
-      ) {
-        announce("alert", "La configuración cambió; vuelve a generar.");
-        return;
-      }
-      const token = destinationTokenFor(d.id);
-      const res = await port.exportArtifact({
-        manifest: man,
-        targetRef: exportTarget("archmaker-profile"),
-        destination: { token },
-      });
-      if (!res.ok) {
-        fail(res.error, "Exportar");
-        return;
-      }
-      if (
-        !isPreparedCurrent({
-          generation: generationRef.current,
-          preparedGeneration: preparedGenerationRef.current,
-        })
-      ) {
-        announce(
-          "alert",
-          "Resultado de exportación descartado (edición concurrente).",
-        );
-        return;
-      }
-      try {
-        const name = exportFilename(token, res.value.targetRef.id);
-        // Web: download-started. Escritorio F5: file-saved tras diálogo acotado.
-        const outcome = await deliverArtifact(res.value, name);
-        if (outcome.kind === "cancelled") {
-          announce("status", "Guardado cancelado.");
-          return;
-        }
-        showToast(exportStatusMessage(outcome));
-      } catch (err) {
-        const message =
-          err instanceof DeliveryError
-            ? err.message
-            : "No se pudo entregar el archivo.";
-        announce("alert", message);
-      }
+      const result = await port.requestLiveImage();
+      const code = result.ok ? "constitution-unexpected" : result.error.code;
+      const message = `Constitución no disponible (${code}).`;
+      announce("alert", message);
+      showToast(message);
     } finally {
       setBusy(false);
     }
@@ -775,26 +669,6 @@ export function App({ port, portKind }: Props) {
     goToStep(step + delta);
   }
 
-  function patchStorage(patch: Partial<StorageIntent>): void {
-    const d = draft;
-    if (!d) return;
-    const next: StorageIntent = {
-      ...storage,
-      ...patch,
-    };
-    next.uiState = uiStateForIntent(next);
-    setInvalid((prev) => new Set(prev).add(RAIL_STEPS.length - 1));
-    applyDraft(d, next);
-  }
-
-  function pickStorageMode(mode: StorageMode): void {
-    patchStorage({
-      mode,
-      lossRiskAcknowledged:
-        mode === "replace-disk" ? storage.lossRiskAcknowledged : false,
-    });
-  }
-
   return (
     <>
       <a className="skip-link" href="#main">
@@ -840,105 +714,13 @@ export function App({ port, portKind }: Props) {
           {!ready && !bootError ? <p role="status">Preparando draft…</p> : null}
 
           {ready && !bootError && step === 0 ? (
-            <section aria-labelledby="storage-h">
-              <h1 id="storage-h">Disco y particiones</h1>
-              <p className="forge-lead">
-                Declara el modo de instalación. No hay detección en esta entrega
-                web; el perfil no modifica discos.
-              </p>
-              <div className="forge-callout forge-callout-info" role="status">
-                Esta fase prepara un perfil y no modifica discos.
-              </div>
-              <div
-                className="forge-grid-2"
-                role="radiogroup"
-                aria-label="Modo de disco"
-              >
-                {(
-                  [
-                    {
-                      mode: "new-disk" as const,
-                      title: "Disco nuevo o sin datos a conservar",
-                      description:
-                        "Declaración del usuario. No se deduce de un sondeo.",
-                    },
-                    {
-                      mode: "replace-disk" as const,
-                      title: "Reemplazo completo",
-                      description:
-                        "Se perderán los datos del destino. Requiere confirmación.",
-                    },
-                  ] as const
-                ).map((opt) => {
-                  const selected = storage.mode === opt.mode;
-                  return (
-                    <button
-                      key={opt.mode}
-                      type="button"
-                      className={`forge-card${selected ? " is-selected" : ""}`}
-                      role="radio"
-                      aria-checked={selected}
-                      data-storage-mode={opt.mode}
-                      onClick={() => pickStorageMode(opt.mode)}
-                    >
-                      <span className="forge-card-title">{opt.title}</span>
-                      <span className="forge-card-desc">{opt.description}</span>
-                    </button>
-                  );
-                })}
-              </div>
-              <div className="forge-stack forge-narrow">
-                <label className="forge-check">
-                  <input
-                    type="checkbox"
-                    checked={storage.intentAcknowledged}
-                    onChange={(e) =>
-                      patchStorage({ intentAcknowledged: e.target.checked })
-                    }
-                  />
-                  Confirmo que esta es una declaración de intención para el
-                  perfil (no una escritura en disco).
-                </label>
-                {storage.mode === "replace-disk" ? (
-                  <label className="forge-check">
-                    <input
-                      type="checkbox"
-                      checked={storage.lossRiskAcknowledged}
-                      onChange={(e) =>
-                        patchStorage({
-                          lossRiskAcknowledged: e.target.checked,
-                        })
-                      }
-                    />
-                    Entiendo el riesgo de pérdida total en un reemplazo.
-                  </label>
-                ) : null}
-                <p className="forge-muted" role="status">
-                  Modo: {labelStorageMode(storage.mode)}. Estado:{" "}
-                  {storage.uiState}. No hay botón Formatear en esta entrega.
-                </p>
-              </div>
-              <div className="forge-nav-row forge-nav-end">
-                <button
-                  type="button"
-                  className="forge-btn-primary"
-                  onClick={() => nav(1)}
-                >
-                  Continuar → Sistema base
-                </button>
-              </div>
-            </section>
-          ) : null}
-
-          {ready && !bootError && step === 1 ? (
             <section aria-labelledby="base-h">
-              <h2 id="base-h">Sistema base</h2>
+              <h1 id="base-h">Sistema base</h1>
               <p className="forge-lead">
-                Elige kernel, arranque y sistema de archivos. UKI no es un
-                gestor de arranque aparte.
+                Elige kernel y arranque. UKI no es un gestor de arranque aparte.
               </p>
               <div className="forge-stack">
-                <h3 className="forge-section-label">Kernel</h3>
+                <h2 className="forge-section-label">Kernel</h2>
                 <div
                   role="radiogroup"
                   aria-label="Kernel"
@@ -1008,32 +790,6 @@ export function App({ port, portKind }: Props) {
                     })}
                   </div>
                 </fieldset>
-                <fieldset className="forge-fieldset">
-                  <legend>Filesystem</legend>
-                  <div
-                    role="radiogroup"
-                    aria-label="Filesystem"
-                    className="forge-radio-row"
-                  >
-                    {filesystemOptions.map((f) => {
-                      const selected = fsId === f.optionId;
-                      return (
-                        <label key={f.optionId} className="forge-radio-label">
-                          <input
-                            type="radio"
-                            name="fs"
-                            checked={selected}
-                            onChange={() =>
-                              pickSingle(STEP_IDS.filesystem, f.optionId)
-                            }
-                            data-option-id={f.optionId}
-                          />
-                          {f.title}
-                        </label>
-                      );
-                    })}
-                  </div>
-                </fieldset>
               </div>
               <div className="forge-nav-row">
                 <button
@@ -1054,7 +810,7 @@ export function App({ port, portKind }: Props) {
             </section>
           ) : null}
 
-          {ready && !bootError && step === 2 ? (
+          {ready && !bootError && step === 1 ? (
             <section aria-labelledby="env-h">
               <div className="forge-heading-row">
                 <h2 id="env-h">Entorno gráfico</h2>
@@ -1127,7 +883,7 @@ export function App({ port, portKind }: Props) {
             </section>
           ) : null}
 
-          {ready && !bootError && step === 3 ? (
+          {ready && !bootError && step === 2 ? (
             <section aria-labelledby="apps-h">
               <h2 id="apps-h">Apps y paquetes</h2>
               <p className="forge-lead">
@@ -1218,7 +974,7 @@ export function App({ port, portKind }: Props) {
             </section>
           ) : null}
 
-          {ready && !bootError && step === 4 ? (
+          {ready && !bootError && step === 3 ? (
             <section aria-labelledby="id-h">
               <h2 id="id-h">Identidad y seguridad</h2>
               <div className="forge-stack forge-narrow">
@@ -1234,29 +990,6 @@ export function App({ port, portKind }: Props) {
                     }}
                   />
                 </label>
-                <div className="forge-info-card">
-                  <strong>Protege el disco (cifrado)</strong>
-                  <p className="forge-muted">
-                    Solo intención en el perfil exportado. Esta cara no cifra el
-                    disco.
-                  </p>
-                  <label className="forge-check">
-                    <input
-                      type="checkbox"
-                      role="checkbox"
-                      checked={encrypt}
-                      aria-checked={encrypt}
-                      onChange={(e) => {
-                        const d = requireDraft();
-                        if (!d) return;
-                        applyDraft(
-                          setBool(d, STEP_IDS.encrypt, e.target.checked),
-                        );
-                      }}
-                    />
-                    Activar cifrado
-                  </label>
-                </div>
               </div>
               <div className="forge-nav-row">
                 <button
@@ -1277,16 +1010,14 @@ export function App({ port, portKind }: Props) {
             </section>
           ) : null}
 
-          {ready && !bootError && step === 5 ? (
+          {ready && !bootError && step === 4 ? (
             <section aria-labelledby="review-h">
               <h2 id="review-h">Revisión</h2>
               <div className="forge-callout forge-callout-info">
                 <strong>Listo para forjar</strong>
                 <p>
-                  Disco {labelStorageMode(storage.mode)} · Kernel{" "}
-                  {kernel?.title ?? "—"} · Arranque {boot?.title ?? "—"} ·{" "}
-                  {filesystem?.title ?? "—"} · {selectedApps.size} apps ·{" "}
-                  {env?.title ?? "—"}
+                  Kernel {kernel?.title ?? "—"} · Arranque {boot?.title ?? "—"}{" "}
+                  · {selectedApps.size} apps · {env?.title ?? "—"}
                 </p>
                 {!validated ? (
                   <p role="status">Pendiente de validar.</p>
@@ -1301,21 +1032,7 @@ export function App({ port, portKind }: Props) {
                     (intención o no verificada) no entran al perfil sellado.
                   </p>
                 ) : null}
-                {draft?.storagePlan ? (
-                  <p role="status">
-                    Plan de disco: {draft.storagePlan.planStatus} (estado UI{" "}
-                    {storage.uiState}). La generación del manifiesto no valida
-                    el plan.
-                  </p>
-                ) : (
-                  <p role="status">Plan de disco: sin declarar.</p>
-                )}
                 {hostname ? <p role="status">Hostname: {hostname}</p> : null}
-                {encrypt ? (
-                  <p role="status">
-                    Cifrado: intención marcada (no aplicada al disco).
-                  </p>
-                ) : null}
                 {portKind === "mock" ? (
                   <p role="status">Modo demostración (MockCorePort).</p>
                 ) : null}
@@ -1380,7 +1097,7 @@ export function App({ port, portKind }: Props) {
                   disabled={busy}
                   onClick={() => void onForge()}
                 >
-                  {busy ? "Exportando…" : "Exportar"}
+                  Pedir imagen
                 </button>
               </div>
             </section>
@@ -1389,9 +1106,7 @@ export function App({ port, portKind }: Props) {
         <ForgeAside
           kernel={kernel}
           bootTitle={boot?.title ?? "systemd-boot"}
-          filesystemTitle={filesystem?.title ?? "Btrfs"}
           env={env}
-          storage={storage}
           hasManifest={Boolean(manifest)}
           apps={selectedPackages}
           appCount={selectedApps.size}

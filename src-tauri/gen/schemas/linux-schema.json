@@ -183,6 +183,12 @@
           "markdownDescription": "Enables the build_manifest command without any pre-configured scope."
         },
         {
+          "description": "Enables the constitute_image command without any pre-configured scope.",
+          "type": "string",
+          "const": "allow-constitute-image",
+          "markdownDescription": "Enables the constitute_image command without any pre-configured scope."
+        },
+        {
           "description": "Enables the create_draft command without any pre-configured scope.",
           "type": "string",
           "const": "allow-create-draft",
@@ -277,6 +283,12 @@
           "type": "string",
           "const": "deny-build-manifest",
           "markdownDescription": "Denies the build_manifest command without any pre-configured scope."
+        },
+        {
+          "description": "Denies the constitute_image command without any pre-configured scope.",
+          "type": "string",
+          "const": "deny-constitute-image",
+          "markdownDescription": "Denies the constitute_image command without any pre-configured scope."
         },
         {
           "description": "Denies the create_draft command without any pre-configured scope.",

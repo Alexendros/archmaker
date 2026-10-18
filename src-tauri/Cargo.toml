@@ -15,6 +15,7 @@ serde_json = "1"
 sha2 = "0.10"
 rfd = { version = "=0.15.4", default-features = false, features = ["xdg-portal", "tokio"] }
 archmaker-core = { path = "../crates/archmaker-core" }
+archmaker-constitute = { path = "../crates/archmaker-constitute" }
 archmaker-hardware = { path = "../crates/archmaker-hardware" }
 archmaker-domain = { path = "../crates/archmaker-domain" }
 

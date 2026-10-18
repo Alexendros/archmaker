@@ -2,9 +2,9 @@ import { test, expect } from "@playwright/test";
 import {
   ESSENTIAL_CONTROLS,
   FORGE_RAIL_STEPS,
+  assertNoDiskVocabulary,
   completeExampleSelection,
-  completeStorageDeclaration,
-  generateExportAndAssertFidelity,
+  generateAndAskForImage,
 } from "./e2e-fidelity-helpers.js";
 
 const BASE_URL = process.env.BASE_URL || "http://localhost:5173/?mock=1";
@@ -13,15 +13,15 @@ test.describe("Forge face — rutas del plan", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto(BASE_URL);
     await expect(
-      page.getByRole("heading", { name: /Disco y particiones/i }),
+      page.getByRole("heading", { name: /Sistema base/i }),
     ).toBeVisible();
   });
 
-  test("inventario: seis pasos Forge y controles esenciales en DOM", async ({
+  test("inventario: cinco pasos Forge y controles esenciales en DOM", async ({
     page,
   }) => {
-    expect(FORGE_RAIL_STEPS).toHaveLength(6);
-    expect(ESSENTIAL_CONTROLS.length).toBeGreaterThanOrEqual(18);
+    expect(FORGE_RAIL_STEPS).toHaveLength(5);
+    expect(ESSENTIAL_CONTROLS.length).toBeGreaterThanOrEqual(12);
     const rail = page.getByRole("navigation", {
       name: /Pasos del configurador$/i,
     });
@@ -41,27 +41,34 @@ test.describe("Forge face — rutas del plan", () => {
     await expect(page.getByRole("button", { name: "Glosario" })).toBeVisible();
     await expect(page.getByRole("button", { name: "Ctrl+K" })).toBeVisible();
     await expect(
-      page.getByRole("button", { name: /Continuar → Sistema base/i }),
+      page.getByRole("button", { name: /Continuar → Entorno/i }),
     ).toBeVisible();
+    await assertNoDiskVocabulary(page);
+    for (const next of [
+      /Continuar → Entorno/i,
+      /Continuar → Apps/i,
+      /Continuar → Identidad/i,
+      /Continuar → Revisión/i,
+    ]) {
+      await page.getByRole("button", { name: next }).click();
+      await assertNoDiskVocabulary(page);
+    }
     await expect(page.locator(".forge-title")).toContainText("ArchMaker Forge");
     await expect(page.locator("[data-app-version]")).toBeVisible();
     await expect(page.locator("body")).not.toContainText("v4.1");
   });
 
-  test("F3 ejercicio: selección → Generar → Exportar → SHA-256 == binaryDigest", async ({
+  test("F3 ejercicio: selección → Generar → pedir imagen (constitución cerrada)", async ({
     page,
   }) => {
     test.setTimeout(90_000);
     await completeExampleSelection(page);
-    const { digest } = await generateExportAndAssertFidelity(page);
-    expect(digest).toHaveLength(64);
+    await generateAndAskForImage(page);
   });
 
-  test("arranque: Disco y particiones; sin paso Intención", async ({
-    page,
-  }) => {
+  test("arranque: Sistema base; sin paso Intención", async ({ page }) => {
     await expect(
-      page.getByRole("heading", { name: /Disco y particiones/i }),
+      page.getByRole("heading", { name: /Sistema base/i }),
     ).toBeVisible();
     await expect(
       page.getByRole("navigation", { name: /Pasos/i }).first(),
@@ -74,29 +81,14 @@ test.describe("Forge face — rutas del plan", () => {
           name: /^Intención$/i,
         }),
     ).toHaveCount(0);
-    await expect(page.getByText(/no modifica discos/i).first()).toBeVisible();
+    await expect(
+      page.getByRole("button", { name: /Pedir imagen/i }),
+    ).toHaveCount(0);
   });
 
-  test("storage: modo new-disk y acknowledgements", async ({ page }) => {
-    await completeStorageDeclaration(page);
-    await expect(
-      page.getByRole("radio", {
-        name: /Disco nuevo o sin datos a conservar/i,
-      }),
-    ).toBeChecked();
-    await expect(
-      page.getByRole("checkbox", { name: /declaración de intención/i }),
-    ).toBeChecked();
-  });
-
-  test("sistema base: boot y filesystem exclusivos", async ({ page }) => {
-    await page
-      .getByRole("button", { name: /Continuar → Sistema base/i })
-      .click();
-
+  test("sistema base: bootloaders exclusivos", async ({ page }) => {
     const systemd = page.getByRole("radio", { name: /systemd-boot/i });
     await expect(systemd).toBeChecked();
-    await expect(page.getByRole("radio", { name: /^Btrfs$/i })).toBeChecked();
 
     await page.getByRole("radio", { name: /^GRUB$/i }).click();
     await expect(page.getByRole("radio", { name: /^GRUB$/i })).toBeChecked();
@@ -107,12 +99,6 @@ test.describe("Forge face — rutas del plan", () => {
     await systemd.click();
     await expect(systemd).toBeChecked();
 
-    await page.getByRole("radio", { name: /^Ext4$/i }).click();
-    await expect(page.getByRole("radio", { name: /^Ext4$/i })).toBeChecked();
-    await expect(
-      page.getByRole("radio", { name: /^Btrfs$/i }),
-    ).not.toBeChecked();
-
     await page.getByRole("radio", { name: /Linux Zen/i }).click();
     await expect(page.getByRole("radio", { name: /Linux Zen/i })).toBeChecked();
   });
@@ -120,9 +106,6 @@ test.describe("Forge face — rutas del plan", () => {
   test("entorno: catálogo completo con Hyprland; GNOME marcado", async ({
     page,
   }) => {
-    await page
-      .getByRole("button", { name: /Continuar → Sistema base/i })
-      .click();
     await page.getByRole("button", { name: /Continuar → Entorno/i }).click();
 
     await expect(page.getByRole("radio", { name: /GNOME/i })).toBeChecked();
@@ -133,9 +116,6 @@ test.describe("Forge face — rutas del plan", () => {
   });
 
   test("apps: capas, toggle y ficha de paquete", async ({ page }) => {
-    await page
-      .getByRole("button", { name: /Continuar → Sistema base/i })
-      .click();
     await page.getByRole("button", { name: /Continuar → Entorno/i }).click();
     await page.getByRole("button", { name: /Continuar → Apps/i }).click();
 
@@ -166,25 +146,19 @@ test.describe("Forge face — rutas del plan", () => {
     await expect(zen).toBeChecked();
   });
 
-  test("identidad: hostname y cifrado se guardan en la cara", async ({
-    page,
-  }) => {
-    await page
-      .getByRole("button", { name: /Continuar → Sistema base/i })
-      .click();
+  test("identidad: hostname se guarda en la cara", async ({ page }) => {
     await page.getByRole("button", { name: /Continuar → Entorno/i }).click();
     await page.getByRole("button", { name: /Continuar → Apps/i }).click();
     await page.getByRole("button", { name: /Continuar → Identidad/i }).click();
 
     await page.getByPlaceholder("mi-equipo").fill("arch-forge");
     await expect(page.getByPlaceholder("mi-equipo")).toHaveValue("arch-forge");
-    await page.getByRole("checkbox", { name: /Activar cifrado/i }).check();
     await expect(
       page.getByRole("checkbox", { name: /Activar cifrado/i }),
-    ).toBeChecked();
+    ).toHaveCount(0);
   });
 
-  test("revisión: Generar valida y Exportar entrega archivo", async ({
+  test("revisión: Generar valida y pedir imagen no guarda archivo", async ({
     page,
   }) => {
     await page.getByRole("button", { name: "Generar" }).click();
@@ -193,12 +167,9 @@ test.describe("Forge face — rutas del plan", () => {
       /Manifest listo|Validación/i,
     );
     await expect(page.getByText(/Arranque systemd-boot/i)).toBeVisible();
-    const downloadPromise = page.waitForEvent("download");
-    await page.getByRole("button", { name: "Exportar" }).click();
-    const download = await downloadPromise;
-    expect(download.suggestedFilename()).toMatch(/archmaker-profile-.*\.json/);
+    await page.getByRole("button", { name: "Pedir imagen" }).click();
     await expect(page.locator("#toast-region")).toContainText(
-      /Descarga iniciada/i,
+      /constitution-mkarchiso-absent/,
     );
   });
 
@@ -228,7 +199,7 @@ test.describe("Forge face — rutas del plan", () => {
   test("cabecera: glosario, tema y paleta Ctrl+K", async ({ page }) => {
     await page.getByRole("button", { name: "Glosario" }).click();
     await expect(page.getByRole("heading", { name: "Glosario" })).toBeVisible();
-    await expect(page.getByText(/Disco y particiones/i).first()).toBeVisible();
+    await expect(page.getByText(/Sistema base/i).first()).toBeVisible();
     await page.getByRole("button", { name: "Cerrar glosario" }).click();
 
     await page.getByRole("button", { name: "Oscuro" }).click();
@@ -249,9 +220,6 @@ test.describe("Forge face — rutas del plan", () => {
     await page.keyboard.press("Escape");
     await expect(page.getByRole("dialog")).toHaveCount(0);
 
-    await page
-      .getByRole("button", { name: /Continuar → Sistema base/i })
-      .click();
     await page.getByRole("button", { name: /Continuar → Entorno/i }).click();
     await page.getByRole("button", { name: /Continuar → Apps/i }).click();
     await page.getByRole("button", { name: /Firefox/i }).click();
@@ -300,12 +268,11 @@ test.describe("Forge face — rutas del plan", () => {
     await expect(page.getByRole("heading", { name: "Revisión" })).toBeVisible({
       timeout: 60_000,
     });
-    const downloadPromise = page.waitForEvent("download");
-    await page.getByRole("button", { name: "Exportar" }).click();
-    const download = await downloadPromise;
-    const path = await download.path();
-    expect(path).toBeTruthy();
-    await page.locator('input[type="file"]').setInputFiles(path!);
+    await page.locator('input[type="file"]').setInputFiles({
+      name: "no-es-perfil.json",
+      mimeType: "application/json",
+      buffer: Buffer.from('{"ok":true}'),
+    });
     await expect(page.locator(".forge-toast")).toContainText("AM-MIG-001", {
       timeout: 15_000,
     });
@@ -347,9 +314,6 @@ test.describe("Forge face — rutas del plan", () => {
   });
 
   test("toast Deshacer restaura el paquete", async ({ page }) => {
-    await page
-      .getByRole("button", { name: /Continuar → Sistema base/i })
-      .click();
     await page.getByRole("button", { name: /Continuar → Entorno/i }).click();
     await page.getByRole("button", { name: /Continuar → Apps/i }).click();
 
@@ -362,9 +326,6 @@ test.describe("Forge face — rutas del plan", () => {
   });
 
   test("entorno: DEs y WMs visibles", async ({ page }) => {
-    await page
-      .getByRole("button", { name: /Continuar → Sistema base/i })
-      .click();
     await page.getByRole("button", { name: /Continuar → Entorno/i }).click();
 
     for (const name of [
@@ -382,15 +343,15 @@ test.describe("Forge face — rutas del plan", () => {
     }
   });
 
-  test("rail: navegar a revisión y volver a disco", async ({ page }) => {
+  test("rail: navegar a revisión y volver a sistema base", async ({ page }) => {
     const rail = page.getByRole("navigation", {
       name: /Pasos del configurador$/i,
     });
     await rail.getByRole("button", { name: /Revisión/i }).click();
     await expect(page.getByRole("heading", { name: "Revisión" })).toBeVisible();
-    await rail.getByRole("button", { name: /Disco y particiones/i }).click();
+    await rail.getByRole("button", { name: /Sistema base/i }).click();
     await expect(
-      page.getByRole("heading", { name: /Disco y particiones/i }),
+      page.getByRole("heading", { name: /Sistema base/i }),
     ).toBeVisible();
   });
 
@@ -399,15 +360,12 @@ test.describe("Forge face — rutas del plan", () => {
       page.getByText("Resumen de configuración").first(),
     ).toBeVisible();
     await expect(page.getByText("Actividades")).toHaveCount(0);
-    await expect(page.locator("[data-storage-ui-state]")).toBeVisible();
+    await expect(page.locator("[data-storage-ui-state]")).toHaveCount(0);
   });
 
   test("progreso: atributo data-step-progress en rail", async ({ page }) => {
     const current = page.locator('#step-rail [data-step-progress="current"]');
     await expect(current).toHaveCount(1);
-    await page
-      .getByRole("button", { name: /Continuar → Sistema base/i })
-      .click();
     await expect(
       page.locator('#step-rail [data-step-progress="current"]'),
     ).toContainText(/Sistema base/i);

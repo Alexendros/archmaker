@@ -1,0 +1,15 @@
+[package]
+name = "archmaker-constitute"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Proceso de constitución: descarga tipada del perfil sellado. No es el runner de instalación."
+
+[[bin]]
+name = "archmaker-constitute"
+path = "src/main.rs"
+
+[dependencies]
+hex = "0.4"
+serde_json = "1"
+sha2 = "0.10"

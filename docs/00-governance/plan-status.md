@@ -16,7 +16,7 @@ reviewers:
 # Estado de planificación
 
 - Estado: in-review
-- Gate global: CONDITIONAL-CLEAR — walking skeleton MVP-0 + slices MVP-1..MVP-5 (sin runner)
+- Gate global: CONDITIONAL-CLEAR — walking skeleton MVP-0 + slices MVP-1..MVP-5, más el slice ISO-01 de imagen viva (sin runner de instalación)
 - Baseline vigente: `implementation-baseline-mvp5` (predecesores mvp0.1..mvp4 intactos)
 - Alcance MVP-5 `accepted` y cerrado (MVP-5-01..05): `docs/10-delivery/mvp5-scope.md`. Hueco residual: `docs/10-delivery/mvp5-gap-spec.md` (draft).
 - Remediación operativa cerrada (transportes reales, ACL, ciclo de edición, exportación, Prove-It): `docs/10-delivery/remediation/`; notas en `acceptance-notes.md`.
@@ -25,20 +25,22 @@ reviewers:
 - Canal de distribución: AppImage Linux x86_64; tag
   [`v0.1.0`](https://github.com/Alexendros/archmaker/releases/tag/v0.1.0) publicó
   nombre histórico del artefacto `v0.1.0` (ADR-0010 / DEC-011; ver `f9-release.md`); nombre visible vigente **Forge** (ADR-0012).
-  (`RC_SHA` `9297ed7…`; `docs/10-delivery/closure/f9-release.md`). ISO / runner /
+  (`RC_SHA` `9297ed7…`; `docs/10-delivery/closure/f9-release.md`). ISO-01
+  (`iso-scope.md`, ADR-0019 / DEC-013) está `accepted` solo para imagen viva x86_64 UEFI;
+  el target `archmaker-live-profile` está en el árbol. La cara no invoca `mkarchiso`. El runner de instalación y
   Enterprise siguen sin `accepted`. Evidencia y `APPROVAL_RECORD` fuera del árbol.
 - Limitaciones v0.1.0: sin cosign local verificado; sin 3× install GUI; F7 sin
   `RC_SHA_FUNCIONAL`; sin imagen Arch. R2: `releaseStatus` del doc F9 = `ineligible`
   (verification parcial).
-- Fecha de corte: 2026-10-17
+- Fecha de corte: 2026-10-18
 
 ## Tres capas (no equiparar)
 
-| Capa                 | Estado    | Nota                                                                                          |
-| -------------------- | --------- | --------------------------------------------------------------------------------------------- |
-| Baseline de código   | passed    | Tag MVP-5 + F0–F8 en `main`                                                                   |
+| Capa                 | Estado    | Nota                                                                                                              |
+| -------------------- | --------- | ----------------------------------------------------------------------------------------------------------------- |
+| Baseline de código   | passed    | Tag MVP-5 + F0–F8 en `main`                                                                                       |
 | Aprobación funcional | pending   | F7 estricto + P95 web en árbol; desktop/offline **blocked** (P6); sin `RC_SHA_FUNCIONAL` ni revisor independiente |
-| Release binaria      | published | AppImage `v0.1.0` (`59246f08…`); verificación parcial (cosign/GUI); ver `f9-release.md` |
+| Release binaria      | published | AppImage `v0.1.0` (`59246f08…`); verificación parcial (cosign/GUI); ver `f9-release.md`                           |
 
 Detalle y residuales: `docs/10-delivery/closure/f8-governance.md`.
 Candidato tip post-P0–P7 (sin publicar): `docs/10-delivery/closure/release-candidate.md`

@@ -2,8 +2,8 @@
 id: DOC-DEL-ISO-001
 phase: v1
 priority: P0
-documentStatus: in-review
-approvalStatus: pending
+documentStatus: accepted
+approvalStatus: approved
 implementationStatus: not-started
 verificationStatus: not-verified
 releaseStatus: ineligible
@@ -19,20 +19,27 @@ dependsOn:
     expectedDocumentStatus: accepted
   - id: DOC-RES-HTML-001
   - id: DOC-GOV-GNG-001
+  - id: ADR-0019
+    expectedDocumentStatus: accepted
 ---
 
 # Alcance de imagen — perfil, descarga y constitución
 
-- Documento: DOC-DEL-ISO-001 · Estado: in-review · Propietario: Arquitectura · Fecha: 2026-10-14
-- Fase de producto: v1. El veredicto vigente no autoriza runner, root, discos ni shell.
-- Aceptar este documento es condición necesaria y no suficiente: hace falta una línea nueva
-  en `docs/00-governance/go-no-go.md` antes de escribir el exporter o llamar a `mkarchiso`.
+- Documento: DOC-DEL-ISO-001 · Estado: accepted · Propietario: Arquitectura · Fecha: 2026-10-14
+- Aceptación: 2026-10-18 (ISO-01). Solo imagen viva x86_64 UEFI.
+- Fase de producto: v1. Este alcance no autoriza root, discos (A6) ni shell arbitraria.
+- La línea de `docs/00-governance/go-no-go.md` (ISO-01) es la compuerta del exporter y de
+  `mkarchiso`. El contrato de código del target llega en ISO-02 (ADR-0019 / DEC-013).
 
 ## Objetivo
 
-Un manifiesto sellado produce un perfil archiso declarativo. Un runner separado, cuando el
-veredicto lo abra, ejecuta una sola corrida de `mkarchiso` y publica el digest. archiso no se
-reimplementa. `pacstrap` no es el constructor. El dominio Rust no importa archiso (ADR-0003).
+Un manifiesto sellado produce un perfil archiso declarativo. Un proceso de constitución,
+distinto del runner de instalación (ADR-0004), ejecuta una sola corrida de `mkarchiso` y
+publica el digest. archiso no se reimplementa. `pacstrap` no es el constructor. El dominio
+Rust no importa archiso (ADR-0003).
+
+La imagen aceptada es la viva x86_64 UEFI. El criterio de arranque se llama LiveISO: si la imagen arranca en una VM UEFI, el criterio queda cubierto. Instalarla en un SSD es prueba
+del archinstall que ya va en esa sesión, no una escritura de Forge. aarch64 sigue fuera.
 
 Estructura de perfil, según <https://wiki.archlinux.org/title/Archiso> y
 `README.profile.rst` del proyecto archiso: `airootfs/`, arranque, `packages.x86_64` (un
@@ -66,7 +73,7 @@ El ahorro está en esa autoría, no en la CPU de la corrida.
 
 ### Datos e interfaces
 
-`DM-MANIFEST`, `DM-ARTIFACT`, target nuevo distinto de `archmaker-profile`, `archinstall-profile` y `report`. El target nuevo no existe en contrato hasta un ADR de export que siga a la aceptación de este alcance. DEC-001 fija el conjunto actual; ampliarlo es parte del issue ISO-01, no un cambio silencioso.
+`DM-MANIFEST`, `DM-ARTIFACT`, target `archmaker-live-profile` (ADR-0019 / DEC-013), distinto de `archmaker-profile`, `archinstall-profile` y `report`. El id técnico no es el nombre del fichero público (`Forge-<prefijo-de-digest>-x86_64.iso`). El match en `EXPORT_TARGETS` es ISO-02; este corte no lo añade.
 
 ### Validación y seguridad
 
@@ -150,7 +157,7 @@ Perfil de FR-ART-ISO-001. Herramienta externa `mkarchiso`, citada y no vendada. 
 
 ### Validación y seguridad
 
-La corrida no ocurre en el portátil del operador como efecto de pulsar Exportar. Job aislado. Sin telemetría (DEC-010).
+El botón de Revisión no ejecuta un shell ni llama a `mkarchiso`. Pide la imagen con la operación tipada `constitute_image`, que no recibe ruta ni script. La corrida de `mkarchiso` del 2026-10-18 fue una vez, en una VM, sobre el perfil sellado. El proceso no particiona. Sin telemetría (DEC-010).
 
 ### Pruebas
 
@@ -171,9 +178,9 @@ no se convierte en otro instalador.
 
 | #      | Issue                                                                    | Depende de | Gate        | Owner        | Criterio Done                               |
 | ------ | ------------------------------------------------------------------------ | ---------- | ----------- | ------------ | ------------------------------------------- |
-| ISO-01 | Aceptar este alcance, ADR-0010 y una reevaluación del veredicto          | —          | G2, G8, G10 | product      | `go-no-go.md` nombra el slice               |
+| ISO-01 | Aceptar este alcance, ADR-0019 y una reevaluación del veredicto          | —          | G2, G8, G10 | product      | `go-no-go.md` nombra el slice (2026-10-18)  |
 | ISO-02 | Target de export del perfil, con corpus, sin ampliar DEC-001 en silencio | 01         | G4, G5      | architecture | Golden sin `pacstrap` ni `cmd`              |
 | ISO-03 | Operación de descarga tipada con fixture                                 | 02         | G8          | security     | Rechazo sin red y rechazo de nombres ajenos |
 | ISO-04 | Corrida `mkarchiso` en runner separado y prueba de VM                    | 03         | G10         | release      | Imagen + SHA-256 + arranque UEFI anotado    |
 
-Hasta ISO-01 el producto exporta `archmaker-profile`, el sobre experimental `archinstall-profile` y `report`. No constituye una imagen.
+ISO-01 documental está aceptado. ISO-02 admite el target `archmaker-live-profile` (perfil, no imagen). Siguen los tres targets de DEC-001. ISO-03 descarga ese conjunto desde un fixture local en el proceso `archmaker-constitute`; sin fixture responde `constitution-offline` y no abre red. ISO-04 se ejecutó el 2026-10-18 dentro de una VM Arch x86_64: `Forge-aaa81a961b0a-x86_64.iso`, SHA-256 en `SHA256SUMS`, arranque UEFI hasta el shell de la sesión viva. Ese arranque cubre el criterio LiveISO (orden del operador, 2026-10-18). SSD sigue `not_run`. Registro: [`closure/iso04-mkarchiso-not-run.md`](closure/iso04-mkarchiso-not-run.md). P6 y F7 no se marcan passed.

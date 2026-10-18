@@ -49,15 +49,15 @@ reviewers:
 
 ## Términos relacionados (no ambiguos, fijados aquí para consistencia)
 
-| Término              | Definición                                                                                                               |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `SelectionValue`     | Unión discriminada `single`/`multiple`/`boolean`/`number`/`text`/`secretRef`. `secretRef` nunca serializa el secreto.    |
-| `ChangeSet`          | Diferencia explicable entre dos estados de un Draft (manual vs derivado). Producido por `applyPreset`/`compareDrafts`.   |
-| `Diagnostic`         | Resultado tipado y localizado de una etapa de validación. Ver `errors-events.md`.                                        |
-| `CoreError`          | Error estructurado de una operación de `CorePort`. Nunca string libre. Ver `errors-events.md`.                           |
-| `ExportTarget`       | Destino de exportación (`archmaker-profile`, `archinstall-profile`, `report`). Conjunto fijado por **DEC-001**.          |
-| `Evidence` / `Claim` | Afirmación mutable de catálogo con fuente primaria, fecha de captura, verificador y caducidad. Ver `source-register.md`. |
-| `Scope`              | Conjunto mínimo de rutas/permisos concedidos a una capability de Tauri. Ver `tauri-policy.md`.                           |
+| Término              | Definición                                                                                                                          |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `SelectionValue`     | Unión discriminada `single`/`multiple`/`boolean`/`number`/`text`/`secretRef`. `secretRef` nunca serializa el secreto.               |
+| `ChangeSet`          | Diferencia explicable entre dos estados de un Draft (manual vs derivado). Producido por `applyPreset`/`compareDrafts`.              |
+| `Diagnostic`         | Resultado tipado y localizado de una etapa de validación. Ver `errors-events.md`.                                                   |
+| `CoreError`          | Error estructurado de una operación de `CorePort`. Nunca string libre. Ver `errors-events.md`.                                      |
+| `ExportTarget`       | Destino de exportación. DEC-001 fija `archmaker-profile`, `archinstall-profile` y `report`. DEC-013 añade `archmaker-live-profile`. |
+| `Evidence` / `Claim` | Afirmación mutable de catálogo con fuente primaria, fecha de captura, verificador y caducidad. Ver `source-register.md`.            |
+| `Scope`              | Conjunto mínimo de rutas/permisos concedidos a una capability de Tauri. Ver `tauri-policy.md`.                                      |
 
 ## Vínculos con decisiones
 

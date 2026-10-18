@@ -1,8 +1,7 @@
 import { test, expect } from "@playwright/test";
 import {
   completeExampleSelection,
-  generateExportAndAssertFidelity,
-  sha256FileHex,
+  generateAndAskForImage,
 } from "./e2e-fidelity-helpers.js";
 
 /**
@@ -21,7 +20,7 @@ test.describe("WASM CorePort — recorrido real", () => {
       page.getByRole("heading", { name: /Motor no disponible/i }),
     ).toHaveCount(0);
     await expect(
-      page.getByRole("heading", { name: /Disco y particiones/i }),
+      page.getByRole("heading", { name: /Sistema base/i }),
     ).toBeVisible({ timeout: 60_000 });
     await expect(page.locator("#toast-region")).toContainText(/Draft listo/i, {
       timeout: 60_000,
@@ -34,7 +33,7 @@ test.describe("WASM CorePort — recorrido real", () => {
   }) => {
     test.setTimeout(120_000);
     await expect(
-      page.getByRole("heading", { name: /Disco y particiones/i }),
+      page.getByRole("heading", { name: /Sistema base/i }),
     ).toBeVisible({ timeout: 60_000 });
     await expect(page.locator("#toast-region")).toContainText(/Draft listo/i, {
       timeout: 60_000,
@@ -48,30 +47,21 @@ test.describe("WASM CorePort — recorrido real", () => {
     // Edit via rail (invalidates prepare).
     await page
       .getByRole("navigation", { name: /Pasos del configurador$/i })
-      .getByRole("button", { name: /Disco y particiones/i })
+      .getByRole("button", { name: /Sistema base/i })
       .click();
     await expect(
-      page.getByRole("heading", { name: /Disco y particiones/i }),
+      page.getByRole("heading", { name: /Sistema base/i }),
     ).toBeVisible();
-    await page
-      .getByRole("radio", { name: /Disco nuevo o sin datos a conservar/i })
-      .click();
+    await page.getByRole("radio", { name: /Linux Zen/i }).click();
     await page.getByRole("button", { name: "Generar" }).click();
     await expect(page.getByRole("heading", { name: "Revisión" })).toBeVisible();
     await expect(page.locator("#toast-region")).toContainText(
       /Manifest listo|Validación/i,
       { timeout: 60_000 },
     );
-    const downloadPromise = page.waitForEvent("download");
-    await page.getByRole("button", { name: "Exportar" }).click();
-    const download = await downloadPromise;
-    expect(download.suggestedFilename()).toMatch(/\.json$/);
-    const path = await download.path();
-    expect(path).toBeTruthy();
-    const digest = sha256FileHex(path!);
-    expect(digest).toMatch(/^[0-9a-f]{64}$/);
+    await page.getByRole("button", { name: "Pedir imagen" }).click();
     await expect(page.locator("#toast-region")).toContainText(
-      new RegExp(`Descarga iniciada \\(${digest.slice(0, 12)}`),
+      /constitution-mkarchiso-absent/,
       { timeout: 15_000 },
     );
   });
@@ -81,14 +71,13 @@ test.describe("WASM CorePort — recorrido real", () => {
   }) => {
     test.setTimeout(180_000);
     await expect(
-      page.getByRole("heading", { name: /Disco y particiones/i }),
+      page.getByRole("heading", { name: /Sistema base/i }),
     ).toBeVisible({ timeout: 60_000 });
     await expect(page.locator("#toast-region")).toContainText(/Draft listo/i, {
       timeout: 60_000,
     });
     await completeExampleSelection(page);
-    const { digest } = await generateExportAndAssertFidelity(page);
-    expect(digest).toHaveLength(64);
+    await generateAndAskForImage(page);
   });
 
   test("reimportar el manifiesto muestra AM-MIG-001 en el toast", async ({
@@ -96,19 +85,18 @@ test.describe("WASM CorePort — recorrido real", () => {
   }) => {
     test.setTimeout(120_000);
     await expect(
-      page.getByRole("heading", { name: /Disco y particiones/i }),
+      page.getByRole("heading", { name: /Sistema base/i }),
     ).toBeVisible({ timeout: 60_000 });
     await expect(page.locator("#toast-region")).toContainText(/Draft listo/i, {
       timeout: 60_000,
     });
     await page.getByRole("button", { name: "Generar" }).click();
     await expect(page.getByRole("heading", { name: "Revisión" })).toBeVisible();
-    const downloadPromise = page.waitForEvent("download");
-    await page.getByRole("button", { name: "Exportar" }).click();
-    const download = await downloadPromise;
-    const path = await download.path();
-    expect(path).toBeTruthy();
-    await page.locator('input[type="file"]').setInputFiles(path!);
+    await page.locator('input[type="file"]').setInputFiles({
+      name: "no-es-perfil.json",
+      mimeType: "application/json",
+      buffer: Buffer.from('{"ok":true}'),
+    });
     const toast = page.locator(".forge-toast");
     await expect(toast).toContainText("AM-MIG-001", { timeout: 15_000 });
     const box = await toast.boundingBox();

@@ -32,7 +32,7 @@ test.describe("Forge — responsive-layout", () => {
       await page.setViewportSize({ width: vp.width, height: vp.height });
       await page.goto(BASE_URL);
       await expect(
-        page.getByRole("heading", { name: /Disco y particiones/i }),
+        page.getByRole("heading", { name: /Sistema base/i }),
       ).toBeVisible({ timeout: 30_000 });
 
       const zoom = await page.evaluate(() => {
@@ -70,10 +70,10 @@ test.describe("Forge — responsive-layout", () => {
       await page.keyboard.press("Escape");
 
       await page
-        .getByRole("button", { name: /Continuar → Sistema base/i })
+        .getByRole("button", { name: /Continuar → Entorno/i })
         .click();
       await expect(
-        page.getByRole("heading", { name: "Sistema base" }),
+        page.getByRole("heading", { name: /Entorno/i }),
       ).toBeVisible();
     });
   }
@@ -84,7 +84,7 @@ test.describe("Forge — responsive-layout", () => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto(BASE_URL);
     await expect(
-      page.getByRole("heading", { name: /Disco y particiones/i }),
+      page.getByRole("heading", { name: /Sistema base/i }),
     ).toBeVisible();
 
     const css = await layoutCssSource(page);

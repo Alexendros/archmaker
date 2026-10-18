@@ -66,14 +66,9 @@ export const STEP_IDS = {
 
 export const RAIL_STEPS = [
   {
-    id: "storage",
-    title: "Disco y particiones",
-    hint: "Modo e intención (sin escritura)",
-  },
-  {
     id: "base",
     title: "Sistema base",
-    hint: "Kernel · Arranque · Filesystem",
+    hint: "Kernel · Arranque",
   },
   {
     id: "environment",
@@ -88,12 +83,12 @@ export const RAIL_STEPS = [
   {
     id: "identity-security",
     title: "Identidad y seguridad",
-    hint: "Hostname y cifrado",
+    hint: "Hostname",
   },
   {
     id: "review",
     title: "Revisión",
-    hint: "Resumen y exportación",
+    hint: "Resumen e imagen",
   },
 ] as const;
 
@@ -604,10 +599,6 @@ export const GLOSSARY = [
   {
     title: "cursor",
     body: "Editor con asistencia para escribir código.",
-  },
-  {
-    title: "Disco y particiones",
-    body: "Declara el modo de instalación (disco nuevo o reemplazo). Esta fase prepara un perfil y no modifica discos.",
   },
 ] as const;
 

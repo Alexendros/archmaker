@@ -130,6 +130,7 @@ fn neg_capability_deny_by_default() {
         "export_artifact",
         "import_draft",
         "save_export_bytes",
+        "constitute_image",
         "inspect_host_hardware",
         "inspect_storage_devices",
         "refresh_storage_snapshot",
@@ -153,10 +154,11 @@ fn neg_capability_deny_by_default() {
         .expect("permissions debe ser lista");
     assert_eq!(
         perms.len(),
-        16,
-        "main: 9 CorePort + allow-save-export-bytes + 6 hardware-inspect (sin shell/FS)"
+        17,
+        "main: 9 CorePort + allow-save-export-bytes + allow-constitute-image + 6 hardware-inspect (sin shell/FS)"
     );
     let mut has_scoped_save = false;
+    let mut has_constitute = false;
     for p in perms {
         let s = p.as_str().expect("permission string");
         assert!(
@@ -170,10 +172,17 @@ fn neg_capability_deny_by_default() {
         if s == "allow-save-export-bytes" {
             has_scoped_save = true;
         }
+        if s == "allow-constitute-image" {
+            has_constitute = true;
+        }
     }
     assert!(
         has_scoped_save,
         "F5 exige allow-save-export-bytes (no diálogo global libre)"
+    );
+    assert!(
+        has_constitute,
+        "la imagen se pide con allow-constitute-image, sin shell"
     );
     assert!(
         !raw.contains("dialog:allow-open")
@@ -257,6 +266,7 @@ fn neg_web_has_no_remote_or_shell_surface() {
         "build_manifest",
         "export_artifact",
         "import_draft",
+        "constitute_image",
     ] {
         assert!(
             tauri_port.contains(cmd),
@@ -506,6 +516,7 @@ fn neg_allowlist_covers_coreport_plus_scoped_save() {
         "export_artifact",
         "import_draft",
         "save_export_bytes",
+        "constitute_image",
         "inspect_host_hardware",
         "inspect_storage_devices",
         "refresh_storage_snapshot",
@@ -520,7 +531,7 @@ fn neg_allowlist_covers_coreport_plus_scoped_save() {
         count += 1;
     }
     assert_eq!(
-        count, 16,
-        "9 CorePort + save_export_bytes + 6 hardware-inspect"
+        count, 17,
+        "9 CorePort + save_export_bytes + constitute_image + 6 hardware-inspect"
     );
 }

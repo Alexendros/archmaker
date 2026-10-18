@@ -56,6 +56,7 @@ reviewers:
 | `adr/ADR-0010-marca-y-nombre-de-artefacto.md` | ADR-0010         | accepted  |
 | `adr/ADR-0011-contrato-de-aplicacion.md`      | ADR-0011         | in-review |
 | `adr/ADR-0012-nombre-visible-forge.md`        | ADR-0012         | accepted  |
+| `adr/ADR-0019-perfil-vivo-archiso.md`         | ADR-0019         | accepted  |
 
 ## 03 — Datos
 
@@ -113,25 +114,26 @@ reviewers:
 
 ## 10 — Delivery
 
-| Documento                           | ID                   | Estado    |
-| ----------------------------------- | -------------------- | --------- |
-| `roadmap.md` (PD/MVP/v1/ENT)        | DOC-DEL-ROAD-001     | draft     |
-| `backlog.md`                        | DOC-DEL-BACK-001     | draft     |
-| `next-issues.md` (10 issues)        | DOC-DEL-ISS-001      | draft     |
-| `gates.md` (G0–G10)                 | DOC-DEL-GATE-001     | in-review |
-| `walking-skeleton.md` (slice MVP-0) | DOC-DEL-WSK-001      | in-review |
-| `packaging-release.md`              | DOC-DEL-PKG-001      | in-review |
-| `mvp5-scope.md`                     | DOC-DEL-MVP5-001     | accepted  |
-| `mvp5-gap-spec.md`                  | DOC-DEL-MVP5-GAP-001 | draft     |
-| `mvp6-scope.md`                     | DOC-DEL-MVP6-001     | accepted  |
-| `iso-scope.md`                      | DOC-DEL-ISO-001      | in-review |
-| `closure/f8-governance.md`          | DOC-DEL-CLO-F8-001   | accepted  |
-| `closure/p6-desktop-offline.md`     | DOC-DEL-CLO-P6-001   | draft     |
-| `closure/f9-release.md`             | DOC-DEL-CLO-F9-001   | in-review |
-| `closure/f7-candidate.md`           | DOC-DEL-CLO-F7-001   | draft     |
-| `closure/release-candidate.md`      | DOC-DEL-CLO-RC-001   | draft     |
-| `closure/closure-handoff.md`        | DOC-DEL-CLO-HAND-001 | draft     |
-| `remediation/acceptance-notes.md`   | DOC-DEL-REM-ACC-001  | in-review |
+| Documento                            | ID                    | Estado    |
+| ------------------------------------ | --------------------- | --------- |
+| `roadmap.md` (PD/MVP/v1/ENT)         | DOC-DEL-ROAD-001      | draft     |
+| `backlog.md`                         | DOC-DEL-BACK-001      | draft     |
+| `next-issues.md` (10 issues)         | DOC-DEL-ISS-001       | draft     |
+| `gates.md` (G0–G10)                  | DOC-DEL-GATE-001      | in-review |
+| `walking-skeleton.md` (slice MVP-0)  | DOC-DEL-WSK-001       | in-review |
+| `packaging-release.md`               | DOC-DEL-PKG-001       | in-review |
+| `mvp5-scope.md`                      | DOC-DEL-MVP5-001      | accepted  |
+| `mvp5-gap-spec.md`                   | DOC-DEL-MVP5-GAP-001  | draft     |
+| `mvp6-scope.md`                      | DOC-DEL-MVP6-001      | accepted  |
+| `iso-scope.md`                       | DOC-DEL-ISO-001       | accepted  |
+| `closure/f8-governance.md`           | DOC-DEL-CLO-F8-001    | accepted  |
+| `closure/p6-desktop-offline.md`      | DOC-DEL-CLO-P6-001    | draft     |
+| `closure/f9-release.md`              | DOC-DEL-CLO-F9-001    | in-review |
+| `closure/f7-candidate.md`            | DOC-DEL-CLO-F7-001    | draft     |
+| `closure/release-candidate.md`       | DOC-DEL-CLO-RC-001    | draft     |
+| `closure/closure-handoff.md`         | DOC-DEL-CLO-HAND-001  | draft     |
+| `closure/iso04-mkarchiso-not-run.md` | DOC-DEL-CLO-ISO04-001 | draft     |
+| `remediation/acceptance-notes.md`    | DOC-DEL-REM-ACC-001   | in-review |
 
 ## 11–12 — Operaciones e investigación
 

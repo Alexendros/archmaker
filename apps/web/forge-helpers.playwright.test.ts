@@ -109,7 +109,7 @@ test.describe("draftForCore Prove-It", () => {
     });
   });
 
-  test("keeps hostname and encrypt; lists face exclusions", () => {
+  test("keeps hostname, drops encrypt, lists face exclusions", () => {
     let draft = emptyDraft();
     draft = chooseSingle(draft, STEP_IDS.intent, "archmaker.intent.desarrollo");
     draft = setText(draft, STEP_IDS.hostname, "arch-forge");
@@ -134,7 +134,9 @@ test.describe("draftForCore Prove-It", () => {
 
     const forCore = draftForCore(draft);
     expect(textValue(forCore, STEP_IDS.hostname)).toBe("arch-forge");
-    expect(boolValue(forCore, STEP_IDS.encrypt)).toBe(true);
+    expect(forCore.selections.some((s) => s.stepId === STEP_IDS.encrypt)).toBe(
+      false,
+    );
     expect(forCore.selections.some((s) => s.stepId === STEP_IDS.intent)).toBe(
       false,
     );
@@ -218,9 +220,9 @@ test.describe("storage-plan-face H01/H02", () => {
     expect(plan?.planStatus).toBe("verification-pending");
     expect(plan?.planStatus).not.toBe("certifiable");
 
-    const draft = withFaceV2Fields(emptyDraft(), intent);
+    const draft = withFaceV2Fields(emptyDraft());
     expect(draft.schemaVersion).toBe("2");
-    expect(draft.storagePlan?.mode).toBe("new-disk");
+    expect(draft.storagePlan).toBeUndefined();
     expect(draft.verification?.executionStatus).toBe("not-executed");
     expect(draft.verification?.planValidationStatus).toBe("not-validated");
   });
@@ -237,18 +239,21 @@ test.describe("storage-plan-face H01/H02", () => {
     expect(plan?.planStatus).toBe("not-certifiable");
   });
 
-  test("H01: storagePlan sobrevive withFaceV2Fields → draftForCore", async () => {
+  test("H01: el plan de disco no llega a draftForCore", async () => {
     const { withFaceV2Fields } = await import("./src/storage-plan-face.js");
-    const intent = {
-      mode: "new-disk" as const,
+    const { storagePlanFromIntent } =
+      await import("./src/storage-plan-face.js");
+    const seeded = emptyDraft();
+    seeded.storagePlan = storagePlanFromIntent({
+      mode: "new-disk",
       intentAcknowledged: true,
       lossRiskAcknowledged: false,
-      uiState: "proposed" as const,
-    };
-    const projected = withFaceV2Fields(emptyDraft(), intent);
+      uiState: "proposed",
+    });
+    const projected = withFaceV2Fields(seeded);
     const forCore = draftForCore(projected);
-    expect(forCore.storagePlan?.mode).toBe("new-disk");
-    expect(forCore.storagePlan?.intentAcknowledged).toBe(true);
+    expect(forCore.storagePlan).toBeUndefined();
+    expect(forCore.encryptionPolicy).toBeUndefined();
     expect(forCore.verification?.planValidationStatus).toBe("not-validated");
     expect(forCore.verification?.executionStatus).toBe("not-executed");
   });
