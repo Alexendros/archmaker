@@ -20,6 +20,7 @@ export type ImportReportPending =
 type Props = {
   pending: ImportReportPending;
   busy: boolean;
+  errorMessage?: string | null;
   onConfirm: (confirmBlockingLosses: boolean) => void;
   onClose: () => void;
 };
@@ -27,6 +28,7 @@ type Props = {
 export function ImportReportDialog({
   pending,
   busy,
+  errorMessage,
   onConfirm,
   onClose,
 }: Props) {
@@ -89,6 +91,7 @@ export function ImportReportDialog({
             )}
           </>
         )}
+        {errorMessage ? <p role="alert">{errorMessage}</p> : null}
         <div className="forge-modal-actions">
           <button
             type="button"

@@ -212,6 +212,7 @@ export function App({ port, portKind }: Props) {
     null,
   );
   const [importBusy, setImportBusy] = useState(false);
+  const [importNotice, setImportNotice] = useState<string | null>(null);
   const generationRef = useRef(0);
   const importInputRef = useRef<HTMLInputElement>(null);
   const preparedGenerationRef = useRef<number | null>(null);
@@ -631,7 +632,21 @@ export function App({ port, portKind }: Props) {
     }
   }
 
+  function importFailureText(err: {
+    code: string;
+    messageKey: string;
+  }): string {
+    return `Importar: ${err.code} (${err.messageKey})`;
+  }
+
+  function reportImportFailure(message: string): void {
+    announce("alert", message);
+    showToast(message);
+    setImportNotice(message);
+  }
+
   async function onImportFile(file: File): Promise<void> {
+    setImportNotice(null);
     setImportBusy(true);
     // H12: congelar generación al elegir el archivo, antes del análisis async.
     const generationAtPick = generationRef.current;
@@ -657,7 +672,7 @@ export function App({ port, portKind }: Props) {
         return;
       }
       if (analysis.kind === "rejected") {
-        fail(analysis.error, "Importar");
+        reportImportFailure(importFailureText(analysis.error));
         return;
       }
       if (analysis.kind === "needs_blocking_confirm") {
@@ -705,13 +720,12 @@ export function App({ port, portKind }: Props) {
         getCurrentGeneration: () => generationRef.current,
       });
       if (!applied.ok) {
-        if (applied.error) {
-          fail(applied.error, "Importar");
-        } else {
-          announce("alert", applied.message);
-        }
+        reportImportFailure(
+          applied.error ? importFailureText(applied.error) : applied.message,
+        );
         return;
       }
+      setImportNotice(null);
       setImportPending(null);
       applyDraft(applied.draft);
       showToast("Perfil importado.");
@@ -1418,7 +1432,11 @@ export function App({ port, portKind }: Props) {
           pending={importPending}
           busy={importBusy}
           onConfirm={(confirmBlocking) => void onConfirmImport(confirmBlocking)}
-          onClose={() => setImportPending(null)}
+          errorMessage={importNotice}
+          onClose={() => {
+            setImportNotice(null);
+            setImportPending(null);
+          }}
         />
       ) : null}
 
