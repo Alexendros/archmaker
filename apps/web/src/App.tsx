@@ -77,6 +77,11 @@ import {
   type StorageIntent,
   type StorageMode,
 } from "./storage-intent.js";
+import {
+  intentFromStoragePlan,
+  uiStateForIntent,
+  withFaceV2Fields,
+} from "./storage-plan-face.js";
 
 type Props = { port: CorePort; portKind: PortKind };
 
@@ -287,12 +292,17 @@ export function App({ port, portKind }: Props) {
   }, []);
 
   const applyDraft = useCallback(
-    (next: Draft) => {
-      setDraft(next);
+    (next: Draft, nextStorage?: StorageIntent) => {
+      const intent =
+        nextStorage ??
+        (next.storagePlan ? intentFromStoragePlan(next.storagePlan) : storage);
+      const projected = withFaceV2Fields(next, intent);
+      setDraft(projected);
+      setStorage({ ...intent, uiState: uiStateForIntent(intent) });
       invalidateDerived();
-      void persistDraftLocal(next).then(handlePersistResult);
+      void persistDraftLocal(projected).then(handlePersistResult);
     },
-    [handlePersistResult, invalidateDerived],
+    [handlePersistResult, invalidateDerived, storage],
   );
 
   useEffect(() => {
@@ -317,6 +327,7 @@ export function App({ port, portKind }: Props) {
         if (cancelled) return;
         if (opened.ok) {
           setDraft(opened.value);
+          setStorage(intentFromStoragePlan(opened.value.storagePlan));
           setReady(true);
           announce("status", "Perfil recuperado.");
           return;
@@ -332,20 +343,22 @@ export function App({ port, portKind }: Props) {
         fail(res.error, "Crear draft");
         return;
       }
-      let next = withInitialSelections(res.value);
-      if (next.selections !== res.value.selections) {
-        const saved = await port.saveDraft({
-          draft: next,
-          expectedRevision: next.revision,
-        });
-        if (cancelled) return;
-        if (!saved.ok) {
-          fail(saved.error, "Guardar selecciones iniciales");
-          return;
-        }
-        next = saved.value;
+      let next = withFaceV2Fields(
+        withInitialSelections(res.value),
+        INITIAL_STORAGE_INTENT,
+      );
+      const saved = await port.saveDraft({
+        draft: next,
+        expectedRevision: next.revision,
+      });
+      if (cancelled) return;
+      if (!saved.ok) {
+        fail(saved.error, "Guardar selecciones iniciales");
+        return;
       }
+      next = saved.value;
       setDraft(next);
+      setStorage(intentFromStoragePlan(next.storagePlan));
       void persistDraftLocal(next).then(handlePersistResult);
       setReady(true);
       announce("status", `Draft listo (${portKind}). Arranque: systemd-boot.`);
@@ -482,15 +495,22 @@ export function App({ port, portKind }: Props) {
     try {
       const prepared = await prepareExport();
       if (prepared.ok) {
-        setStorage((prev) =>
-          prev.mode !== null ? { ...prev, uiState: "validated" } : prev,
-        );
+        // El manifiesto de catálogo no certifica el plan de almacenamiento (H02).
         setInvalid((prev) => {
           const copy = new Set(prev);
           copy.delete(RAIL_STEPS.length - 1);
           return copy;
         });
-        showToast("Validación sin bloqueos. Manifest listo.");
+        const exclusions = draft ? listFaceExclusions(draft).length : 0;
+        const storageNote =
+          storage.mode !== null && storage.uiState !== "validated"
+            ? " Plan de disco: declarado/propuesto, no validado."
+            : "";
+        showToast(
+          exclusions > 0
+            ? `Manifest listo con ${exclusions} exclusión(es) de cara.${storageNote}`
+            : `Validación sin bloqueos. Manifest listo.${storageNote}`,
+        );
       } else if (prepared.reason === "draft-missing") {
         // requireDraft already announced; keep the user on revisión with status.
         announce("alert", "El draft aún no está listo.");
@@ -694,18 +714,15 @@ export function App({ port, portKind }: Props) {
   }
 
   function patchStorage(patch: Partial<StorageIntent>): void {
-    setStorage((prev) => {
-      const next: StorageIntent = { ...prev, ...patch };
-      if (next.mode !== null && next.intentAcknowledged) {
-        next.uiState =
-          next.uiState === "unspecified" ? "declared" : next.uiState;
-      } else if (next.mode === null) {
-        next.uiState = "unspecified";
-      }
-      return next;
-    });
+    const d = draft;
+    if (!d) return;
+    const next: StorageIntent = {
+      ...storage,
+      ...patch,
+    };
+    next.uiState = uiStateForIntent(next);
     setInvalid((prev) => new Set(prev).add(RAIL_STEPS.length - 1));
-    invalidateDerived();
+    applyDraft(d, next);
   }
 
   function pickStorageMode(mode: StorageMode): void {
@@ -730,11 +747,7 @@ export function App({ port, portKind }: Props) {
       />
       <div className="forge-shell">
         <ForgeRail step={step} progress={stepProgress} onSelect={goToStep} />
-        <ForgeStepper
-          step={step}
-          progress={stepProgress}
-          onSelect={goToStep}
-        />
+        <ForgeStepper step={step} progress={stepProgress} onSelect={goToStep} />
         <main id="main" className="forge-main" tabIndex={-1}>
           {!ready ? <p role="status">Preparando draft…</p> : null}
 
@@ -742,13 +755,10 @@ export function App({ port, portKind }: Props) {
             <section aria-labelledby="storage-h">
               <h1 id="storage-h">Disco y particiones</h1>
               <p className="forge-lead">
-                Declara el modo de instalación. No hay detección en esta
-                entrega web; el perfil no modifica discos.
+                Declara el modo de instalación. No hay detección en esta entrega
+                web; el perfil no modifica discos.
               </p>
-              <div
-                className="forge-callout forge-callout-info"
-                role="status"
-              >
+              <div className="forge-callout forge-callout-info" role="status">
                 Esta fase prepara un perfil y no modifica discos.
               </div>
               <div
@@ -784,9 +794,7 @@ export function App({ port, portKind }: Props) {
                       onClick={() => pickStorageMode(opt.mode)}
                     >
                       <span className="forge-card-title">{opt.title}</span>
-                      <span className="forge-card-desc">
-                        {opt.description}
-                      </span>
+                      <span className="forge-card-desc">{opt.description}</span>
                     </button>
                   );
                 })}
@@ -859,9 +867,7 @@ export function App({ port, portKind }: Props) {
                         role="radio"
                         aria-checked={selected}
                         data-option-id={k.optionId}
-                        onClick={() =>
-                          pickSingle(STEP_IDS.kernel, k.optionId)
-                        }
+                        onClick={() => pickSingle(STEP_IDS.kernel, k.optionId)}
                       >
                         <span className="forge-card-row">
                           <span className="forge-card-title">
@@ -872,9 +878,7 @@ export function App({ port, portKind }: Props) {
                             <span className="forge-tag">{k.tag}</span>
                           ) : null}
                         </span>
-                        <span className="forge-card-desc">
-                          {k.description}
-                        </span>
+                        <span className="forge-card-desc">{k.description}</span>
                       </button>
                     );
                   })}
@@ -1194,6 +1198,15 @@ export function App({ port, portKind }: Props) {
                     (intención o no verificada) no entran al perfil sellado.
                   </p>
                 ) : null}
+                {draft?.storagePlan ? (
+                  <p role="status">
+                    Plan de disco: {draft.storagePlan.planStatus} (estado UI{" "}
+                    {storage.uiState}). La generación del manifiesto no valida
+                    el plan.
+                  </p>
+                ) : (
+                  <p role="status">Plan de disco: sin declarar.</p>
+                )}
                 {hostname ? <p role="status">Hostname: {hostname}</p> : null}
                 {encrypt ? (
                   <p role="status">

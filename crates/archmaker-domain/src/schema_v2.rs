@@ -464,8 +464,27 @@ pub struct DraftSchemaMigrationEntry {
 
 /// Plan ESP+raíz mínimo sin inventar hardware observado.
 pub fn manual_reference_storage_plan() -> StoragePlan {
+    declared_storage_plan_from_intent(StorageMode::NewDisk, true, None)
+}
+
+/// Materializa un plan declarativo a partir del modo y las confirmaciones de cara.
+///
+/// La estructura (UEFI declarado, GPT, ESP+raíz, UKI) es autoridad de dominio.
+/// `planStatus` nunca pasa a `certifiable` aquí: hace falta validación de plan
+/// (fuera de la generación del manifiesto de catálogo).
+pub fn declared_storage_plan_from_intent(
+    mode: StorageMode,
+    intent_acknowledged: bool,
+    loss_risk_acknowledged: Option<bool>,
+) -> StoragePlan {
+    let incomplete = !intent_acknowledged
+        || (mode == StorageMode::ReplaceDisk && loss_risk_acknowledged != Some(true));
+    let action = match mode {
+        StorageMode::NewDisk => PlannedAction::Create,
+        StorageMode::ReplaceDisk => PlannedAction::Replace,
+    };
     StoragePlan {
-        mode: StorageMode::NewDisk,
+        mode,
         firmware: FirmwareDeclaration {
             kind: FirmwareKind::Uefi,
             provenance: FirmwareProvenance::Declared,
@@ -484,7 +503,7 @@ pub fn manual_reference_storage_plan() -> StoragePlan {
                 layers: vec![StorageLayer::Fat32 {
                     mount_point: "/efi".to_string(),
                 }],
-                planned_action: PlannedAction::Create,
+                planned_action: action,
             },
             PlannedPartition {
                 role: PartitionRole::System,
@@ -493,19 +512,143 @@ pub fn manual_reference_storage_plan() -> StoragePlan {
                     fs: FilesystemKind::Ext4,
                     mount_point: "/".to_string(),
                 }],
-                planned_action: PlannedAction::Create,
+                planned_action: action,
             },
         ],
         boot_artifact_strategy: BootArtifactStrategy::UkiOnEsp,
-        intent_acknowledged: true,
-        loss_risk_acknowledged: None,
-        plan_status: PlanCertifiabilityStatus::VerificationPending,
+        intent_acknowledged,
+        loss_risk_acknowledged: match mode {
+            StorageMode::ReplaceDisk => loss_risk_acknowledged,
+            StorageMode::NewDisk => None,
+        },
+        plan_status: if incomplete {
+            PlanCertifiabilityStatus::NotCertifiable
+        } else {
+            PlanCertifiabilityStatus::VerificationPending
+        },
+    }
+}
+
+/// Política LUKS2 declarativa (sin secretos; no implica cifrado ejecutado).
+pub fn encryption_policy_from_intent(encrypt: bool) -> EncryptionPolicy {
+    if encrypt {
+        EncryptionPolicy {
+            kind: EncryptionKind::Luks2,
+            unlock: Some(LuksUnlockMethod::PassphraseRequestedAtInstall),
+            covers_mount_point: Some("/".to_string()),
+            initramfs_note: None,
+        }
+    } else {
+        EncryptionPolicy::none()
+    }
+}
+
+/// Reconstruye campos v2 de cara: plan desde intención, cifrado/navegadores desde selections.
+pub fn project_declared_v2_fields(draft: &mut crate::Draft) {
+    if decode_draft_schema_version(&draft.schema_version) != Ok(DraftSchemaVersion::V2) {
+        return;
+    }
+    if let Some(plan) = draft.storage_plan.take() {
+        draft.storage_plan = Some(declared_storage_plan_from_intent(
+            plan.mode,
+            plan.intent_acknowledged,
+            plan.loss_risk_acknowledged,
+        ));
+    }
+
+    let encrypt = draft.selections.iter().find_map(|selection| {
+        if selection.step_id.contains("encrypt") || selection.step_id.contains("cipher") {
+            match &selection.value {
+                crate::SelectionValue::Boolean { value } => Some(*value),
+                _ => None,
+            }
+        } else {
+            None
+        }
+    });
+    if let Some(flag) = encrypt {
+        draft.encryption_policy = Some(encryption_policy_from_intent(flag));
+        draft.inherited_encrypt_intent = Some(flag);
+    } else if draft.encryption_policy.is_none() {
+        draft.encryption_policy = Some(EncryptionPolicy::none());
+    }
+
+    let browser_ids: Vec<String> = draft
+        .selections
+        .iter()
+        .find_map(|selection| match &selection.value {
+            crate::SelectionValue::Multiple { option_ids }
+                if selection.step_id.contains("apps") || selection.step_id.contains("browser") =>
+            {
+                let ids: Vec<String> = option_ids
+                    .iter()
+                    .filter(|id| id.starts_with("archmaker.browser."))
+                    .cloned()
+                    .collect();
+                Some(ids)
+            }
+            _ => None,
+        })
+        .unwrap_or_default();
+    if !browser_ids.is_empty() || draft.browser_policy.is_some() {
+        let default = draft
+            .browser_policy
+            .as_ref()
+            .and_then(|p| p.default_browser_id.clone())
+            .filter(|id| browser_ids.iter().any(|b| b == id))
+            .or_else(|| {
+                if browser_ids
+                    .iter()
+                    .any(|b| b == DEFAULT_BROWSER_ID_NEW_PROFILE)
+                {
+                    Some(DEFAULT_BROWSER_ID_NEW_PROFILE.to_string())
+                } else {
+                    browser_ids.first().cloned()
+                }
+            });
+        draft.browser_policy = Some(BrowserPolicy {
+            selected_browser_ids: browser_ids,
+            default_browser_id: default,
+        });
+    }
+
+    match &mut draft.verification {
+        Some(v) => {
+            v.execution_status = ExecutionStatus::NotExecuted;
+            if draft
+                .storage_plan
+                .as_ref()
+                .is_none_or(|p| p.plan_status != PlanCertifiabilityStatus::Certifiable)
+            {
+                v.plan_validation_status = PlanValidationStatus::NotValidated;
+            }
+        }
+        None => {
+            draft.verification = Some(VerificationStatuses::foundational_defaults());
+        }
     }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn declared_plan_incomplete_replace_is_not_certifiable() {
+        let plan = declared_storage_plan_from_intent(StorageMode::ReplaceDisk, true, Some(false));
+        assert_eq!(plan.plan_status, PlanCertifiabilityStatus::NotCertifiable);
+        assert_eq!(plan.partitions[0].planned_action, PlannedAction::Replace);
+    }
+
+    #[test]
+    fn declared_plan_complete_new_disk_is_verification_pending() {
+        let plan = declared_storage_plan_from_intent(StorageMode::NewDisk, true, None);
+        assert_eq!(
+            plan.plan_status,
+            PlanCertifiabilityStatus::VerificationPending
+        );
+        assert_ne!(plan.plan_status, PlanCertifiabilityStatus::Certifiable);
+    }
 
     #[test]
     fn decodes_v1_v2_rejects_future() {
