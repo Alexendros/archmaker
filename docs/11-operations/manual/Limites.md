@@ -23,7 +23,7 @@ El MVP es usable sin CDN ni servidor (NFR-OFF-001). El catálogo y los drafts vi
 
 ## Sin instalación del sistema
 
-Forge / ArchMaker (ids técnicos `archmaker*`) no particiona discos, no ejecuta `pacstrap`, no corre hooks ni scripts heredados y no escribe fuera del espacio de la aplicación. La imagen de instalación es otro alcance (`docs/10-delivery/iso-scope.md`), todavía no autorizado.
+Forge / ArchMaker (ids técnicos `archmaker*`) no particiona discos, no ejecuta `pacstrap`, no corre hooks ni scripts heredados y no escribe el disco del operador ni el del destino. La imagen viva está autorizada como alcance (`docs/10-delivery/iso-scope.md`, ISO-01) y todavía no se constituye: el SSD lo instalará archinstall en la sesión viva.
 
 ## Sin ejecución del plan
 

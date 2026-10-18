@@ -53,7 +53,12 @@
     "format": {
       "description": "Admitted export format (DEC-001). Image is not admitted.",
       "type": "string",
-      "enum": ["archmaker-profile", "archinstall-profile", "report"]
+      "enum": [
+        "archmaker-profile",
+        "archinstall-profile",
+        "report",
+        "archmaker-live-profile"
+      ]
     },
     "clauses": {
       "description": "Closed list of seven clauses. Order is fixed.",

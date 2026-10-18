@@ -6,10 +6,10 @@ Configurador local para diseñar, validar y exportar un perfil. Rust es la autor
 
 Tres capas distintas (detalle: [`docs/10-delivery/closure/f8-governance.md`](docs/10-delivery/closure/f8-governance.md)):
 
-| Capa                 | Estado                                                                                                                          |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| Baseline de código   | **passed** — tag `implementation-baseline-mvp5`; F0–F8 fusionados en `main`                                                     |
-| Aprobación funcional | **pending** — matriz F7 ejecutable; sin `RC_SHA_FUNCIONAL` ni aceptación independiente (`f7-candidate.md`)                      |
+| Capa                 | Estado                                                                                                                             |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| Baseline de código   | **passed** — tag `implementation-baseline-mvp5`; F0–F8 fusionados en `main`                                                        |
+| Aprobación funcional | **pending** — matriz F7 ejecutable; sin `RC_SHA_FUNCIONAL` ni aceptación independiente (`f7-candidate.md`)                         |
 | Release binaria      | **published** — [Neubat v0.1.0](https://github.com/Alexendros/archmaker/releases/tag/v0.1.0) AppImage x86_64; verificación parcial |
 
 - Código actual de `main` y el AppImage publicado son identidades distintas: el tip de `main`
@@ -23,9 +23,9 @@ Tres capas distintas (detalle: [`docs/10-delivery/closure/f8-governance.md`](doc
 - Diagramas Archify (Forge as-built): [`docs/02-architecture/diagrams/`](docs/02-architecture/diagrams/).
   Archify es herramienta de diagramación; no confundir con Forge.
 - Gate global (mecánico): **Clear** — todos los gates G0–G10 están `complete`. Autoridad: [`docs/00-governance/go-no-go.md`](docs/00-governance/go-no-go.md) y [`docs/10-delivery/gates.md`](docs/10-delivery/gates.md).
-- Veredicto de gobierno: **CONDITIONAL-CLEAR** hasta MVP-5 (sin runner). Autoriza el walking skeleton, los slices MVP-1..MVP-5 y el canal AppImage de MVP-6; runner, privilegios, ISO y Enterprise siguen bloqueados.
+- Veredicto de gobierno: **CONDITIONAL-CLEAR** hasta MVP-5, más el slice ISO-01 de imagen viva x86_64 UEFI. Autoriza el walking skeleton, los slices MVP-1..MVP-5 y el canal AppImage de MVP-6. Siguen bloqueados el runner de instalación, la escritura de discos, la shell arbitraria y Enterprise.
 - Baseline vigente: `implementation-baseline-mvp5` (commit anotado `b13c200…`; tags previos intactos). Remediación operativa: [`docs/10-delivery/remediation/`](docs/10-delivery/remediation/).
-- Alcance MVP-5 **accepted** y cerrado (MVP-5-01..05): [`docs/10-delivery/mvp5-scope.md`](docs/10-delivery/mvp5-scope.md). Hueco residual: [`mvp5-gap-spec.md`](docs/10-delivery/mvp5-gap-spec.md) (draft). Empaquetado MVP-6 **accepted solo AppImage** ([`mvp6-scope.md`](docs/10-delivery/mvp6-scope.md)); ISO sigue sin `accepted`.
+- Alcance MVP-5 **accepted** y cerrado (MVP-5-01..05): [`docs/10-delivery/mvp5-scope.md`](docs/10-delivery/mvp5-scope.md). Hueco residual: [`mvp5-gap-spec.md`](docs/10-delivery/mvp5-gap-spec.md) (draft). Empaquetado MVP-6 **accepted solo AppImage** ([`mvp6-scope.md`](docs/10-delivery/mvp6-scope.md)); imagen viva [`iso-scope.md`](docs/10-delivery/iso-scope.md) **accepted** (ISO-01). El target `archmaker-live-profile` está en el árbol; la cara no invoca `mkarchiso`.
 - Fuentes históricas: `reference/v5.1/`, conservadas por hash; walking skeleton en [`docs/10-delivery/walking-skeleton.md`](docs/10-delivery/walking-skeleton.md).
 - Rust: autoridad de dominio y casos de uso (nativo + WASM).
 - React: cara Forge; escritorio → `TauriCorePort` (`invoke` de `@tauri-apps/api/core`); navegador → `WasmCorePort`. `MockCorePort` solo con `?mock=1` en desarrollo.

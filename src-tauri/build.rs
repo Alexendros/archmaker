@@ -17,6 +17,7 @@ fn main() {
             "propose_storage_plan",
             "validate_storage_plan",
             "import_storage_snapshot",
+            "constitute_image",
         ]),
     ))
     .expect("tauri_build with AppManifest::commands");

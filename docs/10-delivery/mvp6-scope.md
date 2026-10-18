@@ -37,7 +37,7 @@ permite a tarifa de alta cero, sin presentar el producto como Arch Linux oficial
 visible: **Forge** (ADR-0012 / DEC-012; `v0.1.0` publicó Neubat bajo ADR-0010 / DEC-011).
 
 La tienda instala la aplicación. La imagen de instalación de un sistema es otro alcance
-(`docs/10-delivery/iso-scope.md`), sigue sin `accepted`.
+(`docs/10-delivery/iso-scope.md`) está `accepted` solo como imagen viva (ISO-01). Este alcance de empaquetado no la construye.
 
 ## Plataforma autorizada (única)
 

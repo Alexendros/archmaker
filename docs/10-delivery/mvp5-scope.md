@@ -70,7 +70,8 @@ Rust. No se construye ISO, no se descarga el espejo y no se llama a pacman.
 ## Criterio de salida
 
 Los issues 01–05 cerrados. Tag `implementation-baseline-mvp5` emitido (MVP-5-05); tags
-MVP-0.1..MVP-4 intactos. Runner e ISO siguen fuera del veredicto.
+MVP-0.1..MVP-4 intactos. Este alcance no autoriza runner ni imagen. El slice de imagen viva
+(ISO-01, 2026-10-18) vive en `go-no-go.md` y no reabre MVP-5.
 
 ## Post-slice (cierre F0–F7 / gobierno F8)
 

@@ -35,7 +35,12 @@
       "properties": {
         "id": {
           "description": "Export target identifier.",
-          "enum": ["archmaker-profile", "archinstall-profile", "report"]
+          "enum": [
+            "archmaker-profile",
+            "archinstall-profile",
+            "report",
+            "archmaker-live-profile"
+          ]
         },
         "version": {
           "description": "Target adapter version (axis targetRef.version).",

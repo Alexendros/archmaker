@@ -117,7 +117,7 @@ test.describe("F6 viewports y foco", () => {
       await page.setViewportSize({ width, height: 800 });
       await page.goto(BASE_URL);
       await expect(
-        page.getByRole("heading", { name: /Disco y particiones/i }),
+        page.getByRole("heading", { name: /Sistema base/i }),
       ).toBeVisible({ timeout: 30_000 });
       // Rail y stepper coexisten; solo uno es visible por viewport (CSS).
       await expect(

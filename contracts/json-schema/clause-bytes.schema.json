@@ -21,7 +21,12 @@
     },
     "format": {
       "type": "string",
-      "enum": ["archmaker-profile", "archinstall-profile", "report"]
+      "enum": [
+        "archmaker-profile",
+        "archinstall-profile",
+        "report",
+        "archmaker-live-profile"
+      ]
     },
     "exportA": {
       "$ref": "#/$defs/exportSample"

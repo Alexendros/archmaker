@@ -81,18 +81,13 @@ export function uiStateForIntent(
   return "proposed";
 }
 
-/** Alinea schema v2 y políticas derivadas de selections (espejo de project_declared_v2_fields). */
-export function withFaceV2Fields(draft: Draft, intent: StorageIntent): Draft {
+/** Alinea schema v2. No autora plan de disco ni cifrado. */
+export function withFaceV2Fields(draft: Draft): Draft {
   const apps = draft.selections.find((s) => s.stepId === STEP_IDS.apps);
   const browserIds =
     apps?.value.kind === "multiple"
       ? apps.value.optionIds.filter((id) => id.startsWith("archmaker.browser."))
       : [];
-  const encryptSel = draft.selections.find(
-    (s) => s.stepId === STEP_IDS.encrypt,
-  );
-  const encrypt =
-    encryptSel?.value.kind === "boolean" ? encryptSel.value.value : false;
 
   const defaultBrowser =
     draft.browserPolicy?.defaultBrowserId &&
@@ -102,19 +97,21 @@ export function withFaceV2Fields(draft: Draft, intent: StorageIntent): Draft {
         ? DEFAULT_BROWSER_ID
         : (browserIds[0] ?? null);
 
+  const {
+    storagePlan: _storagePlan,
+    encryptionPolicy: _encryptionPolicy,
+    inheritedEncryptIntent: _inheritedEncryptIntent,
+    ...rest
+  } = draft;
+
   return {
-    ...draft,
+    ...rest,
+    selections: rest.selections.filter(
+      (selection) =>
+        selection.stepId !== STEP_IDS.filesystem &&
+        selection.stepId !== STEP_IDS.encrypt,
+    ),
     schemaVersion: "2",
-    storagePlan: storagePlanFromIntent(intent),
-    encryptionPolicy: encrypt
-      ? {
-          kind: "luks2",
-          unlock: "passphrase-requested-at-install",
-          coversMountPoint: "/",
-        }
-      : { kind: "none" },
-    inheritedEncryptIntent:
-      encryptSel?.value.kind === "boolean" ? encrypt : undefined,
     browserPolicy: {
       selectedBrowserIds: browserIds,
       defaultBrowserId: defaultBrowser,

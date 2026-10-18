@@ -24,11 +24,21 @@
     },
     "formatA": {
       "type": "string",
-      "enum": ["archmaker-profile", "archinstall-profile", "report"]
+      "enum": [
+        "archmaker-profile",
+        "archinstall-profile",
+        "report",
+        "archmaker-live-profile"
+      ]
     },
     "formatB": {
       "type": "string",
-      "enum": ["archmaker-profile", "archinstall-profile", "report"]
+      "enum": [
+        "archmaker-profile",
+        "archinstall-profile",
+        "report",
+        "archmaker-live-profile"
+      ]
     },
     "digestAfterFormatA": {
       "$ref": "https://archmaker.dev/schemas/common.schema.json#/$defs/contentDigest"

@@ -160,4 +160,14 @@ export class WasmCorePort implements CorePort {
   importDraft(input: ImportDraftInput): Promise<Result<unknown>> {
     return this.call<unknown>("import_draft", input);
   }
+  requestLiveImage(): Promise<Result<never>> {
+    return Promise.resolve({
+      ok: false,
+      error: typedError(
+        "constitution-mkarchiso-absent",
+        "archmaker-wasm",
+        "error.constitution.mkarchisoAbsent",
+      ),
+    });
+  }
 }

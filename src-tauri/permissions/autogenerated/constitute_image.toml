@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-constitute-image"
+description = "Enables the constitute_image command without any pre-configured scope."
+commands.allow = ["constitute_image"]
+
+[[permission]]
+identifier = "deny-constitute-image"
+description = "Denies the constitute_image command without any pre-configured scope."
+commands.deny = ["constitute_image"]

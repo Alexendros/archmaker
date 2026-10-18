@@ -46,6 +46,7 @@ Propietario, Requisitos) y las secciones de `templates/adr.md`. Estados posibles
 | [ADR-0016](ADR-0016-contratos-digest-v2.md)                            | Contratos y digests schemaVersion 2                  | proposed | 2026-10-17 |
 | [ADR-0017](ADR-0017-navegadores-y-onlyoffice.md)                       | ONLYOFFICE canónico y cardinalidad de navegadores    | proposed | 2026-10-17 |
 | [ADR-0018](ADR-0018-alcance-declarativo-a6-excluida.md)                | Alcance declarativo; A6 excluida                     | proposed | 2026-10-17 |
+| [ADR-0019](ADR-0019-perfil-vivo-archiso.md)                            | Target de perfil vivo y proceso de constitución      | accepted | 2026-10-18 |
 
 ## Crear un ADR
 

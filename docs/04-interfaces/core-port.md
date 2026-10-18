@@ -238,20 +238,20 @@ Los adaptadores nunca convierten una operación pura en I/O; Tauri y WASM respet
 
 ### `exportArtifact`
 
-| Aspecto                     | Especificación                                                                                                                                                         |
-| --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Request                     | `ExportArtifactInput` (DTO de operación; campos en `dto.md`).                                                                                                          |
-| Response                    | `Artifact` — `artifact.schema.json`.                                                                                                                                   |
-| Precondiciones              | `manifestRef` resuelve a un manifest sellado; `targetRef.id` en `archmaker-profile`, `archinstall-profile`, `report` (DEC-001); `destinationHandle` válido del picker. |
-| Postcondiciones             | Bytes escritos de forma atómica; `binaryDigest` de los bytes exactos; `manifestRef.contentDigest` liga al manifest de origen.                                          |
-| Pureza/IO                   | I/O de escritura acotada; sin red.                                                                                                                                     |
-| Idempotencia                | El mismo manifest y destino producen los mismos bytes y `binaryDigest` (byte-idempotente). El efecto de sobrescritura no es idempotente si el destino lo permite.      |
-| Cancelación y tiempo límite | Cancelable hasta antes del `fsync`; un fallo de `rename` no deja artefacto parcial. Tiempo límite objetivo 30 s.                                                       |
-| Límites                     | Payload `artifact.content` acotado por el adaptador de target; cierre del mapa diferido (SRC-003).                                                                     |
-| Errores                     | `AM-TGT-001`, `AM-IO-001`, `AM-DOC-001`, `AM-SCHEMA-001`.                                                                                                              |
-| Eventos                     | `core.operation.started`, `artifact.created`, `core.operation.completed`.                                                                                              |
-| Redacción                   | `destinationHandle` es un mango opaco; nunca una ruta absoluta. Sin secretos.                                                                                          |
-| Vectores                    | `contracts/json-schema/examples/06-artifact.valid.json`, `06-artifact.invalid.json`; `TST-EXP-001`.                                                                    |
+| Aspecto                     | Especificación                                                                                                                                                                                              |
+| --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Request                     | `ExportArtifactInput` (DTO de operación; campos en `dto.md`).                                                                                                                                               |
+| Response                    | `Artifact` — `artifact.schema.json`.                                                                                                                                                                        |
+| Precondiciones              | `manifestRef` resuelve a un manifest sellado; `targetRef.id` en `archmaker-profile`, `archinstall-profile`, `report` (DEC-001) o `archmaker-live-profile` (DEC-013); `destinationHandle` válido del picker. |
+| Postcondiciones             | Bytes escritos de forma atómica; `binaryDigest` de los bytes exactos; `manifestRef.contentDigest` liga al manifest de origen.                                                                               |
+| Pureza/IO                   | I/O de escritura acotada; sin red.                                                                                                                                                                          |
+| Idempotencia                | El mismo manifest y destino producen los mismos bytes y `binaryDigest` (byte-idempotente). El efecto de sobrescritura no es idempotente si el destino lo permite.                                           |
+| Cancelación y tiempo límite | Cancelable hasta antes del `fsync`; un fallo de `rename` no deja artefacto parcial. Tiempo límite objetivo 30 s.                                                                                            |
+| Límites                     | Payload `artifact.content` acotado por el adaptador de target; cierre del mapa diferido (SRC-003).                                                                                                          |
+| Errores                     | `AM-TGT-001`, `AM-IO-001`, `AM-DOC-001`, `AM-SCHEMA-001`.                                                                                                                                                   |
+| Eventos                     | `core.operation.started`, `artifact.created`, `core.operation.completed`.                                                                                                                                   |
+| Redacción                   | `destinationHandle` es un mango opaco; nunca una ruta absoluta. Sin secretos.                                                                                                                               |
+| Vectores                    | `contracts/json-schema/examples/06-artifact.valid.json`, `06-artifact.invalid.json`; `TST-EXP-001`.                                                                                                         |
 
 ## Matriz resumen
 

@@ -29,7 +29,7 @@ export function ForgeHeader({
             </span>
           </div>
           <div className="forge-subtitle">
-            Configura tu sistema y exporta un perfil. No modifica discos
+            Configura la build. La imagen se pide en Revisión.
           </div>
         </div>
       </div>

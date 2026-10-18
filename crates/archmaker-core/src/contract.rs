@@ -1,12 +1,17 @@
 //! Application-contract verifier (ADR-0011).
 //!
 //! Semantic authority for CLAUSE-* compliance. Does not spawn shell, pacstrap,
-//! mkarchiso or require network. Image format is not admitted: CLAUSE-BOOT-001
-//! cannot be satisfied.
+//! mkarchiso or require network. The live profile target names packages; it is
+//! not an image. Image bytes stay unadmitted: CLAUSE-BOOT-001 cannot be satisfied.
 
 use serde_json::Value;
 
-const ADMITTED_FORMATS: &[&str] = &["archmaker-profile", "archinstall-profile", "report"];
+const ADMITTED_FORMATS: &[&str] = &[
+    "archmaker-profile",
+    "archinstall-profile",
+    "report",
+    "archmaker-live-profile",
+];
 const ALLOWED_OPERATOR_FORMS: &[&str] = &["gt-count", "required", "eq", "info-count"];
 const REQUIRED_CLAUSE_IDS: &[&str] = &[
     "CLAUSE-BASE-001",

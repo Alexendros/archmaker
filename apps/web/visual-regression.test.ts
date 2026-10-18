@@ -81,7 +81,7 @@ test.describe("Visual regression", () => {
     await page.waitForLoadState("networkidle");
     // Wait for async CorePort boot + draft (not the empty/loading shell).
     await expect(
-      page.getByRole("heading", { name: /Disco y particiones/i }),
+      page.getByRole("heading", { name: /Sistema base/i }),
     ).toBeVisible({ timeout: 60_000 });
     // CSS externo /forge-face.css (CSP style-src 'self'); fija Liberation Sans.
     // Resolve against origin — BASE_URL includes ?mock=1.

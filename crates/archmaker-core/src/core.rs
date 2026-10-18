@@ -87,7 +87,16 @@ fn draft_domain_for(schema_version: &str) -> Result<&'static str> {
 }
 
 const DRAFT_TARGETS: [&str; 1] = ["arch-x86_64"];
-const EXPORT_TARGETS: [&str; 3] = ["archmaker-profile", "archinstall-profile", "report"];
+const EXPORT_TARGETS: [&str; 4] = [
+    "archmaker-profile",
+    "archinstall-profile",
+    "report",
+    "archmaker-live-profile",
+];
+const LIVE_PROFILE_TARGET: &str = "archmaker-live-profile";
+const LIVE_BASE_DESCRIPTION: &str = "derivada de Arch Linux";
+const LIVE_DIGEST_PREFIX_LEN: usize = 12;
+const NON_REDISTRIBUTABLE_TAG: &str = "no-redistribuible-candidato";
 
 const PRODUCER_ID: &str = "archmaker-core";
 const PRODUCER_VERSION: &str = "0.1.0";
@@ -1063,12 +1072,139 @@ fn render_report(manifest: &Manifest, target: &TargetRef) -> Result<RenderedArti
     })
 }
 
+fn catalog_option<'a>(
+    catalog: &'a Catalog,
+    option_id: &str,
+) -> Option<&'a archmaker_domain::CatalogOption> {
+    catalog.steps.iter().find_map(|step| {
+        step.sections
+            .iter()
+            .find_map(|section| section.options.iter().find(|option| option.id == option_id))
+    })
+}
+
+fn package_name_is_profile_safe(name: &str) -> bool {
+    let mut chars = name.chars();
+    match chars.next() {
+        Some(first) if first.is_ascii_lowercase() || first.is_ascii_digit() => {}
+        _ => return false,
+    }
+    name.chars()
+        .all(|c| c.is_ascii_lowercase() || c.is_ascii_digit() || matches!(c, '+' | '.' | '_' | '-'))
+        && !name.contains("pacstrap")
+        && !name.contains("cmd")
+}
+
+fn live_public_filename(content_digest: &str) -> String {
+    let prefix: String = content_digest
+        .chars()
+        .take(LIVE_DIGEST_PREFIX_LEN)
+        .collect();
+    format!("Forge-{prefix}-x86_64.iso")
+}
+
+fn profiledef_sh(version_prefix: &str) -> String {
+    format!(
+        "arch=\"x86_64\"\niso_name=\"Forge\"\niso_application=\"{LIVE_BASE_DESCRIPTION}\"\niso_version=\"{version_prefix}\"\ninstall_dir=\"forge\"\n"
+    )
+}
+
+/// Perfil archiso (`packages.x86_64` + `profiledef.sh`) desde el manifiesto y el catálogo.
+/// No importa archiso ni ejecuta `mkarchiso`.
+pub fn render_live_profile(
+    manifest: &Manifest,
+    catalog: &Catalog,
+    target: &TargetRef,
+) -> Result<RenderedArtifact> {
+    let source = CoreOp::ExportArtifact.source();
+    if target.id != LIVE_PROFILE_TARGET {
+        return Err(CoreError::tgt_unsupported(source));
+    }
+    let mut install: BTreeSet<String> = BTreeSet::new();
+    let mut deferred: BTreeSet<String> = BTreeSet::new();
+    for selection in &manifest.effective_selections {
+        let Some(option) = catalog_option(catalog, &selection.option_id) else {
+            continue;
+        };
+        let Some(provider) = option.provider.as_ref() else {
+            continue;
+        };
+        if provider.status != ProviderStatus::Verified {
+            continue;
+        }
+        if !package_name_is_profile_safe(&provider.package_id) {
+            return Err(CoreError::schema_invalid(source));
+        }
+        let non_redistributable = option
+            .tags
+            .as_ref()
+            .is_some_and(|tags| tags.iter().any(|tag| tag == NON_REDISTRIBUTABLE_TAG));
+        if non_redistributable {
+            deferred.insert(provider.package_id.clone());
+        } else {
+            install.insert(provider.package_id.clone());
+        }
+    }
+    for name in &deferred {
+        install.remove(name);
+    }
+    if install.is_empty() {
+        return Err(CoreError::res_unresolved(source));
+    }
+    let packages_x86_64 = install
+        .iter()
+        .map(|name| format!("{name}\n"))
+        .collect::<String>();
+    let prefix: String = manifest
+        .content_digest
+        .value
+        .chars()
+        .take(LIVE_DIGEST_PREFIX_LEN)
+        .collect();
+    let profiledef = profiledef_sh(&prefix);
+    let public_filename = live_public_filename(&manifest.content_digest.value);
+    if public_filename.contains("Arch") || public_filename.starts_with("ARCH") {
+        return Err(CoreError::tgt_unsupported(source));
+    }
+    let forbidden = ["pacstrap", "cmd", "airootfs/"];
+    for text in [&packages_x86_64, &profiledef, &public_filename] {
+        if forbidden.iter().any(|token| text.contains(token)) {
+            return Err(CoreError::schema_invalid(source));
+        }
+    }
+    let envelope = serde_json::json!({
+        "adapter": LIVE_PROFILE_TARGET,
+        "version": target.version,
+        "arch": "x86_64",
+        "baseDescription": LIVE_BASE_DESCRIPTION,
+        "publicFilename": public_filename,
+        "manifestRef": {
+            "contentDigest": {
+                "algorithm": "sha256",
+                "value": manifest.content_digest.value,
+                "kind": "content",
+            }
+        },
+        "files": {
+            "packages.x86_64": packages_x86_64,
+            "profiledef.sh": profiledef,
+        },
+        "deferredFetch": deferred.into_iter().collect::<Vec<_>>(),
+    });
+    Ok(RenderedArtifact {
+        bytes: archmaker_canonicalization::canonicalize(&envelope),
+        media_type: "application/json".to_string(),
+        content: envelope,
+    })
+}
+
 pub fn render_artifact_bytes(manifest: &Manifest, target: &TargetRef) -> Result<RenderedArtifact> {
     let source = CoreOp::ExportArtifact.source();
     match target.id.as_str() {
         "archmaker-profile" => render_archmaker_profile(manifest),
         "archinstall-profile" => render_archinstall_profile(manifest, target),
         "report" => render_report(manifest, target),
+        LIVE_PROFILE_TARGET => Err(CoreError::tgt_unsupported(source)),
         _ => Err(CoreError::tgt_unsupported(source)),
     }
 }
@@ -1377,7 +1513,12 @@ impl CorePort for RealCore {
         if recomputed.value != input.manifest.content_digest.value {
             return Err(CoreError::doc_canonical(source));
         }
-        let rendered = render_artifact_bytes(&input.manifest, &input.target_ref)?;
+        let rendered = if input.target_ref.id == LIVE_PROFILE_TARGET {
+            self.ensure_catalog_match(&input.manifest.catalog_ref, source)?;
+            render_live_profile(&input.manifest, &self.catalog_embedded, &input.target_ref)?
+        } else {
+            render_artifact_bytes(&input.manifest, &input.target_ref)?
+        };
         let binary = BinaryDigest {
             algorithm: DigestAlgorithm::Sha256,
             value: sha256_hex(&rendered.bytes),

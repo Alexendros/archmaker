@@ -1,17 +1,10 @@
 import type { Diagnostic, ResolvedSelection } from "./coreport.js";
 import type { FaceOption, FacePackage } from "./forge-face.js";
-import {
-  labelStorageMode,
-  labelStorageUiState,
-  type StorageIntent,
-} from "./storage-intent.js";
 
 type Props = {
   kernel?: FaceOption;
   bootTitle: string;
-  filesystemTitle: string;
   env?: FaceOption;
-  storage: StorageIntent;
   hasManifest: boolean;
   apps: FacePackage[];
   appCount: number;
@@ -28,9 +21,7 @@ type Props = {
 export function ForgeAside({
   kernel,
   bootTitle,
-  filesystemTitle,
   env,
-  storage,
   hasManifest,
   apps,
   appCount,
@@ -76,22 +67,8 @@ export function ForgeAside({
             <dd>{bootTitle}</dd>
           </div>
           <div>
-            <dt>Sistema de archivos</dt>
-            <dd>{filesystemTitle}</dd>
-          </div>
-          <div>
             <dt>Entorno</dt>
             <dd>{env?.title ?? "—"}</dd>
-          </div>
-          <div>
-            <dt>Disco</dt>
-            <dd>{labelStorageMode(storage.mode)}</dd>
-          </div>
-          <div>
-            <dt>Estado del plan</dt>
-            <dd data-storage-ui-state={storage.uiState}>
-              {labelStorageUiState(storage.uiState)}
-            </dd>
           </div>
         </dl>
       </div>
