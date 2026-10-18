@@ -97,4 +97,97 @@ test.describe("Forge — responsive-layout", () => {
     await expect(page.locator("#inspector")).toBeVisible();
     await expect(page.getByText("Resumen de configuración")).toBeVisible();
   });
+
+  test("1024 y 1440 mantienen tres columnas con inspector lateral", async ({
+    page,
+  }) => {
+    for (const width of [1024, 1440]) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto(BASE_URL);
+      await expect(
+        page.getByRole("heading", { name: /Disco y particiones/i }),
+      ).toBeVisible();
+      expect(await columnCount(page)).toBe(3);
+      expect(await displayOf(page, "#step-rail")).not.toBe("none");
+      expect(await displayOf(page, "#step-stepper")).toBe("none");
+      await expect(page.locator("#inspector")).toBeVisible();
+      const side = await page.locator("#inspector").evaluate((el) => {
+        const shell = el.parentElement?.getBoundingClientRect().width ?? 1;
+        return el.getBoundingClientRect().width / shell;
+      });
+      expect(side).toBeLessThan(0.5);
+    }
+  });
+
+  test("768 baja el inspector y 360 deja solo el stepper", async ({ page }) => {
+    await page.setViewportSize({ width: 768, height: 1024 });
+    await page.goto(BASE_URL);
+    await expect(
+      page.getByRole("heading", { name: /Disco y particiones/i }),
+    ).toBeVisible();
+    expect(await columnCount(page)).toBe(2);
+    expect(await displayOf(page, "#step-rail")).not.toBe("none");
+    expect(await displayOf(page, "#step-stepper")).toBe("none");
+    const span = await page.locator("#inspector").evaluate((el) => {
+      const shell = el.parentElement?.getBoundingClientRect().width ?? 1;
+      return el.getBoundingClientRect().width / shell;
+    });
+    expect(span).toBeGreaterThan(0.9);
+
+    await page.setViewportSize({ width: 360, height: 740 });
+    expect(await columnCount(page)).toBe(1);
+    expect(await displayOf(page, "#step-rail")).toBe("none");
+    expect(await displayOf(page, "#step-stepper")).not.toBe("none");
+  });
+
+  test("el estado de disco se lee en español en el paso, el inspector y la revisión", async ({
+    page,
+  }) => {
+    const labels: Record<string, string> = {
+      declared: "Declarado",
+      proposed: "Propuesto",
+      validated: "Validado",
+      unspecified: "Sin declarar",
+    };
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto(BASE_URL);
+    await expect(
+      page.getByRole("heading", { name: /Disco y particiones/i }),
+    ).toBeVisible();
+    const state =
+      (await page
+        .locator("[data-storage-ui-state]")
+        .getAttribute("data-storage-ui-state")) ?? "";
+    const label = labels[state];
+    expect(label, `estado de disco sin etiqueta: ${state}`).toBeTruthy();
+    await expect(page.locator("[data-storage-ui-state]")).toHaveText(label);
+    const disk = page.getByRole("status").filter({ hasText: "Estado:" });
+    await expect(disk).toContainText(label);
+    await expect(disk).not.toContainText(state);
+
+    await page
+      .locator("#step-rail")
+      .getByRole("button", { name: /Revisión/ })
+      .click();
+    await expect(page.getByRole("heading", { name: "Revisión" })).toBeVisible();
+    const plan = page.getByRole("status").filter({ hasText: /plan de disco/i });
+    await expect(plan).toContainText(new RegExp(label, "i"));
+    await expect(plan).not.toContainText(state);
+  });
 });
+
+async function columnCount(
+  page: import("@playwright/test").Page,
+): Promise<number> {
+  return page.locator(".forge-shell").evaluate((el) => {
+    const value = getComputedStyle(el).gridTemplateColumns.trim();
+    return value ? value.split(/\s+/).length : 0;
+  });
+}
+
+async function displayOf(
+  page: import("@playwright/test").Page,
+  selector: string,
+): Promise<string> {
+  return page.locator(selector).evaluate((el) => getComputedStyle(el).display);
+}

@@ -75,6 +75,7 @@ import { allStepProgress } from "./step-progress.js";
 import {
   INITIAL_STORAGE_INTENT,
   labelStorageMode,
+  labelStorageUiState,
   type StorageIntent,
   type StorageMode,
 } from "./storage-intent.js";
@@ -915,7 +916,8 @@ export function App({ port, portKind }: Props) {
                 ) : null}
                 <p className="forge-muted" role="status">
                   Modo: {labelStorageMode(storage.mode)}. Estado:{" "}
-                  {storage.uiState}. No hay botón Formatear en esta entrega.
+                  {labelStorageUiState(storage.uiState)}. No hay botón Formatear
+                  en esta entrega.
                 </p>
               </div>
               <div className="forge-nav-row forge-nav-end">
@@ -1304,8 +1306,8 @@ export function App({ port, portKind }: Props) {
                 {draft?.storagePlan ? (
                   <p role="status">
                     Plan de disco: {draft.storagePlan.planStatus} (estado UI{" "}
-                    {storage.uiState}). La generación del manifiesto no valida
-                    el plan.
+                    {labelStorageUiState(storage.uiState)}). La generación del
+                    manifiesto no valida el plan.
                   </p>
                 ) : (
                   <p role="status">Plan de disco: sin declarar.</p>
