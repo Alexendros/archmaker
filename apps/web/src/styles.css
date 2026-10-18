@@ -1,3 +1,7 @@
+/* Tokens canónicos: importados aquí para un único <link> compatible con
+   CSP style-src 'self' (Vite no debe inyectar <style> inline). */
+@import "../../packages/tokens/tokens.css";
+
 @layer reset, tokens, base, layout, components, utilities;
 
 @layer base {

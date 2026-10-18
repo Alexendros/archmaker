@@ -83,7 +83,7 @@ test.describe("Visual regression", () => {
     await expect(
       page.getByRole("heading", { name: /Disco y particiones/i }),
     ).toBeVisible({ timeout: 60_000 });
-    // CSS externo (CSP style-src 'self'); fija Liberation Sans en tests.
+    // CSS externo /forge-face.css (CSP style-src 'self'); fija Liberation Sans.
     // Resolve against origin — BASE_URL includes ?mock=1.
     const origin = new URL(BASE_URL).origin;
     await page.addStyleTag({ url: `${origin}/visual-stabilize.css` });
