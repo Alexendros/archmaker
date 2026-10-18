@@ -37,7 +37,7 @@ dependsOn:
 
 1. La autoridad de alcance es DOC-DEL-MVP5-001. Este documento detalla el hueco; no redefine el alcance.
 2. La semántica vive en Rust. Las listas de `apps/web/src/forge-face.ts` son presentación duplicada, no una segunda fuente.
-3. Referencia visual histórica (fuera del repo): `/home/alexendros/Aplicaciones/Repertorio/archmaker_neubat.html` (nombre de archivo conservado; no es norma G6). Runtime: `apps/web/`. `reference/v5.1/` sigue inmutable; el canon de opciones sigue siendo [`docs/12-research/html-catalog-matrix.md`](../12-research/html-catalog-matrix.md), regenerado desde `reference/v5.1/index.html`.
+3. Referencia visual histórica fuera del repo: ver `AGENTS.md` (Learned Workspace Facts; no es norma G6). Runtime: `apps/web/`. `reference/v5.1/` sigue inmutable; el canon de opciones sigue siendo [`docs/12-research/html-catalog-matrix.md`](../12-research/html-catalog-matrix.md), regenerado desde `reference/v5.1/index.html`.
 4. Versiones y megabytes del HTML siguen «no verificada» (CON-011). Kernel 7.1.2, tamaños y refs pacman literales no entran al catálogo como hechos.
 5. ADR-0011 permanece `proposed`. No se crean esquemas de cláusula nuevos.
 6. MockCorePort del baseline MVP-4 se queda. La paridad posterior es la de las operaciones CorePort que ya existen, en Tauri y WASM.
