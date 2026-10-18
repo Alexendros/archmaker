@@ -21,7 +21,7 @@ dependsOn:
 - Documento: DOC-DEL-FORGE-DECL-001 · Estado: draft · Propietario: Arquitectura · Fecha: 2026-10-17
 - Base GitHub: `b6c0b50a6dcb5b42410d5e067019cf323494ccc4` (`origin/main`).
 - **No reescribe** [`mvp5-scope.md`](mvp5-scope.md): MVP-5 sigue cerrado; este documento registra un
-  alcance *adicional* pendiente de `accepted` para sondas de solo lectura y UI posteriores.
+  alcance _adicional_ pendiente de `accepted` para sondas de solo lectura y UI posteriores.
 
 ## Objetivo
 
@@ -31,12 +31,12 @@ política de cifrado/navegadores **sin** ejecutar escrituras en discos.
 
 ## Incluido (fase fundacional)
 
-| Área | Contenido | Notas |
-| ---- | --------- | ----- |
-| Contratos | Draft/manifiesto v2, migrador v1→v2, digests `archmaker:draft:v2` / `archmaker:manifest:v2` | Rust autoridad |
-| ADR | UKI en ESP, estados ortogonales, handles, digests, ONLYOFFICE/navegadores, A6 excluida | `docs/02-architecture/adr/` |
-| Walking skeleton | Draft v2 manual → CorePort → buildManifest/export → reimport/migración | Sin sonda Linux fingida |
-| Sondas futuras | Solo lectura; IPC tipado; sin root | Fuera de este PR; documentadas como futuras |
+| Área             | Contenido                                                                                   | Notas                                       |
+| ---------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------- |
+| Contratos        | Draft/manifiesto v2, migrador v1→v2, digests `archmaker:draft:v2` / `archmaker:manifest:v2` | Rust autoridad                              |
+| ADR              | UKI en ESP, estados ortogonales, handles, digests, ONLYOFFICE/navegadores, A6 excluida      | `docs/02-architecture/adr/`                 |
+| Walking skeleton | Draft v2 manual → CorePort → buildManifest/export → reimport/migración                      | Sin sonda Linux fingida                     |
+| Sondas futuras   | Solo lectura; IPC tipado; sin root                                                          | Fuera de este PR; documentadas como futuras |
 
 ## Entregado en main (parcial; tip post-aceptación)
 
@@ -56,15 +56,18 @@ política de cifrado/navegadores **sin** ejecutar escrituras en discos.
 
 ## Inventario baseline (A0)
 
-Confirmado al arrancar la rama `feat/forge-fundacional-v2` sobre `b6c0b50`:
+Confirmado al arrancar la rama `feat/forge-fundacional-v2` sobre `b6c0b50` (histórico).
+**Estado actual del árbol (post contratos v2 en main; F0.6):**
 
-| Elemento | Estado en main |
-| -------- | -------------- |
-| Contratos JSON | `contracts/json-schema/` v0; draft/manifest `schemaVersion` `"1"` |
-| Catálogo | `crates/archmaker-core/fixtures/local-catalog-mvp1.json` (ONLYOFFICE id canónico presente) |
-| CorePort | `create_draft` … `import_draft` + `save_export_bytes` (Tauri) |
-| Capabilities Tauri | `src-tauri/capabilities/main.json` deny-by-default; sin comandos de disco |
-| Dominio hash | `archmaker:draft:v1` / `archmaker:manifest:v1` (ADR-0007) |
+| Elemento           | Estado                                                                                                            |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------- |
+| Contratos JSON     | `contracts/json-schema/` con draft/manifest `schemaVersion` `"1"` y `"2"`; defs v2 en `draft-v2-defs.schema.json` |
+| Catálogo           | `crates/archmaker-core/fixtures/local-catalog-mvp1.json` (ONLYOFFICE id canónico presente)                        |
+| CorePort           | `create_draft` … `import_draft` + `save_export_bytes` (Tauri); campos v2 tipados en TS                            |
+| Capabilities Tauri | `src-tauri/capabilities/main.json` deny-by-default; permisos de sonda/plan declarativos presentes; A6 fuera       |
+| Dominio hash       | `archmaker:draft:v1` / `v2` y `archmaker:manifest:v1` / `v2` (ADR-0007 / ADR-0016)                                |
+
+Este documento permanece `documentStatus: draft` y `approvalStatus: pending`; no autoriza instalación real ni cierra GO desktop.
 
 ## Criterio de salida de la fase fundacional
 
