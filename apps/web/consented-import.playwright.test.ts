@@ -15,6 +15,10 @@ function fakeFile(bytes: Uint8Array, name = "profile.json"): File {
   return new File([bytes], name, { type: "application/json" });
 }
 
+const V51_BYTES = new TextEncoder().encode(
+  JSON.stringify({ archmaker: { version: "5.1.0" } }),
+);
+
 test.describe("consented-import F4", () => {
   test("rejects oversized files via file.size before reading", async () => {
     let read = false;
@@ -42,9 +46,24 @@ test.describe("consented-import F4", () => {
     expect(read).toBe(false);
   });
 
-  test("accepts files at the size limit and reads bytes", async () => {
-    const bytes = new TextEncoder().encode('{"ok":true}');
-    const file = fakeFile(bytes);
+  test("rejects a document that is not v5.1", async () => {
+    const file = fakeFile(new TextEncoder().encode('{"ok":true}'));
+    expect(checkImportFileSize(file).ok).toBe(true);
+    const analysis = await analyzeImportFile({
+      file,
+      port: new MockCorePort(),
+      catalogRef: FIXED_CATALOG_REF,
+      targetRef: DRAFT_TARGET,
+    });
+    expect(analysis.kind).toBe("rejected");
+    if (analysis.kind === "rejected") {
+      expect(analysis.error.code).toBe("AM-MIG-001");
+      expect(analysis.error.messageKey).toBe("error.migration.unsupported");
+    }
+  });
+
+  test("analyzes a minimal v5.1 document and reads its bytes", async () => {
+    const file = fakeFile(V51_BYTES);
     expect(checkImportFileSize(file).ok).toBe(true);
     const analysis = await analyzeImportFile({
       file,
@@ -56,6 +75,8 @@ test.describe("consented-import F4", () => {
     if (analysis.kind === "ready") {
       expect(analysis.needsBlockingConfirm).toBe(false);
       expect(analysis.payload.draft.id).toBeTruthy();
+      expect(analysis.sourceBytes.length).toBe(V51_BYTES.length);
+      expect(analysis.payload.report.entries.length).toBeGreaterThan(0);
     }
   });
 
@@ -69,7 +90,7 @@ test.describe("consented-import F4", () => {
       },
     };
     await analyzeImportFile({
-      file: fakeFile(new TextEncoder().encode("{}")),
+      file: fakeFile(V51_BYTES),
       port,
       catalogRef: FIXED_CATALOG_REF,
       targetRef: DRAFT_TARGET,
@@ -80,9 +101,7 @@ test.describe("consented-import F4", () => {
   test("blocking losses require explicit confirmation", async () => {
     const port = new MockCorePort();
     const analysis = await analyzeImportFile({
-      file: fakeFile(
-        new TextEncoder().encode('{"__archmakerBlocking":true}'),
-      ),
+      file: fakeFile(new TextEncoder().encode('{"__archmakerBlocking":true}')),
       port,
       catalogRef: FIXED_CATALOG_REF,
       targetRef: DRAFT_TARGET,
@@ -122,7 +141,7 @@ test.describe("consented-import F4", () => {
   test("apply does not succeed on concurrent edit (stale generation)", async () => {
     const port = new MockCorePort();
     const analysis = await analyzeImportFile({
-      file: fakeFile(new TextEncoder().encode("{}")),
+      file: fakeFile(V51_BYTES),
       port,
       catalogRef: FIXED_CATALOG_REF,
       targetRef: DRAFT_TARGET,
@@ -162,7 +181,7 @@ test.describe("consented-import F4", () => {
       },
     };
     const analysis = await analyzeImportFile({
-      file: fakeFile(new TextEncoder().encode("{}")),
+      file: fakeFile(V51_BYTES),
       port: base,
       catalogRef: FIXED_CATALOG_REF,
       targetRef: DRAFT_TARGET,
@@ -235,7 +254,7 @@ test.describe("consented-import F4", () => {
       },
     };
     const analysis = await analyzeImportFile({
-      file: fakeFile(new TextEncoder().encode("{}")),
+      file: fakeFile(V51_BYTES),
       port: base,
       catalogRef: FIXED_CATALOG_REF,
       targetRef: DRAFT_TARGET,
@@ -256,6 +275,40 @@ test.describe("consented-import F4", () => {
       expect(applied.reason).toBe("core-error");
       expect(applied.error?.code).toBe("AM-DOC-002");
     }
+  });
+
+  test("v5.1 import uses a new id so it does not collide with the session draft", async () => {
+    const port = new MockCorePort();
+    const created = await port.createDraft({
+      catalogRef: FIXED_CATALOG_REF,
+      targetRef: DRAFT_TARGET,
+    });
+    expect(created.ok).toBe(true);
+    if (!created.ok) return;
+    const stored = await port.saveDraft({
+      draft: created.value,
+      expectedRevision: 0,
+    });
+    expect(stored.ok).toBe(true);
+    const analysis = await analyzeImportFile({
+      file: fakeFile(V51_BYTES),
+      port,
+      catalogRef: FIXED_CATALOG_REF,
+      targetRef: DRAFT_TARGET,
+    });
+    expect(analysis.kind).toBe("ready");
+    if (analysis.kind !== "ready") return;
+    expect(analysis.payload.draft.id).not.toBe(created.value.id);
+    const applied = await applyConsentedImport({
+      port,
+      catalogRef: FIXED_CATALOG_REF,
+      targetRef: DRAFT_TARGET,
+      sourceBytes: analysis.sourceBytes,
+      confirmBlockingLosses: false,
+      expectedGeneration: 1,
+      getCurrentGeneration: () => 1,
+    });
+    expect(applied.ok).toBe(true);
   });
 
   test("IMPORT_MAX_BYTES matches F0 limit 2_000_000", () => {

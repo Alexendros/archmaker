@@ -90,4 +90,30 @@ test.describe("WASM CorePort — recorrido real", () => {
     const { digest } = await generateExportAndAssertFidelity(page);
     expect(digest).toHaveLength(64);
   });
+
+  test("reimportar el manifiesto muestra AM-MIG-001 en el toast", async ({
+    page,
+  }) => {
+    test.setTimeout(120_000);
+    await expect(
+      page.getByRole("heading", { name: /Disco y particiones/i }),
+    ).toBeVisible({ timeout: 60_000 });
+    await expect(page.locator("#toast-region")).toContainText(/Draft listo/i, {
+      timeout: 60_000,
+    });
+    await page.getByRole("button", { name: "Generar" }).click();
+    await expect(page.getByRole("heading", { name: "Revisión" })).toBeVisible();
+    const downloadPromise = page.waitForEvent("download");
+    await page.getByRole("button", { name: "Exportar" }).click();
+    const download = await downloadPromise;
+    const path = await download.path();
+    expect(path).toBeTruthy();
+    await page.locator('input[type="file"]').setInputFiles(path!);
+    const toast = page.locator(".forge-toast");
+    await expect(toast).toContainText("AM-MIG-001", { timeout: 15_000 });
+    const box = await toast.boundingBox();
+    expect(box).toBeTruthy();
+    expect(box!.y + box!.height).toBeLessThanOrEqual(800);
+    await expect(page.getByRole("dialog")).toHaveCount(0);
+  });
 });
