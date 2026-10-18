@@ -206,6 +206,8 @@ export function App({ port, portKind }: Props) {
   const [importBusy, setImportBusy] = useState(false);
   const generationRef = useRef(0);
   const preparedGenerationRef = useRef<number | null>(null);
+  const draftRef = useRef<Draft | null>(null);
+  draftRef.current = draft;
 
   useEffect(() => subscribePersistStatus(setPersistStatus), []);
 
@@ -319,10 +321,16 @@ export function App({ port, portKind }: Props) {
 
       const local = await loadLastDraftLocal();
       if (cancelled) return;
-      if (local) {
+      if (local.kind === "error") {
+        announce(
+          "alert",
+          `${local.message} Se abrirá un perfil nuevo (recuperación fallida).`,
+        );
+        // Continúa a createDraft con causa visible (H14): no es silencio.
+      } else if (local.kind === "found") {
         const opened = await port.openDraft({
-          draftId: local.id,
-          seed: local,
+          draftId: local.draft.id,
+          seed: local.draft,
         });
         if (cancelled) return;
         if (opened.ok) {
@@ -332,6 +340,10 @@ export function App({ port, portKind }: Props) {
           announce("status", "Perfil recuperado.");
           return;
         }
+        announce(
+          "alert",
+          `Perfil local incompatible: ${opened.error.code} (${opened.error.messageKey})`,
+        );
       }
 
       const res = await port.createDraft({
@@ -420,13 +432,10 @@ export function App({ port, portKind }: Props) {
     const { draft: next, added } = toggleApp(d, pkg.optionId);
     applyDraft(next);
     showToast(added ? `Añadido ${pkg.title}` : `Quitado ${pkg.title}`, () => {
-      setDraft((prev) => {
-        if (!prev) return prev;
-        const undone = toggleApp(prev, pkg.optionId).draft;
-        invalidateDerived();
-        void persistDraftLocal(undone).then(handlePersistResult);
-        return undone;
-      });
+      // H11: invalidación y persistencia fuera del actualizador de setDraft.
+      const prev = draftRef.current;
+      if (!prev) return;
+      applyDraft(toggleApp(prev, pkg.optionId).draft);
     });
   }
 
@@ -590,6 +599,8 @@ export function App({ port, portKind }: Props) {
 
   async function onImportFile(file: File): Promise<void> {
     setImportBusy(true);
+    // H12: congelar generación al elegir el archivo, antes del análisis async.
+    const generationAtPick = generationRef.current;
     try {
       const analysis = await analyzeImportFile({
         file,
@@ -597,6 +608,13 @@ export function App({ port, portKind }: Props) {
         catalogRef,
         targetRef: DRAFT_TARGET,
       });
+      if (generationAtPick !== generationRef.current) {
+        announce(
+          "alert",
+          "La configuración cambió durante el análisis; vuelve a importar.",
+        );
+        return;
+      }
       if (analysis.kind === "too-large") {
         announce(
           "alert",
@@ -608,12 +626,11 @@ export function App({ port, portKind }: Props) {
         fail(analysis.error, "Importar");
         return;
       }
-      const generation = generationRef.current;
       if (analysis.kind === "needs_blocking_confirm") {
         setImportPending({
           kind: "needs_blocking_confirm",
           sourceBytes: analysis.sourceBytes,
-          generation,
+          generation: generationAtPick,
           error: analysis.error,
         });
         announce(
@@ -625,7 +642,7 @@ export function App({ port, portKind }: Props) {
       setImportPending({
         kind: "ready",
         sourceBytes: analysis.sourceBytes,
-        generation,
+        generation: generationAtPick,
         payload: analysis.payload,
         needsBlockingConfirm: analysis.needsBlockingConfirm,
       });
@@ -700,12 +717,8 @@ export function App({ port, portKind }: Props) {
   function goToStep(index: number): void {
     const next = Math.min(RAIL_STEPS.length - 1, Math.max(0, index));
     setVisited((prev) => new Set(prev).add(next));
-    setInvalid((prev) => {
-      if (!prev.has(next)) return prev;
-      const copy = new Set(prev);
-      copy.delete(next);
-      return copy;
-    });
+    // H13: visitar un paso no elimina su invalidez; solo una corrección o
+    // nueva validación puede limpiarla (p. ej. onGenerate en revisión).
     setStep(next);
   }
 

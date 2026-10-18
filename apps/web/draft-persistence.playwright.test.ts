@@ -47,12 +47,14 @@ test.describe("draft-persistence F4 / T-MIG", () => {
       const result = await mod.persistDraftLocal(draft);
       unsub();
       const loaded = await mod.loadLastDraftLocal();
+      const recovered = loaded.kind === "found" ? loaded.draft : null;
       return {
         result,
         statuses,
         status: mod.getPersistStatus(),
-        loadedId: loaded?.id ?? null,
-        hostname: loaded?.selections.find(
+        loadKind: loaded.kind,
+        loadedId: recovered?.id ?? null,
+        hostname: recovered?.selections.find(
           (s) => s.stepId === "archmaker.face.hostname",
         )?.value,
       };
@@ -61,11 +63,14 @@ test.describe("draft-persistence F4 / T-MIG", () => {
     expect(outcome.statuses).toContain("saving");
     expect(outcome.statuses).toContain("saved");
     expect(outcome.status).toBe("saved");
+    expect(outcome.loadKind).toBe("found");
     expect(outcome.loadedId).toBe("11111111-1111-4111-8111-111111111111");
     expect(outcome.hostname).toEqual({ kind: "text", value: "host-a" });
   });
 
-  test("T-MIG-02 serializes concurrent writes (last write wins)", async ({ page }) => {
+  test("T-MIG-02 serializes concurrent writes (last write wins)", async ({
+    page,
+  }) => {
     const hostname = await page.evaluate(async () => {
       const mod = await import("/src/draft-persistence.ts");
       mod.resetPersistQueueForTests();
@@ -112,7 +117,8 @@ test.describe("draft-persistence F4 / T-MIG", () => {
       });
       await Promise.all([a, b]);
       const loaded = await mod.loadLastDraftLocal();
-      return loaded?.selections.find(
+      const draft = loaded.kind === "found" ? loaded.draft : null;
+      return draft?.selections.find(
         (s) => s.stepId === "archmaker.face.hostname",
       )?.value;
     });
@@ -190,10 +196,13 @@ test.describe("draft-persistence F4 / T-MIG", () => {
       });
       return mod.loadLastDraftLocal();
     });
-    expect(loaded?.revision).toBe(2);
+    expect(loaded.kind).toBe("found");
+    if (loaded.kind !== "found") return;
+    expect(loaded.draft.revision).toBe(2);
     expect(
-      loaded?.selections.find((s) => s.stepId === "archmaker.face.hostname")
-        ?.value,
+      loaded.draft.selections.find(
+        (s) => s.stepId === "archmaker.face.hostname",
+      )?.value,
     ).toEqual({ kind: "text", value: "retried" });
   });
 
@@ -233,8 +242,9 @@ test.describe("draft-persistence F4 / T-MIG", () => {
           ],
         });
         const loaded = await mod.loadLastDraftLocal();
+        const draft = loaded.kind === "found" ? loaded.draft : null;
         out.push(
-          loaded?.selections.find((s) => s.stepId === "archmaker.face.hostname")
+          draft?.selections.find((s) => s.stepId === "archmaker.face.hostname")
             ?.value,
         );
       }
@@ -243,6 +253,42 @@ test.describe("draft-persistence F4 / T-MIG", () => {
     expect(hostnames).toHaveLength(20);
     expect(hostnames[0]).toEqual({ kind: "text", value: "cycle-0" });
     expect(hostnames[19]).toEqual({ kind: "text", value: "cycle-19" });
+  });
+
+  test("H14: loadLastDraftLocal distingue none y error de almacén", async ({
+    page,
+  }) => {
+    const noneKind = await page.evaluate(async () => {
+      const mod = await import("/src/draft-persistence.ts");
+      mod.resetPersistQueueForTests();
+      mod.clearLastDraftId();
+      return (await mod.loadLastDraftLocal()).kind;
+    });
+    expect(noneKind).toBe("none");
+
+    const errorResult = await page.evaluate(async () => {
+      const mod = await import("/src/draft-persistence.ts");
+      mod.resetPersistQueueForTests();
+      window.localStorage.setItem(
+        "archmaker.lastDraftId",
+        "99999999-9999-4999-8999-999999999999",
+      );
+      const original = window.indexedDB;
+      Object.defineProperty(window, "indexedDB", {
+        configurable: true,
+        value: undefined,
+      });
+      const result = await mod.loadLastDraftLocal();
+      Object.defineProperty(window, "indexedDB", {
+        configurable: true,
+        value: original,
+      });
+      return result;
+    });
+    expect(errorResult.kind).toBe("error");
+    if (errorResult.kind === "error") {
+      expect(errorResult.reason).toBe("unavailable");
+    }
   });
 
   test("T-MIG-03 persist error path exposes exportable copy when put fails", async ({
@@ -278,11 +324,8 @@ test.describe("draft-persistence F4 / T-MIG", () => {
           error: new DOMException("indexedDB unavailable", "UnknownError"),
           onupgradeneeded: null,
           onsuccess: null as
-            | ((this: IDBOpenDBRequest, ev: Event) => void)
-            | null,
-          onerror: null as
-            | ((this: IDBOpenDBRequest, ev: Event) => void)
-            | null,
+            ((this: IDBOpenDBRequest, ev: Event) => void) | null,
+          onerror: null as ((this: IDBOpenDBRequest, ev: Event) => void) | null,
         };
         queueMicrotask(() => {
           req.onerror?.call(

@@ -59,18 +59,21 @@ test.describe("P5 product-acceptance — integridad y recorrido", () => {
       // Simula perfil guardado antes del renombre visible a Forge.
       const saved = await mod.persistDraftLocal(prior);
       const loaded = await mod.loadLastDraftLocal();
+      const draft = loaded.kind === "found" ? loaded.draft : null;
       return {
         savedOk: saved.ok,
         dbName: "archmaker-profiles",
         lastIdKey: "archmaker.lastDraftId",
-        loadedId: loaded?.id ?? null,
-        hostname: loaded?.selections.find(
+        loadKind: loaded.kind,
+        loadedId: draft?.id ?? null,
+        hostname: draft?.selections.find(
           (s) => s.stepId === "archmaker.face.hostname",
         )?.value,
-        revision: loaded?.revision ?? null,
+        revision: draft?.revision ?? null,
         lastId: window.localStorage.getItem("archmaker.lastDraftId"),
       };
     });
+    expect(outcome.loadKind).toBe("found");
     expect(outcome.savedOk).toBe(true);
     expect(outcome.dbName).toBe("archmaker-profiles");
     expect(outcome.lastIdKey).toBe("archmaker.lastDraftId");
@@ -115,11 +118,8 @@ test.describe("P5 product-acceptance — integridad y recorrido", () => {
           error: new DOMException("QuotaExceededError", "QuotaExceededError"),
           onupgradeneeded: null,
           onsuccess: null as
-            | ((this: IDBOpenDBRequest, ev: Event) => void)
-            | null,
-          onerror: null as
-            | ((this: IDBOpenDBRequest, ev: Event) => void)
-            | null,
+            ((this: IDBOpenDBRequest, ev: Event) => void) | null,
+          onerror: null as ((this: IDBOpenDBRequest, ev: Event) => void) | null,
         };
         queueMicrotask(() => {
           req.onerror?.call(
@@ -186,4 +186,3 @@ test.describe("P5 product-acceptance — integridad y recorrido", () => {
     await expect(page.locator("body")).toContainText(/ArchMaker Forge/i);
   });
 });
-
