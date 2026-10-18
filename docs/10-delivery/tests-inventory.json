@@ -1,7 +1,79 @@
 {
-  "generated_at": "1792324470",
-  "git_sha": "a56e64bb31fde9cec18ee07bf2bdcb2523a347f4",
+  "generated_at": "1792357115",
+  "git_sha": "d5dbbccdb2b9aa1db86fd0b621897af6d4cbfc92",
   "tests": [
+    {
+      "id": "TST-ARCHMAKER-CONSTITUTE-FETCH-FIXTURE_FETCH_STAYS_INSIDE_PROFILE_AND_CITES_DIGEST",
+      "type": "unit",
+      "location": "crates/archmaker-constitute/tests/fetch.rs",
+      "command": "cargo test -p archmaker-constitute --test fetch fixture_fetch_stays_inside_profile_and_cites_digest",
+      "workflow": "ci",
+      "covers": ["FR-EXPORT-001", "NFR-SEC-001"],
+      "description": "fetch::fixture_fetch_stays_inside_profile_and_cites_digest"
+    },
+    {
+      "id": "TST-ARCHMAKER-CONSTITUTE-FETCH-MISSING_FIXTURE_IS_OFFLINE_AND_WRITES_NOTHING",
+      "type": "unit",
+      "location": "crates/archmaker-constitute/tests/fetch.rs",
+      "command": "cargo test -p archmaker-constitute --test fetch missing_fixture_is_offline_and_writes_nothing",
+      "workflow": "ci",
+      "covers": ["NFR-OFF-001", "FR-EXPORT-001", "NFR-SEC-001"],
+      "description": "fetch::missing_fixture_is_offline_and_writes_nothing"
+    },
+    {
+      "id": "TST-ARCHMAKER-CONSTITUTE-FETCH-NAME_OUTSIDE_PROFILE_IS_REJECTED",
+      "type": "unit",
+      "location": "crates/archmaker-constitute/tests/fetch.rs",
+      "command": "cargo test -p archmaker-constitute --test fetch name_outside_profile_is_rejected",
+      "workflow": "ci",
+      "covers": ["FR-EXPORT-001", "NFR-SEC-001"],
+      "description": "fetch::name_outside_profile_is_rejected"
+    },
+    {
+      "id": "TST-ARCHMAKER-CONSTITUTE-FETCH-DEFERRED_BIN_IS_NOT_COPIED_INTO_OUTPUT",
+      "type": "unit",
+      "location": "crates/archmaker-constitute/tests/fetch.rs",
+      "command": "cargo test -p archmaker-constitute --test fetch deferred_bin_is_not_copied_into_output",
+      "workflow": "ci",
+      "covers": ["FR-EXPORT-001", "NFR-SEC-001"],
+      "description": "fetch::deferred_bin_is_not_copied_into_output"
+    },
+    {
+      "id": "TST-ARCHMAKER-CONSTITUTE-FETCH-OUTPUT_NAMED_AIROOTFS_IS_REFUSED",
+      "type": "unit",
+      "location": "crates/archmaker-constitute/tests/fetch.rs",
+      "command": "cargo test -p archmaker-constitute --test fetch output_named_airootfs_is_refused",
+      "workflow": "ci",
+      "covers": ["FR-EXPORT-001", "NFR-SEC-001"],
+      "description": "fetch::output_named_airootfs_is_refused"
+    },
+    {
+      "id": "TST-ARCHMAKER-CONSTITUTE-FETCH-A_PROFILE_LINE_THAT_IS_NOT_A_PACKAGE_NAME_IS_REJECTED",
+      "type": "unit",
+      "location": "crates/archmaker-constitute/tests/fetch.rs",
+      "command": "cargo test -p archmaker-constitute --test fetch a_profile_line_that_is_not_a_package_name_is_rejected",
+      "workflow": "ci",
+      "covers": ["FR-EXPORT-001", "NFR-SEC-001"],
+      "description": "fetch::a_profile_line_that_is_not_a_package_name_is_rejected"
+    },
+    {
+      "id": "TST-ARCHMAKER-CONSTITUTE-FETCH-ARGV_REJECTS_A_SCRIPT_AND_THE_BIN_FETCHES_THE_FIXTURE",
+      "type": "unit",
+      "location": "crates/archmaker-constitute/tests/fetch.rs",
+      "command": "cargo test -p archmaker-constitute --test fetch argv_rejects_a_script_and_the_bin_fetches_the_fixture",
+      "workflow": "ci",
+      "covers": ["FR-EXPORT-001", "NFR-SEC-001"],
+      "description": "fetch::argv_rejects_a_script_and_the_bin_fetches_the_fixture"
+    },
+    {
+      "id": "TST-ARCHMAKER-CONSTITUTE-FETCH-IMAGE_REQUEST_DOES_NOT_CREATE_AN_ISO_OR_ACCEPT_A_SCRIPT",
+      "type": "unit",
+      "location": "crates/archmaker-constitute/tests/fetch.rs",
+      "command": "cargo test -p archmaker-constitute --test fetch image_request_does_not_create_an_iso_or_accept_a_script",
+      "workflow": "ci",
+      "covers": ["FR-EXPORT-001", "NFR-SEC-001"],
+      "description": "fetch::image_request_does_not_create_an_iso_or_accept_a_script"
+    },
     {
       "id": "TST-ARCHMAKER-CANONICALIZATION-VECTORS-GOLDEN_CORPUS_BYTE_IDENTITY_AND_DIGEST",
       "type": "unit",
@@ -436,6 +508,52 @@
       "workflow": "ci",
       "covers": ["FR-DRAFT-001"],
       "description": "f0_findings::c0_draft_corpus_fixture_digests"
+    },
+    {
+      "id": "TST-ARCHMAKER-CORE-ISO02_LIVE_PROFILE-ISO02_SAME_MANIFEST_SAME_BYTES_WITHOUT_PACSTRAP_OR_CMD",
+      "type": "unit",
+      "location": "crates/archmaker-core/tests/iso02_live_profile.rs",
+      "command": "cargo test -p archmaker-core --test iso02_live_profile iso02_same_manifest_same_bytes_without_pacstrap_or_cmd",
+      "workflow": "ci",
+      "covers": [
+        "FR-MANIFEST-001",
+        "FR-EXPORT-001",
+        "NFR-DET-001",
+        "NFR-SEC-001"
+      ],
+      "description": "iso02_live_profile::iso02_same_manifest_same_bytes_without_pacstrap_or_cmd"
+    },
+    {
+      "id": "TST-ARCHMAKER-CORE-ISO02_LIVE_PROFILE-ISO02_NON_REDISTRIBUTABLE_IS_NAMED_DEFERRED_NOT_INSTALLED",
+      "type": "unit",
+      "location": "crates/archmaker-core/tests/iso02_live_profile.rs",
+      "command": "cargo test -p archmaker-core --test iso02_live_profile iso02_non_redistributable_is_named_deferred_not_installed",
+      "workflow": "ci",
+      "covers": ["FR-EXPORT-001", "NFR-DET-001", "NFR-SEC-001"],
+      "description": "iso02_live_profile::iso02_non_redistributable_is_named_deferred_not_installed"
+    },
+    {
+      "id": "TST-ARCHMAKER-CORE-ISO02_LIVE_PROFILE-ISO02_BLOCKING_MANIFEST_YIELDS_NO_PROFILE",
+      "type": "unit",
+      "location": "crates/archmaker-core/tests/iso02_live_profile.rs",
+      "command": "cargo test -p archmaker-core --test iso02_live_profile iso02_blocking_manifest_yields_no_profile",
+      "workflow": "ci",
+      "covers": [
+        "FR-MANIFEST-001",
+        "FR-EXPORT-001",
+        "NFR-DET-001",
+        "NFR-SEC-001"
+      ],
+      "description": "iso02_live_profile::iso02_blocking_manifest_yields_no_profile"
+    },
+    {
+      "id": "TST-ARCHMAKER-CORE-ISO02_LIVE_PROFILE-ISO02_UNKNOWN_TARGET_STILL_REJECTED",
+      "type": "unit",
+      "location": "crates/archmaker-core/tests/iso02_live_profile.rs",
+      "command": "cargo test -p archmaker-core --test iso02_live_profile iso02_unknown_target_still_rejected",
+      "workflow": "ci",
+      "covers": ["FR-EXPORT-001", "NFR-DET-001", "NFR-SEC-001"],
+      "description": "iso02_live_profile::iso02_unknown_target_still_rejected"
     },
     {
       "id": "TST-ARCHMAKER-CORE-F3_FIDELITY-HOSTNAME_AND_ENCRYPT_INTENTION_REACH_MANIFEST",
