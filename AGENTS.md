@@ -17,7 +17,7 @@
 
 ## Restricciones
 
-- Funcionalidad nueva solo dentro del veredicto vigente (CONDITIONAL-CLEAR hasta MVP-5: catálogo de matriz, UI de cinco pasos, paridad Tauri/WASM). Runner, imagen real, root, discos y shell siguen cerrados hasta un alcance `accepted` adicional y una reevaluación del veredicto.
+- Funcionalidad nueva solo dentro del veredicto vigente (CONDITIONAL-CLEAR hasta MVP-5: catálogo de matriz, UI de cinco pasos de esa matriz, paridad Tauri/WASM); el rail de Forge sigue en seis pasos y no se elimina ninguna pantalla. Runner, imagen real, root, discos y shell siguen cerrados hasta un alcance `accepted` adicional y una reevaluación del veredicto.
 - No ejecutar strings heredados `cmd`, hooks, `pacstrap` ni shell.
 - Rust es la única autoridad semántica; TypeScript no duplica reglas.
 - MVP no usa root, discos, shell, sidecars ni instalación real.
