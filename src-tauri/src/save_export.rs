@@ -34,12 +34,32 @@ pub trait SavePicker {
 /// Diálogo nativo de guardado (producción). Sin shell ni scopes FS globales.
 pub struct NativeSavePicker;
 
+/// Ashpd/zbus hace `spawn_blocking` de Tokio. `FileDialog::save_file` usa
+/// `pollster::block_on` y aborta el proceso si no hay reactor.
+fn portal_block_on<F>(task: F) -> F::Output
+where
+    F: std::future::Future,
+{
+    tauri::async_runtime::block_on(task)
+}
+
 impl SavePicker for NativeSavePicker {
     fn pick_save_path(&self, suggested_name: &str) -> Option<PathBuf> {
-        rfd::FileDialog::new()
-            .set_file_name(suggested_name)
-            .set_title("Guardar perfil Forge")
-            .save_file()
+        let suggested = suggested_name.to_string();
+        // Gancho de sonda P6: solo carpeta inicial del diálogo. No escribe solo.
+        let save_dir = std::env::var_os("ARCHMAKER_SAVE_DIR");
+        portal_block_on(async move {
+            let mut dialog = rfd::AsyncFileDialog::new()
+                .set_file_name(suggested)
+                .set_title("Guardar perfil Forge");
+            if let Some(dir) = save_dir {
+                dialog = dialog.set_directory(dir);
+            }
+            dialog
+                .save_file()
+                .await
+                .map(|handle| handle.path().to_path_buf())
+        })
     }
 }
 
@@ -106,6 +126,16 @@ fn hex_sha256(bytes: &[u8]) -> String {
 mod tests {
     use super::*;
     use std::sync::Mutex;
+
+    #[test]
+    fn portal_block_on_enters_tokio_reactor() {
+        let value = portal_block_on(async {
+            tauri::async_runtime::spawn_blocking(|| 7)
+                .await
+                .expect("spawn_blocking dentro del reactor")
+        });
+        assert_eq!(value, 7);
+    }
 
     struct ScriptedPicker {
         next: Mutex<Option<Option<PathBuf>>>,
