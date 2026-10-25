@@ -3,11 +3,11 @@
 # Entradas: docs/10-delivery/packaging-release.md,
 #           docs/10-delivery/closure/f9-release.md,
 #           docs/08-security/supply-chain-policy.md, ADR-0008, ADR-0009, ADR-0010,
-#           DEC-006 (Sigstore keyless + verificación offline),
+#           DEC-006 (Sigstore keyless + firmas verificables),
 #           DEC-007 (updater Tauri en MVP, canal firmado),
 #           DEC-011 (AppImage Linux x86_64, nombre visible Forge).
 # Pipeline: checkout RC → frontend + AppImage → SBOM → sign (cosign keyless) →
-#           verify offline (trusted_root.json) → provenance SLSA v1 → publish.
+#           verify (identidad + issuer) → provenance SLSA v1 → publish.
 # El tag v* no publica: publish solo con workflow_dispatch y publish_package.
 #
 # Política supply-chain (docs/09-quality/ci-cd.md):
@@ -160,7 +160,7 @@ jobs:
           retention-days: 14
 
   sign-verify:
-    name: Firma Sigstore + verificación offline (T-I11-02)
+    name: Firma Sigstore + verificación de firmas (T-I11-02)
     runs-on: ubuntu-latest
     timeout-minutes: 20
     needs: package
@@ -208,28 +208,27 @@ jobs:
             --output-signature dist/sbom.cdx.json.sig --output-certificate dist/sbom.cdx.json.pem
           cosign sign-blob --yes dist/SHA256SUMS \
             --output-signature dist/SHA256SUMS.sig --output-certificate dist/SHA256SUMS.pem
-      - name: Verificar offline con trusted_root.json
+      - name: Verificar firmas Sigstore (identidad + issuer)
         run: |
           set -euo pipefail
           if grep -q '"_placeholder": *true' trusted_root.json; then
-            echo "::warning::trusted_root.json sigue siendo placeholder (CON-015); verificación offline diferida (DEC-006). La firma keyless se publica y el verificador puede comprobarla con raíces reales."
-            exit 0
+            echo "::warning::trusted_root.json sigue siendo placeholder (CON-015); sin raíz materializada la verificación se hace contra la instancia pública. Verificación estrictamente offline diferida (DEC-006): requiere firmas en formato bundle (--new-bundle-format)."
           fi
           IDENTITY="^https://github.com/${GITHUB_REPOSITORY}/"
           ISSUER="https://token.actions.githubusercontent.com"
           APPIMAGE=$(find dist -maxdepth 1 -type f -name '*.AppImage' | sort | head -1)
-          cosign verify-blob --trusted-root trusted_root.json \
+          cosign verify-blob \
             --certificate-identity-regexp "$IDENTITY" --certificate-oidc-issuer "$ISSUER" \
             --certificate "${APPIMAGE}.pem" --signature "${APPIMAGE}.sig" "$APPIMAGE"
-          cosign verify-blob --trusted-root trusted_root.json \
+          cosign verify-blob \
             --certificate-identity-regexp "$IDENTITY" --certificate-oidc-issuer "$ISSUER" \
             --certificate dist/sbom.cdx.json.pem --signature dist/sbom.cdx.json.sig \
             dist/sbom.cdx.json
-          cosign verify-blob --trusted-root trusted_root.json \
+          cosign verify-blob \
             --certificate-identity-regexp "$IDENTITY" --certificate-oidc-issuer "$ISSUER" \
             --certificate dist/SHA256SUMS.pem --signature dist/SHA256SUMS.sig \
             dist/SHA256SUMS
-          echo "Verificación offline OK."
+          echo "Verificación de firmas OK."
       - name: Upload signed dist
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:

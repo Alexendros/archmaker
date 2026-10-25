@@ -106,7 +106,7 @@ Cada release publica, como mínimo:
 - **Source tarball**: garantiza reproducibilidad y auditoría independiente del binario.
 - **Compatibilidad**: matriz mínima Arch Linux **x86_64 únicamente** (DEC-008, aceptada 2026-10-05); aarch64 fuera de alcance.
 - Etapa C en `v0.3.0`: SBOM + provenance + checksums publicados; cosign local y
-  verificación offline con raíz real siguen pendientes (DEC-006).
+  verificación estrictamente offline (firmas bundle) siguen pendientes (DEC-006).
 
 ## Canales
 
@@ -145,10 +145,14 @@ Pipeline: `.github/workflows/release.yml`; raíces: `trusted_root.json` (raíz d
 - **Rollback**: revertir al digest anterior publicado del mismo canal
   (promoción inversa, sin rebuild), documentando canal afectado y motivo;
   el digest restaurado ya está firmado y atestado, no se re-firma.
-- **Verificación offline**: `cosign verify-blob --trusted-root trusted_root.json`
-  (sin red). Estado actual: `trusted_root.json` es **placeholder documentado**
-  (T-I11-02); `release.yml` hace SKIP —nunca verde fingido— hasta materializar
-  las raíces reales (procedimiento dentro del propio fichero).
+- **Verificación de firmas**: `cosign verify-blob` con pinning de identidad
+  (`^https://github.com/Alexendros/archmaker/`) e issuer
+  (`https://token.actions.githubusercontent.com`), ejecutada en CI contra la
+  instancia pública de Sigstore. `trusted_root.json` se materializa en CI
+  (`cosign trusted-root create`) y se publica junto a las firmas como
+  evidencia. La verificación **estrictamente offline** (`--trusted-root`)
+  requiere firmas en formato bundle (`--new-bundle-format`) y queda diferida
+  como residual de DEC-006 (T-I11-02).
 - **Provenance**: predicado SLSA v1 (`slsa-provenance.json`) generado en
   `release.yml`; la atestación GitHub (`actions/attest-*`) queda pendiente de
   pin SHA verificado (Etapa C, ver `docs/09-quality/ci-cd.md`).
