@@ -2,7 +2,7 @@
 id: ADR-0004
 phase: MVP
 priority: P0
-documentStatus: accepted
+documentStatus: superseded
 approvalStatus: approved
 implementationStatus: not-started
 verificationStatus: not-verified
@@ -15,10 +15,12 @@ reviewers:
 
 # ADR-0004: Runner como proceso separado; transporte y elevación fuera del WebView
 
-- Estado: accepted
+- Estado: superseded
+- Superseded by ADR-0021
 - Fecha: 2026-10-05
 - Propietario: Seguridad
 - Requisitos: FR-RUN-001, NFR-SEC-001, NFR-OBS-001
+- Nota: la construcción de la imagen se decide en ADR-0021; ya no hay runner privilegiado.
 
 ## Contexto
 

@@ -15,7 +15,7 @@ dependsOn:
   - id: ADR-0010
   - id: ADR-0003
     expectedDocumentStatus: accepted
-  - id: ADR-0004
+  - id: ADR-0021
     expectedDocumentStatus: accepted
   - id: DOC-RES-HTML-001
   - id: DOC-GOV-GNG-001
