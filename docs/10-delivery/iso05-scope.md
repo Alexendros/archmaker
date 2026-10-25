@@ -6,13 +6,15 @@ documentStatus: accepted
 approvalStatus: approved
 implementationStatus: complete
 verificationStatus: passed
-releaseStatus: eligible
+releaseStatus: released
 evidence:
   - cargo test --workspace --all-targets (exit 0)
   - pnpm --filter @archmaker/web build (exit 0; wasm 1677080 B, css 30530 B)
   - Playwright en serie - e2e WASM x3, P5 27, axe 12, a11y estatico, flow 74, visual 4
   - .github/workflows/iso.yml G9 (ISO de humo + QEMU UEFI) en main
   - tools/check_product_naming.py (T-NAME-01..04 + T-MIG-01..04 OK)
+  - https://github.com/Alexendros/archmaker/releases/tag/v0.3.0 (publicada, 2026-10-25)
+  - .github/workflows/release.yml run 40184194831 (success; AppImage + firmas + SBOM + provenance)
 owners:
   - release
 reviewers:
@@ -69,7 +71,7 @@ archinstall en la sesión viva.
 - [x] Playwright (3 configuraciones) en verde.
 - [x] CI `iso.yml` (ISO de humo + arranque QEMU UEFI, G9) en verde.
 - [x] `tools/check_product_naming.py` en verde (nombre visible Forge).
-- [ ] Release `v0.3.0` publicada con AppImage; CHANGELOG y
+- [x] Release `v0.3.0` publicada con AppImage; CHANGELOG y
       `packaging-release.md` coherentes.
 
 ## Plan de verificación
@@ -99,10 +101,15 @@ archinstall en la sesión viva.
 | Regresión visual     | `pnpm test-a11y:visual`                            | 4 passed                               |
 | Nomenclatura         | `python3 tools/check_product_naming.py`            | PASS T-NAME-01..04, T-MIG-01..04       |
 | ISO + arranque UEFI  | CI `iso.yml` (G9)                                  | verde en `main`                        |
+| Release `v0.3.0`     | `release.yml` con `publish_package=true`           | publicada; run 40184194831 success     |
 
 ## Residuales declarados
 
 - Firma cosign local diferida (MVP-6-02); no bloquea el release AppImage.
+- La verificación de firmas del release se hace en CI contra la instancia pública
+  de Sigstore con pinning de identidad e issuer; la verificación **estrictamente
+  offline** (`--trusted-root`) requiere firmas en formato bundle
+  (`--new-bundle-format`) y sigue diferida (DEC-006, T-I11-02).
 - Verificación de la GUI en las tres configuraciones de release queda registrada
   con su evidencia; un fallo abre incidencia, no amplía el alcance.
 - Cualquier desviación se documenta en `docs/10-delivery/closure/` sin reabrir

@@ -1,11 +1,11 @@
 # Autoworkspace — estado declarativo versionado
 schema_version: 1
 version: 0.3.0
-phase: DEFINE # DEFINE | SCHEMAS | IMPLEMENT | VALIDATE | INTEGRATE | STATUS
-advance: 0
-last_skill: plan-continue
+phase: STATUS # DEFINE | SCHEMAS | IMPLEMENT | VALIDATE | INTEGRATE | STATUS
+advance: 5
+last_skill: project-publish
 checksum_spec: ""
-updated_at: "2026-10-25T00:00:00Z"
+updated_at: "2026-10-25T12:00:00Z"
 history:
   - advance: 0
     version: 0.3.0
@@ -13,3 +13,9 @@ history:
     skill: plan-continue
     at: "2026-10-25T00:00:00Z"
     note: "Scaffold Autoworkspace. Incremento ISO-05: cierre y verificación de la reorientación (ADR-0020/0021, DEC-014) y publicación de v0.3.0."
+  - advance: 5
+    version: 0.3.0
+    phase: STATUS
+    skill: project-publish
+    at: "2026-10-25T12:00:00Z"
+    note: "ISO-05 verificado (suite local verde, ADR-0020/0021 a passed, F7 aprobada) y v0.3.0 publicada: GitHub Release con AppImage Forge, firmas, SBOM y provenance (run 40184194831)."

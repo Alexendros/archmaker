@@ -53,6 +53,7 @@ consumidores referencian los identificadores `DEC-*` y **no** reafirman su estad
 | DEC-012 | Nombre visible Forge (GUI) + motor ArchMaker; ids técnicos intactos        | 2026-10-17 | product      | P0        | accepted | no         |
 | DEC-013 | Target `archmaker-live-profile` y proceso de constitución, sin A6          | 2026-10-18 | architecture | P0        | accepted | no         |
 | DEC-014 | Reorientación: GUI fina sobre archiso/archinstall                          | 2026-10-25 | product      | P0        | accepted | no         |
+| DEC-015 | Cierre ISO-05 y primera release binaria `v0.3.0` (AppImage Forge)          | 2026-10-25 | release      | P1        | accepted | no         |
 
 ## Registro estructurado
 
@@ -86,6 +87,22 @@ consumidores referencian los identificadores `DEC-*` y **no** reafirman su estad
 - ADR: ADR-0020, ADR-0021. Requisitos: FR-EXPORT-001, NFR-SEC-001, NFR-DET-001. Riesgos: deriva de versión de archiso/archinstall, mitigada por digest y `--dry-run`. Gates: G2, G4, G9, G10.
 - Consecuencia: supersede DEC-001 (exporter experimental), DEC-003 (adapter versionado), DEC-004 (runner y elevación), DEC-006 (Sigstore keyless) y DEC-013 (constitución) en lo que contradigan esta decisión. El estado anterior queda congelado en la etiqueta `pre-reorientacion`.
 - Issue de seguimiento: ISO-05.
+
+### DEC-015 — Cierre de ISO-05 y primera release binaria
+
+- Pregunta: ¿cómo se cierra la verificación de la reorientación y qué se publica?
+- Decisión: cerrar ISO-05 verificando ADR-0020/ADR-0021 y publicar `v0.3.0` como primera
+  release binaria real bajo Forge, con AppImage Linux x86_64, `SHA256SUMS`, SBOM CycloneDX y
+  provenance SLSA v1. Las firmas Sigstore se verifican en CI contra la instancia pública con
+  pinning de identidad e issuer; la verificación estrictamente offline queda diferida hasta
+  que las firmas usen formato bundle (`--new-bundle-format`).
+- Fecha y autoridad: 2026-10-25 · `release` · `accepted`.
+- ADR: ADR-0020, ADR-0021. Requisitos: FR-EXPORT-001, NFR-SEC-001, NFR-DET-001.
+  Riesgos: —. Gates: G9, G10.
+- Consecuencia: `v0.3.0` queda publicada con AppImage, firmas, SBOM y provenance;
+  `packaging-release.md` pasa a `releaseStatus: released`. Cosign local y verificación
+  offline son residuales de DEC-006 (T-I11-02) y no bloquean la release.
+- Issue de seguimiento: T-I11-02.
 
 ### DEC-002 — Ámbito de los identificadores
 
@@ -276,9 +293,11 @@ Equivalencias aplicadas:
 
 ## Historia
 
-Se conservan `DEC-001`..`DEC-013` sin eliminar ninguna. Todas están en estado `accepted`; ninguna
+Se conservan `DEC-001`..`DEC-015` sin eliminar ninguna. Todas están en estado `accepted`; ninguna
 está `superseded`, `rejected` ni `proposed`, por lo que no se declara sucesora. `DEC-005` y
 `DEC-006` fueron aceptadas el 2026-10-05 y **clarificadas** el 2026-10-06. `DEC-009` y `DEC-010`
 pasan de `proposed` a `accepted` el 2026-10-06. `DEC-011` se acepta el 2026-10-16 con ADR-0010
 opción 3 y MVP-6 AppImage. `DEC-012` se acepta el 2026-10-17 con ADR-0012 (Forge). `DEC-013` se
 acepta el 2026-10-18 con ADR-0019 (perfil vivo; el contrato de código queda para ISO-02).
+`DEC-014` se acepta el 2026-10-25 con ADR-0020/ADR-0021 (reorientación) y `DEC-015` el mismo
+día con el cierre ISO-05 y la publicación de `v0.3.0`.
