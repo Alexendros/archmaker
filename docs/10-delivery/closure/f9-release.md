@@ -26,8 +26,12 @@ dependsOn:
 - Documento: DOC-DEL-CLO-F9-001 · Propietario: Release · Fecha: 2026-10-16
 - Canal: AppImage Linux x86_64, nombre visible **Forge** (DEC-011 / F8).
 - Hosting: GitHub Release del tag `v*`; workflow `.github/workflows/release.yml`.
-- Estado de publicación: **published** — tag
-  [`v0.1.0`](https://github.com/Alexendros/archmaker/releases/tag/v0.1.0).
+- Estado de publicación: **no publicada** (corregido el 2026-10-25). El tag
+  `v0.1.0` existe, pero la API de GitHub no lista ningún Release: `/releases` = `[]`
+  y `/releases/tags/v0.1.0` = `404`. La ejecución de `release.yml` del 2026-10-16
+  terminó _cancelled_; la de `v0.2.0` (2026-10-18) terminó _success_ sin publicar.
+  `v0.1.0` se declara **no publicado** y no se intenta recuperar. La primera release
+  real será `v0.3.0`.
 - Evidencia de digests y `APPROVAL_RECORD` viven **fuera del árbol** de código
   (p. ej. `archmaker-closure-evidence/<rc-sha>/<run-id>/` hermano del repo). Este
   documento no embebe digests como única verdad; la identidad es el
@@ -36,7 +40,7 @@ dependsOn:
   (no `complete` + `passed`). No se declara `eligible` hasta cosign verificable y
   humo GUI exigido.
 
-## Publicación v0.1.0 (hechos)
+## Intento de publicación v0.1.0 (no publicado)
 
 | Campo             | Valor                                                              |
 | ----------------- | ------------------------------------------------------------------ |
@@ -44,28 +48,29 @@ dependsOn:
 | `RC_SHA`          | `9297ed7cc47f42a9611aed0093b5ab040daca512`                         |
 | `ARTIFACT_SHA256` | `6567464f5e2f21398fd3eef35592f0e9d377fd2cc7887c1e46df092b5a8e6d81` |
 | Artefacto         | `Neubat_0.1.0_amd64.AppImage`                                      |
-| Adjuntos          | `archmaker`, `SHA256SUMS`, `sbom.cdx.json`, `slsa-provenance.json` |
+| Adjuntos          | **no publicados** (la release no existe en la API)                 |
 | Evidencia externa | `archmaker-closure-evidence/9297ed7…/f9-20261016T202654Z/`         |
 
-Verificación registrada en el manifiesto externo:
+Verificación registrada (el manifiesto externo describe un intento, no una release
+descargable):
 
-| Comprobación     | Resultado                                         |
-| ---------------- | ------------------------------------------------- |
-| CLI / checksums  | verified                                          |
-| checksum AppImage | verified (`ARTIFACT_SHA256` coincide al descargar)              |
-| cosign local       | deferred: assets `.sig`/`.pem` no listados en la release pública |
-| install_gui (×3)   | not-verified                                                    |
-| `result`           | published                                                       |
+| Comprobación      | Resultado                                 |
+| ----------------- | ----------------------------------------- |
+| CLI / checksums   | verified en el runner                     |
+| checksum AppImage | verified en el runner (`ARTIFACT_SHA256`) |
+| cosign local      | deferred                                  |
+| install_gui (×3)  | not-verified                              |
+| `result`          | **not-published** — sin Release en GitHub |
 
 ## Identidades
 
-| Id                         | Uso                                                                  |
-| -------------------------- | -------------------------------------------------------------------- |
-| `RC_SHA`                   | Commit de `main` desde el que se construye                           |
-| `ARTIFACT_SHA256`          | SHA-256 del AppImage publicado (identidad del paquete)               |
-| `EVIDENCE_SHA256`          | SHA-256 del manifiesto de evidencia (externo; no dentro de sí mismo) |
-| `approvalRecordSha256`     | SHA-256 del fichero de registro de aprobación                        |
-| `approvalRecordCommit`     | Commit git del registro si está versionado (identidad distinta)      |
+| Id                     | Uso                                                                  |
+| ---------------------- | -------------------------------------------------------------------- |
+| `RC_SHA`               | Commit de `main` desde el que se construye                           |
+| `ARTIFACT_SHA256`      | SHA-256 del AppImage publicado (identidad del paquete)               |
+| `EVIDENCE_SHA256`      | SHA-256 del manifiesto de evidencia (externo; no dentro de sí mismo) |
+| `approvalRecordSha256` | SHA-256 del fichero de registro de aprobación                        |
+| `approvalRecordCommit` | Commit git del registro si está versionado (identidad distinta)      |
 
 No reutilizar el nombre histórico `APPROVAL_RECORD_SHA` para un commit: el valor de
 aprobación es el digest del fichero. El tip de `main` posterior a `v0.1.0` no altera este tag.
@@ -85,12 +90,12 @@ aprobación es el digest del fichero. El tip de `main` posterior a `v0.1.0` no a
 
 ## Residuales abiertos (honestos)
 
-| Id              | Residual                                                         | Bloquea `releaseStatus=eligible` |
-| --------------- | ---------------------------------------------------------------- | -------------------------------- |
-| RES-F9-COSIGN   | cosign keyless no verificado en host local de evidencia          | sí (verification parcial)        |
-| RES-F9-GUI      | Tres instalaciones GUI de aceptación no ejecutadas               | sí (verification parcial)        |
-| RES-F7-FUNC     | Sin `RC_SHA_FUNCIONAL` / aceptación independiente (capa F7)      | no (capa distinta)               |
-| RES-ISO         | Sin imagen de instalación Arch                                   | n/a (fuera de alcance)           |
+| Id            | Residual                                                    | Bloquea `releaseStatus=eligible` |
+| ------------- | ----------------------------------------------------------- | -------------------------------- |
+| RES-F9-COSIGN | cosign keyless no verificado en host local de evidencia     | sí (verification parcial)        |
+| RES-F9-GUI    | Tres instalaciones GUI de aceptación no ejecutadas          | sí (verification parcial)        |
+| RES-F7-FUNC   | Sin `RC_SHA_FUNCIONAL` / aceptación independiente (capa F7) | no (capa distinta)               |
+| RES-ISO       | Sin imagen de instalación Arch                              | n/a (fuera de alcance)           |
 
 ## Retirada
 

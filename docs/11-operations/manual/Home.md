@@ -23,11 +23,11 @@ ArchMaker es un **configurador local** para diseñar, validar y exportar un perf
 
 ## Estado (tres capas)
 
-| Capa                 | Estado    | Lectura                                                                 |
-| -------------------- | --------- | ----------------------------------------------------------------------- |
-| Baseline de código   | passed    | Tag `implementation-baseline-mvp5`; cierre F0–F8 en `main`              |
-| Aprobación funcional | pending   | Limitaciones F7; sin `RC_SHA_FUNCIONAL`                                 |
-| Release binaria      | published | [Neubat v0.1.0](https://github.com/Alexendros/archmaker/releases/tag/v0.1.0) AppImage; verificación parcial |
+| Capa                 | Estado       | Lectura                                                                 |
+| -------------------- | ------------ | ----------------------------------------------------------------------- |
+| Baseline de código   | passed       | Tag `implementation-baseline-mvp5`; cierre F0–F8 en `main`              |
+| Aprobación funcional | pending      | Limitaciones F7; sin `RC_SHA_FUNCIONAL`                                 |
+| Release binaria      | no publicada | Tags `v0.1.0`/`v0.2.0` sin GitHub Release ni AppImage; próxima `v0.3.0` |
 
 Detalle de gobierno: [`docs/10-delivery/closure/f8-governance.md`](https://github.com/Alexendros/archmaker/blob/main/docs/10-delivery/closure/f8-governance.md).
 

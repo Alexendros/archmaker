@@ -6,21 +6,27 @@ Configurador local para diseñar, validar y exportar un perfil. Rust es la autor
 
 Tres capas distintas (detalle: [`docs/10-delivery/closure/f8-governance.md`](docs/10-delivery/closure/f8-governance.md)):
 
-| Capa                 | Estado                                                                                                                             |
-| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| Baseline de código   | **passed** — tag `implementation-baseline-mvp5`; F0–F8 fusionados en `main`                                                        |
-| Aprobación funcional | **pending** — matriz F7 ejecutable; sin `RC_SHA_FUNCIONAL` ni aceptación independiente (`f7-candidate.md`)                         |
-| Release binaria      | **published** — [Neubat v0.1.0](https://github.com/Alexendros/archmaker/releases/tag/v0.1.0) AppImage x86_64; verificación parcial |
-| Versión de código    | **0.2.0** — tag `v0.2.0`; sin GitHub Release de paquete hasta un AppImage validado con tests                                       |
+| Capa                 | Estado                                                                                                      |
+| -------------------- | ----------------------------------------------------------------------------------------------------------- |
+| Baseline de código   | **passed** — tag `implementation-baseline-mvp5`; F0–F8 fusionados en `main`                                 |
+| Aprobación funcional | **pending** — matriz F7 ejecutable; sin `RC_SHA_FUNCIONAL` ni aceptación independiente (`f7-candidate.md`)  |
+| Release binaria      | **no publicada** — tags `v0.1.0` y `v0.2.0` existen, pero **no hay GitHub Release** ni AppImage descargable |
+| Versión de código    | **0.2.0** — tag `v0.2.0`; la primera release real será `v0.3.0`                                             |
 
-- Código actual de `main` y el AppImage publicado son identidades distintas. La versión de
-  código es `0.2.0`. El tag `v0.1.0` no se mueve y sigue siendo la única release binaria.
-- Canal publicado: AppImage Linux x86_64 (`v0.1.0` como **Neubat**); nombre visible vigente **Forge**. `RC_SHA` de la release:
-  `9297ed7cc47f42a9611aed0093b5ab040daca512`; `ARTIFACT_SHA256`
-  `6567464f5e2f21398fd3eef35592f0e9d377fd2cc7887c1e46df092b5a8e6d81`. Changelog: [`CHANGELOG.md`](CHANGELOG.md).
-- Limitaciones honestas de v0.1.0: cosign local y tres instalaciones GUI siguen residuales F9;
-  F7 sin `RC_SHA_FUNCIONAL`; sin imagen Arch / runner / `.deb`/`.rpm`. Detalle:
-  [`docs/10-delivery/closure/f9-release.md`](docs/10-delivery/closure/f9-release.md).
+- Corrección de estado (2026-10-25): la API de GitHub devuelve `[]` en `/releases` y `404`
+  en `/releases/tags/v0.1.0` y `/releases/tags/v0.2.0`. Las ejecuciones de `release.yml`
+  terminaron en _cancelled_ (`v0.1.0`) y _success_ sin publicar Release (`v0.2.0`). Por
+  tanto **no existe binario publicado**: `v0.1.0` se declara no publicado y no se intenta
+  recuperar. Detalle: [`docs/10-delivery/closure/f9-release.md`](docs/10-delivery/closure/f9-release.md).
+- Limitaciones honestas: F7 sin `RC_SHA_FUNCIONAL`; cosign local y tres instalaciones GUI
+  siguen residuales F9; sin `.deb`/`.rpm`. Changelog: [`CHANGELOG.md`](CHANGELOG.md).
+- **Reorientación en curso (25/10/2026)**: el objetivo pasa a ser una GUI fina sin root
+  (**Forge**) que valida la selección con explicaciones, genera un perfil `archiso`
+  completo y un `user_configuration.json` real de `archinstall`, y construye la ISO con
+  `mkarchiso` **siempre dentro de un contenedor Docker**. Quedan fuera de alcance la
+  escritura de discos desde Forge, `aarch64`, Enterprise y el runner de instalación.
+  La decisión se formaliza en ADR-0020 y ADR-0021 (en preparación); el estado anterior
+  queda congelado en el tag `pre-reorientacion`.
 - Diagramas Archify (Forge as-built): [`docs/02-architecture/diagrams/`](docs/02-architecture/diagrams/).
   Archify es herramienta de diagramación; no confundir con Forge.
 - Gate global (mecánico): **Clear** — todos los gates G0–G10 están `complete`. Autoridad: [`docs/00-governance/go-no-go.md`](docs/00-governance/go-no-go.md) y [`docs/10-delivery/gates.md`](docs/10-delivery/gates.md).
