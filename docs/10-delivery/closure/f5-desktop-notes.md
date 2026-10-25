@@ -55,11 +55,19 @@ Para cerrar el residual hay que, en un entorno con display y portal:
 
 Tres aperturas en la misma sesión no cuentan como tres instalaciones independientes (capa F9).
 
-## P6 — Desktop / offline (2026-10-17)
+## P6 — Desktop / offline (2026-10-17, nota 2026-10-18)
 
-Estado del tip: **blocked**. Ver [`p6-desktop-offline.md`](p6-desktop-offline.md) y
-`examples/desktop-evidence.p6-blocked.json`. Display/portal presentes; AppImage Forge
-local del tip + launch + IPC ACL en verde; residuales ausentes: diálogo portal E2E,
-arranque offline y 3× instalaciones limpias. El AppImage `v0.1.0` histórico y MockCorePort
-no cierran P6.
+Estado del tip: **blocked**. Ver [`p6-desktop-offline.md`](p6-desktop-offline.md).
+En el probe de un SHA anterior, 3× instalaciones y arranque offline quedaron **passed**;
+el diálogo portal sigue siendo el residual que impide el gate. El AppImage `v0.1.0`
+histórico y MockCorePort no cierran P6.
 
+`save_export_bytes` abre el diálogo con el reactor de Tauri (`AsyncFileDialog`).
+`ARCHMAKER_SAVE_DIR` solo fija la carpeta inicial de la sonda; no escribe por sí solo
+ni añade capabilities. Ventana de producción: 1440×900, mínimo 960×640.
+
+Sonda local 2026-10-18 sobre `target/debug/archmaker` (árbol de trabajo, no AppImage
+del tip ni `sourceSha` de release): `gui-cancel` y `gui-dialog-real` **passed**;
+`gui-overwrite` **failed** (el rechazo dejó el archivo intacto; aceptar «Reemplazar»
+no cambió el archivo); `gui-destination-noperms` **failed** (el archivo quedó intacto
+y no hubo mensaje accesible). Eso no mueve el gate a `passed`.

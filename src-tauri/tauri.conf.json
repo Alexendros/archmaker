@@ -14,8 +14,10 @@
       {
         "label": "main",
         "title": "ArchMaker Forge",
-        "width": 1024,
-        "height": 768
+        "width": 1440,
+        "height": 900,
+        "minWidth": 960,
+        "minHeight": 640
       }
     ],
     "security": {
