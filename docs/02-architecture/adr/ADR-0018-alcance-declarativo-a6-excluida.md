@@ -2,7 +2,7 @@
 id: ADR-0018
 phase: planning
 priority: P0
-documentStatus: in-review
+documentStatus: superseded
 approvalStatus: pending
 implementationStatus: partial
 verificationStatus: not-verified
@@ -16,6 +16,9 @@ dependsOn:
 ---
 
 # ADR-0018: Alcance declarativo; A6 excluida
+
+- Estado: superseded
+- Superseded by: ADR-0020
 
 - Estado: proposed
 - Fecha: 2026-10-17

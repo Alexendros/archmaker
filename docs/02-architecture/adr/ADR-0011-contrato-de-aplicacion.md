@@ -2,7 +2,7 @@
 id: ADR-0011
 phase: planning
 priority: P0
-documentStatus: in-review
+documentStatus: superseded
 approvalStatus: pending
 implementationStatus: partial
 verificationStatus: partial
@@ -20,10 +20,11 @@ dependsOn:
 
 # ADR-0011: Contrato de aplicación desde el configurador
 
-- Estado: proposed
+- Estado: superseded
 - Fecha: 2026-10-14
 - Propietario: Arquitectura
 - Requisitos: FR-EXPORT-001, FR-VALIDATE-001, FR-MANIFEST-001, NFR-DET-001, NFR-OFF-001, NFR-MARK-001
+- Superseded by: ADR-0020
 
 ## Contexto
 

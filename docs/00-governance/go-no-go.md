@@ -51,7 +51,7 @@ reviewers:
   `docs/10-delivery/mvp4-scope.md` (DOC-DEL-MVP4-001), `docs/10-delivery/mvp5-scope.md`
   (DOC-DEL-MVP5-001) y empaquetado AppImage de `docs/10-delivery/mvp6-scope.md`
   (DOC-DEL-MVP6-001, solo esa plataforma). Slice **ISO-01** (2026-10-18, ADR-0019 / DEC-013,
-  `iso-scope.md` accepted): perfil archiso desde el manifiesto sellado, una corrida
+  `build-scope.md` accepted): perfil archiso desde el manifiesto sellado, una corrida
   `mkarchiso` en proceso separado de constitución, y arranque vivo UEFI x86_64. La
   instalación en SSD es prueba de archinstall en esa sesión, no escritura de Forge.
   Bloqueados: runner de instalación (ADR-0004), root, escritura en discos (A6), shell

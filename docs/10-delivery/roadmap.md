@@ -32,7 +32,7 @@ PD-0 fuentes; PD-1 producto; PD-2 arquitectura; PD-3 datos; PD-4 interfaces; PD-
   ([`closure/f9-release.md`](closure/f9-release.md)); aprobación funcional F7 **pending**.
 - MVP-6 packaging — [`mvp6-scope.md`](mvp6-scope.md) **accepted** solo AppImage; ADR-0010
   **accepted** (opción 3). Residual: cosign local / 3× GUI; `.deb`/`.rpm`/AUR deferred.
-- Imagen viva x86_64 UEFI — [`iso-scope.md`](iso-scope.md) **accepted** (ISO-01, 2026-10-18). El veredicto nombra perfil archiso, una corrida `mkarchiso` y arranque vivo. El SSD lo instala archinstall en la sesión. El target `archmaker-live-profile` y la descarga tipada están en el árbol. La corrida de 2026-10-18 produjo `Forge-aaa81a961b0a-x86_64.iso` en una VM y arrancó por UEFI; ese arranque cubre LiveISO. SSD sigue `not_run` ([`closure/iso04-mkarchiso-not-run.md`](closure/iso04-mkarchiso-not-run.md)).
+- Imagen viva x86_64 UEFI — [`build-scope.md`](build-scope.md) **accepted** (ISO-01, 2026-10-18). El veredicto nombra perfil archiso, una corrida `mkarchiso` y arranque vivo. El SSD lo instala archinstall en la sesión. El target `archmaker-live-profile` y la descarga tipada están en el árbol. La corrida de 2026-10-18 produjo `Forge-aaa81a961b0a-x86_64.iso` en una VM y arrancó por UEFI; ese arranque cubre LiveISO. SSD sigue `not_run` ([`closure/iso04-mkarchiso-not-run.md`](closure/iso04-mkarchiso-not-run.md)).
 
 ## v1
 

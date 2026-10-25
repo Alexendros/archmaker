@@ -2,7 +2,7 @@
 id: ADR-0014
 phase: planning
 priority: P0
-documentStatus: in-review
+documentStatus: superseded
 approvalStatus: pending
 implementationStatus: partial
 verificationStatus: not-verified
@@ -17,6 +17,9 @@ dependsOn:
 
 # ADR-0014: Estados ortogonales de verificación y ejecución
 
+- Estado: superseded
+- Superseded by: ADR-0020
+
 - Estado: proposed
 - Fecha: 2026-10-17
 - Propietario: Arquitectura
@@ -30,13 +33,13 @@ Mezclar «plan válido», «hardware visto», «arranque compatible», «capacid
 
 Campos separados en el draft/manifiesto v2:
 
-| Campo | Rol |
-| ----- | --- |
-| `planValidationStatus` | Validación semántica del plan |
-| `hardwareVerificationStatus` | Observación/confirmación de hardware |
-| `bootCompatibilityStatus` | Compatibilidad de arranque |
-| `capacityVerificationStatus` | Capacidad conocida y suficiente |
-| `executionStatus` | Siempre `not-executed` mientras A6 esté fuera |
+| Campo                        | Rol                                           |
+| ---------------------------- | --------------------------------------------- |
+| `planValidationStatus`       | Validación semántica del plan                 |
+| `hardwareVerificationStatus` | Observación/confirmación de hardware          |
+| `bootCompatibilityStatus`    | Compatibilidad de arranque                    |
+| `capacityVerificationStatus` | Capacidad conocida y suficiente               |
+| `executionStatus`            | Siempre `not-executed` mientras A6 esté fuera |
 
 Ninguno se deduce solo de cambiar de pantalla.
 

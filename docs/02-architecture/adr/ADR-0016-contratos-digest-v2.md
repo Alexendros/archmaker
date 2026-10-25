@@ -2,7 +2,7 @@
 id: ADR-0016
 phase: planning
 priority: P0
-documentStatus: in-review
+documentStatus: superseded
 approvalStatus: pending
 implementationStatus: partial
 verificationStatus: not-verified
@@ -17,6 +17,9 @@ dependsOn:
 ---
 
 # ADR-0016: Contratos y digests `schemaVersion` 2
+
+- Estado: superseded
+- Superseded by: ADR-0020
 
 - Estado: proposed
 - Fecha: 2026-10-17

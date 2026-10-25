@@ -2,7 +2,7 @@
 id: ADR-0015
 phase: planning
 priority: P0
-documentStatus: in-review
+documentStatus: superseded
 approvalStatus: pending
 implementationStatus: partial
 verificationStatus: not-verified
@@ -14,6 +14,9 @@ reviewers:
 ---
 
 # ADR-0015: `deviceHandle` de sesión vs `logicalTargetRef` portable
+
+- Estado: superseded
+- Superseded by: ADR-0020
 
 - Estado: proposed
 - Fecha: 2026-10-17
