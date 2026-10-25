@@ -1,6 +1,6 @@
 {
-  "generated_at": "1792357115",
-  "git_sha": "d5dbbccdb2b9aa1db86fd0b621897af6d4cbfc92",
+  "generated_at": "1792895927",
+  "git_sha": "6462fea8d07f8fb5b7cebd022bd7fa942fdfc500",
   "tests": [
     {
       "id": "TST-ARCHMAKER-CONSTITUTE-FETCH-FIXTURE_FETCH_STAYS_INSIDE_PROFILE_AND_CITES_DIGEST",
@@ -1121,6 +1121,35 @@
       "description": "f2_bytes::f2_delivery_corpus_digests"
     },
     {
+      "id": "TST-ARCHMAKER-CORE-ARCHINSTALL_CONFIG-ARCHINSTALL_CONFIG_MATCHES_PINNED_CONTRACT_FIXTURE",
+      "type": "unit",
+      "location": "crates/archmaker-core/tests/archinstall_config.rs",
+      "command": "cargo test -p archmaker-core --test archinstall_config archinstall_config_matches_pinned_contract_fixture",
+      "workflow": "ci",
+      "covers": [
+        "FR-EXPORT-001",
+        "FR-MANIFEST-001",
+        "NFR-DET-001",
+        "NFR-SEC-001"
+      ],
+      "description": "archinstall_config::archinstall_config_matches_pinned_contract_fixture"
+    },
+    {
+      "id": "TST-ARCHMAKER-CORE-ARCHINSTALL_CONFIG-ARCHINSTALL_CONFIG_MAPS_DESKTOP_CATALOG_AND_DEFERS_AUR",
+      "type": "unit",
+      "location": "crates/archmaker-core/tests/archinstall_config.rs",
+      "command": "cargo test -p archmaker-core --test archinstall_config archinstall_config_maps_desktop_catalog_and_defers_aur",
+      "workflow": "ci",
+      "covers": [
+        "FR-CAT-001",
+        "FR-EXPORT-001",
+        "FR-MANIFEST-001",
+        "NFR-DET-001",
+        "NFR-SEC-001"
+      ],
+      "description": "archinstall_config::archinstall_config_maps_desktop_catalog_and_defers_aur"
+    },
+    {
       "id": "TST-ARCHMAKER-CORE-T_MATRIX-T37_LUKS_CHANGES_DIGEST",
       "type": "unit",
       "location": "crates/archmaker-core/tests/t_matrix.rs",
@@ -2028,6 +2057,16 @@
       "workflow": "ci",
       "covers": ["FR-DRAFT-001", "FR-CAT-001", "FR-MANIFEST-001"],
       "description": "Validador validate_tauri_schemas",
+      "transversal": false
+    },
+    {
+      "id": "VAL-RUN_P6_PORTAL_E2E",
+      "type": "doc",
+      "location": "tools/run_p6_portal_e2e.py",
+      "command": "python3 tools/run_p6_portal_e2e.py",
+      "workflow": "ci",
+      "covers": [],
+      "description": "Validador run_p6_portal_e2e",
       "transversal": false
     },
     {
