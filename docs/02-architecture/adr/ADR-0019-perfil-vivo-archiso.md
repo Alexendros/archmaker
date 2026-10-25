@@ -2,7 +2,7 @@
 id: ADR-0019
 phase: v1
 priority: P0
-documentStatus: accepted
+documentStatus: superseded
 approvalStatus: approved
 implementationStatus: not-started
 verificationStatus: not-verified
@@ -24,7 +24,8 @@ dependsOn:
 
 # ADR-0019: Target de perfil vivo y proceso de constitución
 
-- Estado: accepted
+- Estado: superseded
+- Superseded by: ADR-0020
 - Fecha: 2026-10-18
 - Aceptación: 2026-10-18
 - Propietario: Arquitectura
@@ -34,7 +35,7 @@ dependsOn:
 ## Contexto
 
 DEC-001 fija tres targets de export: `archmaker-profile`, `archinstall-profile` y `report`.
-`docs/10-delivery/iso-scope.md` (ISO-01, aceptado el 2026-10-18) pide un cuarto target para el
+`docs/10-delivery/build-scope.md` (ISO-01, aceptado el 2026-10-18) pide un cuarto target para el
 perfil archiso de una imagen viva x86_64 UEFI, y prohíbe ampliar ese conjunto en silencio.
 
 ADR-0004 describe el runner de instalación: proceso separado, operaciones allowlisted, elevación

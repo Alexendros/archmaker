@@ -2,7 +2,7 @@
 id: ADR-0013
 phase: planning
 priority: P0
-documentStatus: in-review
+documentStatus: superseded
 approvalStatus: pending
 implementationStatus: partial
 verificationStatus: not-verified
@@ -17,10 +17,11 @@ dependsOn:
 
 # ADR-0013: UKI en ESP (`uki-on-esp`)
 
-- Estado: proposed
+- Estado: superseded
 - Fecha: 2026-10-17
 - Propietario: Arquitectura
 - Requisitos: FR-MANIFEST-001, NFR-DET-001
+- Superseded by: ADR-0020
 
 ## Contexto
 

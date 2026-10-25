@@ -15,6 +15,8 @@ reviewers:
 
 # ADR-0008: Catálogos firmados y procedencia
 
+- Nota: la firma de catálogos queda superseded por ADR-0020; la procedencia (sourceUrl, observedAt, status) sigue vigente.
+
 - Estado: accepted
 - Fecha: 2026-10-05
 - Propietario: Seguridad

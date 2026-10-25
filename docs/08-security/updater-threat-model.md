@@ -13,7 +13,7 @@ reviewers:
   - independent-reviewer
 dependsOn:
   - id: ADR-0009
-    expectedDocumentStatus: accepted
+    expectedDocumentStatus: superseded
     expectedApprovalStatus: approved
 ---
 

@@ -52,6 +52,7 @@ consumidores referencian los identificadores `DEC-*` y **no** reafirman su estad
 | DEC-011 | Nombre público Neubat + canal inicial AppImage Linux x86_64                | 2026-10-16 | product      | P0        | accepted | no         |
 | DEC-012 | Nombre visible Forge (GUI) + motor ArchMaker; ids técnicos intactos        | 2026-10-17 | product      | P0        | accepted | no         |
 | DEC-013 | Target `archmaker-live-profile` y proceso de constitución, sin A6          | 2026-10-18 | architecture | P0        | accepted | no         |
+| DEC-014 | Reorientación: GUI fina sobre archiso/archinstall                          | 2026-10-25 | product      | P0        | accepted | no         |
 
 ## Registro estructurado
 
@@ -76,6 +77,15 @@ consumidores referencian los identificadores `DEC-*` y **no** reafirman su estad
 - Consecuencia: el fichero público es `Forge-<prefijo-de-digest>-x86_64.iso` y se describe
   como derivada de Arch Linux. El contrato de código cambia en ISO-02.
 - Issue de seguimiento: ISO-02.
+
+### DEC-014 — Reorientación: GUI fina sobre archiso/archinstall
+
+- Pregunta: ¿qué producto se sostiene tras la auditoría del 2026-10-25?
+- Decisión: GUI fina sin root que valida, genera un perfil archiso completo y un `user_configuration.json` real de archinstall, y construye la ISO con `mkarchiso` en un contenedor Docker fijado por digest. Quedan fuera la escritura de discos, el runner de instalación, aarch64, Enterprise, actualizaciones firmadas, UKI/ESP, A6, el contrato de aplicación y los digests v2.
+- Fecha y autoridad: 2026-10-25 · `product` · `accepted`.
+- ADR: ADR-0020, ADR-0021. Requisitos: FR-EXPORT-001, NFR-SEC-001, NFR-DET-001. Riesgos: deriva de versión de archiso/archinstall, mitigada por digest y `--dry-run`. Gates: G2, G4, G9, G10.
+- Consecuencia: supersede DEC-001 (exporter experimental), DEC-003 (adapter versionado), DEC-004 (runner y elevación), DEC-006 (Sigstore keyless) y DEC-013 (constitución) en lo que contradigan esta decisión. El estado anterior queda congelado en la etiqueta `pre-reorientacion`.
+- Issue de seguimiento: ISO-05.
 
 ### DEC-002 — Ámbito de los identificadores
 

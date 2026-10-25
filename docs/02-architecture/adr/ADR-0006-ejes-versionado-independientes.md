@@ -2,7 +2,7 @@
 id: ADR-0006
 phase: MVP
 priority: P0
-documentStatus: accepted
+documentStatus: superseded
 approvalStatus: approved
 implementationStatus: complete
 verificationStatus: partial
@@ -15,10 +15,11 @@ reviewers:
 
 # ADR-0006: Ejes de versionado independientes
 
-- Estado: accepted
+- Estado: superseded
 - Fecha: 2026-10-05
 - Propietario: Arquitectura
 - Requisitos: FR-CAT-001, FR-MANIFEST-001, FR-EXPORT-001, FR-RUN-001, NFR-DET-001, NFR-MIG-001
+- Superseded by: ADR-0020
 
 ## Contexto
 

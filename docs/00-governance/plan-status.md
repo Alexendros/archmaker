@@ -28,7 +28,7 @@ reviewers:
   terminó _cancelled_ para `v0.1.0` y _success_ sin publicar para `v0.2.0`). `v0.1.0` se
   declara **no publicado** y no se recupera; la primera release real será `v0.3.0`
   (`docs/10-delivery/closure/f9-release.md`). Nombre visible vigente **Forge** (ADR-0012). ISO-01
-  (`iso-scope.md`, ADR-0019 / DEC-013) está `accepted` solo para imagen viva x86_64 UEFI;
+  (`build-scope.md`, ADR-0019 / DEC-013) está `accepted` solo para imagen viva x86_64 UEFI;
   el target `archmaker-live-profile` está en el árbol. La cara no invoca `mkarchiso`. El runner de instalación y
   Enterprise siguen sin `accepted`. Evidencia y `APPROVAL_RECORD` fuera del árbol.
 - Limitaciones: sin binario publicado; sin cosign local verificado; sin 3× install GUI;

@@ -15,7 +15,7 @@ dependsOn:
   - id: DOC-RES-HTML-001
     expectedDocumentStatus: in-review
   - id: ADR-0011
-    expectedDocumentStatus: in-review
+    expectedDocumentStatus: superseded
 ---
 
 # Revisión auditada del arranque

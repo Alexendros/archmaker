@@ -37,7 +37,7 @@ permite a tarifa de alta cero, sin presentar el producto como Arch Linux oficial
 visible: **Forge** (ADR-0012 / DEC-012; `v0.1.0` publicó Neubat bajo ADR-0010 / DEC-011).
 
 La tienda instala la aplicación. La imagen de instalación de un sistema es otro alcance
-(`docs/10-delivery/iso-scope.md`) está `accepted` solo como imagen viva (ISO-01). Este alcance de empaquetado no la construye.
+(`docs/10-delivery/build-scope.md`) está `accepted` solo como imagen viva (ISO-01). Este alcance de empaquetado no la construye.
 
 ## Plataforma autorizada (única)
 
@@ -45,7 +45,7 @@ La tienda instala la aplicación. La imagen de instalación de un sistema es otr
 | -------------------- | ---------------------------------------------------------------------- |
 | Plataforma           | **AppImage Linux x86_64**                                              |
 | Canal de publicación | GitHub Release del tag `v*` (workflow `.github/workflows/release.yml`) |
-| Nombre visible       | Forge (histórico `v0.1.0`: Neubat)                                    |
+| Nombre visible       | Forge (histórico `v0.1.0`: Neubat)                                     |
 | Arquitectura         | x86_64 (DEC-008)                                                       |
 | Motivo de elección   | Ver «Por qué AppImage» más abajo                                       |
 
@@ -105,12 +105,12 @@ release F9.
 
 ## Issues
 
-| #        | Issue                                               | Depende de | Gate   | Owner   | Criterio Done                                           | Estado    |
-| -------- | --------------------------------------------------- | ---------- | ------ | ------- | ------------------------------------------------------- | --------- |
-| MVP-6-01 | Aceptar este alcance y ADR-0010 (opción 3)          | —          | G2, G8 | product | Ambos `accepted`; DEC-011; plataforma AppImage única    | **done**  |
+| #        | Issue                                               | Depende de | Gate   | Owner   | Criterio Done                                           | Estado                                                  |
+| -------- | --------------------------------------------------- | ---------- | ------ | ------- | ------------------------------------------------------- | ------------------------------------------------------- |
+| MVP-6-01 | Aceptar este alcance y ADR-0010 (opción 3)          | —          | G2, G8 | product | Ambos `accepted`; DEC-011; plataforma AppImage única    | **done**                                                |
 | MVP-6-02 | Pipeline real de SBOM, provenance y firma (Etapa C) | 01         | G9     | release | DEC-006 deja de estar solo en política; F9              | **partial** (SBOM/provenance OK; cosign local deferred) |
 | MVP-6-03 | AppImage Linux x86_64 + checksums                   | 02         | G10    | release | Artefacto publicado; smoke/checksums                    | **done** (`v0.1.0`; GUI ×3 not-verified)                |
-| MVP-6-04 | Repo OBS / ficha AUR / `.deb` / `.rpm`              | —          | G10    | release | **deferred** — no parte del accepted de esta plataforma | deferred  |
+| MVP-6-04 | Repo OBS / ficha AUR / `.deb` / `.rpm`              | —          | G10    | release | **deferred** — no parte del accepted de esta plataforma | deferred                                                |
 
 ## Excluido
 

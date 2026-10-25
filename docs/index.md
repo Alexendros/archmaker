@@ -125,7 +125,7 @@ reviewers:
 | `mvp5-scope.md`                      | DOC-DEL-MVP5-001      | accepted  |
 | `mvp5-gap-spec.md`                   | DOC-DEL-MVP5-GAP-001  | draft     |
 | `mvp6-scope.md`                      | DOC-DEL-MVP6-001      | accepted  |
-| `iso-scope.md`                       | DOC-DEL-ISO-001       | accepted  |
+| `build-scope.md`                     | DOC-DEL-ISO-001       | accepted  |
 | `closure/f8-governance.md`           | DOC-DEL-CLO-F8-001    | accepted  |
 | `closure/p6-desktop-offline.md`      | DOC-DEL-CLO-P6-001    | draft     |
 | `closure/f9-release.md`              | DOC-DEL-CLO-F9-001    | in-review |

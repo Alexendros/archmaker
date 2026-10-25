@@ -2,7 +2,7 @@
 id: ADR-0009
 phase: MVP
 priority: P1
-documentStatus: accepted
+documentStatus: superseded
 approvalStatus: approved
 implementationStatus: not-started
 verificationStatus: not-verified
@@ -15,10 +15,11 @@ reviewers:
 
 # ADR-0009: Actualización firmada en el MVP (Tauri updater)
 
-- Estado: accepted
+- Estado: superseded
 - Fecha: 2026-10-05
 - Propietario: Release
 - Requisitos: NFR-SEC-001, NFR-OFF-001, NFR-OBS-001
+- Superseded by: ADR-0020
 
 ## Contexto
 

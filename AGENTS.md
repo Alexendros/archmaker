@@ -17,18 +17,16 @@
 
 ## Restricciones
 
-- Funcionalidad nueva solo dentro del veredicto vigente (CONDITIONAL-CLEAR hasta MVP-5, más el slice ISO-01 de imagen viva x86_64 UEFI: perfil archiso, una corrida `mkarchiso` en proceso separado y arranque vivo). El recorrido de la cara es Sistema base → Entorno → Apps → Identidad y seguridad → Revisión. El paso Disco y particiones sale de ese recorrido por orden del operador (2026-10-18). Siguen cerrados el runner de instalación, root, discos (A6), shell arbitraria y aarch64. Sin la línea ISO-01 de `go-no-go.md` no hay exporter ni `mkarchiso`.
+- Funcionalidad nueva solo dentro del veredicto vigente (ADR-0020): GUI fina sin root que valida, genera un perfil archiso completo y un `user_configuration.json` real de archinstall, y construye la ISO con `mkarchiso` en Docker (ADR-0021). El recorrido es Sistema base → Entorno → Apps → Identidad y seguridad → Revisión. Quedan cerrados el runner de instalación, root, escritura de discos (A6), shell arbitraria, aarch64 y Enterprise.
+- `mkarchiso` solo dentro del contenedor Docker descrito en ADR-0021 (nunca en host, `sudo` ni `pkexec`); perfil montado en solo lectura y salida explícita.
 - No ejecutar strings heredados `cmd`, hooks, `pacstrap` ni shell.
 - Rust es la única autoridad semántica; TypeScript no duplica reglas.
-- MVP no usa root, discos, shell, sidecars ni instalación real.
 - Tauri opera deny-by-default mediante capabilities y scopes mínimos.
-- El runner v1 es proceso separado, acepta operaciones tipadas y nunca scripts arbitrarios.
 - No modificar el diseño visual heredado salvo corrección trazable de accesibilidad, consistencia o mantenibilidad.
 - No añadir dependencias o contratos sin FR/NFR y ADR cuando proceda.
-- Cada PR declara IDs de requisitos, riesgos, amenazas, validadores y pruebas afectados.
 - No fusionar a `main` mientras exista algún check de CI en fallo o pendiente: la integración solo es válida con la suite completa en verde.
 - Nombre visible: GUI **Forge**; proyecto/motor **ArchMaker**. Neubat solo en historia/`v0.1.0`/allowlist (`tools/check_product_naming.py`).
-- Evidencia de cierre: sin autoaprobación; `technicalResult=passed` para aprobar; desktop/offline **blocked** sin binario de producción del tip (`p6-desktop-offline.md`); MockCorePort no cierra gates.
+- `reference/` es evidencia histórica, no normativa tras la reorientación.
 
 ## Learned User Preferences
 
@@ -46,7 +44,7 @@
 
 - Remoto canónico: `https://github.com/Alexendros/archmaker`. Licencia Apache-2.0.
 - Baseline vigente: `implementation-baseline-mvp5`. En el árbol están el walking skeleton MVP-0 y los slices MVP-1 (dominio, catálogo y migración v5.1), MVP-2 (reglas, resolución y validación), MVP-3 (adapters de exportación), MVP-4 (React + MockCorePort + cara Forge en `apps/web`) y MVP-5 (catálogo de matriz, UI cinco pasos, paridad Tauri/WASM, remediación operativa + Prove-It).
-- Alcance MVP-5 cerrado (`mvp5-scope.md`, MVP-5-01..05). Hueco residual histórico: `docs/10-delivery/mvp5-gap-spec.md` (draft; cara supersedida por incremento Forge 2026-10-17). Remediación operativa: `docs/10-delivery/remediation/`. MVP-6 **accepted** solo AppImage (histórico Neubat `v0.1.0`; nombre visible vigente Forge); **ninguna release publicada** (tags `v0.1.0`/`v0.2.0` sin GitHub Release ni AppImage, corregido el 2026-10-25; próxima `v0.3.0`). Reorientación aprobada el 2026-10-25: GUI fina sin root → perfil `archiso` completo + `user_configuration.json` real + ISO con `mkarchiso` en Docker (ADR-0020/0021). `iso-scope.md` **accepted** el 2026-10-18 solo para imagen viva x86_64 UEFI (ISO-01). El código del perfil y de `mkarchiso` empieza en ISO-02.
+- Alcance MVP-5 cerrado (`mvp5-scope.md`, MVP-5-01..05). Hueco residual histórico: `docs/10-delivery/mvp5-gap-spec.md` (draft; cara supersedida por incremento Forge 2026-10-17). Remediación operativa: `docs/10-delivery/remediation/`. MVP-6 **accepted** solo AppImage (histórico Neubat `v0.1.0`; nombre visible vigente Forge); **ninguna release publicada** (tags `v0.1.0`/`v0.2.0` sin GitHub Release ni AppImage, corregido el 2026-10-25; próxima `v0.3.0`). Reorientación aprobada el 2026-10-25: GUI fina sin root → perfil `archiso` completo + `user_configuration.json` real + ISO con `mkarchiso` en Docker (ADR-0020/0021). `build-scope.md` **accepted** el 2026-10-18 solo para imagen viva x86_64 UEFI (ISO-01). El código del perfil y de `mkarchiso` empieza en ISO-02.
 - `reference/v5.1/` es evidencia inmutable verificada por SHA-256. La UI React vive en `apps/web/` (`forge-face.ts`); el dominio está en `crates/archmaker-core` y se expone por CorePort.
 - Arranque de adaptadores vía `apps/web/src/create-core-port.ts`: Desktop → TauriCorePort (`invoke` de `@tauri-apps/api/core`); navegador → WasmCorePort (`tools/build-wasm.sh`); MockCorePort solo con `?mock=1` u opt-in explícito, nunca por fallo silencioso de Tauri/WASM.
 - ADR-0011 (propuesto, `in-review`): la selección del configurador produce un contrato JSON de aplicación; cada cláusula tiene schema en `contracts/json-schema/`, issue `kind:clause` y tests verificados en Rust. No añade target de imagen.
