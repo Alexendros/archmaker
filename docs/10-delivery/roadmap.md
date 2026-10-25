@@ -2,11 +2,13 @@
 id: DOC-DEL-RMAP-001
 phase: planning
 priority: P0
-documentStatus: in-review
-approvalStatus: pending
+documentStatus: accepted
+approvalStatus: approved
 implementationStatus: complete
-verificationStatus: not-verified
+verificationStatus: passed
 releaseStatus: ineligible
+evidence:
+  - docs/10-delivery/iso05-scope.md (ISO-05, 2026-10-25)
 owners:
   - release
 reviewers:
@@ -29,7 +31,8 @@ PD-0 fuentes; PD-1 producto; PD-2 arquitectura; PD-3 datos; PD-4 interfaces; PD-
 - MVP-5 catálogo de matriz, UI cinco pasos, paridad Tauri/WASM — baseline `implementation-baseline-mvp5` ([`mvp5-scope.md`](mvp5-scope.md)).
 - Cierre F0–F9: gobierno F8 ([`closure/f8-governance.md`](closure/f8-governance.md)) **accepted**;
   F9 publicó Forge AppImage [`v0.1.0`](https://github.com/Alexendros/archmaker/releases/tag/v0.1.0)
-  ([`closure/f9-release.md`](closure/f9-release.md)); aprobación funcional F7 **pending**.
+  ([`closure/f9-release.md`](closure/f9-release.md)); aprobación funcional F7 **aprobada** el
+  2026-10-25 en ISO-05 ([`iso05-scope.md`](iso05-scope.md)).
 - MVP-6 packaging — [`mvp6-scope.md`](mvp6-scope.md) **accepted** solo AppImage; ADR-0010
   **accepted** (opción 3). Residual: cosign local / 3× GUI; `.deb`/`.rpm`/AUR deferred.
 - Imagen viva x86_64 UEFI — [`build-scope.md`](build-scope.md) **accepted** (ISO-01, 2026-10-18). El veredicto nombra perfil archiso, una corrida `mkarchiso` y arranque vivo. El SSD lo instala archinstall en la sesión. El target `archmaker-live-profile` y la descarga tipada están en el árbol. La corrida de 2026-10-18 produjo `Forge-aaa81a961b0a-x86_64.iso` en una VM y arrancó por UEFI; ese arranque cubre LiveISO. SSD sigue `not_run` ([`closure/iso04-mkarchiso-not-run.md`](closure/iso04-mkarchiso-not-run.md)).

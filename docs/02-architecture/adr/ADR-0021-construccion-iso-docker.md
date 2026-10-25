@@ -4,9 +4,11 @@ phase: MVP
 priority: P0
 documentStatus: accepted
 approvalStatus: approved
-implementationStatus: partial
-verificationStatus: not-verified
+implementationStatus: complete
+verificationStatus: passed
 releaseStatus: ineligible
+evidence:
+  - .github/workflows/iso.yml G9 (ISO de humo + QEMU UEFI) y scripts/build-iso.sh (ISO 483733504 B)
 owners:
   - security
 reviewers:
@@ -21,6 +23,7 @@ reviewers:
 - Aprobación: operador, 2026-10-25 (reorientación)
 - Requisitos: FR-EXPORT-001, NFR-SEC-001, NFR-DET-001
 - Supersede a: ADR-0004
+- Verificación: ISO-05, 2026-10-25 ([`../../10-delivery/iso05-scope.md`](../../10-delivery/iso05-scope.md)); construcción y arranque UEFI reproducidos en CI (G9).
 
 ## Contexto
 
