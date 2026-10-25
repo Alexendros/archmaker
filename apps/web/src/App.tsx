@@ -21,6 +21,7 @@ import {
   type ImportDraftPayload,
 } from "./consented-import.js";
 import { draftForCore, listFaceExclusions } from "./draft-for-core.js";
+import { buildIso, cancelBuildIso } from "./build-iso-client.js";
 import {
   exportDraftCopy,
   loadLastDraftLocal,
@@ -188,6 +189,48 @@ export function App({ port, portKind }: Props) {
   const [importBusy, setImportBusy] = useState(false);
   const [importNotice, setImportNotice] = useState<string | null>(null);
   const generationRef = useRef(0);
+  const [buildStatus, setBuildStatus] = useState<
+    "idle" | "running" | "done" | "error"
+  >("idle");
+  const [buildLog, setBuildLog] = useState<string[]>([]);
+  const [buildResult, setBuildResult] = useState<{
+    isoPath: string;
+    sha256: string;
+  } | null>(null);
+
+  async function onBuildIso(): Promise<void> {
+    if (portKind !== "tauri" || buildStatus === "running") return;
+    const current = requireDraft();
+    if (!current) {
+      announce("alert", "No hay borrador para construir la ISO.");
+      return;
+    }
+    const confirmed = window.confirm(
+      "Se construirá la ISO en un contenedor Docker efímero.\n\n" +
+        "Comando: scripts/build-iso.sh <bundle> --out <datos>/iso\n" +
+        "Salida: <datos de la aplicación>/iso\n\n" +
+        "Docker debe estar instalado y en ejecución. La primera vez se descarga la imagen archiso.",
+    );
+    if (!confirmed) return;
+    setBuildStatus("running");
+    setBuildLog([]);
+    setBuildResult(null);
+    setBusy(true);
+    try {
+      const result = await buildIso(
+        draftForCore(structuredClone(current)),
+        (line) => setBuildLog((previous) => [...previous.slice(-199), line]),
+      );
+      setBuildResult(result);
+      setBuildStatus("done");
+      announce("status", "ISO construida.");
+    } catch (error) {
+      setBuildStatus("error");
+      announce("alert", error instanceof Error ? error.message : String(error));
+    } finally {
+      setBusy(false);
+    }
+  }
   const importInputRef = useRef<HTMLInputElement>(null);
   const preparedGenerationRef = useRef<number | null>(null);
   const draftRef = useRef<Draft | null>(null);
@@ -1099,7 +1142,47 @@ export function App({ port, portKind }: Props) {
                 >
                   Pedir imagen
                 </button>
+                <button
+                  type="button"
+                  className="forge-btn-primary"
+                  id="btn-build-iso"
+                  disabled={busy || portKind !== "tauri"}
+                  title={
+                    portKind === "tauri"
+                      ? "Construir la ISO con mkarchiso en Docker"
+                      : "Solo escritorio: requiere Docker"
+                  }
+                  onClick={() => void onBuildIso()}
+                >
+                  Construir ISO
+                </button>
+                {buildStatus === "running" ? (
+                  <button
+                    type="button"
+                    className="forge-btn-primary"
+                    id="btn-build-iso-cancel"
+                    onClick={() => void cancelBuildIso()}
+                  >
+                    Cancelar
+                  </button>
+                ) : null}
               </div>
+              {buildLog.length > 0 || buildResult ? (
+                <div
+                  className="forge-callout forge-callout-info"
+                  aria-live="polite"
+                >
+                  <strong>Construcción de la ISO</strong>
+                  {buildResult ? (
+                    <p>
+                      ISO: <code>{buildResult.isoPath}</code>
+                      <br />
+                      SHA-256: <code>{buildResult.sha256}</code>
+                    </p>
+                  ) : null}
+                  <pre>{buildLog.join("\n")}</pre>
+                </div>
+              ) : null}
             </section>
           ) : null}
         </main>

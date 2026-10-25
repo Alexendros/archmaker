@@ -18,6 +18,8 @@ fn main() {
             "validate_storage_plan",
             "import_storage_snapshot",
             "constitute_image",
+            "build_iso",
+            "cancel_build_iso",
         ]),
     ))
     .expect("tauri_build with AppManifest::commands");

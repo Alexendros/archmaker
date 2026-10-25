@@ -1,1 +1,36 @@
-{"main-capability":{"identifier":"main-capability","description":"Ventana main: CorePort + guardado nativo acotado (save_export_bytes). Sin shell ni FS global.","local":true,"windows":["main"],"permissions":["allow-create-draft","allow-load-catalog","allow-save-draft","allow-open-draft","allow-resolve-draft","allow-validate-draft","allow-build-manifest","allow-export-artifact","allow-import-draft","allow-save-export-bytes","allow-inspect-host-hardware","allow-inspect-storage-devices","allow-refresh-storage-snapshot","allow-propose-storage-plan","allow-validate-storage-plan","allow-import-storage-snapshot","allow-constitute-image"]},"restricted-capability":{"identifier":"restricted-capability","description":"Ventana de prueba ACL: sin permisos de comandos propios.","local":true,"windows":["restricted"],"permissions":[]}}
+{
+  "main-capability": {
+    "identifier": "main-capability",
+    "description": "Ventana main: CorePort + guardado nativo acotado (save_export_bytes) + construcción de ISO en Docker (build_iso). Sin shell ni FS global.",
+    "local": true,
+    "windows": ["main"],
+    "permissions": [
+      "allow-create-draft",
+      "allow-load-catalog",
+      "allow-save-draft",
+      "allow-open-draft",
+      "allow-resolve-draft",
+      "allow-validate-draft",
+      "allow-build-manifest",
+      "allow-export-artifact",
+      "allow-import-draft",
+      "allow-save-export-bytes",
+      "allow-inspect-host-hardware",
+      "allow-inspect-storage-devices",
+      "allow-refresh-storage-snapshot",
+      "allow-propose-storage-plan",
+      "allow-validate-storage-plan",
+      "allow-import-storage-snapshot",
+      "allow-constitute-image",
+      "allow-build-iso",
+      "allow-cancel-build-iso"
+    ]
+  },
+  "restricted-capability": {
+    "identifier": "restricted-capability",
+    "description": "Ventana de prueba ACL: sin permisos de comandos propios.",
+    "local": true,
+    "windows": ["restricted"],
+    "permissions": []
+  }
+}

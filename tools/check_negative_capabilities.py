@@ -38,7 +38,12 @@ HW_CMDS = [
     "validate_storage_plan",
     "import_storage_snapshot",
 ]
-APP_CMDS = CORE_CMDS + ["save_export_bytes", "constitute_image"] + HW_CMDS
+APP_CMDS = CORE_CMDS + [
+    "save_export_bytes",
+    "constitute_image",
+    "build_iso",
+    "cancel_build_iso",
+] + HW_CMDS
 
 build_rs = (ROOT / "src-tauri/build.rs").read_text()
 check(
@@ -53,11 +58,13 @@ check("NEG-001 deny-by-default por ventana", cap.get("windows") == ["main"])
 perms = cap.get("permissions") or []
 check(
     "NEG-001 main concede CorePort + save_export + hardware probe",
-    len(perms) == 17
+    len(perms) == 19
     and all(isinstance(p, str) and p.startswith("allow-") for p in perms)
     and "allow-save-export-bytes" in perms
     and "allow-constitute-image" in perms
-    and "allow-inspect-host-hardware" in perms,
+    and "allow-inspect-host-hardware" in perms
+    and "allow-build-iso" in perms
+    and "allow-cancel-build-iso" in perms,
     str(perms),
 )
 check(

@@ -3,6 +3,7 @@
 //! ACL Tauri (AppManifest::commands + capabilities) es la primera capa.
 //! `check_invoke` en Rust es la segunda (matriz ventana × operación).
 
+mod build_iso;
 mod hardware_ipc;
 mod save_export;
 
@@ -13,6 +14,7 @@ use archmaker_core::{
     CreateDraftInput, ExportArtifactInput, ImportDraftInput, LoadCatalogInput, OpenDraftInput,
     RealCore, ResolveDraftInput, SaveDraftInput, ValidateDraftInput, Window,
 };
+use build_iso::{build_iso, cancel_build_iso, BuildState};
 use hardware_ipc::HardwareState;
 use save_export::{save_export_with_picker, NativeSavePicker, SaveExportInput};
 use tauri::Manager;
@@ -50,6 +52,18 @@ fn gate_save_export(window: &tauri::Window) -> Result<(), serde_json::Value> {
             label,
             "save_export_bytes",
         ))),
+    }
+}
+
+fn gate_build_iso(window: &tauri::Window) -> Result<(), serde_json::Value> {
+    let label = window.label();
+    match Window::parse(label) {
+        Some(Window::Main) => Ok(()),
+        Some(other) => Err(core_error_value(CoreError::proto_denied(&format!(
+            "archmaker-invoke.{}.build_iso",
+            other.as_str()
+        )))),
+        None => Err(core_error_value(unknown_command_error(label, "build_iso"))),
     }
 }
 
@@ -212,6 +226,7 @@ pub fn run() {
             app.manage(HardwareState(std::sync::Mutex::new(
                 hardware_ipc::HardwareSession::default(),
             )));
+            app.manage(BuildState::default());
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
@@ -226,6 +241,8 @@ pub fn run() {
             import_draft,
             save_export_bytes,
             constitute_image,
+            build_iso,
+            cancel_build_iso,
             hardware_ipc::inspect_host_hardware,
             hardware_ipc::inspect_storage_devices,
             hardware_ipc::refresh_storage_snapshot,

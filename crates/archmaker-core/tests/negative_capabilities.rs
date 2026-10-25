@@ -154,8 +154,8 @@ fn neg_capability_deny_by_default() {
         .expect("permissions debe ser lista");
     assert_eq!(
         perms.len(),
-        17,
-        "main: 9 CorePort + allow-save-export-bytes + allow-constitute-image + 6 hardware-inspect (sin shell/FS)"
+        19,
+        "main: 9 CorePort + allow-save-export-bytes + allow-constitute-image + allow-build-iso/cancel-build-iso + 6 hardware-inspect (sin shell/FS)"
     );
     let mut has_scoped_save = false;
     let mut has_constitute = false;
