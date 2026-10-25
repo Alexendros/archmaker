@@ -328,7 +328,7 @@ Schema `https://archmaker.dev/schemas/artifact.schema.json`. Declara target, pro
 | `mediaType`       | string                    | Sí     | —                                         | IANA.                                                                                            |
 | `binaryDigest`    | BinaryDigest              | Sí     | `common#/$defs/binaryDigest`              | Bytes exactos.                                                                                   |
 | `manifestRef`     | ManifestRef               | Sí     | `artifact.schema.json#/$defs/manifestRef` | `{ contentDigest }` semántico.                                                                   |
-| `experimental`    | boolean                   | No     | —                                         | `true` para `archinstall-profile`.                                                               |
+| `experimental`    | boolean                   | No     | —                                         | Reservado; ningún target lo activa.                                                              |
 | `content`         | object \| array \| string | No     | —                                         | Mapa abierto definido por el adapter (SRC-003).                                                  |
 
 ## Regla de paridad Rust/TypeScript/WASM

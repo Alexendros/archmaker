@@ -321,6 +321,16 @@ jobs:
             *.md
         # Config del gate: .markdownlint-cli2.jsonc (auto-descubierta).
 
+  archinstall-contract:
+    name: Contrato archinstall 4.5 (G4)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Validar user_configuration.json
+        run: bash tools/validate-archinstall-config.sh crates/archmaker-core/fixtures/archinstall-user-configuration-4.5.json
+
   audit:
     name: Security audit Rust/JS (G9)
     runs-on: ubuntu-latest
