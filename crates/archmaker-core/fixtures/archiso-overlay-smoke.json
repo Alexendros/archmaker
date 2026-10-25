@@ -1,0 +1,21 @@
+{
+  "adapter": "archmaker-live-profile",
+  "arch": "x86_64",
+  "baseDescription": "derivada de Arch Linux",
+  "deferredFetch": [],
+  "files": {
+    "airootfs/root/user_configuration.json": "{\n  \"audio_config\": {\n    \"audio\": \"pipewire\"\n  },\n  \"hostname\": \"forge\",\n  \"kernels\": [\n    \"linux\"\n  ],\n  \"locale_config\": {\n    \"kb_layout\": \"us\",\n    \"sys_enc\": \"UTF-8\",\n    \"sys_lang\": \"en_US.UTF-8\"\n  },\n  \"ntp\": true,\n  \"script\": \"guided\",\n  \"timezone\": \"UTC\",\n  \"version\": \"2.8.6\"\n}",
+    "packages.x86_64": "linux\n",
+    "pacman.conf": "[options]\nHoldPkg = pacman glibc\nArchitecture = auto\nCheckSpace\nSigLevel = Required DatabaseOptional\nLocalFileSigLevel = Optional\n\n[core]\nInclude = /etc/pacman.d/mirrorlist\n\n[extra]\nInclude = /etc/pacman.d/mirrorlist\n\n[multilib]\nInclude = /etc/pacman.d/mirrorlist\n",
+    "profiledef.sh": "#!/usr/bin/env bash\niso_name=\"Forge\"\niso_label=\"FORGE_69da5291af43\"\niso_publisher=\"ArchMaker Forge <https://github.com/Alexendros/archmaker>\"\niso_application=\"Forge, derivada de Arch Linux\"\niso_version=\"69da5291af43\"\ninstall_dir=\"forge\"\nbuildmodes=('iso')\nbootmodes=('bios.syslinux' 'uefi.systemd-boot')\narch=\"x86_64\"\npacman_conf=\"pacman.conf\"\nairootfs_image_type=\"squashfs\"\nairootfs_image_tool_options=('-comp' 'xz' '-Xbcj' 'x86' '-b' '1M' '-Xdict-size' '1M')\nbootstrap_tarball_compression=('zstd' '-c' '-T0' '--auto-threads=logical' '--long' '-19')\nfile_permissions=(\n[\"/etc/shadow\"]=\"0:0:400\"\n[\"/etc/gshadow\"]=\"0:0:400\"\n[\"/root\"]=\"0:0:750\"\n[\"/root/user_configuration.json\"]=\"0:0:600\"\n)\n"
+  },
+  "manifestRef": {
+    "contentDigest": {
+      "algorithm": "sha256",
+      "kind": "content",
+      "value": "69da5291af43a62f68ca1f6d99fcafd3dbe9f03b3bfffe853a18b11eb2df84eb"
+    }
+  },
+  "publicFilename": "Forge-69da5291af43-x86_64.iso",
+  "version": "0.1.0"
+}

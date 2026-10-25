@@ -1,0 +1,55 @@
+name: iso
+
+on:
+  pull_request:
+    paths:
+      - "crates/archmaker-core/**"
+      - "docker/**"
+      - "scripts/**"
+      - ".github/workflows/iso.yml"
+  push:
+    branches: [main]
+    paths:
+      - "crates/archmaker-core/**"
+      - "docker/**"
+      - "scripts/**"
+      - ".github/workflows/iso.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: iso-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    name: ISO de humo + arranque QEMU UEFI (G9)
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Instalar QEMU y OVMF
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends qemu-system-x86 ovmf
+
+      - name: Construir la imagen del constructor
+        run: docker build -t archmaker-archiso:local -f docker/archiso.Dockerfile docker
+
+      - name: Construir la ISO de humo
+        run: |
+          scripts/build-iso.sh \
+            crates/archmaker-core/fixtures/archiso-overlay-smoke.json \
+            --base baseline \
+            --serial-console \
+            --out target/iso
+
+      - name: Arrancar la ISO en QEMU UEFI
+        run: scripts/boot-test.sh target/iso/*.iso 900
+
+      - name: Mostrar checksums
+        run: cat target/iso/SHA256SUMS

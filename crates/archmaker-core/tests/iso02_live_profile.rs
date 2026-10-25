@@ -107,7 +107,7 @@ fn iso02_same_manifest_same_bytes_without_pacstrap_or_cmd() {
     assert!(profiledef.contains("arch=\"x86_64\""));
     assert!(profiledef.contains("iso_name=\"Forge\""));
     assert!(profiledef.contains("derivada de Arch Linux"));
-    assert!(profiledef.contains("bootmodes=('uefi.systemd-boot' 'bios.syslinux')"));
+    assert!(profiledef.contains("bootmodes=('bios.syslinux' 'uefi.systemd-boot')"));
     assert!(profiledef.contains("[\"/root/user_configuration.json\"]=\"0:0:600\""));
     let pacman = value["files"]["pacman.conf"].as_str().expect("pacman");
     assert!(pacman.contains("[core]"));

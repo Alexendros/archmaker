@@ -1,6 +1,6 @@
 {
-  "generated_at": "1792895927",
-  "git_sha": "6462fea8d07f8fb5b7cebd022bd7fa942fdfc500",
+  "generated_at": "1792900192",
+  "git_sha": "a70375d700ede88b632a2ec042618ef44c7bd4b7",
   "tests": [
     {
       "id": "TST-ARCHMAKER-CONSTITUTE-FETCH-FIXTURE_FETCH_STAYS_INSIDE_PROFILE_AND_CITES_DIGEST",
@@ -581,6 +581,15 @@
       "workflow": "ci",
       "covers": ["FR-CAT-001"],
       "description": "f3_fidelity::catalog_ref_ok_digest_version_and_id"
+    },
+    {
+      "id": "TST-ARCHMAKER-CORE-ARCHISO_OVERLAY_FIXTURE-ARCHISO_SMOKE_OVERLAY_FIXTURE_MATCHES_RENDER",
+      "type": "unit",
+      "location": "crates/archmaker-core/tests/archiso_overlay_fixture.rs",
+      "command": "cargo test -p archmaker-core --test archiso_overlay_fixture archiso_smoke_overlay_fixture_matches_render",
+      "workflow": "ci",
+      "covers": ["FR-EXPORT-001", "NFR-DET-001", "NFR-SEC-001"],
+      "description": "archiso_overlay_fixture::archiso_smoke_overlay_fixture_matches_render"
     },
     {
       "id": "TST-ARCHMAKER-CORE-CORE_CONTRACT-NEW_UUID_V4_WASM_SAFE_IS_VALID_WITHOUT_HOST_ENTROPY",

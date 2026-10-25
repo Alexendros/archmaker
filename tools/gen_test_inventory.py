@@ -207,6 +207,8 @@ def infer_covers(crate: str, test_file: str, test_fn: str) -> List[str]:
         'archmaker-constitute': ['FR-EXPORT-001', 'NFR-SEC-001'],
         # Contrato nativo archinstall 4.5: user_configuration.json real y determinista.
         'archinstall_config': ['FR-EXPORT-001', 'FR-MANIFEST-001', 'NFR-DET-001', 'NFR-SEC-001'],
+        # Overlay archiso de humo: contrato de exportación, determinismo y seguridad.
+        'archiso_overlay_fixture': ['FR-EXPORT-001', 'NFR-DET-001', 'NFR-SEC-001'],
     }
 
     for keyword, reqs in keyword_map.items():

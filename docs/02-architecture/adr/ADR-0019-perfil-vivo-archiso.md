@@ -14,7 +14,7 @@ reviewers:
 dependsOn:
   - id: ADR-0003
     expectedDocumentStatus: accepted
-  - id: ADR-0004
+  - id: ADR-0021
     expectedDocumentStatus: accepted
   - id: ADR-0010
     expectedDocumentStatus: accepted
