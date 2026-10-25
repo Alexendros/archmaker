@@ -75,6 +75,8 @@ jobs:
         run: corepack enable && corepack prepare pnpm@11.21.0 --activate && pnpm --version
       - name: Install JS deps (frozen)
         run: pnpm install --frozen-lockfile
+      - name: wasm-bindgen-cli 0.2.129
+        run: cargo install wasm-bindgen-cli --locked --version 0.2.129
       - name: Build web frontend (+ WASM)
         run: pnpm --dir apps/web build
       - name: Build AppImage (Forge)
