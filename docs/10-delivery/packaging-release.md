@@ -61,8 +61,8 @@ DEC-011 / MVP-6 accepted):**
 
 F9 intentó construir desde `RC_SHA` `9297ed7…`, pero el workflow terminó `cancelled` y no
 publicó nada. Los tags `v0.1.0` y `v0.2.0` carecen de GitHub Release (`/releases` = `[]`;
-`/releases/tags/*` = 404), por lo que `v0.1.0` se declara **no publicado** (histórico
-Neubat). Residual DEC-006 / cosign local y 3× install GUI siguen abiertos.
+`/releases/tags/*` = 404), por lo que `v0.1.0` se declara **no publicado** (histórico,
+nombre anterior). Residual DEC-006 / cosign local y 3× install GUI siguen abiertos.
 
 Desde `0.2.0`, un tag `v*` anota la versión de código y no publica el paquete. El job de
 AppImage en `release.yml` solo corre con `workflow_dispatch` y `publish_package=true`, cuando
