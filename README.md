@@ -1,37 +1,37 @@
 # ArchMaker
 
-Configurador local para diseñar, validar y exportar un perfil. Rust es la autoridad semántica; la interfaz es React en Tauri y WASM. Este repositorio contiene la evidencia reproducible hasta la baseline `implementation-baseline-mvp5` y el cierre funcional F0–F7 en `main`: CorePort, adapters, canonicalización, reglas, resolución, manifest, export, security, CI y supply chain. No instala el sistema ni ejecuta un plan. El runner v1 y los privilegios se autorizan en fases posteriores.
+Configurador local para diseñar, validar y exportar un perfil. Rust es la autoridad semántica; la interfaz es React en Tauri y WASM. Este repositorio contiene la evidencia reproducible hasta la baseline `implementation-baseline-mvp5` y el cierre funcional F0–F9 en `main`: CorePort, adapters, canonicalización, reglas, resolución, manifest, export, security, CI y supply chain. No instala el sistema ni ejecuta un plan. El runner v1 y los privilegios se autorizan en fases posteriores.
 
 ## Estado
 
 Tres capas distintas (detalle: [`docs/10-delivery/closure/f8-governance.md`](docs/10-delivery/closure/f8-governance.md)):
 
-| Capa                 | Estado                                                                                                      |
-| -------------------- | ----------------------------------------------------------------------------------------------------------- |
-| Baseline de código   | **passed** — tag `implementation-baseline-mvp5`; F0–F8 fusionados en `main`                                 |
-| Aprobación funcional | **pending** — matriz F7 ejecutable; sin `RC_SHA_FUNCIONAL` ni aceptación independiente (`f7-candidate.md`)  |
-| Release binaria      | **no publicada** — tags `v0.1.0` y `v0.2.0` existen, pero **no hay GitHub Release** ni AppImage descargable |
-| Versión de código    | **0.2.0** — tag `v0.2.0`; la primera release real será `v0.3.0`                                             |
+| Capa                 | Estado                                                                                                                          |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| Baseline de código   | **passed** — tag `implementation-baseline-mvp5`; F0–F9 fusionados en `main`                                                     |
+| Aprobación funcional | **aprobada** — F7 aprobada el 2026-10-25 en ISO-05; residuales cosign local y 3× instalación GUI                                |
+| Release binaria      | **publicada** — [`v0.3.0`](https://github.com/Alexendros/archmaker/releases/tag/v0.3.0) con AppImage, firmas, SBOM y provenance |
+| Versión de código    | **0.3.0** — tag `v0.3.0`                                                                                                        |
 
-- Corrección de estado (2026-10-25): la API de GitHub devuelve `[]` en `/releases` y `404`
-  en `/releases/tags/v0.1.0` y `/releases/tags/v0.2.0`. Las ejecuciones de `release.yml`
-  terminaron en _cancelled_ (`v0.1.0`) y _success_ sin publicar Release (`v0.2.0`). Por
-  tanto **no existe binario publicado**: `v0.1.0` se declara no publicado y no se intenta
-  recuperar. Detalle: [`docs/10-delivery/closure/f9-release.md`](docs/10-delivery/closure/f9-release.md).
-- Limitaciones honestas: F7 sin `RC_SHA_FUNCIONAL`; cosign local y tres instalaciones GUI
-  siguen residuales F9; sin `.deb`/`.rpm`. Changelog: [`CHANGELOG.md`](CHANGELOG.md).
-- **Reorientación en curso (25/10/2026)**: el objetivo pasa a ser una GUI fina sin root
-  (**Forge**) que valida la selección con explicaciones, genera un perfil `archiso`
-  completo y un `user_configuration.json` real de `archinstall`, y construye la ISO con
-  `mkarchiso` **siempre dentro de un contenedor Docker**. Quedan fuera de alcance la
-  escritura de discos desde Forge, `aarch64`, Enterprise y el runner de instalación.
-  La decisión se formaliza en ADR-0020 y ADR-0021 (en preparación); el estado anterior
-  queda congelado en el tag `pre-reorientacion`.
+- Nota histórica (corregida el 2026-10-25): la API de GitHub devolvía `[]` en `/releases` y
+  `404` en `/releases/tags/v0.1.0` y `/releases/tags/v0.2.0`; las ejecuciones de `release.yml`
+  terminaron en _cancelled_ (`v0.1.0`) y _success_ sin publicar Release (`v0.2.0`). `v0.1.0`
+  se declara no publicado y no se intenta recuperar. Detalle:
+  [`docs/10-delivery/closure/f9-release.md`](docs/10-delivery/closure/f9-release.md).
+- Limitaciones honestas: cosign local y tres instalaciones GUI siguen residuales F9; sin
+  `.deb`/`.rpm`. Changelog: [`CHANGELOG.md`](CHANGELOG.md).
+- **Reorientación verificada (25/10/2026, ISO-05)**: la GUI fina sin root (**Forge**) valida
+  la selección con explicaciones, genera un perfil `archiso` completo y un
+  `user_configuration.json` real de `archinstall`, y construye la ISO con `mkarchiso`
+  **siempre dentro de un contenedor Docker**. Quedan fuera de alcance la escritura de discos
+  desde Forge, `aarch64`, Enterprise y el runner de instalación. Decisión: ADR-0020 y
+  ADR-0021, aceptados y verificados; el estado anterior quedó congelado en el tag
+  `pre-reorientacion`.
   Archify es herramienta de diagramación; no confundir con Forge.
 - Gate global (mecánico): **Clear** — todos los gates G0–G10 están `complete`. Autoridad: [`docs/00-governance/go-no-go.md`](docs/00-governance/go-no-go.md) y [`docs/10-delivery/gates.md`](docs/10-delivery/gates.md).
-- Veredicto de gobierno: **CONDITIONAL-CLEAR** hasta MVP-5, más el slice ISO-01 de imagen viva x86_64 UEFI. Autoriza el walking skeleton, los slices MVP-1..MVP-5 y el canal AppImage de MVP-6. Siguen bloqueados el runner de instalación, la escritura de discos, la shell arbitraria y Enterprise.
+- Veredicto de gobierno: **CONDITIONAL-CLEAR** hasta MVP-5, más los slices ISO-01..ISO-05 de imagen viva x86_64 UEFI. Autoriza el walking skeleton, los slices MVP-1..MVP-5, el canal AppImage de MVP-6 y el cierre de la reorientación. Siguen bloqueados el runner de instalación, la escritura de discos, la shell arbitraria y Enterprise.
 - Baseline vigente: `implementation-baseline-mvp5` (commit anotado `b13c200…`; tags previos intactos). Remediación operativa: [`docs/10-delivery/remediation/`](docs/10-delivery/remediation/).
-- Alcance MVP-5 **accepted** y cerrado (MVP-5-01..05): [`docs/10-delivery/mvp5-scope.md`](docs/10-delivery/mvp5-scope.md). Hueco residual: [`mvp5-gap-spec.md`](docs/10-delivery/mvp5-gap-spec.md) (draft). Empaquetado MVP-6 **accepted solo AppImage** ([`mvp6-scope.md`](docs/10-delivery/mvp6-scope.md)); imagen viva [`build-scope.md`](docs/10-delivery/build-scope.md) **accepted** (ISO-01). El target `archmaker-live-profile` está en el árbol; la cara no invoca `mkarchiso`.
+- Alcance MVP-5 **accepted** y cerrado (MVP-5-01..05): [`docs/10-delivery/mvp5-scope.md`](docs/10-delivery/mvp5-scope.md). Hueco residual: [`mvp5-gap-spec.md`](docs/10-delivery/mvp5-gap-spec.md) (draft). Empaquetado MVP-6 **accepted solo AppImage** ([`mvp6-scope.md`](docs/10-delivery/mvp6-scope.md)); imagen viva [`build-scope.md`](docs/10-delivery/build-scope.md) **accepted** (ISO-01) y cierre [`iso05-scope.md`](docs/10-delivery/iso05-scope.md) **accepted/verificado**. El target `archmaker-live-profile` está en el árbol; la cara pide la ISO y `mkarchiso` solo se ejecuta dentro de Docker.
 - Fuentes históricas: `reference/v5.1/`, conservadas por hash; walking skeleton en [`docs/10-delivery/walking-skeleton.md`](docs/10-delivery/walking-skeleton.md).
 - Rust: autoridad de dominio y casos de uso (nativo + WASM).
 - React: cara Forge; escritorio → `TauriCorePort` (`invoke` de `@tauri-apps/api/core`); navegador → `WasmCorePort`. `MockCorePort` solo con `?mock=1` en desarrollo.
@@ -40,7 +40,7 @@ Tres capas distintas (detalle: [`docs/10-delivery/closure/f8-governance.md`](doc
 - Runner privilegiado: diferido (ADR-0004 / DEC-004).
 - Manual de uso: [`docs/11-operations/manual/`](docs/11-operations/manual/) y [wiki](https://github.com/Alexendros/archmaker/wiki).
 - Instalación de Forge: [`docs/11-operations/manual/Instalacion-Forge.md`](docs/11-operations/manual/Instalacion-Forge.md).
-- Desktop/offline del tip: [`docs/10-delivery/closure/p6-desktop-offline.md`](docs/10-delivery/closure/p6-desktop-offline.md) (**blocked** sin binario prod).
+- Desktop/offline del tip: [`docs/10-delivery/closure/p6-desktop-offline.md`](docs/10-delivery/closure/p6-desktop-offline.md) (**blocked** — pendiente validar el AppImage `v0.3.0` en escritorio real).
 
 ## Documentación
 

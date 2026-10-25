@@ -9,8 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.3.0] - 2026-10-25
 
-Primera release real del proyecto: GitHub Release `v0.3.0` con AppImage de Forge, `SHA256SUMS`,
-firma cosign keyless y SBOM. Cierra y verifica la reorientación (ISO-05, ADR-0020/ADR-0021).
+Primera release real del proyecto: [GitHub Release `v0.3.0`](https://github.com/Alexendros/archmaker/releases/tag/v0.3.0)
+con AppImage de Forge, `SHA256SUMS`, firmas cosign keyless, SBOM CycloneDX y provenance SLSA v1.
+Cierra y verifica la reorientación (ISO-05, ADR-0020/ADR-0021).
 
 ### Added
 

@@ -6,9 +6,11 @@ documentStatus: accepted
 approvalStatus: approved
 implementationStatus: complete
 verificationStatus: passed
-releaseStatus: eligible
+releaseStatus: released
 evidence:
   - docs/10-delivery/iso05-scope.md (ISO-05, 2026-10-25)
+  - https://github.com/Alexendros/archmaker/releases/tag/v0.3.0 (publicada, 2026-10-25)
+  - .github/workflows/release.yml run 40184194831 (success)
 owners:
   - release
 reviewers:
@@ -17,7 +19,7 @@ reviewers:
 
 # Packaging y release
 
-- Estado: accepted (canal F8 accepted; F9 sin release binaria publicada hasta `v0.3.0`)
+- Estado: accepted (canal F8 accepted; F9 publicada en `v0.3.0`, 2026-10-25)
 - Propietario: Release
 - Última revisión: 2026-10-25
 - Requisitos relacionados: FR-EXPORT-001, NFR-OBS-001, NFR-SEC-001, NFR-PORT-001, NFR-MARK-001, NFR-COST-001
@@ -64,10 +66,16 @@ publicó nada. Los tags `v0.1.0` y `v0.2.0` carecen de GitHub Release (`/release
 `/releases/tags/*` = 404), por lo que `v0.1.0` se declara **no publicado** (histórico,
 nombre anterior). Residual DEC-006 / cosign local y 3× install GUI siguen abiertos.
 
+La primera release binaria real es `v0.3.0` (2026-10-25), publicada desde `main` `1dbe3912`
+con `publish_package=true` en <https://github.com/Alexendros/archmaker/releases/tag/v0.3.0>:
+AppImage `Forge_0.3.0_amd64.AppImage` (84 326 904 B), `SHA256SUMS`, firmas `.sig`/`.pem`,
+`sbom.cdx.json` y `slsa-provenance.json`. La verificación de firmas del release usa pinning
+de identidad e issuer contra la instancia pública de Sigstore.
+
 Desde `0.2.0`, un tag `v*` anota la versión de código y no publica el paquete. El job de
 AppImage en `release.yml` solo corre con `workflow_dispatch` y `publish_package=true`, cuando
-el AppImage esté funcional y validado con tests. La primera release binaria real es
-`v0.3.0` (2026-10-25), verificada en ISO-05 (`docs/10-delivery/iso05-scope.md`).
+el AppImage esté funcional y validado con tests. `v0.3.0` es la primera release binaria real,
+verificada en ISO-05 (`docs/10-delivery/iso05-scope.md`).
 
 Canales `nightly` / `beta` / `stable` son política de promoción del paquete. No son tags que
 `plan-release.yml` dispare. El AUR, si se reabre, es PKGBUILD fuente, no repositorio binario
@@ -105,8 +113,9 @@ Cada release publica, como mínimo:
 - **SBOM y provenance**: se generan en el mismo job de build/attest (ver `docs/09-quality/ci-cd.md`).
 - **Source tarball**: garantiza reproducibilidad y auditoría independiente del binario.
 - **Compatibilidad**: matriz mínima Arch Linux **x86_64 únicamente** (DEC-008, aceptada 2026-10-05); aarch64 fuera de alcance.
-- Etapa C en `v0.3.0`: SBOM + provenance + checksums publicados; cosign local y
-  verificación estrictamente offline (firmas bundle) siguen pendientes (DEC-006).
+- Etapa C en `v0.3.0`: SBOM + provenance + checksums publicados y firmas verificadas
+  en CI contra la instancia pública de Sigstore; cosign local y verificación
+  estrictamente offline (firmas bundle) siguen pendientes (DEC-006).
 
 ## Canales
 
