@@ -1081,13 +1081,57 @@ fn live_public_filename(content_digest: &str) -> String {
     format!("Forge-{prefix}-x86_64.iso")
 }
 
+const OVERLAY_PATHS: [&str; 4] = [
+    "profiledef.sh",
+    "packages.x86_64",
+    "pacman.conf",
+    "airootfs/root/user_configuration.json",
+];
+
+const PACMAN_CONF: &str = "\
+[options]
+HoldPkg = pacman glibc
+Architecture = auto
+CheckSpace
+SigLevel = Required DatabaseOptional
+LocalFileSigLevel = Optional
+
+[core]
+Include = /etc/pacman.d/mirrorlist
+
+[extra]
+Include = /etc/pacman.d/mirrorlist
+
+[multilib]
+Include = /etc/pacman.d/mirrorlist
+";
+
 fn profiledef_sh(version_prefix: &str) -> String {
     format!(
-        "arch=\"x86_64\"\niso_name=\"Forge\"\niso_application=\"{LIVE_BASE_DESCRIPTION}\"\niso_version=\"{version_prefix}\"\ninstall_dir=\"forge\"\n"
+        "#!/usr/bin/env bash\n\
+iso_name=\"Forge\"\n\
+iso_label=\"FORGE_{version_prefix}\"\n\
+iso_publisher=\"ArchMaker Forge <https://github.com/Alexendros/archmaker>\"\n\
+iso_application=\"Forge, {LIVE_BASE_DESCRIPTION}\"\n\
+iso_version=\"{version_prefix}\"\n\
+install_dir=\"forge\"\n\
+buildmodes=('iso')\n\
+bootmodes=('uefi.systemd-boot' 'bios.syslinux')\n\
+arch=\"x86_64\"\n\
+pacman_conf=\"pacman.conf\"\n\
+airootfs_image_type=\"squashfs\"\n\
+airootfs_image_tool_options=('-comp' 'xz' '-Xbcj' 'x86' '-b' '1M' '-Xdict-size' '1M')\n\
+bootstrap_tarball_compression=('zstd' '-c' '-T0' '--auto-threads=logical' '--long' '-19')\n\
+file_permissions=(\n\
+  [\"/etc/shadow\"]=\"0:0:400\"\n\
+  [\"/etc/gshadow\"]=\"0:0:400\"\n\
+  [\"/root\"]=\"0:0:750\"\n\
+  [\"/root/user_configuration.json\"]=\"0:0:600\"\n\
+)\n"
     )
 }
 
-/// Perfil archiso (`packages.x86_64` + `profiledef.sh`) desde el manifiesto y el catálogo.
+/// Overlay archiso completo sobre el perfil base copiado en tiempo de construcción.
 /// No importa archiso ni ejecuta `mkarchiso`.
 pub fn render_live_profile(
     manifest: &Manifest,
@@ -1144,11 +1188,39 @@ pub fn render_live_profile(
     if public_filename.contains("Arch") || public_filename.starts_with("ARCH") {
         return Err(CoreError::tgt_unsupported(source));
     }
-    let forbidden = ["pacstrap", "cmd", "airootfs/"];
-    for text in [&packages_x86_64, &profiledef, &public_filename] {
-        if forbidden.iter().any(|token| text.contains(token)) {
+    let archinstall = crate::archinstall::render_archinstall_config(catalog, manifest)?;
+    for name in archinstall.deferred {
+        deferred.insert(name);
+    }
+    let user_configuration = serde_json::to_string_pretty(&archinstall.value)
+        .map_err(|_| CoreError::doc_canonical(source))?;
+    let mut files = serde_json::Map::new();
+    files.insert("profiledef.sh".to_string(), serde_json::json!(profiledef));
+    files.insert(
+        "packages.x86_64".to_string(),
+        serde_json::json!(packages_x86_64),
+    );
+    files.insert("pacman.conf".to_string(), serde_json::json!(PACMAN_CONF));
+    files.insert(
+        "airootfs/root/user_configuration.json".to_string(),
+        serde_json::json!(user_configuration),
+    );
+    for path in files.keys() {
+        let safe = OVERLAY_PATHS.contains(&path.as_str())
+            && !path.starts_with('/')
+            && !path.split('/').any(|part| part == ".." || part.is_empty());
+        if !safe {
             return Err(CoreError::schema_invalid(source));
         }
+    }
+    let forbidden = ["pacstrap", "cmd"];
+    let mut scanned: Vec<&str> = files.values().filter_map(|value| value.as_str()).collect();
+    scanned.push(&public_filename);
+    if scanned
+        .iter()
+        .any(|text| forbidden.iter().any(|token| text.contains(token)))
+    {
+        return Err(CoreError::schema_invalid(source));
     }
     let envelope = serde_json::json!({
         "adapter": LIVE_PROFILE_TARGET,
@@ -1163,10 +1235,7 @@ pub fn render_live_profile(
                 "kind": "content",
             }
         },
-        "files": {
-            "packages.x86_64": packages_x86_64,
-            "profiledef.sh": profiledef,
-        },
+        "files": serde_json::Value::Object(files),
         "deferredFetch": deferred.into_iter().collect::<Vec<_>>(),
     });
     Ok(RenderedArtifact {

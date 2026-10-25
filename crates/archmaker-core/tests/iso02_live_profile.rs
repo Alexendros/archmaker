@@ -86,7 +86,6 @@ fn iso02_same_manifest_same_bytes_without_pacstrap_or_cmd() {
     let text = String::from_utf8(first.clone()).expect("utf8");
     assert!(!text.contains("pacstrap"));
     assert!(!text.contains("cmd"));
-    assert!(!text.contains("airootfs/"));
     let value: serde_json::Value = serde_json::from_slice(&first).expect("json");
     assert_eq!(value["adapter"], "archmaker-live-profile");
     assert_eq!(value["baseDescription"], "derivada de Arch Linux");
@@ -96,6 +95,8 @@ fn iso02_same_manifest_same_bytes_without_pacstrap_or_cmd() {
     assert!(filename.ends_with("-x86_64.iso"));
     assert!(!filename.contains("Arch"));
     assert!(!filename.starts_with("ARCH"));
+    let files = value["files"].as_object().expect("files");
+    assert_eq!(files.len(), 4);
     let packages = value["files"]["packages.x86_64"]
         .as_str()
         .expect("packages");
@@ -104,7 +105,22 @@ fn iso02_same_manifest_same_bytes_without_pacstrap_or_cmd() {
         .as_str()
         .expect("profiledef");
     assert!(profiledef.contains("arch=\"x86_64\""));
+    assert!(profiledef.contains("iso_name=\"Forge\""));
     assert!(profiledef.contains("derivada de Arch Linux"));
+    assert!(profiledef.contains("bootmodes=('uefi.systemd-boot' 'bios.syslinux')"));
+    assert!(profiledef.contains("[\"/root/user_configuration.json\"]=\"0:0:600\""));
+    let pacman = value["files"]["pacman.conf"].as_str().expect("pacman");
+    assert!(pacman.contains("[core]"));
+    assert!(pacman.contains("[extra]"));
+    let config: serde_json::Value = serde_json::from_str(
+        value["files"]["airootfs/root/user_configuration.json"]
+            .as_str()
+            .expect("config"),
+    )
+    .expect("config json");
+    assert_eq!(config["version"], "2.8.6");
+    assert_eq!(config["script"], "guided");
+    assert_eq!(config["hostname"], "forge");
     assert_eq!(
         value["deferredFetch"].as_array().expect("deferred").len(),
         0
@@ -128,7 +144,6 @@ fn iso02_non_redistributable_is_named_deferred_not_installed() {
         .as_str()
         .expect("packages");
     assert!(!packages.contains("onlyoffice-bin"));
-    assert!(!packages.contains("airootfs/"));
     let deferred = value["deferredFetch"].as_array().expect("deferred");
     assert_eq!(deferred.len(), 1);
     assert_eq!(deferred[0], "onlyoffice-bin");
