@@ -16,7 +16,7 @@ reviewers:
 # ArchMaker — Índice documental (planning-v1)
 
 - Estado del plan: in-review · Gate global: **CONDITIONAL-CLEAR** (walking skeleton MVP-0 + slices MVP-1..MVP-5) · Baseline: `implementation-baseline-mvp5` · Corte: 2026-10-16
-- Release de paquete: AppImage [`v0.1.0`](https://github.com/Alexendros/archmaker/releases/tag/v0.1.0) (F9; verificación parcial; nombre histórico del artefacto en `closure/f9-release.md`). Nombre visible vigente: **Forge**. Aprobación funcional F7: pending.
+- Release de paquete: **ninguna publicada** — tags `v0.1.0`/`v0.2.0` sin GitHub Release ni AppImage (corregido el 2026-10-25; `/releases` = `[]`); próxima release `v0.3.0`. Nombre visible vigente: **Forge**. Aprobación funcional F7: pending.
 - Estados válidos (`docs/00-governance/document-control.md`): `draft`, `in-review`, `accepted`, `superseded`, `deferred`, `rejected`.
 - Regla de reemplazo: copiar por rutas canónicas; `reference/v5.1/` debe permanecer byte a byte.
 

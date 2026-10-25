@@ -22,25 +22,30 @@ reviewers:
 - Remediación operativa cerrada (transportes reales, ACL, ciclo de edición, exportación, Prove-It): `docs/10-delivery/remediation/`; notas en `acceptance-notes.md`.
 - Cierre de producto F0–F8: código en `main`. Gobierno de canal F8:
   `docs/10-delivery/closure/f8-governance.md` (**accepted**).
-- Canal de distribución: AppImage Linux x86_64; tag
-  [`v0.1.0`](https://github.com/Alexendros/archmaker/releases/tag/v0.1.0) publicó
-  nombre histórico del artefacto `v0.1.0` (ADR-0010 / DEC-011; ver `f9-release.md`); nombre visible vigente **Forge** (ADR-0012).
-  (`RC_SHA` `9297ed7…`; `docs/10-delivery/closure/f9-release.md`). ISO-01
+- Canal de distribución: AppImage Linux x86_64; **ninguna release publicada**. Los tags
+  `v0.1.0` y `v0.2.0` existen, pero la API de GitHub no lista ningún Release (corregido el
+  2026-10-25: `/releases` = `[]`, `/releases/tags/v0.1.0` y `v0.2.0` = `404`; `release.yml`
+  terminó _cancelled_ para `v0.1.0` y _success_ sin publicar para `v0.2.0`). `v0.1.0` se
+  declara **no publicado** y no se recupera; la primera release real será `v0.3.0`
+  (`docs/10-delivery/closure/f9-release.md`). Nombre visible vigente **Forge** (ADR-0012). ISO-01
   (`iso-scope.md`, ADR-0019 / DEC-013) está `accepted` solo para imagen viva x86_64 UEFI;
   el target `archmaker-live-profile` está en el árbol. La cara no invoca `mkarchiso`. El runner de instalación y
   Enterprise siguen sin `accepted`. Evidencia y `APPROVAL_RECORD` fuera del árbol.
-- Limitaciones v0.1.0: sin cosign local verificado; sin 3× install GUI; F7 sin
-  `RC_SHA_FUNCIONAL`; sin imagen Arch. R2: `releaseStatus` del doc F9 = `ineligible`
-  (verification parcial).
-- Fecha de corte: 2026-10-18
+- Limitaciones: sin binario publicado; sin cosign local verificado; sin 3× install GUI;
+  F7 sin `RC_SHA_FUNCIONAL`; sin imagen Arch. R2: `releaseStatus` del doc F9 = `ineligible`.
+- Reorientación aprobada por el operador el 2026-10-25: Forge pasa a ser una GUI fina sin
+  root que genera perfil `archiso` completo + `user_configuration.json` real de `archinstall`
+  y construye la ISO con `mkarchiso` dentro de Docker (ADR-0020/ADR-0021 en preparación).
+  El estado anterior queda congelado en el tag `pre-reorientacion`.
+- Fecha de corte: 2026-10-25
 
 ## Tres capas (no equiparar)
 
-| Capa                 | Estado    | Nota                                                                                                              |
-| -------------------- | --------- | ----------------------------------------------------------------------------------------------------------------- |
-| Baseline de código   | passed    | Tag MVP-5 + F0–F8 en `main`                                                                                       |
-| Aprobación funcional | pending   | F7 estricto + P95 web en árbol; desktop/offline **blocked** (P6); sin `RC_SHA_FUNCIONAL` ni revisor independiente |
-| Release binaria      | published | AppImage `v0.1.0` (`59246f08…`); verificación parcial (cosign/GUI); ver `f9-release.md`                           |
+| Capa                 | Estado       | Nota                                                                                                              |
+| -------------------- | ------------ | ----------------------------------------------------------------------------------------------------------------- |
+| Baseline de código   | passed       | Tag MVP-5 + F0–F8 en `main`                                                                                       |
+| Aprobación funcional | pending      | F7 estricto + P95 web en árbol; desktop/offline **blocked** (P6); sin `RC_SHA_FUNCIONAL` ni revisor independiente |
+| Release binaria      | no publicada | Tags `v0.1.0`/`v0.2.0` sin GitHub Release ni AppImage; próxima release `v0.3.0`; ver `f9-release.md`              |
 
 Detalle y residuales: `docs/10-delivery/closure/f8-governance.md`.
 Candidato tip post-P0–P7 (sin publicar): `docs/10-delivery/closure/release-candidate.md`
@@ -65,10 +70,9 @@ del propio alcance). El runner v1 y los privilegios se autorizan únicamente cua
 evidencia específica de esas fases, no existan riesgos P0 sin tratamiento y todos los contratos
 P0 posean fixtures válidos e inválidos.
 
-F9 publicó el AppImage `v0.1.0` bajo F8 / DEC-011 / MVP-6 accepted (solo AppImage); el nombre visible vigente es Forge (ADR-0012).
-La verificación de esa release es **parcial** (cosign local y 3× GUI pendientes). La
-aprobación funcional F7 permanece `pending` como capa distinta; no reabre runner/ISO ni
-anuncia `.deb`/`.rpm`/AUR.
+F9 **no publicó** ningún AppImage: los tags `v0.1.0`/`v0.2.0` carecen de GitHub Release
+(corregido el 2026-10-25). La primera release real será `v0.3.0`. La aprobación funcional F7
+permanece `pending` como capa distinta; no reabre runner/ISO ni anuncia `.deb`/`.rpm`/AUR.
 
 ## Referencias
 

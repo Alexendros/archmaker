@@ -7,7 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-Nada pendiente de anotar. La GitHub Release del paquete `0.2.0` espera un AppImage Forge funcional y validado con tests. El tag `v0.1.0` no se mueve.
+### Fixed
+
+- Estado de release corregido (2026-10-25): no existe GitHub Release ni AppImage publicado.
+  Los tags `v0.1.0` y `v0.2.0` carecen de Release (`/releases` = `[]`; `/releases/tags/*` = 404).
+  `v0.1.0` se declara no publicado; la primera release real será `v0.3.0`.
+
+### Changed
+
+- Reorientación aprobada (2026-10-25): Forge será una GUI fina sin root que genera un perfil
+  `archiso` completo y un `user_configuration.json` real de `archinstall`, y construye la ISO
+  con `mkarchiso` dentro de Docker. Fuera de alcance: escritura de discos, `aarch64`,
+  Enterprise y runner de instalación. Estado anterior congelado en el tag `pre-reorientacion`.
 
 ## [0.2.0] - 2026-10-18
 
