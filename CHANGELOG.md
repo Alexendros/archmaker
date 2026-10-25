@@ -7,11 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-10-25
+
+Primera release real del proyecto: GitHub Release `v0.3.0` con AppImage de Forge, `SHA256SUMS`,
+firma cosign keyless y SBOM. Cierra y verifica la reorientación (ISO-05, ADR-0020/ADR-0021).
+
+### Added
+
+- Verificación ISO-05 de la reorientación: `cargo test --workspace --all-targets`, build
+  TypeScript/Vite/WASM, GUI EN SERIE (e2e WASM ×3, aceptación P5, axe, a11y estático y de flujo,
+  regresión visual), CI `iso.yml` (G9: ISO de humo + arranque QEMU UEFI) y
+  `tools/check_product_naming.py`. Evidencia en `docs/10-delivery/iso05-scope.md`.
+- `docs/10-delivery/iso05-scope.md` (DOC-DEL-ISO05-001) y scaffold Autoworkspace
+  `.autoworkspace/`.
+
 ### Fixed
 
 - Estado de release corregido (2026-10-25): no existe GitHub Release ni AppImage publicado.
   Los tags `v0.1.0` y `v0.2.0` carecen de Release (`/releases` = `[]`; `/releases/tags/*` = 404).
-  `v0.1.0` se declara no publicado; la primera release real será `v0.3.0`.
+  `v0.1.0` se declara no publicado; la primera release real es `v0.3.0`.
 
 ### Changed
 
@@ -19,6 +33,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `archiso` completo y un `user_configuration.json` real de `archinstall`, y construye la ISO
   con `mkarchiso` dentro de Docker. Fuera de alcance: escritura de discos, `aarch64`,
   Enterprise y runner de instalación. Estado anterior congelado en el tag `pre-reorientacion`.
+- ADR-0020 y ADR-0021 pasan a `verified`; `roadmap.md` a `verified` con la aprobación funcional
+  F7 aprobada.
+- Versión de workspace, Tauri y paquetes web a `0.3.0`.
 
 ## [0.2.0] - 2026-10-18
 

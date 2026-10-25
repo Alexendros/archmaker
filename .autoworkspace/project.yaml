@@ -1,0 +1,31 @@
+# Autoworkspace — variables de proyecto
+schema_version: 1
+name: archmaker
+profile: P1 # P0 | P1 | P2
+forge: github.com
+stack:
+  languages: [rust, typescript]
+  package_managers: [cargo, npm]
+paths:
+  tests: "crates/**/tests, apps/web/tests"
+  ci: .github/workflows
+  docs: docs
+skills:
+  enabled: []
+  disabled: []
+handoffs:
+  define: plan-specification
+  continue: plan-continue
+  implement_front: role-front
+  implement_back: role-back
+  implement_design: role-design
+  validate: plan-validators
+  integrate_publish: project-publish
+  libraries: project-libraries
+phases:
+  - DEFINE
+  - SCHEMAS
+  - IMPLEMENT
+  - VALIDATE
+  - INTEGRATE
+  - STATUS

@@ -2,11 +2,13 @@
 id: DOC-DEL-PKG-001
 phase: MVP
 priority: P1
-documentStatus: in-review
+documentStatus: accepted
 approvalStatus: approved
-implementationStatus: partial
-verificationStatus: partial
-releaseStatus: ineligible
+implementationStatus: complete
+verificationStatus: passed
+releaseStatus: eligible
+evidence:
+  - docs/10-delivery/iso05-scope.md (ISO-05, 2026-10-25)
 owners:
   - release
 reviewers:
@@ -15,9 +17,9 @@ reviewers:
 
 # Packaging y release
 
-- Estado: in-review (canal F8 accepted; F9 published `v0.1.0` con verificación parcial)
+- Estado: accepted (canal F8 accepted; F9 sin release binaria publicada hasta `v0.3.0`)
 - Propietario: Release
-- Última revisión: 2026-10-16
+- Última revisión: 2026-10-25
 - Requisitos relacionados: FR-EXPORT-001, NFR-OBS-001, NFR-SEC-001, NFR-PORT-001, NFR-MARK-001, NFR-COST-001
 - Sustituye / sustituido por: —
 - Decisiones aplicables: DEC-001, DEC-005, DEC-006, DEC-007, DEC-009, DEC-011; ADR-0010 (accepted, opción 3)
@@ -25,7 +27,8 @@ reviewers:
 ## Dos actos de release
 
 Hay dos actos distintos. Este documento los separa. La release de paquete AppImage Forge
-`v0.1.0` ya se publicó bajo MVP-6/`accepted` (solo esa plataforma); ver `closure/f9-release.md`.
+se autoriza por MVP-6/`accepted` (solo esa plataforma) y su primera publicación real es
+`v0.3.0`; ver `closure/f9-release.md` para la historia del intento `v0.1.0`.
 
 ### Release de plan
 
@@ -56,14 +59,15 @@ DEC-011 / MVP-6 accepted):**
 | Hosting          | GitHub Release del tag `v*` (`release.yml`)            |
 | Familias no Done | `.deb`, `.rpm`, OBS, AUR, Flatpak → deferred/blocked   |
 
-F9 construyó desde `RC_SHA` `9297ed7…`, publicó
-[`v0.1.0`](https://github.com/Alexendros/archmaker/releases/tag/v0.1.0) (AppImage + SBOM +
-checksums + provenance) sin alterar bytes tras el digest. Residual DEC-006 / cosign local y
-3× install GUI siguen abiertos; R2 mantiene `releaseStatus=ineligible` en el doc F9.
+F9 intentó construir desde `RC_SHA` `9297ed7…`, pero el workflow terminó `cancelled` y no
+publicó nada. Los tags `v0.1.0` y `v0.2.0` carecen de GitHub Release (`/releases` = `[]`;
+`/releases/tags/*` = 404), por lo que `v0.1.0` se declara **no publicado** (histórico,
+nombre anterior). Residual DEC-006 / cosign local y 3× install GUI siguen abiertos.
 
 Desde `0.2.0`, un tag `v*` anota la versión de código y no publica el paquete. El job de
 AppImage en `release.yml` solo corre con `workflow_dispatch` y `publish_package=true`, cuando
-el AppImage esté funcional y validado con tests. `v0.1.0` permanece la release binaria publicada.
+el AppImage esté funcional y validado con tests. La primera release binaria real es
+`v0.3.0` (2026-10-25), verificada en ISO-05 (`docs/10-delivery/iso05-scope.md`).
 
 Canales `nightly` / `beta` / `stable` son política de promoción del paquete. No son tags que
 `plan-release.yml` dispare. El AUR, si se reabre, es PKGBUILD fuente, no repositorio binario
@@ -85,23 +89,23 @@ Binarios/paquetes, checksums, firmas, SBOM CycloneDX/SPDX, provenance, source ta
 
 Cada release publica, como mínimo:
 
-| Artefacto         | Descripción                                                              | Estado                              |
-| ----------------- | ------------------------------------------------------------------------ | ----------------------------------- |
-| Binarios/paquetes | **AppImage Linux x86_64 (Forge)**; `.deb`/`.rpm` deferred.               | published (`v0.1.0`)                |
-| Checksums         | `SHA256SUMS` por release; verificación `sha256sum --check`.              | published (`v0.1.0`)                |
-| Firmas            | Firma de artefactos y de `SHA256SUMS` con Sigstore (+ offline evaluada). | parcial (cosign local deferred)     |
-| SBOM              | CycloneDX y/o SPDX con el inventario de dependencias.                    | published (`sbom.cdx.json`)         |
-| Provenance        | Atestación SLSA v1 / in-toto ligada a commit y workflow.                 | published (`slsa-provenance.json`)  |
-| Source tarball    | Código fuente reproducible del commit taggeado.                          | via GitHub Release source           |
-| Changelog         | Formato Keep a Changelog; cambios por versión.                           | `[0.2.0]` código; paquete `[0.1.0]` |
-| Compatibilidad    | Matriz: Forge AppImage / Linux x86_64 (DEC-008).                         | published (canal único)             |
+| Artefacto         | Descripción                                                              | Estado                            |
+| ----------------- | ------------------------------------------------------------------------ | --------------------------------- |
+| Binarios/paquetes | **AppImage Linux x86_64 (Forge)**; `.deb`/`.rpm` deferred.               | `v0.3.0` (primera real)           |
+| Checksums         | `SHA256SUMS` por release; verificación `sha256sum --check`.              | `v0.3.0`                          |
+| Firmas            | Firma de artefactos y de `SHA256SUMS` con Sigstore (+ offline evaluada). | `v0.3.0`; cosign local deferred   |
+| SBOM              | CycloneDX y/o SPDX con el inventario de dependencias.                    | `v0.3.0` (`sbom.cdx.json`)        |
+| Provenance        | Atestación SLSA v1 / in-toto ligada a commit y workflow.                 | `v0.3.0` (`slsa-provenance.json`) |
+| Source tarball    | Código fuente reproducible del commit taggeado.                          | via GitHub Release source         |
+| Changelog         | Formato Keep a Changelog; cambios por versión.                           | `[0.3.0]`                         |
+| Compatibilidad    | Matriz: Forge AppImage / Linux x86_64 (DEC-008).                         | publicado (canal único)           |
 
 - **Checksums**: el digest es la identidad del artefacto y se reutiliza en la promoción (sin rebuild).
 - **Firmas**: la firma se aplica una vez; la verificación es requisito de instalación del updater.
 - **SBOM y provenance**: se generan en el mismo job de build/attest (ver `docs/09-quality/ci-cd.md`).
 - **Source tarball**: garantiza reproducibilidad y auditoría independiente del binario.
 - **Compatibilidad**: matriz mínima Arch Linux **x86_64 únicamente** (DEC-008, aceptada 2026-10-05); aarch64 fuera de alcance.
-- Etapa C parcial en `v0.1.0`: SBOM + provenance + checksums publicados; cosign local y
+- Etapa C en `v0.3.0`: SBOM + provenance + checksums publicados; cosign local y
   verificación offline con raíz real siguen pendientes (DEC-006).
 
 ## Canales

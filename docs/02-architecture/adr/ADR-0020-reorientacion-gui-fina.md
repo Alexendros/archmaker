@@ -4,9 +4,11 @@ phase: MVP
 priority: P0
 documentStatus: accepted
 approvalStatus: approved
-implementationStatus: partial
-verificationStatus: not-verified
+implementationStatus: complete
+verificationStatus: passed
 releaseStatus: ineligible
+evidence:
+  - docs/10-delivery/iso05-scope.md (suite completa en verde, 2026-10-25)
 owners:
   - product
   - architecture
@@ -21,6 +23,7 @@ reviewers:
 - Propietario: Producto y Arquitectura
 - Aprobación: operador, 2026-10-25 (reorientación)
 - Requisitos: FR-EXPORT-001, NFR-SEC-001, NFR-DET-001
+- Verificación: ISO-05, 2026-10-25 ([`../../10-delivery/iso05-scope.md`](../../10-delivery/iso05-scope.md)); gates en `main` con la suite completa en verde.
 
 ## Contexto
 
