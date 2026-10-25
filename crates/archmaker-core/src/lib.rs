@@ -1,3 +1,4 @@
+pub mod archinstall;
 pub mod capability;
 pub mod contract;
 pub mod core;
@@ -8,6 +9,7 @@ pub mod limits;
 pub mod migration;
 pub mod port;
 
+pub use archinstall::{render_archinstall_config, ArchinstallConfig, ARCHINSTALL_CONFIG_VERSION};
 pub use capability::{
     allowed_ops, check_invoke, check_invoke_named, denied_error, unknown_command_error, Window,
     ALL_OPS,

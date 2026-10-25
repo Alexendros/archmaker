@@ -58,6 +58,7 @@ export function exportFilename(
   token: string,
   targetId = "archmaker-profile",
 ): string {
+  if (targetId === "archinstall-profile") return "user_configuration.json";
   const ext = extensionForTarget(targetId);
   const safe = token.replace(/[^A-Za-z0-9._-]/g, "_");
   if (safe.toLowerCase().endsWith(ext)) return safe;

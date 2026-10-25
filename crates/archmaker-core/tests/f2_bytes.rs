@@ -78,7 +78,15 @@ fn export_for(
             request_id: None,
         })
         .unwrap_or_else(|e| panic!("manifest {target_id}: {e:?}"));
-    let rendered = render_artifact_bytes(&manifest, &export_target(target_id)).expect("render");
+    let rendered = if target_id == "archinstall-profile" {
+        None
+    } else {
+        Some(
+            render_artifact_bytes(&manifest, &export_target(target_id))
+                .expect("render")
+                .bytes,
+        )
+    };
     let artifact = core
         .export_artifact(ExportArtifactInput {
             manifest,
@@ -87,7 +95,12 @@ fn export_for(
             request_id: None,
         })
         .unwrap_or_else(|e| panic!("export {target_id}: {e:?}"));
-    (artifact, rendered.bytes)
+    let rendered = rendered.unwrap_or_else(|| {
+        archmaker_canonicalization::canonicalize(
+            artifact.content.as_ref().expect("archinstall content"),
+        )
+    });
+    (artifact, rendered)
 }
 
 #[test]

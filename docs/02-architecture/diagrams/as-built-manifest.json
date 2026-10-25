@@ -3,7 +3,7 @@
   "asBuiltSourceSha": "e61a8f093af61ad51e809ad59b159cd0ab0550fc",
   "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
   "paths": {
-    ".github/workflows/ci.yml": "9e9fc474d4e115351f4130c3d9841feac48b2662d9babae7318a0445859f29ca",
+    ".github/workflows/ci.yml": "fbd4bb12094af7680426684777d5ca920f389b84ef4a61f1f7dd4b51113a7215",
     ".github/workflows/release.yml": "5a6ba8377a430a54894d6e3be5ef4eeee33406fcf1860c9184b721bb5a3920d4",
     "CHANGELOG.md": "227258212bd7f2b020851a8be89941444b919bd34fe9f14d33be77d64d0898a3",
     "Cargo.toml": "65f62e18dd073f83447ba4aa2f1c934515780c5844743b647e36d79a64a4b3aa",
@@ -16,7 +16,7 @@
     "apps/web/src/draft-persistence.ts": "ebcb828062b17b4d2ea245548238b4f8d3368a5e941c3255e41ab19850d0f20b",
     "apps/web/src/forge-face.ts": "9b83beae7c99a244c62e230c59b475d9e636065fd3a00c44f1b1ed3901d7407f",
     "crates/archmaker-canonicalization/src/lib.rs": "976d1f030159ec52bb5e06c2be78945f6333212a86e5f590f97b4bcad2b4e992",
-    "crates/archmaker-core/src/lib.rs": "6977788083e006579245c6ea9afc079094653544b7dc91151c5734ddad6b4822",
+    "crates/archmaker-core/src/lib.rs": "e3683a36243e02224173769abc49a7b23c71850d21f2023f72d280e32fdca9a0",
     "crates/archmaker-domain/src/lib.rs": "2f65718e025eb41db865c4f7502080cfa7e6a109cf161e5a00dae04fb3d23bc5",
     "crates/archmaker-resolution/src/lib.rs": "576b3f37653a6e0e82517621a037b77b3d28534b1dfefe9740b40d920e2f40f3",
     "crates/archmaker-rules/src/lib.rs": "01e19bef314e4e06120d76d4806521f04c620061417a2e27bea564a26d07bcd8",

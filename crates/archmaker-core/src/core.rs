@@ -96,7 +96,7 @@ const EXPORT_TARGETS: [&str; 4] = [
 const LIVE_PROFILE_TARGET: &str = "archmaker-live-profile";
 const LIVE_BASE_DESCRIPTION: &str = "derivada de Arch Linux";
 const LIVE_DIGEST_PREFIX_LEN: usize = 12;
-const NON_REDISTRIBUTABLE_TAG: &str = "no-redistribuible-candidato";
+pub(crate) const NON_REDISTRIBUTABLE_TAG: &str = "no-redistribuible-candidato";
 
 const PRODUCER_ID: &str = "archmaker-core";
 const PRODUCER_VERSION: &str = "0.1.0";
@@ -1015,34 +1015,12 @@ fn render_archmaker_profile(manifest: &Manifest) -> Result<RenderedArtifact> {
     })
 }
 
-/// Experimental archinstall adapter: versioned envelope, never the raw manifest (ADR-0003).
-fn render_archinstall_profile(manifest: &Manifest, target: &TargetRef) -> Result<RenderedArtifact> {
-    let source = CoreOp::ExportArtifact.source();
-    let selections = ordered_effective_selections(manifest);
-    let envelope = serde_json::json!({
-        "adapter": "archinstall-profile",
-        "version": target.version,
-        "manifestRef": {
-            "contentDigest": {
-                "algorithm": "sha256",
-                "value": manifest.content_digest.value,
-                "kind": "content",
-            }
-        },
-        "effectiveSelections": selections,
-    });
-    // Reject executable / shell-shaped keys if they ever appear in the envelope.
-    if let Some(obj) = envelope.as_object() {
-        for banned in ["cmd", "hooks", "pacstrap", "shell", "script", "commands"] {
-            if obj.contains_key(banned) {
-                return Err(CoreError::tgt_unsupported(source));
-            }
-        }
-    }
+fn render_archinstall_profile(manifest: &Manifest, catalog: &Catalog) -> Result<RenderedArtifact> {
+    let rendered = crate::archinstall::render_archinstall_config(catalog, manifest)?;
     Ok(RenderedArtifact {
-        bytes: archmaker_canonicalization::canonicalize(&envelope),
+        bytes: archmaker_canonicalization::canonicalize(&rendered.value),
         media_type: "application/json".to_string(),
-        content: envelope,
+        content: rendered.value,
     })
 }
 
@@ -1202,7 +1180,6 @@ pub fn render_artifact_bytes(manifest: &Manifest, target: &TargetRef) -> Result<
     let source = CoreOp::ExportArtifact.source();
     match target.id.as_str() {
         "archmaker-profile" => render_archmaker_profile(manifest),
-        "archinstall-profile" => render_archinstall_profile(manifest, target),
         "report" => render_report(manifest, target),
         LIVE_PROFILE_TARGET => Err(CoreError::tgt_unsupported(source)),
         _ => Err(CoreError::tgt_unsupported(source)),
@@ -1516,6 +1493,9 @@ impl CorePort for RealCore {
         let rendered = if input.target_ref.id == LIVE_PROFILE_TARGET {
             self.ensure_catalog_match(&input.manifest.catalog_ref, source)?;
             render_live_profile(&input.manifest, &self.catalog_embedded, &input.target_ref)?
+        } else if input.target_ref.id == "archinstall-profile" {
+            self.ensure_catalog_match(&input.manifest.catalog_ref, source)?;
+            render_archinstall_profile(&input.manifest, &self.catalog_embedded)?
         } else {
             render_artifact_bytes(&input.manifest, &input.target_ref)?
         };
@@ -1531,11 +1511,7 @@ impl CorePort for RealCore {
                 &rendered.bytes,
             )?;
         }
-        let experimental = if input.target_ref.id == "archinstall-profile" {
-            Some(true)
-        } else {
-            None
-        };
+        let experimental = None;
         Ok(Artifact {
             document_version: input.manifest.document_version.clone(),
             schema_version: input.manifest.schema_version.clone(),

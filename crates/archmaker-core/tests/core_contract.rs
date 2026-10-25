@@ -675,33 +675,43 @@ fn export_adapters_diverge_bytes_and_fill_content() {
         archinstall.manifest_ref.content_digest.value,
         manifest_archinstall.content_digest.value
     );
-    assert_eq!(archinstall.experimental, Some(true));
+    assert!(archinstall.experimental.is_none());
     assert!(archmaker.experimental.is_none());
     assert_eq!(report.media_type, "text/markdown");
     assert!(archmaker.content.is_some());
     assert!(report.content.as_ref().is_some_and(|v| v.is_string()));
 
-    let envelope = archinstall.content.as_ref().expect("archinstall content");
-    assert_eq!(envelope["adapter"], "archinstall-profile");
-    assert_eq!(envelope["version"], "0.1.0");
-    assert_eq!(
-        envelope["manifestRef"]["contentDigest"]["value"],
-        manifest_archinstall.content_digest.value
-    );
-    assert!(envelope["effectiveSelections"].is_array());
-    for banned in ["cmd", "hooks", "pacstrap", "shell", "script", "commands"] {
+    let config = archinstall.content.as_ref().expect("archinstall content");
+    assert_eq!(config["version"], "2.8.6");
+    assert_eq!(config["script"], "guided");
+    assert_eq!(config["hostname"], "forge");
+    assert_eq!(config["kernels"], serde_json::json!(["linux"]));
+    assert!(config.get("adapter").is_none());
+    assert!(config.get("manifestRef").is_none());
+    assert!(config.get("effectiveSelections").is_none());
+    assert!(config.get("disk_config").is_none());
+    assert!(config["profile_config"]["profile"]["details"].is_array());
+    for banned in [
+        "cmd",
+        "hooks",
+        "pacstrap",
+        "shell",
+        "commands",
+        "custom_commands",
+    ] {
         assert!(
-            envelope.get(banned).is_none(),
-            "envelope must not carry executable key {banned}"
+            config.get(banned).is_none(),
+            "archinstall config must not carry executable key {banned}"
         );
     }
     let bytes_a = std::fs::read(dir.join("a.json")).expect("a");
     let bytes_b = std::fs::read(dir.join("b.json")).expect("b");
     assert_ne!(bytes_a, bytes_b);
-    // archinstall envelope must not be a raw re-serialization of the domain Manifest.
+    // archinstall config must not be a raw re-serialization of the domain Manifest.
     let parsed_b: serde_json::Value = serde_json::from_slice(&bytes_b).expect("json");
     assert!(parsed_b.get("domainLabel").is_none());
-    assert_eq!(parsed_b["adapter"], "archinstall-profile");
+    assert!(parsed_b.get("adapter").is_none());
+    assert_eq!(parsed_b["script"], "guided");
     let _ = std::fs::remove_dir_all(&dir);
 }
 

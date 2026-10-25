@@ -406,8 +406,6 @@ export class MockCorePort implements CorePort {
         ),
       };
     }
-    const experimental =
-      input.targetRef.id === "archinstall-profile" ? true : undefined;
     let content: unknown;
     let mediaType = "application/json";
     let raw: Uint8Array;
@@ -418,10 +416,11 @@ export class MockCorePort implements CorePort {
       raw = new TextEncoder().encode(text);
     } else if (input.targetRef.id === "archinstall-profile") {
       content = {
-        adapter: "archinstall-profile",
-        version: input.targetRef.version,
-        manifestRef: { contentDigest: input.manifest.contentDigest },
-        effectiveSelections: input.manifest.effectiveSelections,
+        version: "2.8.6",
+        script: "guided",
+        hostname: "forge",
+        kernels: ["linux"],
+        timezone: "UTC",
       };
       raw = new TextEncoder().encode(JSON.stringify(content));
     } else {
@@ -459,7 +458,6 @@ export class MockCorePort implements CorePort {
         kind: "binary",
       },
       manifestRef: { contentDigest: input.manifest.contentDigest },
-      experimental,
       content,
       bytes,
     };

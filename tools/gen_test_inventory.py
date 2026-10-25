@@ -205,6 +205,8 @@ def infer_covers(crate: str, test_file: str, test_fn: str) -> List[str]:
         'iso02_live_profile': ['FR-EXPORT-001', 'NFR-DET-001', 'NFR-SEC-001'],
         # Constitución tipada: la petición no ejecuta mkarchiso ni sale del perfil.
         'archmaker-constitute': ['FR-EXPORT-001', 'NFR-SEC-001'],
+        # Contrato nativo archinstall 4.5: user_configuration.json real y determinista.
+        'archinstall_config': ['FR-EXPORT-001', 'FR-MANIFEST-001', 'NFR-DET-001', 'NFR-SEC-001'],
     }
 
     for keyword, reqs in keyword_map.items():
