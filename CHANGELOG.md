@@ -26,6 +26,9 @@ firma cosign keyless y SBOM. Cierra y verifica la reorientación (ISO-05, ADR-00
 - Estado de release corregido (2026-10-25): no existe GitHub Release ni AppImage publicado.
   Los tags `v0.1.0` y `v0.2.0` carecen de Release (`/releases` = `[]`; `/releases/tags/*` = 404).
   `v0.1.0` se declara no publicado; la primera release real es `v0.3.0`.
+- Pipeline `release.yml`: instala `wasm-bindgen-cli 0.2.129` antes del build web y verifica las
+  firmas Sigstore con pinning de identidad e issuer contra la instancia pública (`--trusted-root`
+  exige firmas en formato bundle, diferido como residual de DEC-006).
 
 ### Changed
 
