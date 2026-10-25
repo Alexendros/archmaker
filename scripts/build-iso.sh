@@ -10,6 +10,7 @@ Opciones:
   --base releng|baseline Perfil base de archiso (por defecto: releng)
   --serial-console       Añade console=ttyS0,115200 al arranque (pruebas de CI)
   --image NOMBRE         Imagen Docker del constructor (por defecto: archmaker-archiso:local)
+  --cidfile PATH         Escribe el ID del contenedor para poder cancelar la construcción
   -h, --help             Muestra esta ayuda
 USAGE
 }
@@ -19,6 +20,7 @@ out_dir="target/iso"
 base="releng"
 serial_console=0
 image="archmaker-archiso:local"
+cidfile=""
 
 while (($#)); do
   case "$1" in
@@ -36,6 +38,10 @@ while (($#)); do
       ;;
     --image)
       image=${2:?falta valor para --image}
+      shift 2
+      ;;
+    --cidfile)
+      cidfile=${2:?falta valor para --cidfile}
       shift 2
       ;;
     -h | --help)
@@ -127,7 +133,12 @@ if ! docker image inspect "$image" >/dev/null 2>&1; then
   docker build -t "$image" -f "$repo_root/docker/archiso.Dockerfile" "$repo_root/docker"
 fi
 
-docker run --rm \
+cid_args=()
+if [[ -n $cidfile ]]; then
+  cid_args=(--cidfile "$cidfile")
+fi
+
+docker run --rm "${cid_args[@]}" \
   --cap-add SYS_ADMIN \
   --security-opt apparmor=unconfined \
   --security-opt seccomp=unconfined \
@@ -170,5 +181,8 @@ fi
   cd "$out_abs"
   sha256sum "$iso" >SHA256SUMS
 )
+hash=$(awk '{print $1}' "$out_abs/SHA256SUMS")
 echo "ISO: $out_abs/$iso"
 echo "SHA256SUMS: $out_abs/SHA256SUMS"
+echo "RESULT_ISO=$out_abs/$iso"
+echo "RESULT_SHA256=$hash"

@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-cancel-build-iso"
+description = "Enables the cancel_build_iso command without any pre-configured scope."
+commands.allow = ["cancel_build_iso"]
+
+[[permission]]
+identifier = "deny-cancel-build-iso"
+description = "Denies the cancel_build_iso command without any pre-configured scope."
+commands.deny = ["cancel_build_iso"]
