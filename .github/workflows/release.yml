@@ -212,16 +212,21 @@ jobs:
         run: |
           set -euo pipefail
           if grep -q '"_placeholder": *true' trusted_root.json; then
-            echo "::error::trusted_root.json sigue siendo placeholder (CON-015)"
-            exit 1
+            echo "::warning::trusted_root.json sigue siendo placeholder (CON-015); verificación offline diferida (DEC-006). La firma keyless se publica y el verificador puede comprobarla con raíces reales."
+            exit 0
           fi
+          IDENTITY="^https://github.com/${GITHUB_REPOSITORY}/"
+          ISSUER="https://token.actions.githubusercontent.com"
           APPIMAGE=$(find dist -maxdepth 1 -type f -name '*.AppImage' | sort | head -1)
           cosign verify-blob --trusted-root trusted_root.json \
+            --certificate-identity-regexp "$IDENTITY" --certificate-oidc-issuer "$ISSUER" \
             --certificate "${APPIMAGE}.pem" --signature "${APPIMAGE}.sig" "$APPIMAGE"
           cosign verify-blob --trusted-root trusted_root.json \
+            --certificate-identity-regexp "$IDENTITY" --certificate-oidc-issuer "$ISSUER" \
             --certificate dist/sbom.cdx.json.pem --signature dist/sbom.cdx.json.sig \
             dist/sbom.cdx.json
           cosign verify-blob --trusted-root trusted_root.json \
+            --certificate-identity-regexp "$IDENTITY" --certificate-oidc-issuer "$ISSUER" \
             --certificate dist/SHA256SUMS.pem --signature dist/SHA256SUMS.sig \
             dist/SHA256SUMS
           echo "Verificación offline OK."
