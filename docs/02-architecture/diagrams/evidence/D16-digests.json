@@ -1,9 +1,0 @@
-{
-  "id": "D16",
-  "source": "sources/D16-domain-coreport.class.json",
-  "asBuiltSourceSha": "cb626dbb6cf7a50e66ebefd0bbd7b9982c9ec63d",
-  "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
-  "sourceSha256": "1ff9ff91644002bf68b755ca39eb9a1b6189a5dce200dbb420c758e6ac28cc0d",
-  "htmlSha256": "007f064fe30a2516669d1077d484e24ec15b3af20619331e5e5a696aabf7fb01",
-  "html": "rendered/D16.html"
-}

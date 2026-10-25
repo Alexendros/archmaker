@@ -1,9 +1,0 @@
-{
-  "id": "D17",
-  "source": "sources/D17-profile-persist.dataflow.json",
-  "asBuiltSourceSha": "cb626dbb6cf7a50e66ebefd0bbd7b9982c9ec63d",
-  "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
-  "sourceSha256": "87acfbb424e707f0237292200fd4a989a2161bdd2dbb298220421b998021b898",
-  "htmlSha256": "dc921d98b986b89dde914a3e626167e00215f65319cc0a33c36723a8a05cf5ff",
-  "html": "rendered/D17.html"
-}

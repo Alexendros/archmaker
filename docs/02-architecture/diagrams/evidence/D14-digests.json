@@ -1,9 +1,0 @@
-{
-  "id": "D14",
-  "source": "sources/D14-prepare-export.lifecycle.json",
-  "asBuiltSourceSha": "cb626dbb6cf7a50e66ebefd0bbd7b9982c9ec63d",
-  "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
-  "sourceSha256": "29e5c9427815efe74069f0f1a1e9d7a95a940be943035838579f87de488365c0",
-  "htmlSha256": "04cc749ea9233b2654aee0769775c776873d20743243f093ee17dd5665a934fe",
-  "html": "rendered/D14.html"
-}

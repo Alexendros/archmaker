@@ -1,9 +1,0 @@
-{
-  "id": "D05",
-  "source": "sources/D05-desktop-linux.architecture.json",
-  "asBuiltSourceSha": "cb626dbb6cf7a50e66ebefd0bbd7b9982c9ec63d",
-  "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
-  "sourceSha256": "306003456037b658544c197e0eb91214e58435debb791ea8a8636a9c8d1cc962",
-  "htmlSha256": "ee5704b9d61a3234ad289682fc1a7633a322ded7d3a6d335a11d90861bbfd026",
-  "html": "rendered/D05.html"
-}

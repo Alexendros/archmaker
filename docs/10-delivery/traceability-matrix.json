@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "generated_at": "1792900192",
-    "git_sha": "a70375d700ede88b632a2ec042618ef44c7bd4b7",
+    "generated_at": "1792903518",
+    "git_sha": "fd103063a3c494605e1c620f1cd4b3f07c537d3a",
     "requirements_file": "docs/01-product/requirements.md",
     "inventory_file": "docs/10-delivery/tests-inventory.json",
     "validators_file": "docs/10-delivery/validators.json"
@@ -84,7 +84,7 @@
       "evidence_count": 48,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["negative", "unit", "schema", "integration"],
+      "evidence_types": ["schema", "unit", "integration", "negative"],
       "coverage_status": "covered"
     },
     {
@@ -179,7 +179,7 @@
       "evidence_count": 80,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["negative", "unit", "schema", "integration"],
+      "evidence_types": ["schema", "unit", "integration", "negative"],
       "coverage_status": "covered"
     },
     {
@@ -253,7 +253,7 @@
       "evidence_count": 41,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["contract", "unit", "integration"],
+      "evidence_types": ["unit", "contract", "integration"],
       "coverage_status": "covered"
     },
     {
@@ -361,12 +361,12 @@
       "has_executable_evidence": true,
       "passes_ci": true,
       "evidence_types": [
+        "integration",
+        "schema",
+        "unit",
         "canonicalize",
         "negative",
-        "unit",
-        "contract",
-        "schema",
-        "integration"
+        "contract"
       ],
       "coverage_status": "covered"
     },
@@ -410,7 +410,7 @@
       "evidence_count": 10,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["negative", "unit", "integration"],
+      "evidence_types": ["unit", "integration", "negative"],
       "coverage_status": "covered"
     },
     {
@@ -505,7 +505,7 @@
       "evidence_count": 62,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["contract", "unit", "integration"],
+      "evidence_types": ["unit", "contract", "integration"],
       "coverage_status": "covered"
     },
     {
@@ -525,7 +525,7 @@
       "evidence_count": 3,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["a11y", "unit", "visual"],
+      "evidence_types": ["unit", "visual", "a11y"],
       "coverage_status": "covered"
     },
     {
@@ -629,11 +629,11 @@
       "has_executable_evidence": true,
       "passes_ci": true,
       "evidence_types": [
+        "integration",
+        "unit",
         "canonicalize",
         "negative",
-        "unit",
-        "contract",
-        "integration"
+        "contract"
       ],
       "coverage_status": "covered"
     },
@@ -736,11 +736,11 @@
       "has_executable_evidence": true,
       "passes_ci": true,
       "evidence_types": [
-        "negative",
-        "unit",
+        "integration",
         "visual",
-        "contract",
-        "integration"
+        "unit",
+        "negative",
+        "contract"
       ],
       "coverage_status": "covered"
     },
@@ -775,7 +775,7 @@
       "evidence_count": 17,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["negative", "unit", "integration"],
+      "evidence_types": ["unit", "integration", "negative"],
       "coverage_status": "covered"
     },
     {
@@ -878,7 +878,7 @@
       "evidence_count": 87,
       "has_executable_evidence": true,
       "passes_ci": true,
-      "evidence_types": ["negative", "unit"],
+      "evidence_types": ["unit", "negative"],
       "coverage_status": "covered"
     }
   ],
