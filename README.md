@@ -27,7 +27,6 @@ Tres capas distintas (detalle: [`docs/10-delivery/closure/f8-governance.md`](doc
   escritura de discos desde Forge, `aarch64`, Enterprise y el runner de instalación.
   La decisión se formaliza en ADR-0020 y ADR-0021 (en preparación); el estado anterior
   queda congelado en el tag `pre-reorientacion`.
-- Diagramas Archify (Forge as-built): [`docs/02-architecture/diagrams/`](docs/02-architecture/diagrams/).
   Archify es herramienta de diagramación; no confundir con Forge.
 - Gate global (mecánico): **Clear** — todos los gates G0–G10 están `complete`. Autoridad: [`docs/00-governance/go-no-go.md`](docs/00-governance/go-no-go.md) y [`docs/10-delivery/gates.md`](docs/10-delivery/gates.md).
 - Veredicto de gobierno: **CONDITIONAL-CLEAR** hasta MVP-5, más el slice ISO-01 de imagen viva x86_64 UEFI. Autoriza el walking skeleton, los slices MVP-1..MVP-5 y el canal AppImage de MVP-6. Siguen bloqueados el runner de instalación, la escritura de discos, la shell arbitraria y Enterprise.
@@ -49,7 +48,6 @@ Tres capas distintas (detalle: [`docs/10-delivery/closure/f8-governance.md`](doc
 - Estado del plan: [`docs/00-governance/plan-status.md`](docs/00-governance/plan-status.md).
 - Resultado Go/No-Go: [`docs/00-governance/go-no-go.md`](docs/00-governance/go-no-go.md).
 - Gobierno del cierre (F8): [`docs/10-delivery/closure/f8-governance.md`](docs/10-delivery/closure/f8-governance.md).
-- Diagramas verificables: [`docs/02-architecture/diagrams/index.md`](docs/02-architecture/diagrams/index.md).
 - Cobertura de gates: [`docs/10-delivery/gates.md`](docs/10-delivery/gates.md).
 - Próximos issues: [`docs/10-delivery/next-issues.md`](docs/10-delivery/next-issues.md).
 

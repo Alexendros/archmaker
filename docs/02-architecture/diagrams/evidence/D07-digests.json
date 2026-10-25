@@ -1,9 +1,0 @@
-{
-  "id": "D07",
-  "source": "sources/D07-init.sequence.json",
-  "asBuiltSourceSha": "cb626dbb6cf7a50e66ebefd0bbd7b9982c9ec63d",
-  "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
-  "sourceSha256": "0270c8e2fb42c7ca366193a9fb47ceae7ab1c129b98e74c53e7db7abd10816dd",
-  "htmlSha256": "b59985d653d7e8eece1caf44e0bbd4b3f0f38a318ea04a5cd80d00dd8c6701ec",
-  "html": "rendered/D07.html"
-}

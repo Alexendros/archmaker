@@ -1,9 +1,0 @@
-{
-  "id": "D06",
-  "source": "sources/D06-web-wasm.architecture.json",
-  "asBuiltSourceSha": "cb626dbb6cf7a50e66ebefd0bbd7b9982c9ec63d",
-  "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
-  "sourceSha256": "1d566155f69ff8d96034c96abf57c2b3d2f43c7c6d79499f10b444d139cb2fe4",
-  "htmlSha256": "885fdb21de6b51bdd0d2c2aaa792a61ad9d98b97f4b17ebfe75a56dcc7e159ab",
-  "html": "rendered/D06.html"
-}

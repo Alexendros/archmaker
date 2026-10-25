@@ -1,9 +1,0 @@
-{
-  "id": "D08",
-  "source": "sources/D08-resolve-validate-manifest.sequence.json",
-  "asBuiltSourceSha": "cb626dbb6cf7a50e66ebefd0bbd7b9982c9ec63d",
-  "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
-  "sourceSha256": "9c3d7d0d32d7154448953f40c6de8a7a4ab0162f48cb00a62007a75d86978e94",
-  "htmlSha256": "a7440bc4d5dfd37c06d5f09136fe8df44889e8bedce11b1ae0e2dd43e2863911",
-  "html": "rendered/D08.html"
-}

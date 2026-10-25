@@ -21,7 +21,6 @@ reviewers:
 - Fecha: 2026-10-06
 - Requisitos relacionados: NFR-SEC-001, NFR-OFF-001
 - Viewpoint: VP-04 Deployment ([`../viewpoints.md`](../viewpoints.md))
-- Diagramas Archify as-built: [`../diagrams/`](../diagrams/) (D05–D06)
 - Fase: R4; resuelve `AUD-F-08`
 
 ## VW-07 — Deployment MVP Desktop

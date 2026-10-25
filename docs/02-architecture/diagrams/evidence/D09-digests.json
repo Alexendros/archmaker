@@ -1,9 +1,0 @@
-{
-  "id": "D09",
-  "source": "sources/D09-export-web.sequence.json",
-  "asBuiltSourceSha": "cb626dbb6cf7a50e66ebefd0bbd7b9982c9ec63d",
-  "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
-  "sourceSha256": "5ba697db36b73ae3e2bc84f561617e50bbcdff62ce0ce3bb121fdab211763b85",
-  "htmlSha256": "ea9d65cbec50077c1cab776195ad5198f328c8575f529f3706d70ac89af439dd",
-  "html": "rendered/D09.html"
-}

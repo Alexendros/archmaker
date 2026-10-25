@@ -1,9 +1,0 @@
-{
-  "id": "D10",
-  "source": "sources/D10-desktop-save.sequence.json",
-  "asBuiltSourceSha": "cb626dbb6cf7a50e66ebefd0bbd7b9982c9ec63d",
-  "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
-  "sourceSha256": "47682b60395484cede4f74f56317eed8ad34938e2170d094fe04c8ea5755ebf1",
-  "htmlSha256": "5236c929b1ac82dc90a57f2b7cc5adb033a3b391deaff98eec522e6572b91b19",
-  "html": "rendered/D10.html"
-}

@@ -1,9 +1,0 @@
-{
-  "id": "D24",
-  "source": "sources/D24-baselines.timeline.json",
-  "asBuiltSourceSha": "cb626dbb6cf7a50e66ebefd0bbd7b9982c9ec63d",
-  "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
-  "sourceSha256": "9917ce5389de6178cdc11ed056f47e9e598b32172f748b359f51a9fe62485be4",
-  "htmlSha256": "04aea0b41908a8051a7998773bf357aeb92d32ff82bb4819ea000801e97a3552",
-  "html": "rendered/D24.html"
-}

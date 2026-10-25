@@ -1,9 +1,0 @@
-{
-  "id": "D18",
-  "source": "sources/D18-canonicalization.dataflow.json",
-  "asBuiltSourceSha": "cb626dbb6cf7a50e66ebefd0bbd7b9982c9ec63d",
-  "rendererSha": "ca67c9f16be0c8cad409cd45190aa052e0649b84",
-  "sourceSha256": "28ba1b571e1ce96d8352a8cdfee4e7fa1415bd37187deb608e5db7c69c487b24",
-  "htmlSha256": "de64d82fc4ef07109bc9a2d7b97a2f932cd12a7f1ccb4ee6ab8aeeb38f3afd8d",
-  "html": "rendered/D18.html"
-}
