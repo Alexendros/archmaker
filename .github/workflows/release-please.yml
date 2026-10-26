@@ -1,0 +1,60 @@
+# release-please — Genera release PRs y borradores de release (DEC-011).
+#
+# Entradas: ADR-0022, docs/10-delivery/packaging-release.md.
+# Estrategia simple con version.txt como fuente de verdad; release-please
+# actualiza los extra-files y crea un release borrador al fusionar el PR.
+# Cargo.lock se regenera en la rama del release PR tras cada cambio.
+
+name: release-please
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  release-please:
+    name: Release PR
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Release please
+        id: release
+        uses: google-github-actions/release-please-action@e4dc86ba9405554aeba3c6bb2d169500e7d3b4ee # v4.1.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Regenerar Cargo.lock en rama del release PR
+        if: ${{ steps.release.outputs.prs_created == 'true' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HEAD_BRANCH: ${{ steps.release.outputs.head_branch_name }}
+        run: |
+          set -euo pipefail
+          rustup show active-toolchain
+          git fetch origin "$HEAD_BRANCH"
+          git checkout "$HEAD_BRANCH"
+          cargo update --workspace
+          sha=$(gh api "repos/${{ github.repository }}/contents/Cargo.lock?ref=$HEAD_BRANCH" --jq '.sha')
+          content=$(base64 -w0 Cargo.lock)
+          gh api "repos/${{ github.repository }}/contents/Cargo.lock" \
+            --method PUT \
+            --field message="chore: regenerate Cargo.lock" \
+            --field content="$content" \
+            --field sha="$sha" \
+            --field branch="$HEAD_BRANCH" \
+            --field author[name]="github-actions[bot]" \
+            --field author[email]="github-actions[bot]@users.noreply.github.com" \
+            --field committer[name]="github-actions[bot]" \
+            --field committer[email]="github-actions[bot]@users.noreply.github.com"

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "packages": {
+    ".": {
+      "release-type": "simple",
+      "draft": true,
+      "force-tag-creation": true,
+      "include-component-in-tag": false,
+      "bump-minor-pre-major": true,
+      "extra-files": [
+        "package.json",
+        "Cargo.toml",
+        "src-tauri/Cargo.toml",
+        "apps/web/package.json",
+        "crates/archmaker-canonicalization/Cargo.toml",
+        "crates/archmaker-constitute/Cargo.toml",
+        "crates/archmaker-core/Cargo.toml",
+        "crates/archmaker-domain/Cargo.toml",
+        "crates/archmaker-hardware/Cargo.toml",
+        "crates/archmaker-resolution/Cargo.toml",
+        "crates/archmaker-rules/Cargo.toml",
+        "crates/archmaker-wasm/Cargo.toml"
+      ]
+    }
+  }
+}
