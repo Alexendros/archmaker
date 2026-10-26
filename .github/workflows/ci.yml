@@ -819,6 +819,26 @@ jobs:
       - name: Mostrar checksums
         run: cat target/iso/SHA256SUMS
 
+  secrets:
+    name: secrets
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: gitleaks 8.30.1
+        run: |
+          set -euo pipefail
+          curl -sSfL -o gitleaks.tar.gz https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz
+          echo "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb  gitleaks.tar.gz" | sha256sum -c -
+          tar -xzf gitleaks.tar.gz gitleaks
+          ./gitleaks detect --source . --redact --verbose
+
   sca:
     name: sca
     runs-on: ubuntu-latest
@@ -845,6 +865,13 @@ jobs:
           corepack enable
           pnpm install --frozen-lockfile
           pnpm audit --audit-level high
+      - name: OSV-Scanner
+        uses: google/osv-scanner-action/osv-scanner-action@19ec1116569a47416e11a45848722b1af31a857b # v1.9.0
+        with:
+          scan-args: |-
+            -r
+            --config=osv-scanner.toml
+            .
 
   workflow-lint:
     name: workflow-lint
@@ -885,6 +912,7 @@ jobs:
         test,
         appimage-build,
         iso-smoke,
+        secrets,
         sca,
         workflow-lint,
       ]
