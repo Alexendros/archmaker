@@ -59,7 +59,7 @@ Estado de las desviaciones D-01..D-10 al estabilizar `stabilization/mvp0.1` y el
 | ------- | --------------------- | -------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
 | CON-013 | resuelta              | Metadatos de `walking-skeleton.md` / `implementation-plan-mvp0.md` → `partial`/`complete` alineados con código | —                                                         |
 | CON-014 | resuelta              | PR-07 E7 + tag anotado `implementation-baseline-mvp0.1`                                                        | Sign-off independiente formal sigue en review             |
-| CON-015 | resuelta-con-residual | `trusted_root.json` con `_placeholder: false`; job `sign-verify` en `release.yml`                              | Release público / verificación offline en primer tag push |
+| CON-015 | resuelta-con-residual | `trusted_root.json` con `_placeholder: false`; job `sign-verify` en `publish.yml`                              | Release público / verificación offline en primer tag push |
 | CON-016 | resuelta              | G2-C04 `complete`; matriz FR/NFR→TST/VAL en CI (`traceability_matrix.py`)                                      | —                                                         |
 | CON-017 | resuelta-con-residual | G6-C01/C03 `complete`; `wcag_validate.py` + axe/visual; checklist manual RC                                    | Firma manual 1.4.1 en release candidate                   |
 | CON-018 | resuelta              | README describe walking skeleton MVP-0.1; runner excluido                                                      | —                                                         |

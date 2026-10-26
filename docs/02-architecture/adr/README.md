@@ -17,7 +17,7 @@ reviewers:
 
 - Estado: in-review
 - Propietario: Arquitectura
-- Última revisión: 2026-10-05
+- Última revisión: 2026-10-26
 - Requisitos relacionados: NFR-DET-001, NFR-PORT-001, NFR-SEC-001
 
 Índice de los ADR vigentes. Cada ADR es un documento independiente con cabecera (Estado, Fecha,
@@ -47,6 +47,9 @@ Propietario, Requisitos) y las secciones de `templates/adr.md`. Estados posibles
 | [ADR-0017](ADR-0017-navegadores-y-onlyoffice.md)                       | ONLYOFFICE canónico y cardinalidad de navegadores    | proposed | 2026-10-17 |
 | [ADR-0018](ADR-0018-alcance-declarativo-a6-excluida.md)                | Alcance declarativo; A6 excluida                     | proposed | 2026-10-17 |
 | [ADR-0019](ADR-0019-perfil-vivo-archiso.md)                            | Target de perfil vivo y proceso de constitución      | accepted | 2026-10-18 |
+| [ADR-0020](ADR-0020-reorientacion-gui-fina.md)                         | Reorientación — GUI fina sobre archiso/archinstall   | accepted | 2026-10-25 |
+| [ADR-0021](ADR-0021-construccion-iso-docker.md)                        | Construcción de ISO en contenedor Docker             | accepted | 2026-10-25 |
+| [ADR-0022](ADR-0022-ci-al-canon-de-flota.md)                           | CI al canon de flota                                 | accepted | 2026-10-26 |
 
 ## Crear un ADR
 

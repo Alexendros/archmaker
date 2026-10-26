@@ -15,7 +15,7 @@ reviewers:
 
 # Límites
 
-Texto canónico: [`docs/11-operations/manual/Limites.md`](https://github.com/Alexendros/archmaker/blob/main/docs/11-operations/manual/Limites.md).
+Texto canónico: [`docs/11-operations/manual/Limites.md`](https://github.com/Soluciones-Alexendros/archmaker/blob/main/docs/11-operations/manual/Limites.md).
 
 ## Sin red de contenidos
 

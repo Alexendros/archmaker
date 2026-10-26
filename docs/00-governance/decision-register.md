@@ -54,6 +54,7 @@ consumidores referencian los identificadores `DEC-*` y **no** reafirman su estad
 | DEC-013 | Target `archmaker-live-profile` y proceso de constitución, sin A6          | 2026-10-18 | architecture | P0        | accepted | no         |
 | DEC-014 | Reorientación: GUI fina sobre archiso/archinstall                          | 2026-10-25 | product      | P0        | accepted | no         |
 | DEC-015 | Cierre ISO-05 y primera release binaria `v0.3.0` (AppImage Forge)          | 2026-10-25 | release      | P1        | accepted | no         |
+| DEC-016 | CI de ArchMaker al canon de flota de `Soluciones-Alexendros/autoworkspace` | 2026-10-26 | architecture | P0        | accepted | sí         |
 
 ## Registro estructurado
 
@@ -103,6 +104,15 @@ consumidores referencian los identificadores `DEC-*` y **no** reafirman su estad
   `packaging-release.md` pasa a `releaseStatus: released`. Cosign local y verificación
   offline son residuales de DEC-006 (T-I11-02) y no bloquean la release.
 - Issue de seguimiento: T-I11-02.
+
+### DEC-016 — CI de ArchMaker al canon de flota
+
+- Pregunta: ¿cómo alinea ArchMaker su CI con el canon de flota de `Soluciones-Alexendros/autoworkspace` tras la transferencia del repo y la publicación de `v0.3.0`?
+- Decisión: adoptar `reusable-static.yml@v6.0.0`, consolidar `ci-gate`, fijar Node 24 / pnpm 10.34.8, añadir `gitleaks` y SCA (`cargo audit`, `pnpm audit high`, `osv-scanner`), reemplazar `release.yml` por `publish.yml` con `environment: production`, introducir `release-please.yml` con `version.txt`, retirar `plan-release.yml` y `assign-milestone.yml`, e incluir actionlint y zizmor 1.31.1 en `ci-gate`. Las excepciones D-E1, D-E3, D-E4 y `version.txt` quedan registradas en `.github/policy-exceptions.md`.
+- Fecha y autoridad: 2026-10-26 · `architecture` · `accepted`.
+- ADR: ADR-0022. Requisitos: NFR-SEC-001, NFR-DET-001, FR-EXPORT-001. Riesgos: RSK-007. Gates: G9, G10.
+- Consecuencia: CI homogénea con la flota; releases semi-automáticos; rulesets sin bypass; tags `v*` restringidos a la App CI una vez implementada AL-1/AL-4b.
+- Issue de seguimiento: AL-1, AL-2, AL-3, AL-4a, AL-4b.
 
 ### DEC-002 — Ámbito de los identificadores
 
@@ -247,7 +257,7 @@ consumidores referencian los identificadores `DEC-*` y **no** reafirman su estad
 
 ## Desviaciones respecto a la recomendación
 
-Las únicas desviaciones aceptadas son `DEC-007` y `DEC-008`; ambas se detallan en su registro. El
+Las desviaciones aceptadas son `DEC-007`, `DEC-008` y `DEC-016`; todas se detallan en su registro. El
 resto de decisiones coinciden con la recomendación o la precisan (DEC-005, DEC-006, DEC-009,
 DEC-010, DEC-011, DEC-012, DEC-013).
 
@@ -270,6 +280,7 @@ DEC-010, DEC-011, DEC-012, DEC-013).
 | DEC-011 | Nombre público Neubat; AppImage x86_64 como único canal inicial.     | aplicada (gobierno + release `v0.1.0`)                                  | MVP-6-02/03 (F9) |
 | DEC-012 | Nombre visible Forge; motor ArchMaker; sin renombrar ids técnicos.   | aplicada                                                                | ADR-0012         |
 | DEC-013 | Target `archmaker-live-profile`; proceso de constitución sin A6.     | aplicada al target; la cara no ejecuta `mkarchiso`                      | ISO-02           |
+| DEC-016 | CI al canon de flota; `publish.yml` + release-please.                | aplicada                                                                | AL-1..AL-4b      |
 
 ## Reglas de validación (R2)
 
@@ -300,4 +311,5 @@ pasan de `proposed` a `accepted` el 2026-10-06. `DEC-011` se acepta el 2026-10-1
 opción 3 y MVP-6 AppImage. `DEC-012` se acepta el 2026-10-17 con ADR-0012 (Forge). `DEC-013` se
 acepta el 2026-10-18 con ADR-0019 (perfil vivo; el contrato de código queda para ISO-02).
 `DEC-014` se acepta el 2026-10-25 con ADR-0020/ADR-0021 (reorientación) y `DEC-015` el mismo
-día con el cierre ISO-05 y la publicación de `v0.3.0`.
+día con el cierre ISO-05 y la publicación de `v0.3.0`. `DEC-016` se acepta el 2026-10-26 con
+ADR-0022 (CI al canon de flota).

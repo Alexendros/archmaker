@@ -13,7 +13,7 @@ evidence:
   - Playwright en serie - e2e WASM x3, P5 27, axe 12, a11y estatico, flow 74, visual 4
   - .github/workflows/iso.yml G9 (ISO de humo + QEMU UEFI) en main
   - tools/check_product_naming.py (T-NAME-01..04 + T-MIG-01..04 OK)
-  - https://github.com/Alexendros/archmaker/releases/tag/v0.3.0 (publicada, 2026-10-25)
+  - https://github.com/Soluciones-Alexendros/archmaker/releases/tag/v0.3.0 (publicada, 2026-10-25)
   - .github/workflows/release.yml run 40184194831 (success; AppImage + firmas + SBOM + provenance)
 owners:
   - release
