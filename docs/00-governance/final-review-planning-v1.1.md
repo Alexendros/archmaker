@@ -45,11 +45,11 @@ Validadores ejecutados y resultado (exit code):
 
 Evidencia de CI (API de GitHub, repositorio `Alexendros/archmaker`):
 
-| Workflow           | Run                                                                             |    Commit | Conclusión | Jobs        |
-| ------------------ | ------------------------------------------------------------------------------- | --------: | ---------- | ----------- |
-| `docs-validate`    | [37390633111](https://github.com/Alexendros/archmaker/actions/runs/37390633111) | `3e112c0` | success    | 7/7 en pass |
-| `json-schema`      | [37390632952](https://github.com/Alexendros/archmaker/actions/runs/37390632952) | `3e112c0` | success    | 4/4 en pass |
-| `canonicalization` | [37390633429](https://github.com/Alexendros/archmaker/actions/runs/37390633429) | `3e112c0` | success    | 1/1 en pass |
+| Workflow           | Run                                                                                        |    Commit | Conclusión | Jobs        |
+| ------------------ | ------------------------------------------------------------------------------------------ | --------: | ---------- | ----------- |
+| `docs-validate`    | [37390633111](https://github.com/Soluciones-Alexendros/archmaker/actions/runs/37390633111) | `3e112c0` | success    | 7/7 en pass |
+| `json-schema`      | [37390632952](https://github.com/Soluciones-Alexendros/archmaker/actions/runs/37390632952) | `3e112c0` | success    | 4/4 en pass |
+| `canonicalization` | [37390633429](https://github.com/Soluciones-Alexendros/archmaker/actions/runs/37390633429) | `3e112c0` | success    | 1/1 en pass |
 
 El PR #29 (`remediation/planning-v1.1` → `main`) reporta 13 checks en verde (12 jobs de CI más
 GitGuardian). Los commits de evidencia citados en los manifiestos (`611e1e7`, `0a0e98c`,

@@ -9,8 +9,9 @@ verificationStatus: passed
 releaseStatus: released
 evidence:
   - docs/10-delivery/iso05-scope.md (ISO-05, 2026-10-25)
-  - https://github.com/Alexendros/archmaker/releases/tag/v0.3.0 (publicada, 2026-10-25)
-  - .github/workflows/release.yml run 40184194831 (success)
+  - https://github.com/Soluciones-Alexendros/archmaker/releases/tag/v0.3.0 (publicada, 2026-10-25)
+  - .github/workflows/publish.yml (successor de release.yml; ADR-0022)
+  - .github/workflows/release-please.yml (genera release PRs y borradores)
 owners:
   - release
 reviewers:
@@ -24,7 +25,7 @@ reviewers:
 - Última revisión: 2026-10-25
 - Requisitos relacionados: FR-EXPORT-001, NFR-OBS-001, NFR-SEC-001, NFR-PORT-001, NFR-MARK-001, NFR-COST-001
 - Sustituye / sustituido por: —
-- Decisiones aplicables: DEC-001, DEC-005, DEC-006, DEC-007, DEC-009, DEC-011; ADR-0010 (accepted, opción 3)
+- Decisiones aplicables: DEC-005, DEC-006, DEC-007, DEC-009, DEC-011, DEC-012, DEC-015, DEC-016; ADR-0010 (accepted, opción 3), ADR-0012, ADR-0022
 
 ## Dos actos de release
 
@@ -40,7 +41,7 @@ Se asigna a un hito de GitHub (`planning-v*`, `MVP-*`, `v1`). Se publica cuando:
 2. El CI de ese commit está en verde.
 3. El cuerpo de la GitHub Release lista las issues del hito asociado.
 
-Artefactos: el código del tag que GitHub adjunta y las notas. Sin binarios, sin firmas y sin paquetes. El workflow `.github/workflows/plan-release.yml` crea la release de notas al pushear esos tags; no llama a `release.yml`.
+Artefactos: el código del tag que GitHub adjunta y las notas. Sin binarios, sin firmas y sin paquetes. Los tags de planificación se crean manualmente; la notas de release de plan quedan fuera del alcance actual (sustituye a `plan-release.yml`, retirado en D-E3).
 
 | Hito                | Tag                                       | Estado del hito    |
 | ------------------- | ----------------------------------------- | ------------------ |
@@ -58,7 +59,7 @@ DEC-011 / MVP-6 accepted):**
 | ---------------- | ------------------------------------------------------ |
 | Plataforma       | AppImage Linux x86_64                                  |
 | Nombre visible   | Forge (ADR-0012; `v0.1.0` histórico Neubat / ADR-0010) |
-| Hosting          | GitHub Release del tag `v*` (`release.yml`)            |
+| Hosting          | GitHub Release del tag `v*` (`publish.yml`)            |
 | Familias no Done | `.deb`, `.rpm`, OBS, AUR, Flatpak → deferred/blocked   |
 
 F9 intentó construir desde `RC_SHA` `9297ed7…`, pero el workflow terminó `cancelled` y no
@@ -66,19 +67,20 @@ publicó nada. Los tags `v0.1.0` y `v0.2.0` carecen de GitHub Release (`/release
 `/releases/tags/*` = 404), por lo que `v0.1.0` se declara **no publicado** (histórico,
 nombre anterior). Residual DEC-006 / cosign local y 3× install GUI siguen abiertos.
 
+El workflow `publish.yml` se dispara automáticamente por push de tag `v*` (después de que release-please cree el borrador) y sube el AppImage, los checksums, el SBOM y las firmas. `v0.3.0` es la primera release binaria real, publicada históricamente con `release.yml`; a partir de ADR-0022 las releases usan `publish.yml`.
+
 La primera release binaria real es `v0.3.0` (2026-10-25), publicada desde `main` `1dbe3912`
-con `publish_package=true` en <https://github.com/Alexendros/archmaker/releases/tag/v0.3.0>:
+en <https://github.com/Soluciones-Alexendros/archmaker/releases/tag/v0.3.0>:
 AppImage `Forge_0.3.0_amd64.AppImage` (84 326 904 B), `SHA256SUMS`, firmas `.sig`/`.pem`,
 `sbom.cdx.json` y `slsa-provenance.json`. La verificación de firmas del release usa pinning
 de identidad e issuer contra la instancia pública de Sigstore.
 
-Desde `0.2.0`, un tag `v*` anota la versión de código y no publica el paquete. El job de
-AppImage en `release.yml` solo corre con `workflow_dispatch` y `publish_package=true`, cuando
-el AppImage esté funcional y validado con tests. `v0.3.0` es la primera release binaria real,
-verificada en ISO-05 (`docs/10-delivery/iso05-scope.md`).
+A partir de ADR-0022, un tag `v*` generado por release-please dispara `publish.yml`
+automáticamente; no se requiere `workflow_dispatch` ni `publish_package=true`. `v0.3.0` es la
+primera release binaria real, verificada en ISO-05 (`docs/10-delivery/iso05-scope.md`).
 
 Canales `nightly` / `beta` / `stable` son política de promoción del paquete. No son tags que
-`plan-release.yml` dispare. El AUR, si se reabre, es PKGBUILD fuente, no repositorio binario
+release-please dispare. El AUR, si se reabre, es PKGBUILD fuente, no repositorio binario
 de pacman.
 
 ## MVP Linux
@@ -138,7 +140,7 @@ Cada release publica, como mínimo:
 
 Fase I11 (2026-10-06). Decisiones: DEC-006 (Sigstore keyless + verificación offline),
 DEC-007 (updater en MVP), ADR-0008 (catálogos firmados), ADR-0009 (actualización firmada).
-Pipeline: `.github/workflows/release.yml`; raíces: `trusted_root.json` (raíz del repo).
+Pipeline: `.github/workflows/publish.yml`; raíces: `trusted_root.json` (raíz del repo).
 
 | Canal     | Artefacto                        | Firma                           | Requisito de instalación        |
 | --------- | -------------------------------- | ------------------------------- | ------------------------------- |
@@ -155,13 +157,13 @@ Pipeline: `.github/workflows/release.yml`; raíces: `trusted_root.json` (raíz d
   (promoción inversa, sin rebuild), documentando canal afectado y motivo;
   el digest restaurado ya está firmado y atestado, no se re-firma.
 - **Verificación de firmas**: `cosign verify-blob` con pinning de identidad
-  (`^https://github.com/Alexendros/archmaker/`) e issuer
+  (`^https://github.com/Soluciones-Alexendros/archmaker/`) e issuer
   (`https://token.actions.githubusercontent.com`), ejecutada en CI contra la
   instancia pública de Sigstore. `trusted_root.json` se materializa en CI
   (`cosign trusted-root create`) y se publica junto a las firmas como
   evidencia. La verificación **estrictamente offline** (`--trusted-root`)
   requiere firmas en formato bundle (`--new-bundle-format`) y queda diferida
   como residual de DEC-006 (T-I11-02).
-- **Provenance**: predicado SLSA v1 (`slsa-provenance.json`) generado en
-  `release.yml`; la atestación GitHub (`actions/attest-*`) queda pendiente de
-  pin SHA verificado (Etapa C, ver `docs/09-quality/ci-cd.md`).
+- **Provenance**: atestación generada por `actions/attest-build-provenance` en
+  `publish.yml` y verificada con `gh attestation verify` en el job `verify-release`.
+  El predicado SLSA v1 histórico (`slsa-provenance.json`) de `v0.3.0` se conserva como evidencia.

@@ -1,351 +1,944 @@
-# ci — CI completa MVP-0 (fase I10, T-I10-01).
-#
-# Gates cubiertos:
-#   G9  Calidad  -> lint/format/check/test/audit de Rust + TS + docs + schemas
-#   G4  Datos    -> schemas, corpus, canonicalización (vía validadores Python)
-#   G5  Interfaces -> front matter, trazabilidad, gates, refs de schema
-#   G6  UX       -> accesibilidad automatizada + regresión visual
-#
-# Entradas: docs/09-quality/ci-cd.md, docs/09-quality/test-matrix.md,
-#           ADR-0005, ADR-0006, ADR-0008, DEC-006.
-# No duplica la intención de docs-validate/json-schema/canonicalization;
-# los agrega como superficie única de calidad (el plan I10 exige estos
-# comandos en ci.yml aunque ya existan en workflows temáticos).
-#
-# Política supply-chain (docs/09-quality/ci-cd.md):
-#   - Acciones fijadas por SHA ya verificado en docs-validate.yml.
-#   - permissions: contents: read por defecto; sin id-token aquí.
-#   - concurrency + timeout-minutes en cada job.
-#
-# Nota: `cargo clippy`/`cargo test` llevan --workspace porque el
-# Cargo.toml raíz es un workspace virtual (sin [package]); el comando
-# desnudo del enunciado fallaría con "no packages". fmt --check es
-# workspace-wide por defecto.
-
-name: ci
+name: CI
 
 on:
+  pull_request:
+    types:
+      [
+        opened,
+        synchronize,
+        reopened,
+        edited,
+        ready_for_review,
+        labeled,
+        unlabeled,
+      ]
   push:
     branches: [main]
-  pull_request:
-  workflow_dispatch:
 
-permissions:
-  contents: read
+permissions: {}
 
 concurrency:
-  group: ci-${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
 
 jobs:
-  rust:
-    name: Rust fmt/clippy/test (G9)
+  governance:
+    permissions:
+      contents: read
+      pull-requests: read
+    uses: Soluciones-Alexendros/autoworkspace/.github/workflows/reusable-static.yml@676be757002f5208a1201a72e4f61e5081a540d4 # v6.0.0
+    with:
+      quality-command: >-
+        python3 -m venv /tmp/venv &&
+        /tmp/venv/bin/pip install --no-input --disable-pip-version-check pyyaml==6.0.2 jsonschema==4.23.0 toml==0.10.2 &&
+        /tmp/venv/bin/python tools/validate_front_matter.py &&
+        /tmp/venv/bin/python tools/html_catalog_matrix.py --check &&
+        /tmp/venv/bin/python tools/validate_traceability.py &&
+        /tmp/venv/bin/python tools/gates.py &&
+        /tmp/venv/bin/python tools/validate_schema_refs.py &&
+        /tmp/venv/bin/python tools/canonicalize.py &&
+        /tmp/venv/bin/python tools/check_negative_capabilities.py &&
+        /tmp/venv/bin/python tools/check_product_naming.py &&
+        /tmp/venv/bin/python tools/validate_mig.py &&
+        /tmp/venv/bin/python tools/wcag_validate.py &&
+        /tmp/venv/bin/python tools/validate_closure_evidence.py &&
+        /tmp/venv/bin/python tools/run_f7_candidate_matrix.py --validate-only &&
+        /tmp/venv/bin/python tools/check_product_closure.py &&
+        /tmp/venv/bin/python tools/check_desktop_offline_gate.py &&
+        /tmp/venv/bin/python tools/gen_test_inventory.py &&
+        /tmp/venv/bin/python tools/traceability_matrix.py
+      test-command: >-
+        python3 -m venv /tmp/venv &&
+        /tmp/venv/bin/pip install --no-input --disable-pip-version-check pyyaml==6.0.2 jsonschema==4.23.0 toml==0.10.2 &&
+        /tmp/venv/bin/python tools/test_validate_closure_jsonschema_pin.py &&
+        /tmp/venv/bin/python tools/test_run_f7_candidate_matrix.py &&
+        /tmp/venv/bin/python tools/test_check_product_closure.py &&
+        /tmp/venv/bin/python tools/test_check_desktop_offline_gate.py &&
+        /tmp/venv/bin/python tools/test_run_product_p95_harness.py
+      smoke-command: python3 --version && python3 tools/gates.py
+
+  quality:
+    name: quality
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    permissions:
+      contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - name: Toolchain pinned (rust-toolchain.toml)
-        run: rustup show active-toolchain
-      - name: Instalar deps sistema Tauri/GTK (glib/gdk)
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            pkg-config \
-            libglib2.0-dev \
-            libgtk-3-dev \
-            libwebkit2gtk-4.1-dev \
-            libayatana-appindicator3-dev \
-            librsvg2-dev \
-            patchelf
-      # tauri::generate_context! exige que exista frontendDist (apps/web/dist);
-      # en CI no hay build web previo — stub mínimo para compilar el crate.
-      - name: Stub frontendDist para generate_context
-        run: |
-          # Mismo mount point que apps/web/index.html (id="root") para que
-          # frontend_dist_is_real_web_build_not_mock no falle ante el stub de CI.
-          mkdir -p apps/web/dist
-          printf '%s\n' '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Forge — Configurador</title></head><body><div id="root"></div></body></html>' \
-            > apps/web/dist/index.html
-      - name: cargo fmt --check
-        run: cargo fmt --all -- --check
-      - name: cargo clippy (-D warnings)
-        run: cargo clippy --workspace --all-targets -- -D warnings
-      - name: cargo test --workspace
-        run: cargo test --workspace --locked
-      - name: Validar schemas Tauri (SRC-004)
-        run: |
-          python3 -m pip install --no-input --disable-pip-version-check "jsonschema==4.23.0"
-          python3 tools/validate_tauri_schemas.py
-
-  security-runtime:
-    name: Security runtime deny (G8/G9 / NFR-SEC-001)
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    steps:
-      - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - name: Toolchain pinned (rust-toolchain.toml)
-        run: rustup show active-toolchain
-      - name: Instalar deps sistema Tauri/GTK (glib/gdk)
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            pkg-config \
-            libglib2.0-dev \
-            libgtk-3-dev \
-            libwebkit2gtk-4.1-dev \
-            libayatana-appindicator3-dev \
-            librsvg2-dev \
-            patchelf
-      - name: Stub frontendDist para generate_context
-        run: |
-          mkdir -p apps/web/dist
-          printf '%s\n' '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Forge — Configurador</title></head><body><div id="root"></div></body></html>' \
-            > apps/web/dist/index.html
-      # Nombre de test obligatorio: si falta, cargo test falla (no skip-if-missing).
-      - name: Prueba negativa runtime (capability denegada)
-        run: |
-          cargo test -p archmaker --locked \
-            security_runtime_deny_ungranted_command \
-            -- --nocapture
-
-  frontend:
-    name: Frontend pnpm check (G9)
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - name: Setup Node
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Setup Node 24
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
-          node-version: "20"
-      - name: Exigir script "check" (CON-020)
-        run: |
-          if ! node -e "const s=require('./package.json').scripts||{};process.exit(s.check?0:1)"; then
-            echo "::error::package.json falta scripts.check (CON-020: script ausente = fallar)"
-            exit 1
-          fi
-      - name: pnpm install + check
-        run: |
-          corepack enable
-          pnpm install --frozen-lockfile
-          pnpm check
-
-  web-wasm-prod:
-    name: Web production build + WASM (OP-1/OP-7)
-    runs-on: ubuntu-latest
-    timeout-minutes: 40
-    steps:
-      - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+          node-version: "24"
+      - name: Setup Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.x"
       - name: Toolchain pinned
         run: rustup show active-toolchain
-      - name: Install wasm-bindgen-cli (match Cargo.lock)
-        run: cargo install wasm-bindgen-cli --locked --version 0.2.129
-      - name: Setup Node
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
-        with:
-          node-version: "20"
-      - name: Build WASM + Vite production
+      - name: Dependencias Tauri/GTK
         run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y \
+            pkg-config \
+            libglib2.0-dev \
+            libgtk-3-dev \
+            libwebkit2gtk-4.1-dev \
+            libayatana-appindicator3-dev \
+            librsvg2-dev \
+            patchelf
+      - name: Stub frontendDist para generate_context
+        run: |
+          mkdir -p apps/web/dist
+          printf '%s\n' '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Forge — Configurador</title></head><body><div id="root"></div></body></html>' \
+            > apps/web/dist/index.html
+      - name: Dependencias JS y Python
+        run: |
+          set -euo pipefail
           corepack enable
           pnpm install --frozen-lockfile
-          cd apps/web
-          pnpm build
-      - name: E2E WASM (sin mock)
+          python3 -m pip install --no-input --disable-pip-version-check pyyaml==6.0.2 jsonschema==4.23.0 toml==0.10.2
+      - name: cargo fmt
+        run: cargo fmt --all -- --check
+      - name: cargo clippy
+        run: cargo clippy --workspace --all-targets --locked -- -D warnings
+      - name: TypeScript
+        run: pnpm check
+      - name: Prettier en archivos modificados
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_REF: ${{ github.base_ref }}
+          BEFORE_SHA: ${{ github.event.before }}
+          HEAD_SHA: ${{ github.sha }}
         run: |
-          cd apps/web
-          pnpm exec playwright install --with-deps chromium
-          pnpm exec playwright test wasm-flow.playwright.test.ts
+          set -euo pipefail
+          if [[ "$EVENT_NAME" == "pull_request" ]]; then
+            range="origin/${BASE_REF}...HEAD"
+          else
+            range="${BEFORE_SHA}..${HEAD_SHA}"
+          fi
+          mapfile -t files < <(git diff --name-only --diff-filter=ACMR "$range" -- \
+            '*.md' '*.json' '*.jsonc' '*.yml' '*.yaml' '*.ts' '*.tsx' '*.js' '*.jsx' '*.mjs' '*.cjs' '*.css' '*.html')
+          if ((${#files[@]})); then
+            pnpm exec prettier --check "${files[@]}"
+          else
+            echo "Sin archivos modificados que Prettier deba comprobar"
+          fi
+      - name: Validar schemas Tauri
+        run: python3 tools/validate_tauri_schemas.py
+      - name: Contrato archinstall 4.5
+        run: bash tools/validate-archinstall-config.sh crates/archmaker-core/fixtures/archinstall-user-configuration-4.5.json
 
-  docs-python:
-    name: Validadores Python + canonicalización (G0/G4/G5/G7/G9)
+  schema-quality:
+    name: schema-quality
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
+    permissions:
+      contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Setup Python
-        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.x"
-      - name: front matter + trazabilidad (no-strict) + gates + refs + canonicalize
+      - name: Dependencias Python
+        run: python3 -m pip install --no-input --disable-pip-version-check jsonschema==4.23.0
+      - name: Meta-validar schemas
         run: |
-          # Dependencias fijadas (supply-chain, mismos pins que docs-validate.yml).
-          python3 -m pip install --no-input --disable-pip-version-check pyyaml==6.0.2 "jsonschema==4.23.0"
-          python3 tools/validate_front_matter.py
-          python3 tools/validate_traceability.py
-          python3 tools/gates.py
-          python3 tools/validate_schema_refs.py
-          python3 tools/canonicalize.py
-          # CON-021/D-09 (I9): espejo Python del test Rust de capabilities
-          # negativas; solo stdlib (tomllib), sin dependencias extra.
-          python3 tools/check_negative_capabilities.py
-          # P1 product-naming: Forge/ArchMaker + identidad técnica (T-NAME/T-MIG).
-          python3 tools/check_product_naming.py
-          # MVP-1: corpus de migración v5.1 → vNext (VAL-MIG / FR-IMPORT-001).
-          python3 tools/validate_mig.py
-          # G6-C03 / AUD-021: contraste y tokens WCAG 2.2 (1.4.1 = contract + manual).
-          python3 tools/wcag_validate.py
-          python3 tools/validate_closure_evidence.py
-          # Prove-It: pin jsonschema CI vs comportamiento Draft202012 local.
-          python3 tools/test_validate_closure_jsonschema_pin.py
-          # F7: inventario de matriz candidata; result=pending (sin aceptación firmada).
-          python3 tools/run_f7_candidate_matrix.py --validate-only
-          # F7: tests simulados del runner (strict/partial/cero tests/WASM incompleto).
-          python3 tools/test_run_f7_candidate_matrix.py
-          # P2: cierre de producto solo lectura (nunca autoaprueba).
-          python3 tools/check_product_closure.py
-          python3 tools/test_check_product_closure.py
-          # P6: desktop/offline blocked explícito (sin mock ni AppImage histórico).
-          python3 tools/check_desktop_offline_gate.py
-          python3 tools/test_check_desktop_offline_gate.py
-          # P3: harness P95 de producto (unitario; n=30 web no corre en CI).
-          python3 tools/test_run_product_p95_harness.py
+          python3 - <<'PY'
+          import glob
+          import json
+          import os
+          import sys
 
-  traceability:
-    name: Matriz de trazabilidad FR/NFR -> TST/VAL (G2/G9)
+          from jsonschema import Draft202012Validator
+
+          base = "contracts/json-schema"
+          schemas = sorted(glob.glob(os.path.join(base, "**", "*.schema.json"), recursive=True))
+          if not schemas:
+              print(f"PENDIENTE: no hay schemas en {base}/. Nada que meta-validar (guard).")
+              sys.exit(0)
+          bad = 0
+          for f in schemas:
+              try:
+                  schema = json.load(open(f, encoding="utf-8"))
+                  Draft202012Validator.check_schema(schema)
+                  print(f"OK {f}")
+              except Exception as e:
+                  bad += 1
+                  print(f"FAIL {f}: {e}")
+          if bad:
+              print(f"{bad} schemas inválidos contra el meta-schema Draft 2020-12")
+              sys.exit(1)
+          print(f"{len(schemas)} schemas meta-válidos (Draft 2020-12)")
+          PY
+      - name: Validar corpus contra schemas
+        run: |
+          python3 - <<'PY'
+          import glob
+          import json
+          import os
+          import sys
+
+          from jsonschema import Draft202012Validator
+          from referencing import Registry, Resource
+          from referencing.jsonschema import DRAFT202012
+
+          base = "contracts/json-schema"
+          examples = os.path.join(base, "examples")
+          schema_names = [
+              "common", "core-error", "changeset", "draft", "catalog", "rule",
+              "diagnostic", "manifest", "artifact", "installation-plan",
+              "runner-envelope", "application-contract", "clause-base",
+              "clause-manifest", "clause-option", "clause-rule", "clause-bytes",
+              "clause-host", "clause-boot",
+          ]
+          pointer_schemas = {
+              "common-quantity": ("common", "/$defs/quantity"),
+              "common-contentdigest": ("common", "/$defs/contentDigest"),
+              "common-secretref": ("common", "/$defs/secretRef"),
+              "common-limits": ("common", "/$defs/limits"),
+              "common-documentversion": ("common", "/$defs/documentVersion"),
+              "common-schemaversion": ("common", "/$defs/schemaVersion"),
+              "draft-savedraft": ("draft", "/$defs/saveDraftRequest"),
+          }
+          schemas_by_id = {}
+          for f in sorted(glob.glob(os.path.join(base, "**", "*.schema.json"), recursive=True)):
+              schema = json.load(open(f, encoding="utf-8"))
+              schemas_by_id[schema["$id"]] = schema
+          registry = Registry().with_resources(
+              (sid, Resource.from_contents(s, default_specification=DRAFT202012))
+              for sid, s in schemas_by_id.items()
+          )
+
+          def resolve(token):
+              if token in pointer_schemas:
+                  return pointer_schemas[token]
+              for name in sorted(schema_names, key=len, reverse=True):
+                  if token == name or token.startswith(name + "-") or token.startswith(name + "."):
+                      return name, None
+              return token, None
+
+          def make_validator(name, pointer):
+              path = os.path.join(base, f"{name}.schema.json")
+              if not os.path.exists(path):
+                  print(f"FALTA schema {path} (token {name})")
+                  sys.exit(1)
+              root = json.load(open(path, encoding="utf-8"))
+              if pointer:
+                  ref = {"$schema": "https://json-schema.org/draft/2020-12/schema",
+                         "$ref": root["$id"] + "#" + pointer}
+                  return Draft202012Validator(ref, registry=registry)
+              return Draft202012Validator(root, registry=registry)
+
+          def token_of(path, suffix):
+              stem = os.path.basename(path)[: -len(suffix)]
+              if "-" in stem:
+                  head, rest = stem.split("-", 1)
+                  if head.isdigit():
+                      return rest
+              return stem
+
+          valid_files = sorted(glob.glob(os.path.join(examples, "*.valid.json")))
+          invalid_files = sorted(glob.glob(os.path.join(examples, "*.invalid.json")))
+          if not valid_files and not invalid_files:
+              print(f"PENDIENTE: no hay corpus en {examples}/ (guard).")
+              sys.exit(0)
+          errors = 0
+          for f in valid_files:
+              name, pointer = resolve(token_of(f, ".valid.json"))
+              validator = make_validator(name, pointer)
+              instance = json.load(open(f, encoding="utf-8"))
+              errs = sorted(validator.iter_errors(instance), key=lambda e: e.path)
+              if errs:
+                  errors += 1
+                  print(f"FAIL {f} debería ser válido contra {name}.schema.json{pointer or ''}")
+                  for e in errs[:3]:
+                      print(f"    - {list(e.path)}: {e.message}")
+              else:
+                  print(f"OK   {f} válido contra {name}.schema.json{pointer or ''}")
+          for f in invalid_files:
+              name, pointer = resolve(token_of(f, ".invalid.json"))
+              validator = make_validator(name, pointer)
+              instance = json.load(open(f, encoding="utf-8"))
+              errs = list(validator.iter_errors(instance))
+              if errs:
+                  print(f"OK   {f} rechazado por {name}.schema.json{pointer or ''}")
+              else:
+                  errors += 1
+                  print(f"FAIL {f} debería ser inválido pero {name}.schema.json{pointer or ''} lo aceptó")
+          migration = os.path.join(examples, "migration")
+          expected = os.path.join(migration, "vnext-draft.expected.json")
+          sample = os.path.join(migration, "v5.1-instance.sample.json")
+          draft_validator = make_validator("draft", None)
+          if os.path.exists(expected):
+              errs = list(draft_validator.iter_errors(json.load(open(expected, encoding="utf-8"))))
+              if errs:
+                  errors += 1
+                  print(f"FAIL {expected} debería validar contra draft.schema.json")
+                  for e in errs[:3]:
+                      print(f"    - {list(e.path)}: {e.message}")
+              else:
+                  print(f"OK   {expected} válido contra draft.schema.json (migración v5.1)")
+          if os.path.exists(sample):
+              if list(draft_validator.iter_errors(json.load(open(sample, encoding="utf-8")))):
+                  print(f"OK   {sample} NO valida como draft vNext (documento heredado)")
+              else:
+                  errors += 1
+                  print(f"FAIL {sample} no debería validar como draft vNext")
+          if errors:
+              print(f"{errors} discrepancias en el corpus")
+              sys.exit(1)
+          print(f"Corpus OK: {len(valid_files)} válidos + {len(invalid_files)} inválidos + fixtures de migración")
+          PY
+      - name: Validar corpus de operadores
+        run: |
+          python3 - <<'PY'
+          import glob
+          import json
+          import os
+          import sys
+
+          from jsonschema import Draft202012Validator
+          from referencing import Registry, Resource
+          from referencing.jsonschema import DRAFT202012
+
+          base = "contracts/json-schema"
+          corpus_path = os.path.join(base, "rule-corpus", "operators.corpus.json")
+          if not os.path.exists(corpus_path):
+              print(f"PENDIENTE: no hay corpus de operadores en {corpus_path} (guard).")
+              sys.exit(0)
+          schemas_by_id = {}
+          for f in sorted(glob.glob(os.path.join(base, "**", "*.schema.json"), recursive=True)):
+              schema = json.load(open(f, encoding="utf-8"))
+              schemas_by_id[schema["$id"]] = schema
+          registry = Registry().with_resources(
+              (sid, Resource.from_contents(s, default_specification=DRAFT202012))
+              for sid, s in schemas_by_id.items()
+          )
+          rule = json.load(open(os.path.join(base, "rule.schema.json"), encoding="utf-8"))
+          validator = Draft202012Validator(rule, registry=registry)
+          corpus = json.load(open(corpus_path, encoding="utf-8"))
+          errors = 0
+          seen = set()
+          for case in corpus.get("cases", []):
+              op = case.get("operator", "?")
+              expect = case.get("expect")
+              if expect not in ("valid", "invalid"):
+                  errors += 1
+                  print(f"FAIL {case.get('id')}: expect inválido {expect!r}")
+                  continue
+              errs = list(validator.iter_errors(case.get("instance")))
+              if op not in ("<unsupported>", "<root>"):
+                  seen.add(op)
+              if expect == "valid" and errs:
+                  errors += 1
+                  print(f"FAIL {case['id']} ({op}): debería ser válido")
+                  for e in errs[:3]:
+                      print(f"    - {list(e.path)}: {e.message}")
+              elif expect == "invalid" and not errs:
+                  errors += 1
+                  print(f"FAIL {case['id']} ({op}): debería ser inválido y fue aceptado")
+          vocab = set(rule.get("$defs", {}).get("operator", {}).get("enum", []))
+          missing = vocab - seen
+          if missing:
+              errors += 1
+              print(f"FAIL cobertura: operadores sin caso de corpus = {sorted(missing)}")
+          if errors:
+              print(f"{errors} discrepancias en el corpus de operadores")
+              sys.exit(1)
+          print(f"Corpus de operadores OK: {len(corpus.get('cases', []))} casos, {len(vocab)} operadores cubiertos")
+          PY
+      - name: Comprobar límites de fixtures
+        run: |
+          python3 - <<'PY'
+          import glob
+          import json
+          import os
+          import sys
+
+          MAX_BYTES = 262144
+          MAX_DEPTH = 32
+          MAX_ARRAY_ITEMS = 4096
+          MAX_STRING_LENGTH = 65536
+          examples = "contracts/json-schema/examples"
+
+          def depth(value):
+              if isinstance(value, dict):
+                  return 1 + (max((depth(v) for v in value.values()), default=0))
+              if isinstance(value, list):
+                  return 1 + (max((depth(v) for v in value), default=0))
+              return 1
+
+          def max_array(value):
+              best = 0
+              if isinstance(value, list):
+                  best = len(value)
+                  best = max(best, max((max_array(v) for v in value), default=0))
+              elif isinstance(value, dict):
+                  best = max(best, max((max_array(v) for v in value.values()), default=0))
+              return best
+
+          def max_string(value):
+              best = 0
+              if isinstance(value, str):
+                  best = len(value)
+              elif isinstance(value, list):
+                  best = max(best, max((max_string(v) for v in value), default=0))
+              elif isinstance(value, dict):
+                  best = max(best, max((max_string(v) for v in value.values()), default=0))
+              return best
+
+          files = [f for f in sorted(glob.glob(os.path.join(examples, "**", "*.json"), recursive=True))
+                   if os.sep + "non-normative" + os.sep not in f]
+          errors = 0
+          for f in files:
+              size = os.path.getsize(f)
+              instance = json.load(open(f, encoding="utf-8"))
+              d = depth(instance)
+              a = max_array(instance)
+              s = max_string(instance)
+              ok = size <= MAX_BYTES and d <= MAX_DEPTH and a <= MAX_ARRAY_ITEMS and s <= MAX_STRING_LENGTH
+              if not ok:
+                  errors += 1
+              print(f"{'OK  ' if ok else 'FAIL'} {f}: bytes={size} depth={d} maxArray={a} maxString={s}")
+          if errors:
+              print(f"{errors} fixtures exceden los límites declarados")
+              sys.exit(1)
+          print(f"Límites OK en {len(files)} fixtures")
+          PY
+
+  docs-quality:
+    name: docs-quality
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 30
+    permissions:
+      contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Setup Node 24
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "24"
       - name: Setup Python
-        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.x"
-      - name: Instalar dependencias
+      - name: Dependencias Python
+        run: python3 -m pip install --no-input --disable-pip-version-check pyyaml==6.0.2
+      - name: Markdown lint
+        uses: DavidAnson/markdownlint-cli2-action@992badcdf24e3b8eb7e87ff9287fe931bcb00c6e # v20.0.0
+        with:
+          globs: |
+            docs/**/*.md
+            *.md
+      - name: Enlaces internos
         run: |
-          python3 -m pip install --no-input --disable-pip-version-check pyyaml==6.0.2 "jsonschema==4.23.0" toml==0.10.2
-      - name: Generar y validar matriz de trazabilidad
+          python3 - <<'PY'
+          import os
+          import re
+          import sys
+          import glob
+
+          bad = 0
+          md_link = re.compile(r"\[[^\]]*\]\(([^)]+)\)")
+          bt_path = re.compile(r"`((?:docs|contracts|reference|templates)/[A-Za-z0-9_./-]+\.(?:md|json|ya?ml))`")
+          for f in glob.glob("docs/**/*.md", recursive=True) + glob.glob("*.md"):
+              base = os.path.dirname(f)
+              for i, line in enumerate(open(f, encoding="utf-8"), 1):
+                  for target in md_link.findall(line):
+                      t = target.strip().split("#", 1)[0]
+                      if not t or "://" in t or t.startswith("mailto:"):
+                          continue
+                      p = os.path.normpath(os.path.join(base, t))
+                      if not os.path.exists(p):
+                          bad += 1
+                          print(f"BROKEN LINK {f}:{i} -> {target}")
+                  for p in bt_path.findall(line):
+                      if not os.path.exists(p):
+                          bad += 1
+                          print(f"BROKEN REF {f}:{i} -> {p}")
+          if bad:
+              print(f"{bad} enlaces/referencias internas rotas")
+              sys.exit(1)
+          print("Enlaces internos OK")
+          PY
+      - name: Mermaid parse
         run: |
-          python3 tools/gen_test_inventory.py
-          python3 tools/traceability_matrix.py
-      - name: Subir matriz como artefacto
+          set -euo pipefail
+          work="${RUNNER_TEMP}/mermaid"
+          mkdir -p "$work"
+          python3 - <<'PY'
+          import glob
+          import os
+          import pathlib
+          import re
+
+          out = pathlib.Path(os.environ["RUNNER_TEMP"]) / "mermaid"
+          n = 0
+          for f in glob.glob("docs/**/*.md", recursive=True):
+              txt = open(f, encoding="utf-8").read()
+              for m in re.finditer(r"```mermaid\s*\n(.*?)```", txt, re.S):
+                  n += 1
+                  (out / f"block-{n:03d}.mmd").write_text(m.group(1), encoding="utf-8")
+          print(f"{n} bloques Mermaid extraídos")
+          PY
+          count=$(find "$work" -name '*.mmd' | wc -l)
+          if [ "$count" -eq 0 ]; then
+            echo "Sin bloques Mermaid; nada que parsear (guard)."
+            exit 0
+          fi
+          npm install --global @mermaid-js/mermaid-cli@12.0.0
+          npx --yes puppeteer browsers install chrome-headless-shell
+          cat > "${RUNNER_TEMP}/puppeteer.json" <<'JSON'
+          { "args": ["--no-sandbox"] }
+          JSON
+          for f in "$work"/*.mmd; do
+            mmdc --puppeteerConfigFile "${RUNNER_TEMP}/puppeteer.json" -i "$f" -o "$f.svg"
+          done
+          echo "Mermaid OK"
+      - name: Parseo JSON/YAML
+        run: |
+          python3 - <<'PY'
+          import glob
+          import json
+          import os
+          import sys
+          import yaml
+
+          skip = {"node_modules", ".git", "target", "dist", "coverage"}
+          bad = 0
+          def included(p):
+              return not any(part in skip for part in p.split(os.sep))
+          for f in glob.glob("**/*.json", recursive=True):
+              if not included(f):
+                  continue
+              try:
+                  json.load(open(f, encoding="utf-8"))
+              except Exception as e:
+                  bad += 1
+                  print(f"FAIL JSON {f}: {e}")
+          for f in glob.glob("**/*.yml", recursive=True) + glob.glob("**/*.yaml", recursive=True):
+              if not included(f):
+                  continue
+              try:
+                  yaml.safe_load(open(f, encoding="utf-8"))
+              except Exception as e:
+                  bad += 1
+                  print(f"FAIL YAML {f}: {e}")
+          if bad:
+              print(f"{bad} errores de parseo")
+              sys.exit(1)
+          print("JSON/YAML OK")
+          PY
+      - name: Unicidad de IDs
+        run: |
+          python3 - <<'PY'
+          import collections
+          import glob
+          import os
+          import re
+          import sys
+
+          bad = 0
+          adr = collections.defaultdict(list)
+          for f in glob.glob("docs/**/ADR-*.md", recursive=True):
+              m = re.search(r"ADR-(\d{4})", os.path.basename(f))
+              if m:
+                  adr[m.group(1)].append(f)
+          for k in sorted(adr):
+              if len(adr[k]) > 1:
+                  bad += 1
+                  print(f"DUP ADR-{k}: {adr[k]}")
+          pat = re.compile(r"^#{1,6}\s+((?:FR|NFR|UC|JNY|VAL|TST|THR|RSK|DM|OBJ|PER)-[A-Z0-9-]+)\b")
+          seen = collections.defaultdict(list)
+          for f in glob.glob("docs/**/*.md", recursive=True):
+              for i, line in enumerate(open(f, encoding="utf-8"), 1):
+                  m = pat.match(line)
+                  if m:
+                      seen[m.group(1)].append(f"{f}:{i}")
+          for k in sorted(seen):
+              if len(seen[k]) > 1:
+                  bad += 1
+                  print(f"DUP {k}: {seen[k]}")
+          if bad:
+              print(f"{bad} IDs duplicados")
+              sys.exit(1)
+          print(f"IDs OK ({len(seen)} definiciones, {len(adr)} ADR)")
+          PY
+      - name: Integridad reference/v5.1
+        run: |
+          set -euo pipefail
+          (cd reference/v5.1 && sha256sum --check --strict SHA256SUMS)
+          alias_path=$(python3 -c 'import json; print(json.load(open("reference/v5.1/ALIASES.json"))["aliases"][0]["materializedAliasPath"])')
+          (cd reference/v5.1 && cmp --silent forge_v4_final.html "$alias_path")
+          python3 -m json.tool reference/v5.1/ALIASES.json >/dev/null
+          python3 -m json.tool reference/v5.1/UNAVAILABLE-SOURCES.json >/dev/null
+          python3 -m json.tool reference/v5.1/PROVENANCE.json >/dev/null
+          python3 - <<'PY'
+          import json
+          prov = json.load(open("reference/v5.1/PROVENANCE.json", encoding="utf-8"))
+          una = json.load(open("reference/v5.1/UNAVAILABLE-SOURCES.json", encoding="utf-8"))
+          received = {f["path"] for f in prov["files"]}
+          unavailable = {s["declaredPath"] for s in una["sources"]}
+          bad = received & unavailable
+          if bad:
+              print(f"FUENTES AUSENTES MARCADAS COMO RECIBIDAS: {sorted(bad)}")
+              raise SystemExit(1)
+          print("Integridad y disposición de reference OK")
+          PY
+      - name: Política CDN
+        run: |
+          python3 - <<'PY'
+          import glob
+          import re
+          import sys
+
+          cdn = re.compile(
+              r"https?://[^\s)\]\"'>]*(?:cdn\.|unpkg\.com|jsdelivr\.net|cdnjs\.cloudflare\.com|"
+              r"fonts\.googleapis\.com|fonts\.gstatic\.com|esm\.sh|skypack\.dev|use\.typekit\.net)",
+              re.I,
+          )
+          bad = 0
+          for f in glob.glob("docs/**/*.md", recursive=True):
+              if f.startswith("docs/12-research/"):
+                  continue
+              for i, line in enumerate(open(f, encoding="utf-8"), 1):
+                  if cdn.search(line):
+                      bad += 1
+                      print(f"CDN {f}:{i}: {line.strip()}")
+          if bad:
+              print(f"{bad} URLs CDN prohibidas")
+              sys.exit(1)
+          print("Sin URLs CDN en docs de producción")
+          PY
+      - name: Contratos runtime sin cmd/hooks/shell
+        run: |
+          python3 - <<'PY'
+          import glob
+          import os
+          import re
+          import sys
+
+          pat = re.compile(
+              r"\b(pacstrap|pactree|bash\s+-c|sh\s+-c|/bin/(?:ba)?sh|&&\s*rm\s+-rf|"
+              r"\"?(?:cmd|shell|hooks|exec)\"?\s*:)",
+              re.I,
+          )
+          bad = 0
+          for f in glob.glob("contracts/**/*", recursive=True):
+              if not os.path.isfile(f) or f.endswith(".md"):
+                  continue
+              for i, line in enumerate(open(f, encoding="utf-8", errors="replace"), 1):
+                  if pat.search(line):
+                      bad += 1
+                      print(f"SHELL {f}:{i}: {line.strip()}")
+          if bad:
+              print(f"{bad} construcciones shell/hooks/cmd prohibidas")
+              sys.exit(1)
+          print("Contratos runtime sin cmd/hooks/shell")
+          PY
+
+  build:
+    name: build
+    needs: [quality, schema-quality, docs-quality]
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Toolchain pinned
+        run: rustup show active-toolchain
+      - name: Setup Node 24
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "24"
+      - name: Install wasm-bindgen-cli
+        run: cargo install wasm-bindgen-cli --locked --version 0.2.129
+      - name: Build web + WASM
+        run: |
+          set -euo pipefail
+          corepack enable
+          pnpm install --frozen-lockfile
+          pnpm --dir apps/web build
+      - name: Upload web build
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: traceability-matrix
-          path: |
-            docs/10-delivery/traceability-matrix.json
-            docs/10-delivery/traceability-matrix.md
-          retention-days: 30
+          name: web-dist
+          path: apps/web/dist/
+          if-no-files-found: error
+          retention-days: 7
 
-  a11y-automated:
-    name: Accesibilidad automatizada WCAG 2.2 AA (G6/G9)
+  test:
+    name: test
+    needs: [build]
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 60
+    permissions:
+      contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - name: Setup Node
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Toolchain pinned
+        run: rustup show active-toolchain
+      - name: Setup Node 24
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
-          node-version: "20"
-      - name: Instalar dependencias web
+          node-version: "24"
+      - name: Dependencias Tauri/GTK y fuentes
         run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y \
+            pkg-config libglib2.0-dev libgtk-3-dev libwebkit2gtk-4.1-dev \
+            libayatana-appindicator3-dev librsvg2-dev patchelf fonts-liberation
+      - name: Stub frontendDist
+        run: |
+          mkdir -p apps/web/dist
+          printf '%s\n' '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Forge — Configurador</title></head><body><div id="root"></div></body></html>' > apps/web/dist/index.html
+      - name: Dependencias JS y WASM
+        run: |
+          set -euo pipefail
           corepack enable
-          cd apps/web
           pnpm install --frozen-lockfile
-          pnpm exec playwright install --with-deps chromium
-      - name: Ejecutar checks a11y estáticos
-        run: |
-          cd apps/web
-          python3 a11y-check.py
-      - name: Ejecutar axe-core con Playwright
-        run: |
-          cd apps/web
-          pnpm test-a11y:axe
-      - name: Flujo MockCorePort (MVP-4)
-        run: |
-          cd apps/web
-          pnpm test-a11y:flow
-      - name: Subir informe axe como artefacto
+          cargo install wasm-bindgen-cli --locked --version 0.2.129
+          tools/build-wasm.sh
+      - name: cargo test
+        run: cargo test --workspace --locked
+      - name: Prueba negativa runtime
+        run: cargo test -p archmaker --locked security_runtime_deny_ungranted_command -- --nocapture
+      - name: Playwright Chromium
+        run: cd apps/web && pnpm exec playwright install --with-deps chromium
+      - name: Accesibilidad, flujo y regresión visual
+        run: cd apps/web && pnpm test-a11y:all
+      - name: E2E WASM sin mock
+        run: cd apps/web && pnpm exec playwright test wasm-flow.playwright.test.ts
+      - name: Upload informe axe
+        if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: a11y-axe-report
           path: apps/web/a11y-axe-report/
-          retention-days: 30
-
-  visual-regression:
-    name: Regresión visual baseline (G6/G9)
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - name: Setup Node
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
-        with:
-          node-version: "20"
-      - name: Fuentes métricamente estables (Liberation Sans)
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y fonts-liberation
-      - name: Instalar dependencias web
-        run: |
-          corepack enable
-          cd apps/web
-          pnpm install --frozen-lockfile
-          pnpm exec playwright install --with-deps chromium
-      - name: Ejecutar regresión visual
-        run: |
-          cd apps/web
-          pnpm test-a11y:visual
-      - name: Subir diffs visuales como artefacto
+          if-no-files-found: ignore
+          retention-days: 7
+      - name: Upload diffs visuales
         if: failure()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: visual-regression-diffs
           path: apps/web/visual-diffs/
           if-no-files-found: ignore
-          retention-days: 30
+          retention-days: 7
 
-  markdownlint:
-    name: Markdown lint (G9)
+  appimage-build:
+    name: appimage-build
+    needs: [build]
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Setup Node 24
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "24"
+      - name: Dependencias Tauri/AppImage
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y \
+            libwebkit2gtk-4.1-dev librsvg2-dev patchelf libssl-dev \
+            libgtk-3-dev libayatana-appindicator3-dev wget fuse libfuse2
+      - name: Download web build
+        uses: actions/download-artifact@95815c38cf2ff2164869cbab79da8d1f422bc89e # v4.2.1
+        with:
+          name: web-dist
+          path: apps/web/dist
+      - name: Build AppImage sin publicar
+        run: |
+          set -euo pipefail
+          corepack enable
+          pnpm install --frozen-lockfile
+          pnpm tauri build --bundles appimage
+      - name: Upload AppImage
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: Forge-AppImage-ci
+          path: target/release/bundle/appimage/*.AppImage
+          if-no-files-found: error
+          retention-days: 7
+
+  iso-smoke:
+    name: iso-smoke
+    needs: [quality]
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Instalar QEMU y OVMF
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends qemu-system-x86 ovmf
+      - name: Construir imagen del constructor
+        run: docker build -t archmaker-archiso:local -f docker/archiso.Dockerfile docker
+      - name: Construir ISO de humo
+        run: |
+          scripts/build-iso.sh \
+            crates/archmaker-core/fixtures/archiso-overlay-smoke.json \
+            --base baseline \
+            --serial-console \
+            --out target/iso
+      - name: Arrancar ISO en QEMU UEFI
+        run: scripts/boot-test.sh target/iso/*.iso 900
+      - name: Mostrar checksums
+        run: cat target/iso/SHA256SUMS
+
+  secrets:
+    name: secrets
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    permissions:
+      contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - name: markdownlint-cli2
-        uses: DavidAnson/markdownlint-cli2-action@992badcdf24e3b8eb7e87ff9287fe931bcb00c6e # v20.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          globs: |
-            docs/**/*.md
-            *.md
-        # Config del gate: .markdownlint-cli2.jsonc (auto-descubierta).
-
-  archinstall-contract:
-    name: Contrato archinstall 4.5 (G4)
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - name: Validar user_configuration.json
-        run: bash tools/validate-archinstall-config.sh crates/archmaker-core/fixtures/archinstall-user-configuration-4.5.json
-
-  audit:
-    name: Security audit Rust/JS (G9)
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - name: cargo-audit si disponible
+          fetch-depth: 0
+          persist-credentials: false
+      - name: gitleaks 8.30.1
         run: |
-          if ! command -v cargo-audit >/dev/null 2>&1; then
-            echo "cargo-audit ausente; instalando versión latest con --locked (crates.io)..."
-            cargo install cargo-audit --locked
-          fi
+          set -euo pipefail
+          curl -sSfL -o gitleaks.tar.gz https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz
+          echo "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb  gitleaks.tar.gz" | sha256sum -c -
+          tar -xzf gitleaks.tar.gz gitleaks
+          ./gitleaks detect --source . --redact --verbose
+
+  sca:
+    name: sca
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Setup Node 24
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "24"
+      - name: cargo audit
+        run: |
+          set -euo pipefail
+          cargo install cargo-audit --locked --version 0.22.2
           cargo audit
-      - name: pnpm/npm audit si hay lockfile
+      - name: pnpm audit high
         run: |
-          if [ -f pnpm-lock.yaml ]; then
-            corepack enable
-            pnpm audit --audit-level high
-          else
-            echo "SKIP: sin pnpm-lock.yaml no hay auditoría JS ejecutable (gap I10-GAP-03)."
+          set -euo pipefail
+          corepack enable
+          pnpm install --frozen-lockfile
+          pnpm audit --audit-level high
+      - name: OSV-Scanner
+        uses: google/osv-scanner-action/osv-scanner-action@19ec1116569a47416e11a45848722b1af31a857b # v1.9.0
+        with:
+          scan-args: |-
+            -r
+            --config=osv-scanner.toml
+            .
+
+  workflow-lint:
+    name: workflow-lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: actionlint 1.7.12
+        run: |
+          set -euo pipefail
+          curl -sSfL -o /tmp/actionlint.tar.gz https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz
+          echo '8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8  /tmp/actionlint.tar.gz' | sha256sum -c -
+          tar -xzf /tmp/actionlint.tar.gz -C /tmp actionlint
+          /tmp/actionlint -color .github/workflows/ci.yml .github/workflows/release-please.yml .github/workflows/publish.yml
+      - name: zizmor 1.31.1
+        run: |
+          set -euo pipefail
+          python3 -m venv /tmp/zz
+          /tmp/zz/bin/pip install --no-input --disable-pip-version-check zizmor==1.31.1
+          /tmp/zz/bin/zizmor --min-severity=medium .github/workflows/ci.yml .github/workflows/release-please.yml .github/workflows/publish.yml
+
+  ci-gate:
+    name: ci-gate
+    needs:
+      [
+        governance,
+        quality,
+        schema-quality,
+        docs-quality,
+        build,
+        test,
+        appimage-build,
+        iso-smoke,
+        secrets,
+        sca,
+        workflow-lint,
+      ]
+    if: always()
+    permissions: {}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Evaluar needs y hold
+        env:
+          NEEDS_JSON: ${{ toJSON(needs) }}
+          ALLOWED_SKIPS: ""
+          HOLD: ${{ github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'hold') }}
+        run: |
+          set -euo pipefail
+          if [[ "${HOLD}" == "true" ]]; then
+            echo "::error::PR con etiqueta hold: ci-gate falla a propósito (quita hold para auto-merge)."
+            exit 1
           fi
+          if ! command -v jq >/dev/null 2>&1; then
+            sudo apt-get update -qq && sudo apt-get install -y -qq jq
+          fi
+          echo "$NEEDS_JSON" | jq -e --argjson skips "$(printf '%s\n' "${ALLOWED_SKIPS}" | jq -R 'split(" ") | map(select(length>0))')" '
+            to_entries
+            | map(select(.value.result != "success" and ((.key as $k | $skips | index($k)) | not)))
+            | if length == 0 then true else
+                error("ci-gate: jobs no success: " + (map(.key + "=" + .value.result) | join(", ")))
+              end
+          ' >/dev/null

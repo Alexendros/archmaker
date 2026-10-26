@@ -1,0 +1,29 @@
+[[IgnoredVulns]]
+id = "RUSTSEC-2024-0429"
+ignoreUntil = 2027-01-25T00:00:00Z
+reason = "glib 0.18.5 (unsoundness en VariantStrIter, media; arreglo en 0.20). Transitiva por gtk 0.18 de tauri 2.12.1/wry 0.57; no se puede subir sin que Tauri cambie de pila GTK. ArchMaker no usa VariantStrIter. Revisión 2027-01-25."
+
+[[IgnoredVulns]]
+id = "GHSA-wrw7-89jp-8q8g"
+ignoreUntil = 2027-01-25T00:00:00Z
+reason = "glib 0.18.5 (unsoundness en VariantStrIter, media; arreglo en 0.20). Transitiva por gtk 0.18 de tauri 2.12.1/wry 0.57; no se puede subir sin que Tauri cambie de pila GTK. ArchMaker no usa VariantStrIter. Revisión 2027-01-25."
+
+[[IgnoredVulns]]
+id = "RUSTSEC-2024-0370"
+ignoreUntil = 2027-01-25T00:00:00Z
+reason = "proc-macro-error 1.0.4 sin mantener; macro de compilación de la pila GTK3 de tauri/wry; sin arreglo. Revisión 2027-01-25."
+
+[[IgnoredVulns]]
+id = "RUSTSEC-2026-0370"
+ignoreUntil = 2027-01-25T00:00:00Z
+reason = "zvariant sin mantener; transitiva por rfd 0.15.4 → ashpd 0.11.1 → zbus 5.19 (diálogo de guardar por portal XDG); sin arreglo. Revisión 2027-01-25."
+
+[[IgnoredVulns]]
+id = "RUSTSEC-2026-0371"
+ignoreUntil = 2027-01-25T00:00:00Z
+reason = "zbus_names sin mantener; transitiva por rfd 0.15.4 → ashpd 0.11.1 → zbus 5.19 (diálogo de guardar por portal XDG); sin arreglo. Revisión 2027-01-25."
+
+[[IgnoredVulns]]
+id = "RUSTSEC-2026-0372"
+ignoreUntil = 2027-01-25T00:00:00Z
+reason = "zvariant_derive sin mantener; transitiva por rfd 0.15.4 → ashpd 0.11.1 → zbus 5.19 (diálogo de guardar por portal XDG); sin arreglo. Revisión 2027-01-25."

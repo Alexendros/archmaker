@@ -89,7 +89,7 @@ El pipeline de CI valida el corpus **positivo y negativo** de los contratos:
   (y las fixtures de migración v5.1), validados por el job `corpus-validate`.
 - `contracts/json-schema/rule-corpus/operators.corpus.json` aporta el corpus por operador con casos
   `positive`, `negative`, `edge` y `adversarial` (campo `expect`: `valid`/`invalid`). El job
-  `rule-corpus-validate` de `.github/workflows/json-schema.yml` valida cada `instance` contra
+  `rule-corpus-validate` del job `schema-quality` de `.github/workflows/ci.yml` valida cada `instance` contra
   `rule.schema.json` y exige el resultado declarado; además comprueba que **todo** operador del
   vocabulario (`$defs.operator`) tiene al menos un caso.
 - El gate falla si un caso positivo es rechazado o si un caso negativo es aceptado.

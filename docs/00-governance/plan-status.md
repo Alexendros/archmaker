@@ -22,17 +22,17 @@ reviewers:
 - Remediación operativa cerrada (transportes reales, ACL, ciclo de edición, exportación, Prove-It): `docs/10-delivery/remediation/`; notas en `acceptance-notes.md`.
 - Cierre de producto F0–F8: código en `main`. Gobierno de canal F8:
   `docs/10-delivery/closure/f8-governance.md` (**accepted**).
-- Canal de distribución: AppImage Linux x86_64; **ninguna release publicada**. Los tags
-  `v0.1.0` y `v0.2.0` existen, pero la API de GitHub no lista ningún Release (corregido el
-  2026-10-25: `/releases` = `[]`, `/releases/tags/v0.1.0` y `v0.2.0` = `404`; `release.yml`
-  terminó _cancelled_ para `v0.1.0` y _success_ sin publicar para `v0.2.0`). `v0.1.0` se
-  declara **no publicado** y no se recupera; la primera release real será `v0.3.0`
-  (`docs/10-delivery/closure/f9-release.md`). Nombre visible vigente **Forge** (ADR-0012). ISO-01
+- Canal de distribución: AppImage Linux x86_64; **release `v0.3.0` publicada**
+  (<https://github.com/Soluciones-Alexendros/archmaker/releases/tag/v0.3.0>). Los tags históricos
+  `v0.1.0` y `v0.2.0` no tuvieron GitHub Release (`release.yml` terminó _cancelled_ para
+  `v0.1.0` y _success_ sin publicar para `v0.2.0`). A partir de ADR-0022 las releases usan
+  `publish.yml` y release-please. Nombre visible vigente **Forge** (ADR-0012). ISO-01
   (`build-scope.md`, ADR-0019 / DEC-013) está `accepted` solo para imagen viva x86_64 UEFI;
-  el target `archmaker-live-profile` está en el árbol. La cara no invoca `mkarchiso`. El runner de instalación y
-  Enterprise siguen sin `accepted`. Evidencia y `APPROVAL_RECORD` fuera del árbol.
-- Limitaciones: sin binario publicado; sin cosign local verificado; sin 3× install GUI;
-  F7 sin `RC_SHA_FUNCIONAL`; sin imagen Arch. R2: `releaseStatus` del doc F9 = `ineligible`.
+  el target `archmaker-live-profile` está en el árbol. La cara no invoca `mkarchiso`. El runner
+  de instalación y Enterprise siguen sin `accepted`. Evidencia y `APPROVAL_RECORD` fuera del
+  árbol.
+- Limitaciones: cosign local verificado parcialmente; 3× install GUI pendiente; F7 sin
+  `RC_SHA_FUNCIONAL` independiente. R2: `releaseStatus` del doc F9 = `released`.
 - Reorientación aprobada por el operador el 2026-10-25: Forge pasa a ser una GUI fina sin
   root que genera perfil `archiso` completo + `user_configuration.json` real de `archinstall`
   y construye la ISO con `mkarchiso` dentro de Docker (ADR-0020/ADR-0021 en preparación).

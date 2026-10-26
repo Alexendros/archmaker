@@ -147,7 +147,7 @@ Cubre los 12 tokens de `$defs.operator`. La especificación y la tabla de casos 
 
 ## Validación en CI
 
-El gate `json-schema` (`.github/workflows/json-schema.yml`, G4/G5/G7) tiene cuatro jobs:
+El gate `schema-quality` de `.github/workflows/ci.yml` (G4/G5/G7) ejecuta cuatro jobs lógicos:
 
 1. **meta-validate**: `Draft202012Validator.check_schema` sobre cada `contracts/json-schema/**/*.schema.json`.
 2. **corpus-validate**: construye un registro `$id → schema` (resolución de `$ref` externos),

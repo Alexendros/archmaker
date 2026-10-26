@@ -25,7 +25,7 @@ dependsOn:
 
 - Documento: DOC-DEL-CLO-F9-001 · Propietario: Release · Fecha: 2026-10-16
 - Canal: AppImage Linux x86_64, nombre visible **Forge** (DEC-011 / F8).
-- Hosting: GitHub Release del tag `v*`; workflow `.github/workflows/release.yml`.
+- Hosting: GitHub Release del tag `v*`; workflow `.github/workflows/publish.yml`.
 - Estado de publicación: **no publicada** (corregido el 2026-10-25). El tag
   `v0.1.0` existe, pero la API de GitHub no lista ningún Release: `/releases` = `[]`
   y `/releases/tags/v0.1.0` = `404`. La ejecución de `release.yml` del 2026-10-16

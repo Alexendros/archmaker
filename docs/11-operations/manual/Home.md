@@ -15,7 +15,7 @@ reviewers:
 
 # ArchMaker
 
-Texto canónico: [`docs/11-operations/manual/`](https://github.com/Alexendros/archmaker/blob/main/docs/11-operations/manual/). Esta wiki lo publica.
+Texto canónico: [`docs/11-operations/manual/`](https://github.com/Soluciones-Alexendros/archmaker/blob/main/docs/11-operations/manual/). Esta wiki lo publica.
 
 ## Qué es
 
@@ -29,7 +29,7 @@ ArchMaker es un **configurador local** para diseñar, validar y exportar un perf
 | Aprobación funcional | pending      | Limitaciones F7; sin `RC_SHA_FUNCIONAL`                                 |
 | Release binaria      | no publicada | Tags `v0.1.0`/`v0.2.0` sin GitHub Release ni AppImage; próxima `v0.3.0` |
 
-Detalle de gobierno: [`docs/10-delivery/closure/f8-governance.md`](https://github.com/Alexendros/archmaker/blob/main/docs/10-delivery/closure/f8-governance.md).
+Detalle de gobierno: [`docs/10-delivery/closure/f8-governance.md`](https://github.com/Soluciones-Alexendros/archmaker/blob/main/docs/10-delivery/closure/f8-governance.md).
 
 Veredicto vigente: **CONDITIONAL-CLEAR** hasta MVP-5 (sin runner). Walking skeleton MVP-0 y slices MVP-1..MVP-5.
 
@@ -47,4 +47,4 @@ Veredicto vigente: **CONDITIONAL-CLEAR** hasta MVP-5 (sin runner). Walking skele
 3. [Manual de uso](Manual-de-uso.md)
 4. [Límites](Limites.md)
 
-Repositorio: <https://github.com/Alexendros/archmaker>
+Repositorio: <https://github.com/Soluciones-Alexendros/archmaker>
