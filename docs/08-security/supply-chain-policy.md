@@ -7,7 +7,7 @@ approvalStatus: approved
 implementationStatus: complete
 verificationStatus: passed
 evidence:
-  - .github/workflows/release.yml (build + SBOM + sign + verify + provenance)
+  - .github/workflows/publish.yml (build + SBOM + sign + verify + provenance)
   - trusted_root.json (procedimiento de materialización documentado)
   - packaging-release.md (apéndice I11)
   - DEC-006 / DEC-007 / ADR-0008 / ADR-0009

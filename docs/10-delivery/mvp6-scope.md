@@ -26,7 +26,7 @@ dependsOn:
 - Entrada: política de empaquetado en `docs/10-delivery/packaging-release.md` y residual de
   DEC-006 (firma definida; Etapa C parcial en F9 `v0.1.0`: SBOM/provenance/checksums;
   cosign local deferred).
-- Primera publicación: tag [`v0.1.0`](https://github.com/Alexendros/archmaker/releases/tag/v0.1.0)
+- Primera publicación: tag [`v0.1.0`](https://github.com/Soluciones-Alexendros/archmaker/releases/tag/v0.1.0)
   (`RC_SHA` `9297ed7…`). Detalle: `closure/f9-release.md`.
 - Este alcance autoriza **una sola plataforma inicial**. No anuncia cinco familias como Done.
 
@@ -44,7 +44,7 @@ La tienda instala la aplicación. La imagen de instalación de un sistema es otr
 | Campo                | Valor                                                                  |
 | -------------------- | ---------------------------------------------------------------------- |
 | Plataforma           | **AppImage Linux x86_64**                                              |
-| Canal de publicación | GitHub Release del tag `v*` (workflow `.github/workflows/release.yml`) |
+| Canal de publicación | GitHub Release del tag `v*` (workflow `.github/workflows/publish.yml`) |
 | Nombre visible       | Forge (histórico `v0.1.0`: Neubat)                                     |
 | Arquitectura         | x86_64 (DEC-008)                                                       |
 | Motivo de elección   | Ver «Por qué AppImage» más abajo                                       |
@@ -54,7 +54,7 @@ La tienda instala la aplicación. La imagen de instalación de un sistema es otr
 1. `packaging-release.md` lista AppImage como primer formato MVP Linux portátil.
 2. El borrador MVP-6 ya contemplaba «AppImage firmado, además de los paquetes» como vía sin
    tienda; es la única fila que no exige OBS, review de Fedora ni ficha AUR.
-3. `release.yml` ya publica en GitHub Release con SBOM CycloneDX, checksums, cosign keyless y
+3. `publish.yml` publica en GitHub Release con SBOM CycloneDX, checksums, cosign keyless y
    provenance SLSA v1 — el mismo acto de release que aloja el AppImage.
 4. Autorizar `.deb`/`.rpm`/OBS/AUR ahora anunciaría varias familias; F8 exige **una**.
 5. AUR queda **excluido** como repositorio binario de pacman (solo PKGBUILD fuente si se

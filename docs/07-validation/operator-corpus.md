@@ -37,7 +37,7 @@ Requisitos relacionados: FR-VALIDATE-001, FR-RESOLVE-001, FR-CAT-001.
 El corpus ejecutable vive en `contracts/json-schema/rule-corpus/operators.corpus.json`. Cada caso
 declara `operator`, `kind` (`positive`/`negative`/`edge`/`adversarial`), `expect` (`valid`/`invalid`)
 y una `instance` `Rule` completa. El job **`rule-corpus-validate`** de
-`.github/workflows/json-schema.yml` valida cada `instance` contra
+El job `schema-quality` de `.github/workflows/ci.yml` valida cada `instance` contra
 `contracts/json-schema/rule.schema.json` y exige el resultado declarado; además comprueba que todo
 operador de `$defs.operator` tiene al menos un caso (cobertura del vocabulario). El gate falla si un
 caso positivo es rechazado o un negativo es aceptado.

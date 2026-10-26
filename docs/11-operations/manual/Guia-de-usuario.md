@@ -15,7 +15,7 @@ reviewers:
 
 # Guía de usuario
 
-Texto canónico: [`docs/11-operations/manual/Guia-de-usuario.md`](https://github.com/Alexendros/archmaker/blob/main/docs/11-operations/manual/Guia-de-usuario.md).
+Texto canónico: [`docs/11-operations/manual/Guia-de-usuario.md`](https://github.com/Soluciones-Alexendros/archmaker/blob/main/docs/11-operations/manual/Guia-de-usuario.md).
 
 ## Para quién
 

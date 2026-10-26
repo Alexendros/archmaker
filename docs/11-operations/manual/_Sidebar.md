@@ -22,4 +22,4 @@ reviewers:
 
 ---
 
-[Código canónico](https://github.com/Alexendros/archmaker/tree/main/docs/11-operations/manual) · [Releases](https://github.com/Alexendros/archmaker/releases)
+[Código canónico](https://github.com/Soluciones-Alexendros/archmaker/tree/main/docs/11-operations/manual) · [Releases](https://github.com/Soluciones-Alexendros/archmaker/releases)
