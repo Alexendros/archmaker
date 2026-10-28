@@ -3,7 +3,7 @@
   "sourceSha": "ccab5229334bdc1343f1b5c67819916ce45a212c",
   "capturedAt": "2026-10-17T00:35:17Z",
   "appimage": {
-    "path": "/home/alexendros/Aplicaciones/Repertorio/archmaker/target/release/bundle/appimage/Forge_0.1.0_amd64.AppImage",
+    "path": "/home/alexendros/Repertorio/archmaker/target/release/bundle/appimage/Forge_0.1.0_amd64.AppImage",
     "sha256": "a064aee282eaef72f0e5185dc282f537cda9a38cd7eaa1d2ef09da0c363e8fbd",
     "sizeBytes": 91142648,
     "published": false

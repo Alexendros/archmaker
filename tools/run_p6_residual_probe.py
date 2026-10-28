@@ -23,7 +23,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PROBE_PATH = ROOT / "docs/10-delivery/closure/examples/desktop-offline-p6-probe.json"
 EVIDENCE_PATH = ROOT / "docs/10-delivery/closure/examples/desktop-evidence.p6-blocked.json"
 DEFAULT_APPIMAGE = Path(
-    "/home/alexendros/Aplicaciones/Repertorio/archmaker/"
+    "/home/alexendros/Repertorio/archmaker/"
     "target/release/bundle/appimage/Forge_0.1.0_amd64.AppImage"
 )
 
